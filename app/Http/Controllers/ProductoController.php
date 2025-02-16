@@ -11,7 +11,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //
+        return view('productos.productos-lista');
     }
 
     /**
@@ -19,7 +19,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        return view('productos.productos-formulario');
+
     }
 
     /**
@@ -35,7 +36,7 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('productos.productos-detalles');
     }
 
     /**
@@ -43,7 +44,7 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('productos.productos-formulario');
     }
 
     /**
