@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -28,7 +30,44 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validar los tipos de datos aceptados
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'descripcion' => 'nullable|string',
+            'categoria' => 'required|string|max:255',
+            'stock' => 'required|integer|min:0',
+            'activo' => 'required|boolean',
+            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
+
+        //Función para acceder o crear la categoria si no existe
+
+        $categoria = Categoria::firstOrCreate(['nombre'=>$request->categoria]);
+
+        //Función para guardar la imagen
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')){
+            $rutaImagen = $request->file('imagen')->store('productos','public');
+        }
+
+        //Función para crear el producto
+
+        Producto::create([
+            'nombre' => $request->nombre,
+            'precio' => $request->precio,
+            'descripcion' => $request->descripcion,
+            'categoria' => $request->categoria,
+            'stock' => $request->stock,
+            'activo' => $request->activo,
+            'imagen' => $request->imagen
+        ]);
+
+        //Redireccionar cuando se guardan los datos
+
+        return redirect()->back()->with('success','Producto creado correctamente');
+
+
     }
 
     /**
