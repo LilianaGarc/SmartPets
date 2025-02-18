@@ -1,3 +1,4 @@
+/* jona: logica del carusel */
 let currentIndex = 0;
 
 const container = document.querySelector('.cuadrado-container');
@@ -6,7 +7,7 @@ const totalItems = items.length;
 const itemsVisible = 4;
 const prevBtn = document.querySelector('.carousel-btn.prev');
 
-function moveCarousel(direction) {
+function moveCarusel(direction) {
     const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight);
 
     if (direction === 'next') {
@@ -25,7 +26,7 @@ function moveCarousel(direction) {
     const offset = -currentIndex * itemWidth;
     container.style.transform = `translateX(${offset}px)`;
 }
-
+/* jona: efecto del desenfoque de los demas cuadrados */
 const cards = document.querySelectorAll('.cuadrado');
 cards.forEach(card => {
     card.addEventListener('mouseenter', () => {

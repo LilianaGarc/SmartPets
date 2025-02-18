@@ -7,19 +7,12 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
-<nav class="navbar" id="navbar">
-    <div class="logo">
-        <img src="{{ asset('images/smartpetspng2.webp') }}" alt="" style="width: 20vw; height: auto;">
-    </div>
-    <div>
-        <a href="#">Perfil</a>
-        <a href="#">Ajustes</a>
-        <a href=""></a>
-    </div>
-</nav>
+
+@include('MenuPrincipal.Navbar')
+
 
 <div class="cuadrado-container-wrapper">
-    <button class="carousel-btn prev" onclick="moveCarousel('prev')" style="display: none;">←</button>
+    <button class="carousel-btn prev" onclick="moveCarusel('prev')" style="display: none;">←</button>
 
     <div class="cuadrado-container">
         <div class="cuadrado">
@@ -36,7 +29,7 @@
             <img src="{{ asset('images/cat.webp') }}" alt="Mascota 2">
             <div class="overlay">
                 <p>Pon en adopción y adopta tu mascota preferida</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Adoptar mascota</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('adopciones.index') }}'">Adoptar mascota</button>
             </div>
         </div>
 
@@ -86,7 +79,7 @@
         </div>
     </div>
 
-    <button class="carousel-btn next" onclick="moveCarousel('next')">→</button>
+    <button class="carousel-btn next" onclick="moveCarusel('next')">→</button>
 </div>
 <script src="{{ asset('js/scripts.js') }}"></script>
 </body>

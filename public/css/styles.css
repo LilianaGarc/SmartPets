@@ -59,6 +59,7 @@ body {
     background-color: rgba(0, 0, 0, 0.8);
     transform: scale(1.2);
 }
+
 /* jona: botones del carusel */
 .carousel-btn.prev {
     left: 5vw;
@@ -67,7 +68,6 @@ body {
 .carousel-btn.next {
     right: 5vw;
 }
-
 /* jona: contenedor del carusel */
 .cuadrado-container-wrapper {
     background-image: url('../images/fondo.webp');
@@ -81,7 +81,7 @@ body {
     align-items: center;
     position: relative;
     width: 100%;
-    height: 40vw;
+    height: 44vw;
     margin-top: 8vw;
     overflow: hidden;
     padding: 2vw;
@@ -112,6 +112,7 @@ body {
     flex: 0 0 21%;
     box-sizing: border-box;
 }
+
 /* jona: efectos colores */
 @keyframes camaleon {
     0% {
@@ -221,4 +222,169 @@ body {
 /* jona: efecto desenfoque */
 .cuadrado-container .cuadrado.not-hovered {
     filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
+}
+
+/* ADOPCION */
+/* jona: contenedor principal */
+.container {
+    margin-top: 8vw;
+    width: 50%;
+    padding: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* jona: formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 1.2rem;
+    color: #2d2d2d;
+    font-weight: bold;
+}
+
+textarea, input[type="text"], input[type="file"] {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* jona: focus en los campos */
+textarea:focus, input[type="text"]:focus, input[type="file"]:focus {
+    border-color: #ff7f50;
+    background-color: #fff;
+}
+
+/* jona: textarea */
+textarea {
+    height: 150px;
+}
+
+input[type="file"] {
+    padding: 10px;
+    background-color: #fff;
+}
+
+button[type="submit"], .btn {
+    padding: 12px 30px;
+    background-color: #ff7f50;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+button[type="submit"]:hover, .btn:hover {
+    background-color: #1e4183;
+    transform: scale(1.05);
+}
+
+/* jona: tarjetas de adopción */
+.adopcion-card {
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 20px auto;
+}
+
+/* jona: imagen dentro de la tarjeta */
+.adopcion-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.adopcion-card .contenido {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.adopcion-card .estado {
+    font-size: 14px;
+    color: #888;
+}
+
+.solicitar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-solicitar {
+    background-color: #ff7f50;
+    color: white;
+    font-size: 1.1rem;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-eliminar {
+    background-color: rgba(255, 255, 255, 0);
+    color: #ff7f50;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    width: 45px;
+}
+
+.btn-solicitar:hover, .btn-eliminar:hover {
+    background-color: #ff7f50;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.btn-eliminar i {
+    font-size: 1.6rem;
 }

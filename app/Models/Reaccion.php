@@ -14,4 +14,9 @@ class Reaccion extends Model
         //Varias reacciones pertenecen una publicacion (N)
         return $this->belongsTo(Publicacion::class);
     }
+
+    public function adopcion(){
+        //Varias reacciones pertenecen una adopcion (N)
+        return $this->belongsTo(Adopcion::class);
+    }
 }
