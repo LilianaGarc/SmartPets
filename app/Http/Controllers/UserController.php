@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comentario;
 use Illuminate\Http\Request;
 
-class ComentarioController
+class UserController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $comentarios = Comentario::all();
-        return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
+        //
     }
 
     /**
@@ -61,13 +59,6 @@ class ComentarioController
      */
     public function destroy(string $id)
     {
-        $eliminados = Comentario::destroy($id);
-
-        if ($eliminados < 0){
-            return redirect()->route('comentarios.index')->with('fracaso', 'El comentario no se pudo borrar.');
-        }else {
-            return redirect()->route('comentarios.index')->with('exito', 'El comentario se elimino correctamente.');
-        }
-
+        //
     }
 }
