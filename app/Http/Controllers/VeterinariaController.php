@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Veterinaria;
 use App\Models\Ubicacion;
 use Illuminate\Http\Request;
-
 class VeterinariaController extends Controller
 {
     // Método que muestra todas las veterinarias
