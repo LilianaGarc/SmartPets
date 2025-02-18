@@ -56,7 +56,7 @@
             <img src="{{ asset('images/perrito3.webp') }}" alt="Mascota 6">
             <div class="overlay">
                 <p>Descubre tus veterinarias mas cercanas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Ir a veterinarias</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('veterinarias.index') }}'">Ir a veterinarias</button>
             </div>
         </div>
 
