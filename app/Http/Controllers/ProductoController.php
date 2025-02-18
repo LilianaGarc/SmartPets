@@ -37,7 +37,7 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
-            'activo' => 'required|boolean',
+            //'activo' => 'required|boolean',
             'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
         ]);
 
@@ -52,20 +52,32 @@ class ProductoController extends Controller
         }
 
         //Función para crear el producto
+        //FUNCIÓN PARA CONVERTIR EL DATO A BOLEANO
+        //$activo = filter_var($request->input('activo'),FILTER_VALIDATE_BOOLEAN);
+        $producto = new Producto();
 
-        Producto::create([
-            'nombre' => $request->nombre,
-            'precio' => $request->precio,
-            'descripcion' => $request->descripcion,
-            'categoria' => $request->categoria,
-            'stock' => $request->stock,
-            'activo' => $request->activo,
-            'imagen' => $request->imagen
-        ]);
+            $producto->nombre = $request->input('nombre');
+            $producto->precio = $request->input('precio');
+            $producto->descripcion = $request->input('descripcion');
+            //$producto->categoria = $request->input('categoria');
+            $producto -> categoria_id = 1;
+            $producto->stock = $request->input('stock');
+           // $producto->activo = $activo;
+            $producto->imagen = $request->input('imagen');
 
-        //Redireccionar cuando se guardan los datos
+            $producto->save();
 
-        return redirect()->back()->with('success','Producto creado correctamente');
+            if ($producto->save()){
+                //Redireccionar cuando se guardan los datos
+                return redirect()->back()->with('success','Producto publicado correctamente');
+            }else{
+                return redirect()->with('error','Error al publicar producto');
+            }
+
+
+
+
+
 
 
     }

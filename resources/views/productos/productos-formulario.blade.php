@@ -70,29 +70,39 @@
         <div class="form-container p-4 p-md-5">
             <h2 class="text-center mb-4" style="color: var(--blue);">Crear Nuevo Producto</h2>
 
-            <form>
+            <!-- Mostrar en los errores de las validaciones-->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{route('productos.store')}}" method="POST">
+                @csrf
+                <!-- csrf permite realizar peticiones-->
                 <!-- Información Básica -->
                 <div class="mb-4">
                     <h4 class="section-title">Información Básica</h4>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="productName" class="form-label">Nombre del Producto</label>
-                            <input type="text" class="form-control" id="productName" required>
+                            <label for="nombre" class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id= "nombre" name="nombre" required>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="productSKU" class="form-label">SKU</label>
-                            <input type="text" class="form-control" id="productSKU" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="productPrice" class="form-label">Precio</label>
+                            <label for="precio" class="form-label">Precio</label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="productPrice" required>
+                                <span class="input-group-text">L.</span>
+                                <input type="number" class="form-control" id="precio" name="precio" required>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="productCategory" class="form-label">Categoría de Mascota</label>
-                            <select class="form-select" id="productCategory" required>
+                            <label for="categoria" class="form-label">Categoría de Mascota</label>
+                            <select class="form-select" id="categoria" name="categoria" required>
                                 <option value="">Seleccionar categoría</option>
                                 <option value="dog">Perros</option>
                                 <option value="cat">Gatos</option>
@@ -111,7 +121,8 @@
                     <div class="image-preview">
                         <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
                         <p class="mb-2">Arrastra y suelta las imágenes aquí o</p>
-                        <button type="button" class="btn btn-outline-primary">Seleccionar Archivos</button>
+                        <button type="button" class="btn btn-outline-primary" id="select-images-btn">Seleccionar Archivos</button>
+                        <input type="file" id="image-input" name="images[]" multiple accept=".jpg, .png" style="display: none;">
                         <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
                     </div>
                 </div>
@@ -120,8 +131,8 @@
                 <div class="mb-4">
                     <h4 class="section-title">Descripción</h4>
                     <div class="mb-3">
-                        <label for="fullDescription" class="form-label">Descripción Completa</label>
-                        <textarea class="form-control" id="fullDescription" rows="4" required></textarea>
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required></textarea>
                     </div>
                 </div>
 
@@ -131,43 +142,28 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="stock" class="form-label">Cantidad en Stock</label>
-                            <input type="number" class="form-control" id="stock" required>
+                            <input type="number" class="form-control" id="stock" name="stock" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="minStock" class="form-label">Stock Mínimo</label>
-                            <input type="number" class="form-control" id="minStock" required>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="trackInventory">
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 
                 <!-- Estado y Visibilidad -->
-                <div class="mb-4">
-                    <h4 class="section-title">Estado y Visibilidad</h4>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="productStatus" class="form-label">Estado</label>
-                            <select class="form-select" id="productStatus" required>
-                                <option value="active">Activo</option>
-                                <option value="draft">Borrador</option>
-                                <option value="inactive">Inactivo</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="visibility" class="form-label">Visibilidad</label>
-                            <select class="form-select" id="visibility" required>
-                                <option value="public">Público</option>
-                                <option value="private">Privado</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <!--  <div class="mb-4">
+                      <h4 class="section-title">Estado</h4>
+                      <div class="row g-3">
+                          <div class="col-md-6">
+                              <label for="activo" class="form-label">Estado</label>
+                              <select class="form-select" id="activo" name="activo" required>
+                                  <option value="true">Activo</option>
+                                  <option value="false">Inactivo</option>
+                              </select>
+                          </div>
 
-                <!-- Botones de Acción -->
+                      </div>  -->
+                  </div>
+
+                  <!-- Botones de Acción -->
                 <div class="d-flex gap-2 justify-content-end">
                     <button type="button" class="btn btn-outline-primary">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Crear Producto</button>
@@ -176,4 +172,21 @@
         </div>
     </div>
 
+    <script>
+        // Detectar clic en el botón y abrir el selector de archivos
+        document.getElementById('select-images-btn').addEventListener('click', function() {
+            document.getElementById('image-input').click();
+        });
+
+        // Opcional: mostrar una vista previa de las imágenes seleccionadas
+        document.getElementById('image-input').addEventListener('change', function() {
+            const files = this.files;
+            if (files.length > 0) {
+                console.log("Imágenes seleccionadas:", files); // Para depuración
+            }
+        });
+    </script>
+
 @endsection
+
+
