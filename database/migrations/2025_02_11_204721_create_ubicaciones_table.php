@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('ubicaciones', function (Blueprint $table) {
             $table->id();
             $table->string('departamento');
+            $table->string('ciudad');
             $table->string('municipio');
-            $table->string('barrio');
+            $table->string('direccion');
+            $table->foreignId('veterinaria_id');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
