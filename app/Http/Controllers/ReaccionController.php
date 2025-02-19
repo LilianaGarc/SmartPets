@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 
 class ReaccionController
 {
+    public function panel()
+    {
+        $reacciones = Reaccion::all();
+        return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $reacciones = Reaccion::all();
-        return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
+        //
     }
 
     /**
@@ -61,12 +65,19 @@ class ReaccionController
      */
     public function destroy(string $id)
     {
+        //
+    }
+
+    public function paneldestroy(string $id)
+    {
         $eliminados = Reaccion::destroy($id);
 
         if ($eliminados < 0){
-            return redirect()->route('reacciones.index')->with('fracaso', 'La reaccion no se pudo borrar.');
+            return redirect()->route('reacciones.panel')->with('fracaso', 'La reaccion no se pudo borrar.');
         }else {
-            return redirect()->route('reacciones.index')->with('exito', 'La reaccion se elimino correctamente.');
+            return redirect()->route('reacciones.panel')->with('exito', 'La reaccion se elimino correctamente.');
         }
     }
+
+
 }

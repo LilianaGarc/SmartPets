@@ -18,12 +18,25 @@ use Illuminate\Support\Facades\Route;
 Route::get('index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
+
+Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
+
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/adopciones/create', [AdopcionController::class, 'create'])->name('adopciones.create');
 Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
 Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
 
+Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
+
+//Rutas para Productos
+Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
+
 Route::resource('productos',ProductoController::class);
+
+Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
+
+//Rutas para Veterinarias
+Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
 
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
 
@@ -35,7 +48,12 @@ Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])-
 
 Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
 Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
+
+Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
+
 //Rutas para Publicaciones
+Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
+
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
@@ -48,8 +66,11 @@ Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->n
 
 Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
+Route::delete('/panel/publicaciones/{id}', [PublicacionController::class, 'paneldestroy'])->name('publicaciones.paneldestroy');
 
 //Rutas para Comentarios
+Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
+
 Route::get('/comentarios', [ComentarioController::class, 'index'])->name('comentarios.index');
 
 Route::get('/comentarios/crear', [ComentarioController::class, 'create'])->name('comentarios.create');
@@ -62,8 +83,11 @@ Route::get('/comentarios/{id}/ver', [ComentarioController::class, 'show'])->name
 
 Route::delete('/comentarios/{id}/eliminar', [ComentarioController::class, 'destroy'])->name('comentarios.destroy')->whereNumber('id');
 
+Route::delete('/panel/comentarios/{id}', [ComentarioController::class, 'paneldestroy'])->name('comentarios.paneldestroy');
 
 //Rutas para Reacciones
+Route::get('/panel/reacciones', [ReaccionController::class, 'panel'])->name('reacciones.panel');
+
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 
 Route::get('/reacciones/crear', [ReaccionController::class, 'create'])->name('reacciones.create');
@@ -76,3 +100,40 @@ Route::get('/reacciones/{id}/ver', [ReaccionController::class, 'show'])->name('r
 
 Route::delete('/reacciones/{id}/eliminar', [ReaccionController::class, 'destroy'])->name('reacciones.destroy')->whereNumber('id');
 
+Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestroy'])->name('reacciones.paneldestroy');
+
+
+//Rutas para Eventos
+Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
+
+Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');
+
+
+//Rutas para Mensajes
+Route::get('/panel/mensajes', [MensajeController::class, 'panel'])->name('mensajes.panel');
+
+Route::delete('/panel/mensajes/{id}', [MensajeController::class, 'paneldestroy'])->name('mensajes.paneldestroy');
+
+
+//Rutas para Chats
+Route::get('/panel/chats', [ChatController::class, 'panel'])->name('chats.panel');
+
+Route::delete('/panel/chats/{id}', [ChatController::class, 'paneldestroy'])->name('chats.paneldestroy');
+
+
+//Rutas para Solicitud
+Route::get('/panel/solicitudes', [SolicitudController::class, 'panel'])->name('solicitudes.panel');
+
+Route::delete('/panel/solicitudes/{id}', [SolicitudController::class, 'paneldestroy'])->name('solicitudes.paneldestroy');
+
+
+//Rutas para Ubicaciones
+Route::get('/panel/ubicaciones', [UbicacionController::class, 'panel'])->name('ubicaciones.panel');
+
+Route::delete('/panel/ubicaciones/{id}', [UbicacionController::class, 'paneldestroy'])->name('ubicaciones.paneldestroy');
+
+
+//Rutas para Users
+Route::get('/panel/users', [UserController::class, 'panel'])->name('users.panel');
+
+Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');

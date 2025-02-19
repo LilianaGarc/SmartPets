@@ -8,6 +8,11 @@ use App\Models\Ubicacion;
 use Illuminate\Http\Request;
 class VeterinariaController extends Controller
 {
+    public function panel()
+    {
+        $veterinarias = Veterinaria::all();
+        return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
+    }
     // Método que muestra todas las veterinarias
     public function index()
     {
@@ -205,4 +210,15 @@ class VeterinariaController extends Controller
             return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo eliminar');
         }
     }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Veterinaria::destroy($id);
+        if ($eliminados > 0) {
+            return redirect()->route('veterinarias.panel')->with('exito', 'La veterinaria se eliminó exitosamente');
+        } else {
+            return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo eliminar');
+        }
+    }
+
 }

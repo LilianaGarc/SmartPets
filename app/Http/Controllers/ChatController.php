@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class ChatController
 {
+    public function panel()
+    {
+        $chats = Chat::all();
+        return view('panelAdministrativo.chatsIndex')->with('chats', $chats);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +65,16 @@ class ChatController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Chat::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('chats.panel')->with('fracaso', 'El chat no se pudo borrar.');
+        }else {
+            return redirect()->route('chats.panel')->with('exito', 'El chat se elimino correctamente.');
+        }
     }
 }

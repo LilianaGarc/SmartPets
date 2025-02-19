@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class MensajeController
 {
+    public function panel()
+    {
+        $mensajes = Mensaje::all();
+        return view('panelAdministrativo.mensajesIndex')->with('mensajes', $mensajes);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +65,16 @@ class MensajeController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Mensaje::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('mensajes.panel')->with('fracaso', 'El mensaje no se pudo borrar.');
+        }else {
+            return redirect()->route('mensajes.panel')->with('exito', 'El mensaje se elimino correctamente.');
+        }
     }
 }

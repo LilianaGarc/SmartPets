@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class UbicacionController
 {
+    public function panel()
+    {
+        $ubicaciones = Ubicacion::all();
+        return view('panelAdministrativo.ubicacionesIndex')->with('ubicaciones', $ubicaciones);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +65,16 @@ class UbicacionController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Ubicacion::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('ubicaciones.panel')->with('fracaso', 'La ubicacion no se pudo borrar.');
+        }else {
+            return redirect()->route('ubicaciones.panel')->with('exito', 'La ubicacion se elimino correctamente.');
+        }
     }
 }

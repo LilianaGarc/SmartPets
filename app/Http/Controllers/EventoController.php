@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class EventoController
 {
+    public function panel()
+    {
+        $eventos = Evento::all();
+        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +65,16 @@ class EventoController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Evento::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('eventos.panel')->with('fracaso', 'El evento no se pudo borrar.');
+        }else {
+            return redirect()->route('eventos.panel')->with('exito', 'El evento se elimino correctamente.');
+        }
     }
 }

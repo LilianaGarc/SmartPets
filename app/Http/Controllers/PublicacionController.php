@@ -8,13 +8,17 @@ use Illuminate\Http\Request;
 
 class PublicacionController
 {
+    public function panel()
+    {
+        $publicaciones = Publicacion::all();
+        return view('panelAdministrativo.publicacionesIndex')->with('publicaciones', $publicaciones);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $publicaciones = Publicacion::all();
-        return view('panelAdministrativo.publicacionesIndex')->with('publicaciones', $publicaciones);
+        //
     }
 
     /**
@@ -62,12 +66,17 @@ class PublicacionController
      */
     public function destroy(string $id)
     {
+        //
+    }
+
+    public function paneldestroy(string $id)
+    {
         $eliminados = Publicacion::destroy($id);
 
         if ($eliminados < 0){
-            return redirect()->route('publicaciones.index')->with('fracaso', 'La publicacion no se pudo borrar.');
+            return redirect()->route('publicaciones.panel')->with('fracaso', 'La publicacion no se pudo borrar.');
         }else {
-            return redirect()->route('publicaciones.index')->with('exito', 'La publicacion se elimino correctamente.');
+            return redirect()->route('publicaciones.panel')->with('exito', 'La publicacion se elimino correctamente.');
         }
     }
 }

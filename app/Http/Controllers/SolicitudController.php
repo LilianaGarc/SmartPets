@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class SolicitudController
 {
+    public function panel()
+    {
+        $solicitudes = Solicitud::all();
+        return view('panelAdministrativo.solicitudesIndex')->with('solicitudes', $solicitudes);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +65,16 @@ class SolicitudController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Solicitud::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('solicitudes.panel')->with('fracaso', 'La solicitud no se pudo borrar.');
+        }else {
+            return redirect()->route('solicitudes.panel')->with('exito', 'La solicitud se elimino correctamente.');
+        }
     }
 }

@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController
 {
+    public function panel()
+    {
+        $users = User::all();
+        return view('panelAdministrativo.usersIndex')->with('users', $users);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -60,5 +66,16 @@ class UserController
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = User::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo borrar.');
+        }else {
+            return redirect()->route('users.panel')->with('exito', 'El usuario se elimino correctamente.');
+        }
     }
 }
