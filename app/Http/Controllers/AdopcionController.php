@@ -10,7 +10,7 @@ class AdopcionController extends Controller
     public function panel()
     {
         $adopciones = Adopcion::all();
-        return view('panelAdministrativo.adopcionesIndex')->with('adopciones', adopciones);
+        return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
     }
     public function index()
     {

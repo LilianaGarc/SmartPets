@@ -118,14 +118,23 @@
 
 <div class="left-section">
     <br>
-    <a href="{{ route('publicaciones.index') }}" class="btn btn-light " style="margin: 5px;"><h6>Publicaciones</h6></a>
-    <a href="{{ route('comentarios.index') }}" class="btn btn-light " style="margin: 5px;"><h6>Comentarios</h6></a>
-    <a href="{{ route('reacciones.index') }}" class="btn btn-light " style="margin: 5px;"><h6>Reacciones</h6></a>
+    <a href="{{ route('users.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Usuarios</h6></a>
+    <a href="{{ route('publicaciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Publicaciones</h6></a>
+    <a href="{{ route('comentarios.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Comentarios</h6></a>
+    <a href="{{ route('reacciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Reacciones</h6></a>
+    <a href="{{ route('veterinarias.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Veterinarias</h6></a>
+    <a href="{{ route('adopciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Adopciones</h6></a>
+    <a href="{{ route('eventos.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Eventos</h6></a>
+    <a href="{{ route('mensajes.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Mensajes</h6></a>
+    <a href="{{ route('chats.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Chats</h6></a>
+    <a href="{{ route('productos.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Productos</h6></a>
+    <a href="{{ route('solicitudes.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Solicitudes</h6></a>
+    <a href="{{ route('ubicaciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Ubicaciones</h6></a>
 
 </div>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>s
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

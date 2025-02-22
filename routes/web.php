@@ -13,9 +13,11 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
 use Illuminate\Support\Facades\Route;
 //Faltan rutas de categoria y ubicacion
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\UbicacionController;
 
 //Jonaaaaa
-Route::get('index', function () {
+Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
 

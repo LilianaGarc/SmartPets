@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ubicacion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class UbicacionesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Ubicacion::factory(100)->create();
     }
 }
