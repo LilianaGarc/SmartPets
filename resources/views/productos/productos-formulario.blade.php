@@ -68,9 +68,20 @@
     <body>
     <div class="container py-5">
         <div class="form-container p-4 p-md-5">
-            <h2 class="text-center mb-4" style="color: var(--blue);">Crear Nuevo Producto</h2>
+            <h2 class="text-center mb-4" style="color: var(--blue);">Publicar Nuevo Producto</h2>
 
             <!-- Mostrar en los errores de las validaciones-->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{session('success')}}
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{session('error')}}
+                </div>
+            @endif
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -81,7 +92,7 @@
                 </div>
             @endif
 
-            <form action="{{route('productos.store')}}" method="POST">
+            <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- csrf permite realizar peticiones-->
                 <!-- Información Básica -->
@@ -90,14 +101,14 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="nombre" class="form-label">Nombre del Producto</label>
-                            <input type="text" class="form-control" id= "nombre" name="nombre" required>
+                            <input type="text" class="form-control" id= "nombre" name="nombre" value="{{old('nombre')}}" required>
                         </div>
 
                         <div class="col-md-6">
                             <label for="precio" class="form-label">Precio</label>
                             <div class="input-group">
                                 <span class="input-group-text">L.</span>
-                                <input type="number" class="form-control" id="precio" name="precio" required>
+                                <input type="number" class="form-control" id="precio" name="precio" required value="{{old('precio')}}" step="0.01">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -121,8 +132,7 @@
                     <div class="image-preview">
                         <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
                         <p class="mb-2">Arrastra y suelta las imágenes aquí o</p>
-                        <button type="button" class="btn btn-outline-primary" id="select-images-btn">Seleccionar Archivos</button>
-                        <input type="file" id="image-input" name="images[]" multiple accept=".jpg, .png" style="display: none;">
+                           <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif, .avif" multiple max="5" value="{{old('imagenes[]')}}">
                         <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
                     </div>
                 </div>
@@ -132,7 +142,7 @@
                     <h4 class="section-title">Descripción</h4>
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required></textarea>
+                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required  > {{old('descripcion')}} </textarea>
                     </div>
                 </div>
 
@@ -141,32 +151,17 @@
                     <h4 class="section-title">Inventario</h4>
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="stock" class="form-label">Cantidad en Stock</label>
-                            <input type="number" class="form-control" id="stock" name="stock" required>
+                            <label for="stock" class="form-label">Cantidad disponible</label>
+                            <input type="number" class="form-control" id="stock" name="stock" required value="{{old('stock')}}">
                         </div>
 
                     </div>
                 </div>
 
-                <!-- Estado y Visibilidad -->
-                <!--  <div class="mb-4">
-                      <h4 class="section-title">Estado</h4>
-                      <div class="row g-3">
-                          <div class="col-md-6">
-                              <label for="activo" class="form-label">Estado</label>
-                              <select class="form-select" id="activo" name="activo" required>
-                                  <option value="true">Activo</option>
-                                  <option value="false">Inactivo</option>
-                              </select>
-                          </div>
-
-                      </div>  -->
-                  </div>
-
                   <!-- Botones de Acción -->
                 <div class="d-flex gap-2 justify-content-end">
-                    <button type="button" class="btn btn-outline-primary">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Crear Producto</button>
+                    <a href="{{route('productos.index')}}" class="btn btn-outline-primary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Publicar</button>
                 </div>
             </form>
         </div>

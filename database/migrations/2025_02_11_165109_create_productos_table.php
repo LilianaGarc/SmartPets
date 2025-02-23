@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion');
-            $table->decimal('precio',10,2);
+            $table->decimal('precio',12,2);
             $table->unsignedBigInteger('categoria_id');
             $table->integer('stock');
             $table->string('imagen')->nullable();
+            $table->string('imagen2')->nullable();
+            $table->string('imagen3')->nullable();
+            $table->string('imagen4')->nullable();
+            $table->string('imagen5')->nullable();
             $table->boolean('activo')->default(true);
             $table->timestamps();
             $table->softDeletes();

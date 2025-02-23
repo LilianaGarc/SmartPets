@@ -30,56 +30,47 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //Validar los tipos de datos aceptados
+        // Validación de datos
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
+            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
             'descripcion' => 'nullable|string',
             'categoria' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
-            //'activo' => 'required|boolean',
-            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
         ]);
 
-        //Función para acceder o crear la categoria si no existe
+        // Crear o encontrar la categoría
+        $categoria = Categoria::firstOrCreate(['nombre' => $request->categoria]);
 
-        $categoria = Categoria::firstOrCreate(['nombre'=>$request->categoria]);
-
-        //Función para guardar la imagen
-        $rutaImagen = null;
-        if ($request->hasFile('imagen')){
-            $rutaImagen = $request->file('imagen')->store('productos','public');
+        // Almacenar las imágenes si están presentes
+        $imagenesGuardadas = [];
+        if ($request->hasFile('imagenes')) {
+            $imagenes = $request->file('imagenes');
+            foreach ($imagenes as $imagen) {
+                $rutaImagen = $imagen->store('public/productos');
+                $imagenesGuardadas[] = $rutaImagen;
+            }
         }
 
-        //Función para crear el producto
-        //FUNCIÓN PARA CONVERTIR EL DATO A BOLEANO
-        //$activo = filter_var($request->input('activo'),FILTER_VALIDATE_BOOLEAN);
+        // Crear el producto
         $producto = new Producto();
+        $producto->nombre = $request->input('nombre');
+        $producto->precio = $request->input('precio');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->categoria_id = $categoria->id;
+        $producto->stock = $request->input('stock');
+        $producto->imagen = $imagenesGuardadas[0] ?? null;
+        $producto->imagen2 = $imagenesGuardadas[1] ?? null;
+        $producto->imagen3 = $imagenesGuardadas[2] ?? null;
+        $producto->imagen4 = $imagenesGuardadas[3] ?? null;
+        $producto->imagen5 = $imagenesGuardadas[4] ?? null;
 
-            $producto->nombre = $request->input('nombre');
-            $producto->precio = $request->input('precio');
-            $producto->descripcion = $request->input('descripcion');
-            //$producto->categoria = $request->input('categoria');
-            $producto -> categoria_id = 1;
-            $producto->stock = $request->input('stock');
-           // $producto->activo = $activo;
-            $producto->imagen = $request->input('imagen');
-
-            $producto->save();
-
-            if ($producto->save()){
-                //Redireccionar cuando se guardan los datos
-                return redirect()->back()->with('success','Producto publicado correctamente');
-            }else{
-                return redirect()->with('error','Error al publicar producto');
-            }
-
-
-
-
-
-
-
+        if ($producto->save()) {
+            return redirect()->back()->with('success', 'Producto publicado correctamente');
+        } else {
+            return redirect()->back()->with('error', 'Error al publicar producto');
+        }
     }
 
     /**
