@@ -22,7 +22,7 @@ class PublicacionFactory extends Factory
         return [
             'contenido'=>fake()->words(10, true),
             'imagen' => fake()->filePath(),
-            'visibilidad'=>fake()->boolean(1),
+            'visibilidad'=>fake()->randomElement(['publico', 'privado']),
             'id_usuario' => fake()->numberBetween(1,70),
         ];
     }

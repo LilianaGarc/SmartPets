@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Veterinaria extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nombre',
+        'nombre_veterinario',
+        'horario_apertura',
+        'horario_cierre',
+        'telefono',
+        'imagen',
+        'redes_sociales',
+        'evaluacion',
+    ];
+
+    // convierte los json en array
+    protected $casts = [
+        'imagen' => 'array',
+        'redes_sociales' => 'array',
+    ];
 
     public function ubicacion(){
         //Una veterinaria tiene una ubicacion (1)

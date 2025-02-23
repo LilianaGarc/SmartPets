@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Evento;
 
-class EventoController
+class UserController
 {
     public function panel()
     {
-        $eventos = Evento::all();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+        $users = User::all();
+        return view('panelAdministrativo.usersIndex')->with('users', $users);
     }
     /**
      * Display a listing of the resource.
@@ -70,12 +70,12 @@ class EventoController
 
     public function paneldestroy(string $id)
     {
-        $eliminados = Evento::destroy($id);
+        $eliminados = User::destroy($id);
 
         if ($eliminados < 0){
-            return redirect()->route('eventos.panel')->with('fracaso', 'El evento no se pudo borrar.');
+            return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo borrar.');
         }else {
-            return redirect()->route('eventos.panel')->with('exito', 'El evento se elimino correctamente.');
+            return redirect()->route('users.panel')->with('exito', 'El usuario se elimino correctamente.');
         }
     }
 }

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Evento;
+use App\Models\Ubicacion;
 
-class EventoController
+class UbicacionController
 {
     public function panel()
     {
-        $eventos = Evento::all();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+        $ubicaciones = Ubicacion::all();
+        return view('panelAdministrativo.ubicacionesIndex')->with('ubicaciones', $ubicaciones);
     }
     /**
      * Display a listing of the resource.
@@ -70,12 +70,12 @@ class EventoController
 
     public function paneldestroy(string $id)
     {
-        $eliminados = Evento::destroy($id);
+        $eliminados = Ubicacion::destroy($id);
 
         if ($eliminados < 0){
-            return redirect()->route('eventos.panel')->with('fracaso', 'El evento no se pudo borrar.');
+            return redirect()->route('ubicaciones.panel')->with('fracaso', 'La ubicacion no se pudo borrar.');
         }else {
-            return redirect()->route('eventos.panel')->with('exito', 'El evento se elimino correctamente.');
+            return redirect()->route('ubicaciones.panel')->with('exito', 'La ubicacion se elimino correctamente.');
         }
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('contenido');
             $table->string('imagen')->nullable();
-            $table->boolean('visibilidad');
+            $table->string('visibilidad');
             $table->integer('id_usuario');
             $table->timestamps();
         });

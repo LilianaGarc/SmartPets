@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('horario_apertura');
             $table->string('horario_cierre');
             $table->string('telefono');
-            $table->string('imagen')->nullable();
-            $table->string('redes');
-            $table->decimal('honorarios');
+            $table->json('imagen')->nullable(); // guarda las imagenes
+            $table->json('redes_sociales')->nullable(); // guarda las redes sociales
+            $table->decimal('evaluacion', 2,1)->default(0); //evaluaciones
+            //$table->decimal('honorarios');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

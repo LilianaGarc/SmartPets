@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class AdopcionController extends Controller
 {
+    public function panel()
+    {
+        $adopciones = Adopcion::all();
+        return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
+    }
     public function index()
     {
         $adopciones = Adopcion::all();
@@ -45,6 +50,17 @@ class AdopcionController extends Controller
         $adopcion->delete();
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación eliminada correctamente');
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Adopcion::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('adopciones.panel')->with('fracaso', 'La adopcion no se pudo borrar.');
+        }else {
+            return redirect()->route('adopciones.panel')->with('exito', 'La adopcion se elimino correctamente.');
+        }
     }
 
 }

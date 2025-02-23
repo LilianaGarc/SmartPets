@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
+    public function panel()
+    {
+        $productos = Producto::all();
+        return view('panelAdministrativo.productosIndex')->with('productos', $productos);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -103,5 +108,16 @@ class ProductoController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function paneldestroy(string $id)
+    {
+        $eliminados = Producto::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('productos.panel')->with('fracaso', 'El producto no se pudo borrar.');
+        }else {
+            return redirect()->route('productos.panel')->with('exito', 'El producto se elimino correctamente.');
+        }
     }
 }
