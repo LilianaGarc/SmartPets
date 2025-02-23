@@ -18,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
+
+Route::get('animacion', function () {
+    return view('MenuPrincipal.Animacion');
+})->name('animacion');
+
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/adopciones/create', [AdopcionController::class, 'create'])->name('adopciones.create');
 Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');

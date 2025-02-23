@@ -26,6 +26,7 @@ function moveCarusel(direction) {
     const offset = -currentIndex * itemWidth;
     container.style.transform = `translateX(${offset}px)`;
 }
+
 /* jona: efecto del desenfoque de los demas cuadrados */
 const cards = document.querySelectorAll('.cuadrado');
 cards.forEach(card => {
@@ -43,3 +44,6 @@ cards.forEach(card => {
         });
     });
 });
+
+
+
