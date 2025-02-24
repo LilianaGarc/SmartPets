@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Publicacion;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PublicacionController
 {
     public function panel()
     {
-        $publicaciones = Publicacion::all();
-        return view('panelAdministrativo.publicacionesIndex')->with('publicaciones', $publicaciones);
+        $publicaciones = Publicacion::with('user')->get();
+        return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
     }
     /**
      * Display a listing of the resource.

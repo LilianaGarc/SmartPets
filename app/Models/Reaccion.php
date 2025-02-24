@@ -19,4 +19,9 @@ class Reaccion extends Model
         //Varias reacciones pertenecen una adopcion (N)
         return $this->belongsTo(Adopcion::class);
     }
+
+    public function user(){
+        //Varias reacciones pertenecen un usuario (N)
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

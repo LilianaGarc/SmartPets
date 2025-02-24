@@ -25,7 +25,13 @@
                 <tbody>
                 @foreach($publicaciones as $publicacion)
                     <tr>
-                        <td>{{  $publicacion->id_usuario}}</td>
+                        <td>
+                            @if($publicacion->user)
+                                {{ $publicacion->user->name }}
+                            @else
+                                Usuario no disponible
+                            @endif
+                        </td>
                         <td>{{  $publicacion->contenido  }}</td>
                         <td>{{  $publicacion->visibilidad  }}</td>
                         <td>

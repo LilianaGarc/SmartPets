@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reacciones', function (Blueprint $table) {
             $table->id();
             $table->string('tipo');
-            $table->integer('id_usuario');
+            $table->integer('id_user');
             $table->integer('id_publicacion');
             $table->timestamps();
         });
