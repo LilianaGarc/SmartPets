@@ -9,7 +9,7 @@ class ReaccionController
 {
     public function panel()
     {
-        $reacciones = Reaccion::all();
+        $reacciones = Reaccion::with('user')->get();
         return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
     }
     /**

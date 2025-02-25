@@ -9,7 +9,7 @@ class ComentarioController
 {
     public function panel()
     {
-        $comentarios = Comentario::all();
+        $comentarios = Comentario::with('user')->get();
         return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
     }
     /**
