@@ -38,6 +38,7 @@ body {
 .navbar .logo {
     margin-left: 5vw;
 }
+
 /* jona: botones dentro del cuadrado */
 .carousel-btn {
     background-color: rgba(0, 0, 0, 0.5);
@@ -68,6 +69,7 @@ body {
 .carousel-btn.next {
     right: 5vw;
 }
+
 /* jona: contenedor del carusel */
 .cuadrado-container-wrapper {
     background-image: url('../images/fondo.webp');
@@ -219,11 +221,11 @@ body {
     filter: brightness(1) saturate(1) contrast(1) blur(0);
     transition: filter 0.5s ease;
 }
+
 /* jona: efecto desenfoque */
 .cuadrado-container .cuadrado.not-hovered {
     filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
 }
-
 
 /* ADOPCION */
 /* jona: contenedor principal */
@@ -376,7 +378,7 @@ button[type="submit"]:hover, .btn:hover {
 
 .reaction-img:hover {
     transform: scale(1.4);
-    filter: brightness(0.9) contrast(2) ;
+    filter: brightness(0.9) contrast(2);
 }
 
 .btn-solicitar {
@@ -417,3 +419,106 @@ button[type="submit"]:hover, .btn:hover {
 .btn-eliminar i {
     font-size: 1.6rem;
 }
+
+/* Ajustes para telefonos */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.4rem;
+    }
+
+    .cuadrado-container-wrapper {
+        height: 50vh;
+        margin-top: 5vw;
+    }
+
+    .cuadrado-container {
+        gap: 1vw;
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .cuadrado {
+        height: 20vh;
+        flex: 0 0 22.5%;
+    }
+
+    .cuadrado img {
+        width: 100%;
+        height: auto;
+    }
+
+    .carousel-btn {
+        font-size: 1.5rem;
+        padding: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    @media (max-width: 480px) {
+        .carousel-btn {
+            font-size: 1.2rem;
+            padding: 0.6rem;
+        }
+    }
+
+    .carousel-btn.prev {
+        left: 5%;
+    }
+
+    .carousel-btn.next {
+        right: 5%;
+    }
+
+
+    .overlay p {
+        font-size: 0.6rem;
+        margin-bottom: 30vw;
+    }
+
+    .cuadrado .texto-overlay {
+        font-size: 0.9rem;
+    }
+
+    .btnseccion {
+        font-size: 0.7rem;
+    }
+
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    textarea, input[type="text"], input[type="file"] {
+        font-size: 1rem;
+    }
+
+    .adopcion-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .adopcion-card img {
+        width: 100%;
+    }
+
+    .reactions {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .btn-solicitar, .btn-eliminar {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .reaction-img {
+        width: 30px;
+        height: 30px;
+    }
+}
+

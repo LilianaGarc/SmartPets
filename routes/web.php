@@ -17,6 +17,10 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
 
 //Jonaaaaa
+Route::get('/', function () {
+    return redirect()->route('animacion');
+});
+
 Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
