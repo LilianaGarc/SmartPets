@@ -20,7 +20,7 @@ class ReaccionFactory extends Factory
     {
         return [
             'tipo'=>fake()->randomElement(['like', 'love', 'angry', 'sad']),
-            'id_usuario' => fake()->numberBetween(1,70),
+            'id_user' => fake()->numberBetween(1,70),
             'id_publicacion' => fake()->numberBetween(1,300),
         ];
     }

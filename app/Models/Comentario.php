@@ -14,5 +14,10 @@ class Comentario extends Model
         return $this->belongsTo(Publicacion::class);
     }
 
+    public function user(){
+        //Varios comentarios pertenecen un usuario(N)
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
 
 }

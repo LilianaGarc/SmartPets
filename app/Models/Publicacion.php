@@ -19,4 +19,9 @@ class Publicacion extends Model
         //Una publicacion puede tener muchas reacciones (1)
         return $this->hasMany(Reaccion::class);
     }
+
+    public function user(){
+        //Varias publicaciones pertenecen un usuario (N)
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

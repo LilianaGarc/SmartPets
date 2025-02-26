@@ -25,7 +25,13 @@
         <tbody>
         @foreach($comentarios as $comentario)
             <tr>
-                <td>{{  $comentario->id_usuario}}</td>
+                <td>
+                    @if($comentario->user)
+                        {{ $comentario->user->name }}
+                    @else
+                        Usuario no disponible
+                    @endif
+                </td>
                 <td>{{  $comentario->id_publicacion}}</td>
                 <td>{{  $comentario->contenido  }}</td>
                 <td>

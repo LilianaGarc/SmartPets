@@ -25,7 +25,13 @@
         <tbody>
         @foreach($reacciones as $reaccion)
             <tr>
-                <td>{{  $reaccion->id_usuario}}</td>
+                <td>
+                    @if($reaccion->user)
+                        {{ $reaccion->user->name }}
+                    @else
+                        Usuario no disponible
+                    @endif
+                </td>
                 <td>{{  $reaccion->id_publicacion}}</td>
                 <td>{{  $reaccion->tipo  }}</td>
                 <td>

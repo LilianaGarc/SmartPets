@@ -20,7 +20,7 @@ class ComentarioFactory extends Factory
     {
         return [
             'contenido'=>fake()->words(10, true),
-            'id_usuario' => fake()->numberBetween(1,70),
+            'id_user' => fake()->numberBetween(1,70),
             'id_publicacion' => fake()->numberBetween(1,300),
         ];
     }
