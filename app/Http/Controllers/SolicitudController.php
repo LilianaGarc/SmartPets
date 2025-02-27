@@ -12,6 +12,16 @@ class SolicitudController
         $solicitudes = Solicitud::all();
         return view('panelAdministrativo.solicitudesIndex')->with('solicitudes', $solicitudes);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $solicitudes = Solicitud::orderby('created_at', 'desc')
+            ->where('id_user', 'LIKE', "%$nombre%")
+            ->orWhere('id_adopcion', 'LIKE', "%$nombre%")
+            ->orWhere('contenido', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.solicitudesIndex')->with('solicitudes', $solicitudes);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -14,6 +14,18 @@ class PublicacionController
         $publicaciones = Publicacion::with('user')->get();
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $publicaciones = Publicacion::with('user')
+            ->whereHas('user', function ($query) use ($nombre) {
+                $query->where('name', 'LIKE', "%$nombre%");
+            })
+            ->where('contenido', 'LIKE', "%$nombre%")
+            ->orWhere('visibilidad', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.publicacionesIndex')->with('publicaciones', $publicaciones);
+    }
     /**
      * Display a listing of the resource.
      */

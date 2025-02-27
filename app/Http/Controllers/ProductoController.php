@@ -13,6 +13,17 @@ class ProductoController extends Controller
         $productos = Producto::all();
         return view('panelAdministrativo.productosIndex')->with('productos', $productos);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $productos = Producto::orderby('created_at', 'desc')
+            ->where('nombre', 'LIKE', "%$nombre%")
+            ->where('descripcion', 'LIKE', "%$nombre%")
+            ->where('precio', 'LIKE', "%$nombre%")
+            ->orWhere('stock', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.productosIndex')->with('productos', $productos);
+    }
     /**
      * Display a listing of the resource.
      */

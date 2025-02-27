@@ -13,6 +13,17 @@ class VeterinariaController extends Controller
         $veterinarias = Veterinaria::all();
         return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $veterinarias = Veterinaria::orderby('created_at', 'desc')
+            ->where('nombre', 'LIKE', "%$nombre%")
+            ->orWhere('nombre_veterinario', 'LIKE', "%$nombre%")
+            ->orWhere('telefono', 'LIKE', "%$nombre%")
+            ->get();
+        return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
+    }
     // Método que muestra todas las veterinarias
     public function index()
     {

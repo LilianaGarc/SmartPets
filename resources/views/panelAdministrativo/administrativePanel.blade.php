@@ -14,7 +14,7 @@
         body {
             font-family: Arial, sans-serif;
             margin-left: 17rem;
-            margin-top: 5rem;
+            margin-top: 9rem;
             margin-right: 1rem;
             margin-bottom: 70rem;
             padding: 0;
@@ -52,17 +52,30 @@
         }
 
         .navbar .logo {
-            margin-left: 5vw;
+            margin-left: 0vw;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #ff7f50;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+            background-color: #18478b;
         }
 
         .left-section {
             position: fixed;
-            top: 55px;
+            top: 80px;
             left: 0;
             width: 250px;
             height: 100%;
             background-color: #18478b;
-            padding: 20px;
+            padding: 30px;
             box-sizing: border-box;
             border-color: #100f0f;
             box-shadow: 5px 0 30px rgba(0,0,0,.1);
@@ -72,21 +85,28 @@
         .left-section a {
             text-decoration: none;
             color: #ffffff;
-            font-size: 1rem;
-            margin: 0 1.5vw;
+            font-size: 2rem;
+            margin: 2rem;
             transition: color 0.3s ease, transform 0.3s ease;
             background-color: #18478b;
             width: 90%;
+            text-align: left;
+            display: block;
+        }
+
+        .left-section btn{
+            margin: 3px;
+            font-size: 10px;
         }
 
         .left-section a:hover {
-            color: #18478b;
+            color: #ff7f50;
             transform: scale(1.1);
+            background-color: #ffffff;
         }
 
-        .table {
-            margin: 15px;
-        }
+
+
 
     </style>
 
@@ -97,12 +117,14 @@
 
 <nav class="navbar" id="navbar">
     <div class="logo">
-        <img src="{{ asset('images/smartpetspng2.png') }}" alt="" style="width: 20vw; height: auto;">
+        <a href="{{ route('index') }}">
+            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" style="width: 20vw; height: auto;">
+        </a>
     </div>
     <div>
-        <a href="#">Perfil</a>
-        <a href="#">Ajustes</a>
-        <a href=""></a>
+        <a href="#"><i class="fas fa-user-circle"></i> Perfil</a>
+        <a href="#"><i class="fas fa-cogs"></i> Ajustes</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i> Salir</a>
     </div>
 </nav>
 
@@ -118,18 +140,18 @@
 
 <div class="left-section">
     <br>
-    <a href="{{ route('users.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Usuarios</h6></a>
-    <a href="{{ route('publicaciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Publicaciones</h6></a>
-    <a href="{{ route('comentarios.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Comentarios</h6></a>
-    <a href="{{ route('reacciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Reacciones</h6></a>
-    <a href="{{ route('veterinarias.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Veterinarias</h6></a>
-    <a href="{{ route('adopciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Adopciones</h6></a>
-    <a href="{{ route('eventos.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Eventos</h6></a>
-    <a href="{{ route('mensajes.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Mensajes</h6></a>
-    <a href="{{ route('chats.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Chats</h6></a>
-    <a href="{{ route('productos.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Productos</h6></a>
-    <a href="{{ route('solicitudes.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Solicitudes</h6></a>
-    <a href="{{ route('ubicaciones.panel') }}" class="btn btn-light " style="margin: 5px;"><h6>Ubicaciones</h6></a>
+    <a href="{{ route('users.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-user"></i>      Usuarios</h6></a>
+    <a href="{{ route('publicaciones.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-newspaper"></i>      Publicaciones</h6></a>
+    <a href="{{ route('comentarios.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-comment"></i>      Comentarios</h6></a>
+    <a href="{{ route('reacciones.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-thumbs-up"></i>      Reacciones</h6></a>
+    <a href="{{ route('veterinarias.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-paw"></i>      Veterinarias</h6></a>
+    <a href="{{ route('adopciones.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-dog"></i>      Adopciones</h6></a>
+    <a href="{{ route('eventos.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-calendar-alt"></i>      Eventos</h6></a>
+    <a href="{{ route('mensajes.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-envelope"></i>      Mensajes</h6></a>
+    <a href="{{ route('chats.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-comments"></i>      Chats</h6></a>
+    <a href="{{ route('productos.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-bone"></i>      Productos</h6></a>
+    <a href="{{ route('solicitudes.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-paper-plane"></i>      Solicitudes</h6></a>
+    <a href="{{ route('ubicaciones.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-map-marker-alt"></i>      Ubicaciones</h6></a>
 
 </div>
 

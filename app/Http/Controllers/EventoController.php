@@ -12,6 +12,17 @@ class EventoController
         $eventos = Evento::all();
         return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $eventos = Evento::orderby('created_at', 'desc')
+            ->where('nombre', 'LIKE', "%$nombre%")
+            ->where('descripcion', 'LIKE', "%$nombre%")
+            ->where('participantes', 'LIKE', "%$nombre%")
+            ->orWhere('telefono', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+    }
     /**
      * Display a listing of the resource.
      */

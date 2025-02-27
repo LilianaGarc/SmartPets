@@ -12,6 +12,18 @@ class ComentarioController
         $comentarios = Comentario::with('user')->get();
         return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $comentarios = Comentario::with('user')
+            ->whereHas('user', function ($query) use ($nombre) {
+                $query->where('name', 'LIKE', "%$nombre%");
+            })
+            ->where('id_publicacion', 'LIKE', "%$nombre%")
+            ->orWhere('contenido', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
+    }
     /**
      * Display a listing of the resource.
      */
