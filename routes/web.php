@@ -115,6 +115,21 @@ Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestro
 
 
 //Rutas para Eventos
+
+Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+
+Route::get('eventos/create', [EventoController::class, 'create'])->name('eventos.create');
+
+Route::post('eventos', [EventoController::class, 'store'])->name('eventos.store');
+
+Route::get('eventos/{id}', [EventoController::class, 'show'])->name('eventos.show');
+
+Route::get('eventos/{id}/edit', [EventoController::class, 'edit'])->name('eventos.edit');
+
+Route::put('eventos/{id}', [EventoController::class, 'update'])->name('eventos.update');
+
+Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
+
 Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
 
 Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');
