@@ -23,7 +23,7 @@
                 <p>{{ $adopcion->contenido }}</p>
 
                 @if($adopcion->imagen)
-                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción">
+                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
                 @endif
 
                 <div class="interacciones">
@@ -34,8 +34,7 @@
                         <img src="{{ asset('images/enojado.webp') }}" class="reaction-img" id="enojado" data-hover="{{ asset('images/enojado2.webp') }}">
                     </div>
 
-
-                <button class="btn-solicitar">
+                    <button class="btn-solicitar">
                         Solicitar mascota
                     </button>
                     <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta publicación?');">
@@ -50,23 +49,13 @@
         @endforeach
     </div>
 
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+
 </div>
-<script>
-    const images = document.querySelectorAll('.reaction-img');
-
-    images.forEach(image => {
-        const originalSrc = image.src;
-
-        image.addEventListener('mouseover', function() {
-            const hoverSrc = image.getAttribute('data-hover');
-            image.src = hoverSrc;
-        });
-
-        image.addEventListener('mouseout', function() {
-            image.src = originalSrc;
-        });
-    });
-
-</script>
+<script src="{{ asset('js/scripts.js') }}"></script>
 </body>
 </html>

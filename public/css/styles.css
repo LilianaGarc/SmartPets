@@ -222,6 +222,41 @@ body {
     transition: filter 0.5s ease;
 }
 
+.vision {
+    background-color: #1e4183;
+    color: #ffffff;
+    padding: 10vw 10vw;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.mision {
+    background-image: url('../images/bgperrito.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: #ffffff;
+    padding: 10vw 10vw;
+    text-align: center;
+    opacity: 0.5;
+    transform: translateY(0px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.vision h2, .mision h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.vision p, .mision p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* jona: efecto desenfoque */
 .cuadrado-container .cuadrado.not-hovered {
     filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
@@ -329,8 +364,17 @@ button[type="submit"]:hover, .btn:hover {
     margin: 20px auto;
 }
 
+.reaction-img {
+    height: 50px !important;
+    width: 50px !important;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
 .adopcion-card img {
     width: 100%;
+    height: 350px;
+    object-fit: cover;
     border-radius: 10px;
     margin-bottom: 15px;
 }
@@ -364,16 +408,8 @@ button[type="submit"]:hover, .btn:hover {
     justify-content: center;
     width: 100%;
     gap: 20px;
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-left: 40px;
     padding-top: 10px;
-}
-
-.reaction-img {
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .reaction-img:hover {
@@ -469,7 +505,6 @@ button[type="submit"]:hover, .btn:hover {
         right: 5%;
     }
 
-
     .overlay p {
         font-size: 0.6rem;
         margin-bottom: 30vw;
@@ -497,28 +532,96 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .adopcion-card {
-        width: 100%;
+        width: 85%;
         max-width: 100%;
-        padding: 15px;
+        padding: 10px;
     }
 
     .adopcion-card img {
-        width: 100%;
+        height: 200px;
     }
 
-    .reactions {
-        padding-left: 20px;
-        padding-right: 20px;
+    .adopcion-card .contenido {
+        font-size: 14px;
     }
 
-    .btn-solicitar, .btn-eliminar {
-        font-size: 1rem;
-        padding: 10px 20px;
+    .adopcion-card .estado {
+        font-size: 12px;
+    }
+
+    .interacciones {
+        margin-top: 30px;
+        font-size: 14px;
     }
 
     .reaction-img {
-        width: 30px;
-        height: 30px;
+        height: 35px !important;
+        width: 35px !important;
     }
+
+    .reactions {
+        gap: 5px;
+    }
+
+    .btn-solicitar {
+        font-size: 1rem;
+        padding: 4px 15px;
+    }
+
+    .btn-eliminar {
+        font-size: 1rem;
+        padding: 8px 30px;
+    }
+
+    .btn-solicitar:hover {
+        transform: scale(1.02);
+    }
+
+    .btn-eliminar:hover {
+        transform: scale(1.02);
+    }
+
+    .btn-eliminar i {
+        font-size: 1.4rem;
+    }
+
+
 }
 
+/* Modal imagen grande */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 8vw;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding-top: 60px;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}

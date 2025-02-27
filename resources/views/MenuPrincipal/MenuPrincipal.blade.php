@@ -80,7 +80,22 @@
     </div>
 
     <button class="carousel-btn next" onclick="moveCarusel('next')">→</button>
+
+
 </div>
+<section class="vision">
+    <div class="vision-text">
+        <h2>Rescata mascotas</h2>
+        <p>SmartPets se dedica a la misión de rescatar a animales que han sido abandonados, maltratados o que se encuentran en situaciones de vulnerabilidad.</p>
+    </div>
+</section>
+
+<section class="mision">
+    <div class="mision-text">
+        <h2>Adopta mascotas</h2>
+        <p>SmartPets está diseñado para conectar a personas que buscan un nuevo compañero de vida con animales que necesitan un hogar.</p>
+    </div>
+</section>
 <script src="{{ asset('js/scripts.js') }}"></script>
 </body>
 </html>
