@@ -7,65 +7,82 @@ use App\Models\Evento;
 
 class EventoController
 {
-    public function panel()
-    {
-        $eventos = Evento::all();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
-    }
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $eventos = Evento::paginate(15);
+        return view('eventos.index', compact('eventos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        //
+        return view('eventos.formulario');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'fecha' => 'required|date',
+            'telefono' => 'required|string|max:15',
+        ]);
+
+        Evento::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'telefono' => $request->telefono,
+
+        ]);
+
+        return redirect()->route('eventos.index')->with('exito', 'Evento creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show($id)
     {
-        //
+        $evento = Evento::findOrFail($id);
+        return view('eventos.show', compact('evento'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function edit($id)
     {
-        //
+        $evento = Evento::findOrFail($id);
+        return view('eventos.edit', compact('evento'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'fecha' => 'required|date',
+            'telefono' => 'required|string|max:15',
+        ]);
+
+        $evento = Evento::findOrFail($id);
+        $evento->update($request->all());
+
+        return redirect()->route('eventos.index')->with('exito', 'Evento actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $evento = Evento::findOrFail($id);
+        $evento->delete();
+
+        return redirect()->route('eventos.index')->with('exito', 'Evento eliminado correctamente.');
+    }
+
+
+    public function participar($id)
+    {
+        $evento = Evento::findOrFail($id);
+        return redirect()->route('eventos.show', $evento->id)->with('exito', 'Te has registrado en el evento.');
     }
 
     public function paneldestroy(string $id)
