@@ -393,8 +393,7 @@ button[type="submit"]:hover, .btn:hover {
 /* jona: me gusta, soliticar y eliminar */
 .interacciones {
     display: flex;
-    justify-content: center;
-    gap: 25px;
+    justify-content: space-between;
     align-items: center;
     margin-top: 50px;
     font-size: 16px;
@@ -402,11 +401,8 @@ button[type="submit"]:hover, .btn:hover {
 }
 
 .reactions {
-    margin-left: 10px;
-    cursor: pointer;
     display: flex;
     justify-content: center;
-    width: 100%;
     gap: 20px;
     padding-left: 40px;
     padding-top: 10px;
@@ -431,30 +427,52 @@ button[type="submit"]:hover, .btn:hover {
     justify-content: center;
 }
 
-.btn-solicitar:hover {
-    background-color: #ff7f50;
-    transform: scale(1.05);
-}
-
-.btn-eliminar {
-    background-color: rgba(255, 127, 80, 0);
+.btn-eliminar:hover, .btn-ver:hover, .btn-solicitar-dropdown:hover {
     color: #1e4183;
-    font-size: 1.1rem;
-    padding: 10px 30px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex;
-}
-
-.btn-eliminar:hover {
-    color: #ff7f50;
     transform: scale(1.05);
 }
 
-.btn-eliminar i {
-    font-size: 1.6rem;
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    color: #1e4183;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown-content form button {
+    width: 100%;
+    text-align: center;
+    border: none;
+    background-color: #eaeaea;
+    color: #333;
+    font-size: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-content form button:hover {
+    background-color: #ffffff;
+    transform: scale(1.05);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 
 /* Ajustes para telefonos */
 @media (max-width: 768px) {
