@@ -13,6 +13,6 @@ class MensajesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Mensaje::factory(100)->create();
+
     }
 }

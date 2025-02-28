@@ -17,6 +17,10 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
 
 //Jonaaaaa
+Route::get('/', function () {
+    return redirect()->route('animacion');
+});
+
 Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
@@ -27,13 +31,19 @@ Route::get('animacion', function () {
     return view('MenuPrincipal.Animacion');
 })->name('animacion');
 
-
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
-Route::get('/adopciones/create', [AdopcionController::class, 'create'])->name('adopciones.create');
+Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
 Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
 Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
 
 Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
+
+//Rutas para Solicitudes
+Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
+Route::get('/solicitudes/crear/{id_adopcion}', [SolicitudController::class, 'create'])->name('solicitudes.create');
+Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');
+Route::delete('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'destroy'])->name('solicitudes.destroy');
+Route::get('/solicitudes/{id_adopcion}', [SolicitudController::class, 'showSolicitudes'])->name('solicitudes.show');
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
@@ -111,6 +121,21 @@ Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestro
 
 
 //Rutas para Eventos
+
+Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+
+Route::get('eventos/create', [EventoController::class, 'create'])->name('eventos.create');
+
+Route::post('eventos', [EventoController::class, 'store'])->name('eventos.store');
+
+Route::get('eventos/{id}', [EventoController::class, 'show'])->name('eventos.show');
+
+Route::get('eventos/{id}/edit', [EventoController::class, 'edit'])->name('eventos.edit');
+
+Route::put('eventos/{id}', [EventoController::class, 'update'])->name('eventos.update');
+
+Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
+
 Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
 
 Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');

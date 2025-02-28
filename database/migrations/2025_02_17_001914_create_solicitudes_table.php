@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('contenido');
             $table->string('comprobante')->nullable();
-            $table->integer('id_usuario');
+            $table->unsignedBigInteger('id_usuario')->nullable();
             $table->integer('id_adopcion');
             $table->timestamps();
         });
