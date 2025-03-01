@@ -57,40 +57,35 @@
 </head>
 <body>
 
-    <!-- Shop by Pet Type -->
-    <section class="py-5">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Shop by pets type</h2>
-                <a href="#" class="text-decoration-none" style="color: var(--blue)">View All</a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Weekly Special Offers -->
     <section class="py-5">
         <div class="container">
             <h2 class="text-center mb-4">CATEGORIAS</h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
-                <button class="category-pill active">Dog</button>
-                <button class="category-pill">Cat</button>
-                <button class="category-pill">Small Pets</button>
-                <button class="category-pill">Fish</button>
-                <button class="category-pill">Reptile</button>
-                <button class="category-pill">Bird</button>
+                @forelse($categorias as $categoria)
+                    <button class="category-pill active">{{$categoria->nombre}}</button>
+                @empty
+                    <p class="text-center">No se han encontrado categorias.</p>
+                @endforelse
+
             </div>
+            <h2 class="text-center mb-4">PRODUCTOS</h2>
             <div class="row g-4">
                 @forelse($productos as $producto)
                     <div class="col-6 col-md-3">
                         <div class="offer-card h-100">
-                            <img src="/placeholder.svg?height=200&width=200" alt="Dog Deal" class="w-100">
+                            <img src="{{ asset('images/img_PorDefecto.jpg') }}" alt="{{ $producto->nombre }}" class="w-100">
                             <div class="p-3">
-                                <h6>Up to 50% Off Dog Deals</h6>
+                                <h6>{{$producto->nombre}}</h6>
                             </div>
                         </div>
                     </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center">No se han encontrado productos.</p>
+                    </div>
                 @endforelse
+
+                {{$productos->links()}}
 
                 <!-- Repeat for other offers -->
             </div>

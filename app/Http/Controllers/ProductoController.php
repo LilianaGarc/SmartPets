@@ -18,7 +18,10 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        return view('productos.productos-lista')->with('productos', Producto::all());
+        return view('productos.productos-lista')->with([
+            'productos' => Producto::paginate(12),
+            'categorias' => Categoria::limit(5)->get()
+        ]);
     }
 
     /**
