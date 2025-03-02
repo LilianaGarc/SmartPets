@@ -26,7 +26,11 @@
         <div class="form-group">
             <label for="imagen">Imagen</label>
             <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
+            <div class="file-info">
+                <span>Maximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
+            </div>
         </div>
+
 
         <button type="submit" class="btn btn-success">Crear Publicación</button>
     </form>

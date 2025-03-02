@@ -44,6 +44,8 @@ Route::get('/solicitudes/crear/{id_adopcion}', [SolicitudController::class, 'cre
 Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');
 Route::delete('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'destroy'])->name('solicitudes.destroy');
 Route::get('/solicitudes/{id_adopcion}', [SolicitudController::class, 'showSolicitudes'])->name('solicitudes.show');
+Route::get('/solicitudes/{id_adopcion}/editar/{id}', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
+Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');

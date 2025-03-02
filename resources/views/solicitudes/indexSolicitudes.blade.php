@@ -22,17 +22,26 @@
             <div class="solicitud-card">
                 <p>Contenido: {{ $solicitud->contenido }}</p>
 
-                @if($solicitud->comprobante)
-                    <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank">Ver comprobante</a>
-                @endif
+                <div class="botones">
+                    @if($solicitud->comprobante)
+                        <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank">
+                            <i class="fas fa-file-pdf"></i> Ver comprobante
+                        </a>
+                    @endif
+                        <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
+                            <i class="fas fa-edit"></i>Editar
+                        </a>
 
-                <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn-eliminar">
-                        Eliminar Solicitud
-                    </button>
-                </form>
+                        <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn-eliminar">
+                            <i class="fas fa-trash-alt"></i>     Eliminar
+                        </button>
+                    </form>
+
+
+                </div>
             </div>
         @endforeach
     </div>
