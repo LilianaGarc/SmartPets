@@ -11,7 +11,7 @@
 
 <div class="container">
     <h2>
-        <a href="{{ route('adopciones.index') }}" class="btn-volver" style="text-decoration: none;">
+        <a href="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" class="btn-volver" style="text-decoration: none;">
             <i class="fas fa-arrow-left" style="color: #ff7f50; font-size: 24px;"></i>
         </a>
         Editar Solicitud

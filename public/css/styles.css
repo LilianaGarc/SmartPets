@@ -570,8 +570,19 @@ button[type="submit"]:hover, .btn:hover {
 
 /* Ajustes para telefonos */
 @media (max-width: 768px) {
+    .body{
+        overflow-x: hidden;
+    }
+
     .navbar {
-        padding: 0.4rem;
+        padding: 1rem 2vw;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .navbar .logo {
+        margin-left: 0;
+        margin-right: 2vw;
     }
 
     .cuadrado-container-wrapper {
@@ -627,7 +638,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .btnseccion {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
     }
 
     .container {
@@ -712,6 +723,30 @@ button[type="submit"]:hover, .btn:hover {
         font-size: 12px;
     }
 
+    .vision, .mision {
+        padding: 12vw 5vw;
+    }
+
+    .vision h2, .mision h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .vision p, .mision p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        max-width: 70%;
+    }
+
+    .vision {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .mision {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
 }
 
 /* Modal imagen grande */

@@ -14,9 +14,6 @@
         </a>
     </div>
     <div>
-        <a href="#">Perfil</a>
-        <a href="#">Ajustes</a>
-        <a href=""></a>
     </div>
 </nav>
 </body>

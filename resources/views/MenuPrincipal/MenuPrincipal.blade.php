@@ -10,7 +10,6 @@
 
 @include('MenuPrincipal.Navbar')
 
-
 <div class="cuadrado-container-wrapper">
     <button class="carousel-btn prev" onclick="moveCarusel('prev')" style="display: none;">←</button>
 
@@ -96,6 +95,6 @@
         <p>SmartPets está diseñado para conectar a personas que buscan un nuevo compañero de vida con animales que necesitan un hogar.</p>
     </div>
 </section>
-<script src="{{ asset('js/scripts.js') }}"></script>
+<script src="{{ asset('js/MPscripts.js') }}"></script>
 </body>
 </html>
