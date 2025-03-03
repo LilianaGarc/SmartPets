@@ -376,6 +376,43 @@ button[type="submit"]:hover, .btn:hover {
     margin: 20px auto;
 }
 
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.foto-perfil {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #FF7F50FF;
+    background-size: cover;
+    background-position: center;
+}
+
+.informacion-perfil {
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-usuario {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.fecha-publicacion {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
+}
+
 .reaction-img {
     height: 50px !important;
     width: 50px !important;

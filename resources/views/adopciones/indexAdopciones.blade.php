@@ -25,6 +25,14 @@
     <div class="adopciones-container">
         @foreach($adopciones as $adopcion)
             <div class="adopcion-card">
+                <div class="perfil-usuario">
+                    <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');">
+                    </div>
+                    <div class="informacion-perfil">
+                        <p class="nombre-usuario">Anonymous</p>
+                        <p class="fecha-publicacion">Fecha de publicación: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                    </div>
+                </div>
                 <p>{{ $adopcion->contenido }}</p>
 
                 @if($adopcion->imagen)
