@@ -22,11 +22,11 @@ class ProductoFactory extends Factory
             'precio'=>fake()->randomFloat(2, 1, 1000),
             'categoria_id'=>fake()->numberBetween(1, 10),
             'stock'=>fake()->numberBetween(1, 100),
-            'imagen'=>fake()->imageUrl(640, 480, 'animals', true),
-            'imagen2'=>fake()->imageUrl(640, 480, 'animals', true),
-            'imagen3'=>fake()->imageUrl(640, 480, 'animals', true),
-            'imagen4'=>fake()->imageUrl(640, 480, 'animals', true),
-            'imagen5'=>fake()->imageUrl(640, 480, 'animals', true),
+            'imagen'=>null,
+            'imagen2'=>null,
+            'imagen3'=>null,
+            'imagen4'=>null,
+            'imagen5'=>null,
             'activo'=>fake()->boolean(),
         ];
     }

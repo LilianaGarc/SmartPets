@@ -1,4 +1,4 @@
-@extends('productos.productos-layout')
+@extends('productos.productos-layout'), @extends('MenuPrincipal.Navbar')
 @section('titulo', 'Lista de Productos')
 
 @section('contenido')
@@ -54,10 +54,12 @@
             overflow: hidden;
         }
     </style>
+
 </head>
 <body>
 
-    <section class="py-5">
+    @section('nav') @endsection
+    <section class="py-1 mt-0">
         <div class="container">
             <h2 class="text-center mb-4">CATEGORIAS</h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
@@ -73,7 +75,8 @@
                 @forelse($productos as $producto)
                     <div class="col-6 col-md-3">
                         <div class="offer-card h-100">
-                            <img src="{{ asset('images/img_PorDefecto.jpg') }}" alt="{{ $producto->nombre }}" class="w-100">
+                            <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="w-100">
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
                             </div>

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
-
+@yield('nav')
 <nav class="navbar" id="navbar">
     <div class="logo">
         <a href="{{ route('index') }}">
