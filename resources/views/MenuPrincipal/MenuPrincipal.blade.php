@@ -74,7 +74,7 @@
             <img src="{{ asset('images/fisgon.webp') }}" alt="Mascota 8">
             <div class="overlay">
                 <p>Compra productos de necesidad para tus mascotas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Ir a Petshop</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('productos.index') }}'">Ir a Petshop</button>
             </div>
         </div>
     </div>

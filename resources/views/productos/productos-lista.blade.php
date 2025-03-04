@@ -77,6 +77,10 @@
                         <div class="offer-card h-100">
                             <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
                             {{ $producto->nombre }}" class="w-100">
+                            <div class="detalles p-2">
+                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
+                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
+                            </div>
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
                             </div>
