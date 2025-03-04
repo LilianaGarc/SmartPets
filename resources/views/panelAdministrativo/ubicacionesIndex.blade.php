@@ -14,7 +14,7 @@
     <h3>  |   Ubicacion </h3>
 
     <hr>
-    <form action="{{ route('ubicacion.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+    <form action="{{ route('ubicaciones.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">

@@ -13,6 +13,6 @@ class ComentariosTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Comentario::factory(300)->create();
+        Comentario::factory(3000)->create();
     }
 }

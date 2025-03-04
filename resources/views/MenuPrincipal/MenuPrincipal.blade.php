@@ -20,7 +20,7 @@
             <img src="{{ asset('images/golden.webp') }}" alt="Mascota 1">
             <div class="overlay">
                 <p>Comparte el día a día de tu mascota</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Crear publicación</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('publicaciones.index') }}'">Crear publicación</button>
             </div>
         </div>
 

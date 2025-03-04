@@ -21,8 +21,8 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
-                </div>
             </div>
+        </div>
         </div>
     </form>
     <hr>

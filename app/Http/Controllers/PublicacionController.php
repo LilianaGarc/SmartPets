@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\Comentario;
 use App\Models\Publicacion;
+use App\Models\Reaccion;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,12 @@ class PublicacionController
      */
     public function index()
     {
-        //
+        $publicaciones = Publicacion::with('user')
+            ->withCount('reacciones')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('publicaciones.indexPublicaciones')->with('publicaciones',$publicaciones);
     }
 
     /**
@@ -55,7 +61,26 @@ class PublicacionController
      */
     public function show(string $id)
     {
-        //
+        $publicacion = Publicacion::findorFail($id);
+        $comentarios = Comentario::with('user')
+            ->where('id_publicacion', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('publicaciones.comentarios', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios]);
+
+    }
+
+    public function detalles(string $id)
+    {
+        $publicacion = Publicacion::findorFail($id);
+        $comentarios = Comentario::with('user')
+            ->where('id_publicacion', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $comen = Comentario::where('id_publicacion', $id)->count();
+        $reac = Reaccion::where('publicacion_id', $id)->count();
+        return view('publicaciones.verPublicacion', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios, 'comen'=>$comen, 'reac'=>$reac ]);
+
     }
 
     /**

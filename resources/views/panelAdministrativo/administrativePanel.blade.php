@@ -13,11 +13,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin-left: 17rem;
-            margin-top: 9rem;
-            margin-right: 1rem;
-            margin-bottom: 70rem;
+            margin-left: 19%;
+            margin-top: 9%;
+            margin-right: 1%;
+            margin-bottom: 5%;
             padding: 0;
+            font-size: 100%;
             background-color: #f7f7f7;
             height: 200vh;
             scroll-behavior: smooth;
@@ -60,6 +61,164 @@
             color: #ffffff;
             background-color: #ff7f50;
             transition: color 0.3s ease, transform 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .btn:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+            background-color: #18478b;
+        }
+
+        .card-publicacion{
+            width: 97%;
+            height: 100%;
+            padding: 2%;
+            margin: 0.5% 1.5% 1.5% 1.5%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box ;
+            transition: all .5s ease ;
+            overflow-x: auto;
+            border: 1px solid #c0c0c0;
+            border-radius: 5px;
+            z-index: 5;
+        }
+
+        .imagen-publicacion-reaccion{
+            width: 6%;
+            height: 6%;
+            margin: 0.4%;
+        }
+
+        .imagen-publicacion-reaccion:hover{
+            transform: scale(1.4);
+        }
+
+        .btn-user {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 120%;
+            background-color: #18478b;
+            transition: color 0.3s ease, transform 0.3s ease;
+            border-radius: 20px;
+            margin-top: 2%;
+            width: 30%;
+            padding: 1%;
+        }
+        .btn-user:hover {
+            transform: scale(1.1);
+        }
+
+        .round-button {
+            width: 16%;
+            border-radius: 50%;
+            border: none;
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            border: 3px solid black;
+            border-radius: 50%;
+        }
+
+        .button-img {
+            width: 100%;
+            margin: 2%;
+            object-fit: cover;
+        }
+
+        .round-button:hover {
+            color: #ffffff;
+            transform: scale(1.1);
+            background-color: #e7e7e7;
+        }
+
+        .round-button-2 {
+            width: 7%;
+            border-radius: 50%;
+            border: none;
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid black;
+            border-radius: 50%;
+        }
+
+        .button-img-2 {
+            width: 100%;
+            margin: 0;
+            object-fit: cover;
+        }
+
+        .round-button-2:hover {
+            color: #ffffff;
+            background-color:  #e7e7e7;
+            transform: scale(1.1);
+        }
+
+        .round-button-comentario {
+            width: 100%;
+            height: 40%;
+            border-radius: 50%;
+            border: none;
+            background-color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid black;
+            border-radius: 50%;
+        }
+
+        .button-img-comentario {
+            width: 90%;
+            height: 90%;
+            margin: 0;
+            object-fit: cover;
+        }
+
+        .card-comentario{
+            width: 96%;
+            height: 100%;
+            box-sizing: border-box ;
+            transition: all .5s ease ;
+            overflow-x: auto;
+            border: 1px solid #c0c0c0;
+            border-radius: 5px;
+            background-color: #eaeaea;
+        }
+
+        .navicon {
+            font-size: 150% !important;
+        }
+
+        .card-nuevo-comentario{
+            width: 68.6%;
+            height: 10.1%;
+            margin-top: 41.7%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box ;
+            transition: all .5s ease ;
+            position: fixed;
+            overflow-x: auto;
+            border: 1px solid #c0c0c0;
+            border-radius: 5px;
+            z-index: 10;
+            background-color: white;
+        }
+
+        .alert {
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .alert.hidden {
+            opacity: 0;
+        }
+
+        .btn {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #ff7f50;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .btn:hover {
@@ -70,9 +229,9 @@
 
         .left-section {
             position: fixed;
-            top: 80px;
+            top: 10%;
             left: 0;
-            width: 250px;
+            width: 18%;
             height: 100%;
             background-color: #18478b;
             padding: 30px;
@@ -80,13 +239,14 @@
             border-color: #100f0f;
             box-shadow: 5px 0 30px rgba(0,0,0,.1);
             transition: all .5s ease;
+            overflow-x: auto !important;
         }
 
         .left-section a {
             text-decoration: none;
             color: #ffffff;
-            font-size: 2rem;
-            margin: 2rem;
+            font-size: 100% !important;
+            margin: 10%;
             transition: color 0.3s ease, transform 0.3s ease;
             background-color: #18478b;
             width: 90%;
@@ -94,10 +254,6 @@
             display: block;
         }
 
-        .left-section btn{
-            margin: 3px;
-            font-size: 10px;
-        }
 
         .left-section a:hover {
             color: #ff7f50;
@@ -105,8 +261,34 @@
             background-color: #ffffff;
         }
 
+        .table a {
+            text-decoration: none;
+            color: #18478b;
+            font-size: 100%;
+            transition: color 0.3s ease, transform 0.3s ease;
+            background-color: #ffffff;
+            width: 90%;
+            text-align: left;
+            display: block;
+        }
 
 
+        .table a:hover {
+            color: #ff7f50;
+            transform: scale(1.1);
+            background-color: #ffffff;
+        }
+
+        .dropdown-item-custom  {
+            text-decoration: none !important;
+            color: #18478b !important;
+            margin: 5% !important;
+            transition: color 0.3s ease, transform 0.3s ease !important;
+            background-color: #ffffff !important;
+            width: 40% !important;
+            text-align: left !important;
+            display: block !important;
+        }
 
     </style>
 
@@ -121,10 +303,25 @@
             <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" style="width: 20vw; height: auto;">
         </a>
     </div>
-    <div>
-        <a href="#"><i class="fas fa-user-circle"></i> Perfil</a>
-        <a href="#"><i class="fas fa-cogs"></i> Ajustes</a>
-        <a href="#"><i class="fas fa-sign-out-alt"></i> Salir</a>
+    <div class="row">
+        <div class="col-10">
+            <a class="navicon" href="{{ route('publicaciones.panel') }}" ><i class="fa-solid fa-pager"></i></a>
+            <a class="navicon" href="#"><i class="fa-solid fa-bell"></i></a>
+            <a class="navicon" href="#"><i class="fas fa-user-circle"></i></a>
+        </div>
+        <div class="col-2">
+            <div class="btn-group dropstart" style="font-size: 100% !important; margin-left: 2% !important;">
+                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                </ul>
+            </div>
+        </div>
+
+
     </div>
 </nav>
 
@@ -140,6 +337,27 @@
 
 <div class="left-section">
     <br>
+    <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: white; color: #ff7f50;">
+            <i class="fas fa-plus-circle"></i> Crear Nuevo
+
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item-custom"  href="#">Usuarios</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Publicaciones</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Comentarios</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Reacciones</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Veterinarias</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Adopciones</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Eventos</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Mensajes</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Chats</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Productos</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Solicitudes</a></li>
+            <li><a class="dropdown-item-custom"  href="#">Ubicaciones</a></li>
+        </ul>
+    </div>
+    <hr style="color: white;">
     <a href="{{ route('users.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-user"></i>      Usuarios</h6></a>
     <a href="{{ route('publicaciones.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-newspaper"></i>      Publicaciones</h6></a>
     <a href="{{ route('comentarios.panel') }}" class="btn" role="button" style="margin: 5px;"><h6><i class="fas fa-comment"></i>      Comentarios</h6></a>

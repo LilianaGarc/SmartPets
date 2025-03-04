@@ -17,6 +17,10 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
 
 //Jonaaaaa
+Route::get('/', function () {
+    return redirect()->route('animacion');
+});
+
 Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
@@ -70,6 +74,7 @@ Route::get('/publicaciones/{id}/editar', [PublicacionController::class, 'edit'])
 Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'])->name('publicaciones.update')->whereNumber('id');
 
 Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
+Route::get('/publicaciones/{id}/verDetalles', [PublicacionController::class, 'detalles'])->name('publicaciones.detalles')->whereNumber('id');
 
 Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
@@ -78,15 +83,11 @@ Route::delete('/panel/publicaciones/{id}', [PublicacionController::class, 'panel
 //Rutas para Comentarios
 Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
 Route::get('/panel/buscar/comentarios', [ComentarioController::class, 'search'])->name('comentarios.search');
-Route::get('/comentarios', [ComentarioController::class, 'index'])->name('comentarios.index');
 
-Route::get('/comentarios/crear', [ComentarioController::class, 'create'])->name('comentarios.create');
-Route::post('/comentarios/crear', [ComentarioController::class, 'store'])->name('comentarios.store');
+Route::post('/comentarios/{id}', [ComentarioController::class, 'store'])->name('comentarios.store');
 
 Route::get('/comentarios/{id}/editar', [ComentarioController::class, 'edit'])->name('comentarios.edit')->whereNumber('id');
 Route::put('/comentarios/{id}/editar', [ComentarioController::class, 'update'])->name('comentarios.update')->whereNumber('id');
-
-Route::get('/comentarios/{id}/ver', [ComentarioController::class, 'show'])->name('comentarios.show')->whereNumber('id');
 
 Route::delete('/comentarios/{id}/eliminar', [ComentarioController::class, 'destroy'])->name('comentarios.destroy')->whereNumber('id');
 
