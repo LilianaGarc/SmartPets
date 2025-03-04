@@ -9,19 +9,19 @@ class Evento extends Model
 {
     use HasFactory;
 
-     protected $table = 'eventos';
+    protected $table = 'eventos';
 
-     protected $fillable = ['titulo', 'descripcion','telefono', 'fecha'];
+    protected $fillable = ['titulo', 'descripcion','telefono', 'fecha', 'imagen'];
 
-     public function Evento(){
+    public function Evento(){
 
-         return $this->belongsTo(User::class);
-     }
+        return $this->belongsTo(User::class);
+    }
 
-     public function User(){
+    public function User(){
 
-         return $this->belongsTo(User::class);
-     }
+        return $this->belongsTo(User::class);
+    }
 
 
 

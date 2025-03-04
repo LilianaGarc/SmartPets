@@ -138,6 +138,8 @@ Route::put('eventos/{id}', [EventoController::class, 'update'])->name('eventos.u
 
 Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
 
+Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
+
 Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
 
 Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');

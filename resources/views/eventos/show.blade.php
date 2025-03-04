@@ -10,7 +10,6 @@
     <div class="card" style="width: 25rem;">
         <div class="card-body">
             <h5 class="card-title">{{ $evento->titulo }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Organizador: {{ $evento->usuario->id_usuario }}</h6>
             <p class="card-text">
                 <strong>Descripción:</strong> {{ $evento->descripcion }} <br>
                 <strong>Fecha:</strong> {{ $evento->fecha }} <br>
@@ -24,3 +23,4 @@
         </div>
     </div>
 @endsection
+
