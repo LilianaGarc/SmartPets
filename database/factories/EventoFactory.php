@@ -23,6 +23,7 @@ class EventoFactory extends Factory
             'descripcion' => $this->faker->text(),
             'fecha' => $this->faker->date(),
             'telefono' => $this->faker->phoneNumber(),
+            'imagen' => $this->faker->image(),
         ];
     }
 }

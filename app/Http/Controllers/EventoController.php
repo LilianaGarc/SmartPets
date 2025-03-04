@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Evento;
+use Illuminate\Support\Facades\Storage;
 
 class EventoController
 {
@@ -27,13 +28,17 @@ class EventoController
             'descripcion' => 'required|string',
             'fecha' => 'required|date',
             'telefono' => 'required|string|max:15',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+
         ]);
 
+        $rutaImagen = $request->file('imagen')->store('eventos', 'public');
         Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
             'telefono' => $request->telefono,
+            'imagen' => $rutaImagen,
 
         ]);
 
@@ -61,10 +66,33 @@ class EventoController
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'fecha' => 'required|date',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required| |max:15',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+
         ]);
 
+
         $evento = Evento::findOrFail($id);
+
+
+        if ($request->hasFile('imagen')) {
+            if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
+                Storage::delete('public/' . $evento->imagen);
+            }
+            $imagenPath = $request->file('imagen')->store('eventos', 'public');
+            $evento->imagen = $imagenPath;
+        }
+
+        $evento->update([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'telefono' => $request->telefono,
+            'imagen' => $evento->imagen ?? null,
+        ]);
+
+
+
         $evento->update($request->all());
 
         return redirect()->route('eventos.index')->with('exito', 'Evento actualizado correctamente.');
@@ -73,6 +101,9 @@ class EventoController
     public function destroy($id)
     {
         $evento = Evento::findOrFail($id);
+        if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
+            Storage::delete('public/' . $evento->imagen);
+        }
         $evento->delete();
 
         return redirect()->route('eventos.index')->with('exito', 'Evento eliminado correctamente.');

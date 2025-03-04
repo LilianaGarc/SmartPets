@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('descripcion');
             $table->string('telefono');
             $table->date('fecha');
+            $table->string('imagen')->nullable();
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->onDelete('users');
             $table->timestamps();
         });
     }
