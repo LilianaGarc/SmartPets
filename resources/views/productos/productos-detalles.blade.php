@@ -1,4 +1,4 @@
-@extends('productos.productos-layout')
+@extends('productos.productos-layout') , @extends('MenuPrincipal.Navbar')
 @section('titulo','Detalles del producto')
 @section('contenido')
     <style>
@@ -112,13 +112,18 @@
                 <!-- Galería de Imágenes -->
                 <div class="col-md-6 mb-4">
                     <div class="main-image mb-3">
-                        <img src="/placeholder.svg?height=400&width=400" class="img-fluid rounded" alt="Producto Principal">
+                        <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="img-fluid rounded">
                     </div>
                     <div class="thumbnails d-flex gap-2">
-                        <img src="/placeholder.svg?height=100&width=100" class="thumbnail-image rounded" alt="Thumbnail 1">
-                        <img src="/placeholder.svg?height=100&width=100" class="thumbnail-image rounded" alt="Thumbnail 2">
-                        <img src="/placeholder.svg?height=100&width=100" class="thumbnail-image rounded" alt="Thumbnail 3">
-                        <img src="/placeholder.svg?height=100&width=100" class="thumbnail-image rounded" alt="Thumbnail 4">
+                        <img src="{{ isset($producto->imagen2) ? url('storage/' . $producto->imagen2) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
+                        <img src="{{ isset($producto->imagen3) ? url('storage/' . $producto->imagen3) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
+                        <img src="{{ isset($producto->imagen4) ? url('storage/' . $producto->imagen4) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
+                        <img src="{{ isset($producto->imagen5) ? url('storage/' . $producto->imagen5) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
                     </div>
                 </div>
 
@@ -132,9 +137,9 @@
                         </ol>
                     </nav>
 
-                    <h1 class="mb-3">Premium Dog Food - Nutrición Balanceada</h1>
+                    <h1 class="mb-3">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <span class="price">$49.99</span>
+                        <span class="price">L.{{$producto->precio}}</span>
                         <span class="stock-badge">En Stock</span>
                     </div>
 
@@ -149,11 +154,11 @@
                         </div>
                     </div>
 
-                    <p class="mb-4">Alimento premium para perros con ingredientes naturales, vitaminas y minerales esenciales para una nutrición óptima y equilibrada.</p>
+                    <p class="mb-4">{{$producto->descripcion}}</p>
 
                     <!-- Selector de Cantidad -->
                     <div class="mb-4">
-                        <label class="form-label">Cantidad</label>
+                        <label class="form-label">{{$producto->stock}} unidades disponibles</label>
                         <div class="d-flex align-items-center gap-3">
                             <button class="btn btn-outline-secondary">-</button>
                             <input type="number" class="form-control quantity-input" value="1" min="1">
@@ -164,40 +169,8 @@
                     <!-- Botones de Acción -->
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
-                        <button class="btn btn-outline-primary btn-lg">
-                            <i class="bi bi-heart"></i> Añadir a Favoritos
-                        </button>
                     </div>
 
-                    <!-- Características del Producto -->
-                    <div class="product-features p-4 mt-4">
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-truck" style="color: var(--blue)"></i>
-                                    <span>Envío Gratis</span>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-shield-check" style="color: var(--blue)"></i>
-                                    <span>Garantía de Calidad</span>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-box-seam" style="color: var(--blue)"></i>
-                                    <span>Devolución Gratuita</span>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center gap-2">
-                                    <i class="bi bi-credit-card" style="color: var(--blue)"></i>
-                                    <span>Pago Seguro</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -205,9 +178,6 @@
             <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="description-tab" data-bs-toggle="tab" href="#description">Descripción</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="specifications-tab" data-bs-toggle="tab" href="#specifications">Especificaciones</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reseñas</a>
@@ -218,27 +188,7 @@
                 <div class="tab-pane fade show active" id="description">
                     <h4 class="mb-3">Descripción del Producto</h4>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <ul class="list-unstyled">
-                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--orange)"></i>Ingredientes naturales</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--orange)"></i>Sin conservantes artificiales</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--orange)"></i>Rico en proteínas</li>
-                        <li><i class="bi bi-check-circle-fill me-2" style="color: var(--orange)"></i>Vitaminas y minerales esenciales</li>
-                    </ul>
                 </div>
-            </div>
-
-            <!-- Productos Relacionados -->
-            <h3 class="mb-4 mt-5">Productos Relacionados</h3>
-            <div class="row g-4">
-                <div class="col-6 col-md-3">
-                    <div class="related-product-card p-3">
-                        <img src="/placeholder.svg?height=200&width=200" class="img-fluid rounded mb-3" alt="Producto Relacionado">
-                        <h6 class="mb-2">Premium Cat Food</h6>
-                        <p class="text-muted mb-2">Alimento para gatos</p>
-                        <span class="fw-bold" style="color: var(--orange)">$39.99</span>
-                    </div>
-                </div>
-                <!-- Repetir para más productos relacionados -->
             </div>
         </div>
     </div>
