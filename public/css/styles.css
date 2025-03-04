@@ -174,13 +174,13 @@ body {
 
 .btnseccion {
     display: inline-block;
-    background-color: #ff7f50;
+    background-color: rgba(255, 255, 255, 0.76);
     position: absolute;
-    color: white;
+    color: #000000;
     font-size: 0.9rem;
     padding: 0.9vw 0.9vw;
     border-radius: 2vw;
-    border-color: rgba(255, 255, 255, 0.86);
+    border-color: rgba(255, 255, 255, 0);
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     margin-left: 4.4vw;
@@ -189,20 +189,20 @@ body {
 }
 
 .btnseccion:hover {
-    background-color: #1e4183;
+    background-color: rgba(255, 255, 255, 0.87);
     transform: scale(1.1);
-    border-color: rgba(255, 255, 255, 0.86);
+    border-color: rgba(255, 255, 255, 0);
 }
 
 .cuadrado .texto-overlay {
     position: absolute;
-    top: 1vh;
+    top: 2vh;
     color: #ffffff;
     padding: 0.4vw;
     border-radius: 0.5vw;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
 }
 
 .cuadrado:hover img {
@@ -319,14 +319,26 @@ textarea:focus, input[type="text"]:focus, input[type="file"]:focus {
     background-color: #fff;
 }
 
-/* jona: textarea */
 textarea {
     height: 150px;
+    resize: none; /
 }
 
 input[type="file"] {
     padding: 10px;
     background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.file-info {
+    font-size: 0.8rem;
+    color: #171717;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
 button[type="submit"], .btn {
@@ -362,6 +374,43 @@ button[type="submit"]:hover, .btn:hover {
     font-family: 'Arial', sans-serif;
     color: #333;
     margin: 20px auto;
+}
+
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.foto-perfil {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #FF7F50FF;
+    background-size: cover;
+    background-position: center;
+}
+
+.informacion-perfil {
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-usuario {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.fecha-publicacion {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 5px;
 }
 
 .reaction-img {
@@ -450,7 +499,7 @@ button[type="submit"]:hover, .btn:hover {
     position: absolute;
     bottom: 100%;
     right: 0;
-    min-width: 160px;
+    min-width: 190px;
     z-index: 1;
 }
 
@@ -459,7 +508,7 @@ button[type="submit"]:hover, .btn:hover {
     text-align: center;
     border: none;
     background-color: #eaeaea;
-    color: #333;
+    color: #151515;
     font-size: 15px;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -472,12 +521,68 @@ button[type="submit"]:hover, .btn:hover {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+.dropdown-content button i {
+    margin-right: 2px;
+}
 
+
+.solicitud-card .btn-eliminar,
+.solicitud-card .btn-editar {
+    padding: 5px 15px;
+    background-color: rgb(255, 127, 80);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    margin-left: 10px;
+    display: inline-block;
+    z-index: 1;
+}
+
+.solicitud-card .btn-eliminar:hover,
+.solicitud-card .btn-editar:hover {
+    background-color: #1e4183;
+    transform: scale(1.05);
+}
+
+.solicitud-card .btn-editar i {
+    margin-right: 8px;
+}
+
+.solicitud-card a {
+    margin-left: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.solicitud-card p {
+    font-size: 1.1rem;
+}
+
+.solicitud-card .btn-editar {
+    text-decoration: none;
+}
 
 /* Ajustes para telefonos */
 @media (max-width: 768px) {
+    .body{
+        overflow-x: hidden;
+    }
+
     .navbar {
-        padding: 0.4rem;
+        padding: 1rem 2vw;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .navbar .logo {
+        margin-left: 0;
+        margin-right: 2vw;
     }
 
     .cuadrado-container-wrapper {
@@ -529,11 +634,11 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado .texto-overlay {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
     }
 
     .btnseccion {
-        font-size: 0.7rem;
+        font-size: 0.5rem;
     }
 
     .container {
@@ -602,8 +707,46 @@ button[type="submit"]:hover, .btn:hover {
     .btn-eliminar i {
         font-size: 1.4rem;
     }
+    .dropdown-content form button {
+        font-size: 12px;
+        padding: 8px;
+    }
 
+    .dropdown-content {
+        width: auto;
+    }
+    .dropdown-content form button i {
+        font-size: 12px;
+    }
 
+    .solicitud-card .btn-eliminar i{
+        font-size: 12px;
+    }
+
+    .vision, .mision {
+        padding: 12vw 5vw;
+    }
+
+    .vision h2, .mision h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .vision p, .mision p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        max-width: 70%;
+    }
+
+    .vision {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .mision {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
 }
 
 /* Modal imagen grande */

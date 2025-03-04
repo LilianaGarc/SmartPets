@@ -27,6 +27,9 @@
         <div class="form-group">
             <label for="comprobante">Comprobante: Identidad (opcional)</label>
             <input type="file" name="comprobante" id="comprobante" class="form-control" accept="image/*">
+            <div class="file-info">
+                <span>Maximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
+            </div>
         </div>
 
         <input type="hidden" name="id_adopcion" value="{{ $adopcion->id }}">

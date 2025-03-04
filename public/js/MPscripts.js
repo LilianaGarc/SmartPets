@@ -45,31 +45,6 @@ cards.forEach(card => {
     });
 });
 
-/* Modal imagen grande*/
-document.addEventListener('DOMContentLoaded', function() {
-    var modal = document.getElementById("imageModal");
-    var modalImg = document.getElementById("modalImage");
-    var closeBtn = document.getElementsByClassName("close")[0];
-
-    var images = document.querySelectorAll('.adopcion-img');
-
-    images.forEach(function(image) {
-        image.addEventListener('click', function() {
-            modal.style.display = "block";
-            modalImg.src = image.src;
-        });
-    });
-
-    closeBtn.onclick = function() {
-        modal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    };
-});
 
 /* parallax adopta y rescata*/
 function onScroll() {
@@ -94,9 +69,17 @@ window.addEventListener('scroll', onScroll);
 
 onScroll();
 
-window.addEventListener('scroll', function() {
+function setParallaxEffect() {
     let scrollPosition = window.pageYOffset;
-    document.querySelector('.vision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
-    document.querySelector('.mision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
-});
+    if (window.innerWidth > 768) {
+        document.querySelector('.vision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+        document.querySelector('.mision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+    } else {
+        document.querySelector('.vision').style.backgroundPosition = 'center top';
+        document.querySelector('.mision').style.backgroundPosition = 'center top';
+    }
+}
 
+window.addEventListener('scroll', setParallaxEffect);
+
+setParallaxEffect();

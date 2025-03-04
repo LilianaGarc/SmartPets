@@ -25,6 +25,14 @@
     <div class="adopciones-container">
         @foreach($adopciones as $adopcion)
             <div class="adopcion-card">
+                <div class="perfil-usuario">
+                    <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');">
+                    </div>
+                    <div class="informacion-perfil">
+                        <p class="nombre-usuario">Anonymous</p>
+                        <p class="fecha-publicacion">Fecha de publicación: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                    </div>
+                </div>
                 <p>{{ $adopcion->contenido }}</p>
 
                 @if($adopcion->imagen)
@@ -45,15 +53,21 @@
                         </button>
                         <div class="dropdown-content">
                             <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET">
-                                <button type="submit" class="btn-solicitar-dropdown">Solicitar mascota</button>
+                                <button type="submit" class="btn-solicitar-dropdown">
+                                    <i class="fas fa-paw"></i> Solicitar mascota
+                                </button>
                             </form>
                             <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET">
-                                <button type="submit" class="btn-ver">Ver Solicitudes</button>
+                                <button type="submit" class="btn-ver">
+                                    <i class="fas fa-eye"></i> Ver Solicitudes
+                                </button>
                             </form>
                             <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta publicación?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                                <button type="submit" class="btn-eliminar">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -68,6 +82,6 @@
     </div>
 
 </div>
-<script src="{{ asset('js/scripts.js') }}"></script>
+<script src="{{ asset('js/Ascripts.js') }}"></script>
 </body>
 </html>

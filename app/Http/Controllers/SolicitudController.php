@@ -90,18 +90,53 @@ class SolicitudController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    // SolicitudController.php
+
+    public function edit($id_adopcion, $id)
     {
-        //
+        $adopcion = Adopcion::find($id_adopcion);
+        $solicitud = Solicitud::find($id);
+
+        if (!$adopcion) {
+            return redirect()->route('adopciones.index')->with('error', 'La adopción no existe.');
+        }
+
+        if (!$solicitud) {
+            return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada.');
+        }
+
+        return view('solicitudes.edit', compact('solicitud', 'adopcion'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, $id_adopcion, $id)
     {
-        //
+        $validated = $request->validate([
+            'contenido' => 'required|string',
+            'comprobante' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
+        ]);
+
+        $solicitud = Solicitud::find($id);
+
+        if (!$solicitud) {
+            return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada.');
+        }
+
+        $solicitud->contenido = $validated['contenido'];
+
+        if ($request->hasFile('comprobante')) {
+            if ($solicitud->comprobante) {
+                unlink(storage_path('app/public/' . $solicitud->comprobante));
+            }
+            $comprobante = $request->file('comprobante')->store('comprobantes');
+            $solicitud->comprobante = $comprobante;
+        }
+
+        $solicitud->save();
+
+        return redirect()->route('solicitudes.show', $id_adopcion)->with('success', 'Solicitud actualizada con éxito.');
     }
+
 
     /**
      * Remove the specified resource from storage.
