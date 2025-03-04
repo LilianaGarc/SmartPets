@@ -38,7 +38,7 @@
             <img src="{{ asset('images/conejito.webp') }}" alt="Mascota 3">
             <div class="overlay">
                 <p>Crea y asiste a eventos para tus mascotas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Crear a eventos</button>
+                <button class="btnseccion" onclick="window.location.href={{route('eventos.index')}}">Crear a eventos</button>
             </div>
         </div>
 

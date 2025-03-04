@@ -27,7 +27,7 @@ class EventoController
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'fecha' => 'required|date',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
         ]);
@@ -66,14 +66,13 @@ class EventoController
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'fecha' => 'required|date',
-            'telefono' => 'required| |max:15',
+            'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
         ]);
 
 
         $evento = Evento::findOrFail($id);
-
 
         if ($request->hasFile('imagen')) {
             if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
