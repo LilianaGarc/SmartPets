@@ -1,5 +1,5 @@
 @extends('layout.plantilla')
-@section('titulo', 'Veterinarias')
+@section('titulo', 'Administrar Veterinarias')
 @section('contenido')
 <div class="container-fluid px-0">
     @if(session('exito'))

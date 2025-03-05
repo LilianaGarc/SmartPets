@@ -17,6 +17,7 @@ class Veterinaria extends Model
         'imagen',
         'redes_sociales',
         'evaluacion',
+        'id_ubicacion',
     ];
 
     // convierte los json en array
@@ -27,6 +28,19 @@ class Veterinaria extends Model
 
     public function ubicacion(){
         //Una veterinaria tiene una ubicacion (1)
-        return $this->hasOne(Ubicacion::class);
+        return $this->belongsTo(Ubicacion::class, 'id_ubicacion');
+    }
+
+    public function calificaciones(){
+        //Una veterinaria tiene muchas calificaciones (1)
+        return $this->hasMany(Calificacion::class, 'id_veterinaria');
+    }
+
+    public function getCalifiacionPromedio(){
+        return $this->calificaciones()->avg('calificacion');
+    }
+
+    public function getNumeroCalificaciones(){
+        return $this->calificaciones()->count();
     }
 }

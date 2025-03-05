@@ -46,6 +46,7 @@ Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy
 Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
 
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+Route::post('/calificaciones', [VeterinariaController::class, 'storeCalificacion'])->name('calificaciones.store');
 
 Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');

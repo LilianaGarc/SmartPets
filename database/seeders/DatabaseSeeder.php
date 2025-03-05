@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
             ReaccionesTableSeeder::class,
             UsersTableSeeder::class,
             VeterinariasTableSeeder::class,
+            UbicacionesTableSeeder::class,
+
+            /*
+            PublicacionesTableSeeder::class,
+            ComentariosTableSeeder::class,
+            ReaccionesTableSeeder::class,
+            UsersTableSeeder::class,
+            VeterinariasTableSeeder::class,
             AdopcionesTableSeeder::class,
             EventosTableSeeder::class,
             MensajesTableSeeder::class,
@@ -26,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ProductosTableSeeder::class,
             SolicitudesTableSeeder::class,
             UbicacionesTableSeeder::class,
+            */
         ]);
     }
 
