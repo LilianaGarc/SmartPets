@@ -12,7 +12,7 @@ class Reaccion extends Model
 
     public function publicacion(){
         //Varias reacciones pertenecen una publicacion (N)
-        return $this->belongsTo(Publicacion::class);
+        return $this->belongsTo(Publicacion::class, 'publicacion_id');
     }
 
     public function adopcion(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comentario;
+use App\Models\Publicacion;
 use Illuminate\Http\Request;
 
 class ComentarioController
@@ -10,6 +11,18 @@ class ComentarioController
     public function panel()
     {
         $comentarios = Comentario::with('user')->get();
+        return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
+    }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $comentarios = Comentario::with('user')
+            ->whereHas('user', function ($query) use ($nombre) {
+                $query->where('name', 'LIKE', "%$nombre%");
+            })
+            ->where('id_publicacion', 'LIKE', "%$nombre%")
+            ->orWhere('contenido', 'LIKE', "%$nombre%")->get();
         return view('panelAdministrativo.comentariosIndex')->with('comentarios', $comentarios);
     }
     /**
@@ -31,9 +44,19 @@ class ComentarioController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $id)
     {
-        //
+        $publicacion = Publicacion::findOrFail($id);
+        $comentario = new Comentario();
+        $comentario->contenido = $request->input('comentario');
+        $comentario->id_user = 1;
+        $comentario->id_publicacion = $publicacion->id;
+
+        if ($comentario->save()){
+            return redirect()->route('publicaciones.show',['id'=>$id])->with('exito', 'El comentario se envio correctamente.');
+        }else{
+            return redirect()->route('publicaciones.show',['id'=>$id])->with('fracaso', 'El comentario no se puedo enviar.');
+        }
     }
 
     /**

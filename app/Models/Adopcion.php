@@ -18,7 +18,7 @@ class Adopcion extends Model
     ];
     public function solicitudes(){
         //Una adopcion puede tener muchas solicitudes (1)
-        return $this->hasMany(Solicitud::class);
+        return $this->hasMany(Solicitud::class, 'id_adopcion');
     }
 
     public function reacciones(){

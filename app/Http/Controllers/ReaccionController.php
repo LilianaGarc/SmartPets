@@ -12,6 +12,18 @@ class ReaccionController
         $reacciones = Reaccion::with('user')->get();
         return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $reacciones = Reaccion::with('user')
+            ->whereHas('user', function ($query) use ($nombre) {
+                $query->where('name', 'LIKE', "%$nombre%");
+            })
+            ->where('id_publicacion', 'LIKE', "%$nombre%")
+            ->orWhere('tipo', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
+    }
     /**
      * Display a listing of the resource.
      */

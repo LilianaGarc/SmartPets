@@ -68,7 +68,7 @@
     <body>
     <div class="container py-5">
         <div class="form-container p-4 p-md-5">
-            <h2 class="text-center mb-4" style="color: var(--blue);">Publicar Nuevo Producto</h2>
+            <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Publicar Nuevo Producto' : 'Editar Producto'}}</h2>
 
             <!-- Mostrar en los errores de las validaciones-->
             @if(session('success'))

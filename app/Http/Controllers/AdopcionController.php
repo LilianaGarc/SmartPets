@@ -12,6 +12,16 @@ class AdopcionController extends Controller
         $adopciones = Adopcion::all();
         return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $adopciones = Adopcion::orderby('created_at', 'desc')
+            ->where('id_usuario', 'LIKE', "%$nombre%")
+            ->where('contenido', 'LIKE', "%$nombre%")
+            ->orWhere('visibilidad', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
+    }
     public function index()
     {
         $adopciones = Adopcion::all();

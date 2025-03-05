@@ -10,7 +10,6 @@
 
 @include('MenuPrincipal.Navbar')
 
-
 <div class="cuadrado-container-wrapper">
     <button class="carousel-btn prev" onclick="moveCarusel('prev')" style="display: none;">←</button>
 
@@ -20,7 +19,7 @@
             <img src="{{ asset('images/golden.webp') }}" alt="Mascota 1">
             <div class="overlay">
                 <p>Comparte el día a día de tu mascota</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Crear publicación</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('publicaciones.index') }}'">Crear publicación</button>
             </div>
         </div>
 
@@ -38,7 +37,7 @@
             <img src="{{ asset('images/conejito.webp') }}" alt="Mascota 3">
             <div class="overlay">
                 <p>Crea y asiste a eventos para tus mascotas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Crear a eventos</button>
+                <button class="btnseccion" onclick="window.location.href='{{route('eventos.index')}}">Crear a eventos</button>
             </div>
         </div>
 
@@ -74,13 +73,28 @@
             <img src="{{ asset('images/fisgon.webp') }}" alt="Mascota 8">
             <div class="overlay">
                 <p>Compra productos de necesidad para tus mascotas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Ir a Petshop</button>
+                <button class="btnseccion" onclick="window.location.href='{{ route('productos.index') }}'">Ir a Petshop</button>
             </div>
         </div>
     </div>
 
     <button class="carousel-btn next" onclick="moveCarusel('next')">→</button>
+
+
 </div>
-<script src="{{ asset('js/scripts.js') }}"></script>
+<section class="vision">
+    <div class="vision-text">
+        <h2>Rescata mascotas</h2>
+        <p>SmartPets se dedica a la misión de rescatar a animales que han sido abandonados, maltratados o que se encuentran en situaciones de vulnerabilidad.</p>
+    </div>
+</section>
+
+<section class="mision">
+    <div class="mision-text">
+        <h2>Adopta mascotas</h2>
+        <p>SmartPets está diseñado para conectar a personas que buscan un nuevo compañero de vida con animales que necesitan un hogar.</p>
+    </div>
+</section>
+<script src="{{ asset('js/MPscripts.js') }}"></script>
 </body>
 </html>

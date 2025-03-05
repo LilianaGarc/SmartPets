@@ -46,4 +46,40 @@ cards.forEach(card => {
 });
 
 
+/* parallax adopta y rescata*/
+function onScroll() {
+    const visionSection = document.querySelector('.vision');
+    const misionSection = document.querySelector('.mision');
 
+    const visionPosition = visionSection.getBoundingClientRect().top;
+    const misionPosition = misionSection.getBoundingClientRect().top;
+
+    if (visionPosition < window.innerHeight * 0.8) {
+        visionSection.style.opacity = 1;
+        visionSection.style.transform = 'translateY(0)';
+    }
+
+    if (misionPosition < window.innerHeight * 0.8) {
+        misionSection.style.opacity = 1;
+        misionSection.style.transform = 'translateY(0)';
+    }
+}
+
+window.addEventListener('scroll', onScroll);
+
+onScroll();
+
+function setParallaxEffect() {
+    let scrollPosition = window.pageYOffset;
+    if (window.innerWidth > 768) {
+        document.querySelector('.vision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+        document.querySelector('.mision').style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+    } else {
+        document.querySelector('.vision').style.backgroundPosition = 'center top';
+        document.querySelector('.mision').style.backgroundPosition = 'center top';
+    }
+}
+
+window.addEventListener('scroll', setParallaxEffect);
+
+setParallaxEffect();

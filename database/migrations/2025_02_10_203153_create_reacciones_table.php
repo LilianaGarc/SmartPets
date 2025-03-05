@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tipo');
             $table->integer('id_user');
-            $table->integer('id_publicacion');
+            $table->integer('publicacion_id');
             $table->timestamps();
         });
     }

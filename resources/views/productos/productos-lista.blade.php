@@ -1,4 +1,4 @@
-@extends('productos.productos-layout')
+@extends('productos.productos-layout'), @extends('MenuPrincipal.Navbar')
 @section('titulo', 'Lista de Productos')
 
 @section('contenido')
@@ -54,64 +54,46 @@
             overflow: hidden;
         }
     </style>
+
 </head>
 <body>
-    <!-- Hero Section -->
-    <section class="bg-gradient-hero py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 text-white">
-                    <h1 class="display-4 fw-bold mb-4">Balanced Diet<br>For Your<br>Loved Ones</h1>
-                    <p class="mb-4">Quisqueme suscipit fetor condimentum de causae lucus maefutid blandites.</p>
-                    <button class="btn-shop">Shop Now</button>
-                </div>
-                <div class="col-lg-6">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/plantillaEjemplo-UQzhR5KMdp048jmRoiPL29A5uv6ite.jpeg" alt="Happy Dog" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Shop by Pet Type -->
-    <section class="py-5">
+    @section('nav') @endsection
+    <section class="py-1 mt-0">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Shop by pets type</h2>
-                <a href="#" class="text-decoration-none" style="color: var(--blue)">View All</a>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-6 col-sm-4 col-lg-2 text-center">
-                    <div class="pet-circle mx-auto">
-                        <img src="/placeholder.svg?height=150&width=150" alt="Dog">
-                    </div>
-                    <p class="mt-2 mb-0">Dog</p>
-                </div>
-                <!-- Repeat for other pet types -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Weekly Special Offers -->
-    <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Weekly special offers</h2>
+            <h2 class="text-center mb-4">CATEGORIAS</h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
-                <button class="category-pill active">Dog</button>
-                <button class="category-pill">Cat</button>
-                <button class="category-pill">Small Pets</button>
-                <button class="category-pill">Fish</button>
-                <button class="category-pill">Reptile</button>
-                <button class="category-pill">Bird</button>
+                @forelse($categorias as $categoria)
+                    <button class="category-pill active">{{$categoria->nombre}}</button>
+                @empty
+                    <p class="text-center">No se han encontrado categorias.</p>
+                @endforelse
+
             </div>
+            <h2 class="text-center mb-4">PRODUCTOS</h2>
             <div class="row g-4">
-                <div class="col-6 col-md-3">
-                    <div class="offer-card h-100">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Dog Deal" class="w-100">
-                        <div class="p-3">
-                            <h6>Up to 50% Off Dog Deals</h6>
+                @forelse($productos as $producto)
+                    <div class="col-6 col-md-3">
+                        <div class="offer-card h-100">
+                            <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
+                            {{ $producto->nombre }}" class="w-100">
+                            <div class="detalles p-2">
+                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
+                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
+                            </div>
+                            <div class="p-3">
+                                <h6>{{$producto->nombre}}</h6>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center">No se han encontrado productos.</p>
+                    </div>
+                @endforelse
+
+                {{$productos->links()}}
+
                 <!-- Repeat for other offers -->
             </div>
         </div>

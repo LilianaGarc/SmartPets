@@ -17,7 +17,17 @@ class ProductoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nombre'=>fake()->words(3, true),
+            'descripcion'=>fake()->words(10, true),
+            'precio'=>fake()->randomFloat(2, 1, 1000),
+            'categoria_id'=>fake()->numberBetween(1, 10),
+            'stock'=>fake()->numberBetween(1, 100),
+            'imagen'=>null,
+            'imagen2'=>null,
+            'imagen3'=>null,
+            'imagen4'=>null,
+            'imagen5'=>null,
+            'activo'=>fake()->boolean(),
         ];
     }
 }

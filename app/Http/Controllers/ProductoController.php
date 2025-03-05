@@ -13,12 +13,26 @@ class ProductoController extends Controller
         $productos = Producto::all();
         return view('panelAdministrativo.productosIndex')->with('productos', $productos);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $productos = Producto::orderby('created_at', 'desc')
+            ->where('nombre', 'LIKE', "%$nombre%")
+            ->where('descripcion', 'LIKE', "%$nombre%")
+            ->where('precio', 'LIKE', "%$nombre%")
+            ->orWhere('stock', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.productosIndex')->with('productos', $productos);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('productos.productos-lista');
+        return view('productos.productos-lista')->with([
+            'productos' => Producto::paginate(12),
+            'categorias' => Categoria::limit(5)->get()
+        ]);
     }
 
     /**
@@ -83,7 +97,8 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        return view('productos.productos-detalles');
+        $producto = Producto::findOrFail($id);
+        return view('productos.productos-detalles', compact('producto'));
     }
 
     /**
@@ -91,7 +106,8 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
-        return view('productos.productos-formulario');
+        $producto = Producto::findOrFail($id);
+        return view('productos.productos-formulario',['producto' => $producto]);
     }
 
     /**
@@ -99,7 +115,47 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validación de datos
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
+            'descripcion' => 'nullable|string',
+            'categoria' => 'required|string|max:255',
+            'stock' => 'required|integer|min:0',
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
+
+        // Crear o encontrar la categoría
+        $categoria = Categoria::firstOrCreate(['nombre' => $request->categoria]);
+
+        // Almacenar las imágenes si están presentes
+        $imagenesGuardadas = [];
+        if ($request->hasFile('imagenes')) {
+            $imagenes = $request->file('imagenes');
+            foreach ($imagenes as $imagen) {
+                $rutaImagen = $imagen->store('public/productos');
+                $imagenesGuardadas[] = $rutaImagen;
+            }
+        }
+
+        // Crear el producto
+        $producto = Producto::findOrFail($id);
+        $producto->nombre = $request->input('nombre');
+        $producto->precio = $request->input('precio');
+        $producto->descripcion = $request->input('descripcion');
+        $producto->categoria_id = $categoria->id;
+        $producto->stock = $request->input('stock');
+        $producto->imagen = $imagenesGuardadas[0] ?? null;
+        $producto->imagen2 = $imagenesGuardadas[1] ?? null;
+        $producto->imagen3 = $imagenesGuardadas[2] ?? null;
+        $producto->imagen4 = $imagenesGuardadas[3] ?? null;
+        $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+
+        if ($producto->save()) {
+            return redirect()->back()->with('success', 'Producto publicado correctamente');
+        } else {
+            return redirect()->back()->with('error', 'Error al publicar producto');
+        }
     }
 
     /**
