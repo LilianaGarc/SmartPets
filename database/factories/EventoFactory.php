@@ -17,13 +17,12 @@ class EventoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
 
             'titulo' => $this->faker->name(),
             'descripcion' => $this->faker->text(),
             'fecha' => $this->faker->date(),
             'telefono' => $this->faker->phoneNumber(),
-            'imagen' => $this->faker->image(),
+            'imagen' => 'https://picsum.photos/640/480?random=' . rand(1, 1000),
         ];
     }
 }

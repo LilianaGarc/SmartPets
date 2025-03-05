@@ -14,12 +14,20 @@
         </div>
     @endif
 
-    <h1 class="mb-4">Lista de Eventos
+    <h1 class="mb-8"> Eventos
         <a class="btn btn-primary float-end" href="{{ route('eventos.create') }}">Nuevo Evento</a>
+        <br>
     </h1>
 
+    <form method="GET" action="{{ route('eventos.index') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Buscar eventos..." value="{{ request('q') }}">
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </div>
+    </form>
+
     <div class="row">
-        @foreach ($eventos as $evento)
+        @forelse ($eventos as $evento)
             <div class="col-md-4">
                 <div class="card mb-4">
                     @if ($evento->imagen)
@@ -41,7 +49,7 @@
                 </div>
             </div>
 
-
+            {{-- MODAL DE CONFIRMACIÓN PARA ELIMINAR --}}
             <div class="modal fade" id="modalEliminar{{ $evento->id }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ $evento->id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -63,7 +71,9 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-warning">No se encontraron eventos.</div>
+        @endforelse
     </div>
 
     <div class="d-flex justify-content-center">

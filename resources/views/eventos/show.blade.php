@@ -8,6 +8,9 @@
     <br><br>
 
     <div class="card" style="width: 25rem;">
+        @if ($evento->imagen)
+            <img src="{{ asset('storage/' . $evento->imagen) }}" class="card-img-top" alt="Imagen del evento">
+        @endif
         <div class="card-body">
             <h5 class="card-title">{{ $evento->titulo }}</h5>
             <p class="card-text">
