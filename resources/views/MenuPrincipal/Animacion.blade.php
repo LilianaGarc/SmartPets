@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="cat-loader.css">
-    <title>Document</title>
+    <title>SmartPets</title>
     <style>
         * {
             border: 0;
@@ -349,7 +349,7 @@
 <script>
     setTimeout(function() {
         window.location.href = "{{ route('index') }}";
-    }, 3300);
+    }, 1700);
 </script>
 </body>
 </html>

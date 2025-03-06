@@ -17,35 +17,63 @@
         Solicitudes para la adopción
     </h2>
 
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
     <div class="solicitudes-container">
         @foreach($solicitudes as $solicitud)
             <div class="solicitud-card">
-                <p>Contenido: {{ $solicitud->contenido }}</p>
-
-                <div class="botones">
-                    @if($solicitud->comprobante)
-                        <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank">
-                            <i class="fas fa-file-pdf"></i> Ver comprobante
-                        </a>
-                    @endif
+                <div class="content-wrapper">
+                    <p class="solicitud-text">{{ $solicitud->contenido }}</p>
+                    <div class="botones">
+                        @if($solicitud->comprobante)
+                            <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank" class="btn-view">
+                                <i class="fas fa-file-pdf"></i>Identidad
+                            </a>
+                        @endif
                         <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
                             <i class="fas fa-edit"></i>Editar
                         </a>
 
-                        <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta solicitud?');">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn-eliminar">
-                            <i class="fas fa-trash-alt"></i>     Eliminar
-                        </button>
-                    </form>
-
-
+                        <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn-eliminar" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         @endforeach
     </div>
 </div>
 
+<script src="{{ asset('js/alerts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

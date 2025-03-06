@@ -17,6 +17,33 @@
         Editar Solicitud
     </h2>
 
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
     <form action="{{ route('solicitudes.update', [$adopcion->id, $solicitud->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -26,22 +53,29 @@
         </div>
 
         <div class="form-group">
-            <label for="comprobante">Comprobante:</label>
-
-            <input type="file" name="comprobante" id="comprobante">
-            <div class="file-info">
-                <span>Maximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
+            <label for="comprobante">Comprobante (opcional):</label>
+            <div class="input-file-wrapper">
+                <input type="file" name="comprobante" id="comprobante" accept="image/*" onchange="previewComprobante()">
+                <label for="comprobante">Seleccionar archivo</label>
             </div>
-            @if ($solicitud->comprobante)
-                <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank" class="">Ver comprobante actual</a>
-            @endif
+            <div class="file-info">
+                <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
+            </div>
 
+            @if ($solicitud->comprobante)
+                <div class="image-preview-container">
+                    <img id="comprobante-preview" src="{{ asset('storage/' . $solicitud->comprobante) }}" alt="Vista previa del comprobante">
+                    <p class="image-caption">Imagen actual</p>
+                </div>
+            @endif
         </div>
 
-
-        <button type="submit" class="btn-enviar">Actualizar Solicitud</button>
+        <button type="submit" class="btn btn-success">Actualizar Solicitud</button>
     </form>
 </div>
 
+<script src="{{ asset('js/vistaprevia.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/alerts.js') }}"></script>
 </body>
 </html>

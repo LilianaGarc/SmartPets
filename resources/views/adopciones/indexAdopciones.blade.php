@@ -16,10 +16,32 @@
         Pon en adopción y adopta tu mascota preferida
     </h2>
 
-    <a href="{{ route('adopciones.create') }}" class="btn btn-primary">Crear Publicación</a>
-
+    <a href="{{ route('adopciones.create') }}" class="btn btn-primary">Crear Adopción</a>
     @if(session('success'))
-        <p class="alert alert-success">{{ session('success') }}</p>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
     @endif
 
     <div class="adopciones-container">
@@ -30,7 +52,7 @@
                     </div>
                     <div class="informacion-perfil">
                         <p class="nombre-usuario">Anonymous</p>
-                        <p class="fecha-publicacion">Fecha de publicación: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                        <p class="fecha-publicacion">Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
                 <p>{{ $adopcion->contenido }}</p>
@@ -62,10 +84,11 @@
                                     <i class="fas fa-eye"></i> Ver Solicitudes
                                 </button>
                             </form>
-                            <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta publicación?');">
+
+                            <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-eliminar">
+                                <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
                                     <i class="fas fa-trash-alt"></i> Eliminar
                                 </button>
                             </form>
@@ -83,5 +106,7 @@
 
 </div>
 <script src="{{ asset('js/Ascripts.js') }}"></script>
+<script src="{{ asset('js/alerts.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

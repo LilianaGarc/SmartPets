@@ -37,11 +37,12 @@ class AdopcionController extends Controller
     {
         $request->validate([
             'contenido' => 'required|string|max:255',
-            'imagen' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',  // 'required' agregado
         ]);
 
         $rutaImagen = null;
         if ($request->hasFile('imagen')) {
+            // Almacena la imagen en el directorio 'adopciones' dentro de 'public'
             $rutaImagen = $request->file('imagen')->store('adopciones', 'public');
         }
 
@@ -53,6 +54,7 @@ class AdopcionController extends Controller
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
+
 
     public function destroy($id)
     {

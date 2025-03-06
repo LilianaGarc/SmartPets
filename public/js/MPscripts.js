@@ -6,26 +6,40 @@ const items = document.querySelectorAll('.cuadrado');
 const totalItems = items.length;
 const itemsVisible = 4;
 const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
 
 function moveCarusel(direction) {
     const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight);
 
     if (direction === 'next') {
-        currentIndex++;
-        if (currentIndex > totalItems - itemsVisible) {
-            currentIndex = 0;
+        if (currentIndex < totalItems - itemsVisible) {
+            currentIndex++;
         }
-        prevBtn.style.display = 'block';
-    } else if (direction === 'prev') {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = totalItems - itemsVisible;
+    }
+    else if (direction === 'prev') {
+        if (currentIndex > 0) {
+            currentIndex--;
         }
     }
 
     const offset = -currentIndex * itemWidth;
     container.style.transform = `translateX(${offset}px)`;
+
+    if (currentIndex === 0) {
+        prevBtn.style.display = 'none';
+    } else {
+        prevBtn.style.display = 'block';
+    }
+
+    if (currentIndex === totalItems - itemsVisible) {
+        nextBtn.style.display = 'none';
+    } else {
+        nextBtn.style.display = 'block';
+    }
 }
+
+moveCarusel();
+
 
 /* jona: efecto del desenfoque de los demas cuadrados */
 const cards = document.querySelectorAll('.cuadrado');
