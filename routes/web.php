@@ -35,6 +35,8 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
 Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
 Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
+Route::get('/adopciones/{id}/editar', [AdopcionController::class, 'edit'])->name('adopciones.edit');
+Route::put('/adopciones/{id}', [AdopcionController::class, 'update'])->name('adopciones.update');
 
 Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
 
@@ -46,6 +48,7 @@ Route::delete('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'd
 Route::get('/solicitudes/{id_adopcion}', [SolicitudController::class, 'showSolicitudes'])->name('solicitudes.show');
 Route::get('/solicitudes/{id_adopcion}/editar/{id}', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
 Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
+Route::get('/solicitudes/{id_adopcion}/{id}/detalles', [SolicitudController::class, 'showDetails'])->name('solicitudes.showDetails');
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');

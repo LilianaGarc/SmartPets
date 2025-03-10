@@ -68,6 +68,29 @@
     </div>
 </section>
 
+<section class="compartir-mascotas">
+    <div class="compartir-text">
+        <h2>Comparte historias de tus mascotas</h2>
+        <p>Comparte momentos especiales y crea una comunidad unida por el amor a los animales.</p>
+    </div>
+    <div class="compartir-imagen">
+        <img src="{{ asset('images/compartepets.webp') }}" alt="Comparte mascotas">
+        <div class="button">
+            <div class="box">S</div>
+            <div class="box">M</div>
+            <div class="box">A</div>
+            <div class="box">R</div>
+            <div class="box">T</div>
+        </div>
+    </div>
+
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 DevStorm: UNAH-TEC Danlí </p>
+</footer>
+
+
 <script src="{{ asset('js/MPscripts.js') }}"></script>
 </body>
 </html>

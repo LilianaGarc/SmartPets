@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
-    height: 200vh;
+    height: auto;
     scroll-behavior: smooth;
     overflow-x: hidden;
 }
@@ -38,6 +38,7 @@ body {
 .navbar .logo {
     margin-left: 5vw;
 }
+
 
 .carousel-btn {
     background-color: white;
@@ -162,6 +163,11 @@ body {
     transition: filter 0.5s ease;
 }
 
+/* jona: efecto desenfoque */
+.cuadrado-container .cuadrado.not-hovered {
+    filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
+}
+
 .vision {
     background-color: #1e4183;
     color: #ffffff;
@@ -178,6 +184,7 @@ body {
     background-attachment: fixed;
     background-position: center;
     color: #ffffff;
+    max-height: 70vh;
     padding: 10vw 10vw;
     text-align: center;
     opacity: 0.5;
@@ -197,9 +204,90 @@ body {
     margin: 0 auto;
 }
 
-/* jona: efecto desenfoque */
-.cuadrado-container .cuadrado.not-hovered {
-    filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
+.compartir-mascotas {
+    text-align: center;
+    padding: 2vw 10vw;
+    flex: 1;
+}
+
+.footer {
+    background-color: rgba(189, 76, 76, 0);
+    color: #000000;
+    font-size: 1.1rem;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}
+
+.compartir-text h2 {
+    font-size: 2rem;
+}
+
+.compartir-text p {
+    font-size: 1.3rem;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+.compartir-mascotas .box {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    transition: all .8s;
+    cursor: pointer;
+    position: relative;
+    background: rgb(30, 65, 131);
+    overflow: hidden;
+}
+
+.box:before {
+    content: "P";
+    position: absolute;
+    top: 0;
+    color: #ffffff;
+    background: rgb(238, 137, 52);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform .4s;
+}
+
+.box:nth-child(2)::before {
+    transform: translateY(-100%);
+    content: 'E';
+}
+
+.box:nth-child(3)::before {
+    content: 'T';
+}
+
+.box:nth-child(4)::before {
+    transform: translateY(-100%);
+    content: 'S';
+}
+
+.box:nth-child(5)::before {
+    content: '🐶';
+}
+
+.button:hover .box:before {
+    transform: translateY(0);
 }
 
 /* ADOPCION */
@@ -218,45 +306,58 @@ body {
     align-items: center;
 }
 
-/* jona: formulario */
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
     align-items: center;
+    justify-content: center;
     width: 100%;
 }
 
 .form-group {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 20px;
 }
 
 label {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #2d2d2d;
-    font-weight: bold;
+    font-weight: 600;
 }
 
-textarea {
+textarea,
+input[type="text"]{
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1rem;
-    width: 100%;
-    height: 120px;
-    box-sizing: border-box;
+    padding: 12px;
     background-color: #f9f9f9;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-    resize: none;
+    transition: all 0.3s ease;
+    width: 88%;
 }
 
-textarea:focus {
-    border-color: #ff7f50;
-    background-color: #fff;
+select {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 12px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    width: 92%;
+}
+
+input[type="number"] {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 12px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    width: 88%;
 }
 
 input[type="file"] {
@@ -272,11 +373,10 @@ input[type="file"] {
 
 .input-file-wrapper input[type="file"] + label {
     display: inline-block;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 12px 20px;
     background-color: #f8f9fa;
     border: 1px solid #ced4da;
-    border-radius: 5px;
+    border-radius: 8px;
     color: #495057;
     font-size: 1rem;
     font-weight: 500;
@@ -289,15 +389,7 @@ input[type="file"] {
 .input-file-wrapper input[type="file"]:focus + label,
 .input-file-wrapper input[type="file"]:hover + label {
     background-color: #f8f9fa;
-    border-color: #1e4183;
-}
-
-.file-info {
-    font-size: 0.8rem;
-    color: #171717;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    font-weight: bold;
+    border-color: #ff7c40;
 }
 
 button[type="submit"], .btn {
@@ -347,10 +439,27 @@ button[type="submit"]:hover, .btn:hover {
     text-align: center;
 }
 
+#animales-adicionales {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+
+.adopciones-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
 
 .adopcion-card {
     width: 100%;
     max-width: 280px;
+    max-height: 550px;
     height: auto;
     border-radius: 15px;
     padding: 20px;
@@ -359,12 +468,15 @@ button[type="submit"]:hover, .btn:hover {
     background-color: #fff;
     font-family: 'Arial', sans-serif;
     color: #333;
-    margin: 20px auto;
-    overflow: visible;
+    margin: 20px 10px;
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.7s ease-out;
     opacity: 0;
     transform: translateY(50px);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .adopcion-card.fade-in-up {
@@ -383,17 +495,9 @@ button[type="submit"]:hover, .btn:hover {
     height: 250px;
     object-fit: cover;
     border-radius: 10px;
-    margin-bottom: 15px;
+    margin-top: 5px;
     cursor: pointer;
     transition: transform 0.3s ease;
-}
-
-.adopciones-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 15px;
-    padding: 20px;
 }
 
 .perfil-usuario {
@@ -427,7 +531,14 @@ button[type="submit"]:hover, .btn:hover {
 
 .fecha-publicacion {
     font-size: 0.9rem;
+    margin-bottom: 0;
     color: #888;
+}
+
+.contador-visitas {
+    font-size: 0.8rem;
+    color: rgb(169, 169, 169);
+    align-self: end;
 }
 
 .reaction-img {
@@ -437,10 +548,22 @@ button[type="submit"]:hover, .btn:hover {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.adopcion-card .contenido {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 15px;
+.adopcion-card p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: normal;
+    margin: 0;
+    overflow: hidden;
+}
+
+.adopcion-card p {
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .adopcion-card .estado {
@@ -461,7 +584,6 @@ button[type="submit"]:hover, .btn:hover {
     display: flex;
     justify-content: center;
     gap: 10px;
-    padding-top: 10px;
 }
 
 .reaction-img:hover {
@@ -484,9 +606,10 @@ button[type="submit"]:hover, .btn:hover {
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.btn-eliminard:hover, .btn-ver:hover, .btn-solicitar-dropdown:hover {
+.btn-eliminard:hover, .btn-ver:hover, .btn-solicitar-dropdown:hover, .btn-editar-dropdown:hover {
     color: #1e4183;
     transform: scale(1.05);
 }
@@ -500,8 +623,11 @@ button[type="submit"]:hover, .btn:hover {
     background-color: transparent;
     border: none;
     color: #1e4183;
-    font-size: 24px;
+    font-size: 18px;
+    padding: 10px 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
 }
 
 .dropdown-content {
@@ -509,32 +635,68 @@ button[type="submit"]:hover, .btn:hover {
     position: absolute;
     bottom: 100%;
     right: 0;
-    min-width: 190px;
-    z-index: 1;
+    min-width: 180px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateY(-10px);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .dropdown-content form button {
     width: 100%;
     text-align: center;
     border: none;
-    background-color: #eaeaea;
-    color: #151515;
-    font-size: 15px;
-    padding: 10px 0;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 0;
+    transition: all 0.2s ease;
 }
 
 .dropdown-content form button:hover {
-    background-color: #ffffff;
-    transform: scale(1.05);
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
+    background-color: rgb(30, 65, 131);
+    color: #fff;
+    transform: scale(1.03);
 }
 
 .dropdown-content button i {
-    margin-right: 2px;
+    margin-right: 8px;
+}
+
+.btn-editar-dropdown {
+    background-color: #1e4183;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 4px;
+    border: none;
+    width: 100%;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.btn-editar-dropdown:hover {
+    background-color: #1a3d72;
+    transform: scale(1.03);
+}
+
+.btn-editar-dropdown i {
+    margin-right: 8px;
+}
+
+.btn-editar-dropdown:focus, .dropdown-content form button:focus {
+    outline: none;
+    border: 2px solid #1e4183;
 }
 
 @keyframes slideUp {
@@ -582,68 +744,241 @@ button[type="submit"]:hover, .btn:hover {
     font-size: 1.1rem;
     color: #333;
     flex-grow: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    line-height: 1.5;
+    padding: 10px;
 }
 
-.botones {
+.btn-eliminar {
+    all: unset;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    border-radius: 1.25em;
+    background-color: rgba(100,77,237,0.08);
+    transition: all 0.2s linear;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
 }
 
-.solicitud-card .btn-eliminar,
-.solicitud-card .btn-editar,
-.solicitud-card .btn-view {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #333;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border: 1px solid #ccc;
-    border-radius: 50px;
+
+button, .btn-view, .btn-editar, .btn-eliminar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    border: 0px solid transparent;
+    background-color: rgba(100,77,237,0.08);
+    border-radius: 1.25em;
+    transition: all 0.2s linear;
+    text-decoration: none;
+    color: black;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 6em;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
     text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: inline-flex;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 80%;
+    left: 60%;
+    transform: translateY(-50%);
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.6) transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.solicitud-detalle {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.solicitud-info {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 320px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.table {
+    width: 600px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.table th,
+.table td {
+    padding: 8px;
+    text-align: left;
+    font-size: 15px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    color: #151414;
+    font-weight: bold;
+    width: 180px;
+}
+
+.table td {
+    background-color: #fafafa;
+    color: #444;
+    width: 350px;
+
+}
+
+.comprobante-container {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 30px;
+    position: relative;
+}
+
+.comprobante-container img {
+    max-width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.download-button-container .Btn-download {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.11);
 }
 
-.solicitud-card .btn-eliminar:hover,
-.solicitud-card .btn-editar:hover,
-.solicitud-card .btn-view:hover {
-    background-color: #f1f1f1;
-    transform: scale(1.05);
+
+.download-button-container .svgIcon {
+    fill: rgb(255, 124, 64);
 }
 
-.solicitud-card .btn-editar i,
-.solicitud-card .btn-view i,
-.solicitud-card .btn-eliminar i {
-    font-size: 14px;
+.download-button-container .icon2 {
+    width: 18px;
+    height: 5px;
+    border-bottom: 2px solid rgba(237, 129, 25, 0.86);
+    border-left: 2px solid rgba(237, 129, 25, 0.86);
+    border-right: 2px solid rgba(237, 129, 25, 0.86);
 }
 
-.solicitud-card a {
-    margin-left: 10px;
-    text-decoration: none;
-    color: inherit;
+.download-button-container .tooltip {
+    position: absolute;
+    right: -105px;
+    opacity: 0;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition-duration: .2s;
+    pointer-events: none;
+    letter-spacing: 0.5px;
 }
 
-.solicitud-card p {
-    font-size: 1.1rem;
+.download-button-container .tooltip::before {
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: rgb(255, 255, 255);
+    background-size: 1000%;
+    background-position: center;
+    transform: rotate(45deg);
+    left: -5%;
+    transition-duration: .3s;
 }
 
-.solicitud-card .btn-editar {
-    text-decoration: none;
+.download-button-container .Btn-download:hover .tooltip {
+    opacity: 1;
+    transition-duration: .3s;
 }
 
-.solicitud-card .btn-view i {
-    font-size: 16px;
-    color: #333;
+.download-button-container .Btn-download:hover {
+    background-color: rgb(255, 124, 64);
+    transition-duration: .3s;
 }
 
+.download-button-container .Btn-download:hover .icon2 {
+    border-bottom: 2px solid rgb(235, 235, 235);
+    border-left: 2px solid rgb(235, 235, 235);
+    border-right: 2px solid rgb(235, 235, 235);
+}
+
+.download-button-container .Btn-download:hover .svgIcon {
+    fill: rgb(255, 255, 255);
+    animation: slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes slide-in-top {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
 
 
 /* Ajustes para telefonos */
 @media (max-width: 768px) {
+
     .body{
         overflow-x: hidden;
     }
@@ -660,7 +995,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado-container-wrapper {
-        height: 50vh;
+        height: 40vh;
         margin-top: 5vw;
     }
 
@@ -671,7 +1006,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado {
-        height: 20vh;
+        height: 16vh;
         flex: 0 0 22.5%;
     }
 
@@ -703,12 +1038,13 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .overlay p {
-        font-size: 0.6rem;
+        font-size: 0.3rem;
         margin-bottom: 30vw;
     }
 
     .cuadrado .texto-overlay {
-        font-size: 0.7rem;
+        top: 18px;
+        font-size: 0.6rem;
     }
 
     .btnseccion {
@@ -722,6 +1058,9 @@ button[type="submit"]:hover, .btn:hover {
 
     .form-group {
         width: 100%;
+    }
+    .input-file-wrapper {
+        width: 82%;
     }
 
     textarea, input[type="text"], input[type="file"] {
@@ -819,32 +1158,59 @@ button[type="submit"]:hover, .btn:hover {
         margin-top: 10px;
     }
 
-    .solicitud-card .btn-eliminar,
-    .solicitud-card .btn-editar,
-    .solicitud-card .btn-view {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-        height: auto;
+
+    .btn-view,
+    .btn-editar {
+        padding: 0.6em;
+        width: 25%;
     }
 
-    .solicitud-card .btn-eliminar i,
-    .solicitud-card .btn-editar i,
-    .solicitud-card .btn-view i {
-        font-size: 10px;
+    .btn-eliminar {
+        padding: 0.6em;
+        text-decoration: none;
+        width: 25%;
+    }
+    .solicitud-detalle {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
     }
 
-    .solicitud-card .btn-eliminar {
-        font-size: 0.85rem;
+    .solicitud-info {
+        flex-direction: column;
+        min-width: 100%;
+        max-width: 100%;
     }
 
-    .solicitud-card .btn-view i {
-        font-size: 12px;
-        color: #333;
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 15px;
     }
 
-    .solicitud-card a {
-        margin-left: 0;
+    .table th,
+    .table td {
+        font-size: 14px;
+        padding: 8px;
     }
+
+    .comprobante-container {
+        min-width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+    }
+
+    .comprobante-container img {
+        max-height: 200px;
+    }
+
+    .download-button-container .Btn-download {
+        position: relative;
+        bottom: auto;
+        margin-top: 130px;
+    }
+
 
     .vision, .mision {
         padding: 12vw 5vw;
@@ -858,7 +1224,7 @@ button[type="submit"]:hover, .btn:hover {
     .vision p, .mision p {
         font-size: 0.8rem;
         line-height: 1.4;
-        max-width: 70%;
+        max-width: 44%;
     }
 
     .vision {
@@ -870,6 +1236,46 @@ button[type="submit"]:hover, .btn:hover {
         opacity: 0.8;
         transform: translateY(0);
     }
+
+    .compartir-mascotas {
+        padding: 5vw 5vw;
+    }
+
+    .compartir-text h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .compartir-text p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        max-width: 60%;
+    }
+
+    .compartir-imagen img {
+        width: 100%;
+        max-height: 40vh;
+    }
+
+    .compartir-mascotas .box {
+        width: 100px;
+        height: 50px;
+        font-size: 16px;
+        background: rgb(30, 65, 131);
+    }
+
+    .box:before {
+        font-size: 18px;
+    }
+
+    .footer {
+        background-color: rgba(189, 76, 76, 0);
+        color: #000000;
+        text-align: center;
+        width: 100%;
+        height: 100px;
+    }
+
 }
 
 /* Modal imagen grande */
@@ -909,3 +1315,4 @@ button[type="submit"]:hover, .btn:hover {
     text-decoration: none;
     cursor: pointer;
 }
+

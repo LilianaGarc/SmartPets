@@ -15,8 +15,7 @@
         </a>
         Pon en adopción y adopta tu mascota preferida
     </h2>
-
-    <a href="{{ route('adopciones.create') }}" class="btn btn-primary">Crear Adopción</a>
+    <a href="{{ route('adopciones.create') }}" class="btn">Crear Adopción</a>
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -43,7 +42,7 @@
             });
         </script>
     @endif
-
+</div>
     <div class="adopciones-container">
         @foreach($adopciones as $adopcion)
             <div class="adopcion-card">
@@ -52,7 +51,12 @@
                     </div>
                     <div class="informacion-perfil">
                         <p class="nombre-usuario">Anonymous</p>
-                        <p class="fecha-publicacion">Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                        <p class="fecha-publicacion">
+                            Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
+                        </p>
+                        <p class="contador-visitas">
+                            <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
+                        </p>
                     </div>
                 </div>
                 <p>{{ $adopcion->contenido }}</p>
@@ -76,12 +80,18 @@
                         <div class="dropdown-content">
                             <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET">
                                 <button type="submit" class="btn-solicitar-dropdown">
-                                    <i class="fas fa-paw"></i> Solicitar mascota
+                                    <i></i> Solicitar mascota
                                 </button>
                             </form>
                             <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET">
                                 <button type="submit" class="btn-ver">
-                                    <i class="fas fa-eye"></i> Ver Solicitudes
+                                    <i></i> Ver Solicitudes
+                                </button>
+                            </form>
+
+                            <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
+                                <button type="submit" class="btn-editar-dropdown">
+                                    <i></i> Editar
                                 </button>
                             </form>
 
@@ -89,7 +99,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                    <i></i> Eliminar
                                 </button>
                             </form>
                         </div>
@@ -104,7 +114,7 @@
         <img class="modal-content" id="modalImage">
     </div>
 
-</div>
+
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

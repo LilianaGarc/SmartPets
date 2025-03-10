@@ -14,7 +14,7 @@
         <a href="{{ route('adopciones.index') }}" class="btn-volver" style="text-decoration: none;">
             <i class="fas fa-arrow-left" style="color: #ff7f50; font-size: 24px;"></i>
         </a>
-        Crear una Publicación de Adopción
+        Editar Publicación de Adopción
     </h2>
 
     @if(session('success'))
@@ -31,24 +31,13 @@
         </script>
     @endif
 
-    @if(session('fracaso'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ session('fracaso') }}',
-                    confirmButtonColor: '#ff7f50',
-                });
-            });
-        </script>
-    @endif
-
-    <form action="{{ route('adopciones.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('adopciones.update', $adopcion->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
+
         <div class="form-group">
             <label for="contenido">Contenido</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90"></textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="255">{{ old('contenido', $adopcion->contenido) }}</textarea>
         </div>
 
         <div class="form-group">
@@ -62,12 +51,14 @@
             </div>
         </div>
 
-        <div class="form-group image-preview-container" id="image-preview-container" style="display: none;">
-            <img id="image-preview" src="" alt="Vista previa de la imagen">
-            <div class="image-caption">Vista Previa</div>
-        </div>
+        @if($adopcion->imagen)
+            <div class="form-group image-preview-container">
+                <img id="image-preview" src="{{ asset('storage/'.$adopcion->imagen) }}" alt="Vista previa de la imagen">
+                <div class="image-caption">Vista Previa</div>
+            </div>
+        @endif
 
-        <button type="submit" class="btn btn-success">Crear Adopción</button>
+        <button type="submit" class="btn btn-success">Actualizar Adopción</button>
     </form>
 </div>
 

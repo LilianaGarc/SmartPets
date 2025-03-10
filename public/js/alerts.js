@@ -2,7 +2,9 @@ function confirmDeleteAdopcion(adopcionId) {
     Swal.fire({
         title: "¿Estás seguro?",
         text: "¡No podrás revertir esto!",
-        icon: "warning",
+        imageUrl: "/images/pensando.webp",
+        imageWidth: 120,
+        imageHeight: 120,
         showCancelButton: true,
         confirmButtonColor: "#1e4183",
         cancelButtonColor: "rgb(255,127,80)",
@@ -18,7 +20,9 @@ function confirmDeleteSolicitud(adopcionId, solicitudId) {
     Swal.fire({
         title: "¿Estás seguro?",
         text: "¡No podrás revertir esto!",
-        icon: "warning",
+        imageUrl: "/images/pensando.webp",
+        imageWidth: 120,
+        imageHeight: 120,
         showCancelButton: true,
         confirmButtonColor: "#1e4183",
         cancelButtonColor: "rgb(255,127,80)",

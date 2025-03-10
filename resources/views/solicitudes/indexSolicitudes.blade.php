@@ -49,24 +49,31 @@
             <div class="solicitud-card">
                 <div class="content-wrapper">
                     <p class="solicitud-text">{{ $solicitud->contenido }}</p>
-                    <div class="botones">
-                        @if($solicitud->comprobante)
-                            <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank" class="btn-view">
-                                <i class="fas fa-file-pdf"></i>Identidad
-                            </a>
-                        @endif
-                        <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
-                            <i class="fas fa-edit"></i>Editar
+                    <div class="tooltip">
+                        <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
+                            <i class="fas fa-eye"></i>
                         </a>
+                        <span class="tooltiptext">Ver solicitud</span>
+                    </div>
 
+                    <div class="tooltip">
+                        <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <span class="tooltiptext">Editar solicitud</span>
+                    </div>
+
+                    <div class="tooltip">
                         <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn-eliminar" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
-                                <i class="fas fa-trash-alt"></i> Eliminar
+                                <i class="fas fa-trash"></i>
                             </button>
+                            <span class="tooltiptext">Eliminar solicitud</span>
                         </form>
                     </div>
+
                 </div>
             </div>
         @endforeach
