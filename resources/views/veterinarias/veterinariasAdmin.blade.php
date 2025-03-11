@@ -1,4 +1,4 @@
-@extends('layout.plantilla')
+@extends('layout.plantillaSaid')
 @section('titulo', 'Administrar Veterinarias')
 @section('contenido')
 <div class="container-fluid px-0">

@@ -1,4 +1,4 @@
-@extends('layout.plantilla')
+@extends('layout.plantillaSaid')
 
 @section('titulo', 'Creación de Veterinaria')
 
@@ -124,5 +124,8 @@
             </div>
         </div>
     </div>
+    <br>
+    <button type="submit" class="btn-guardar">Guardar</button>
+    <input class="btn btn-danger" type="reset" value="Limpiar">
 </form>
 @endsection

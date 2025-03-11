@@ -13,6 +13,6 @@ class VeterinariasTableSeeder extends Seeder
      */
     public function run(): void
     {
-
+        Veterinaria::factory(50)->create();
     }
 }
