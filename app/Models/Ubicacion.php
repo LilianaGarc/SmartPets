@@ -15,12 +15,10 @@ class Ubicacion extends Model
         'ciudad',
         'departamento',
         'municipio',
-        'veterinaria_id',
     ];
 
-
-    public function veterinaria(){
+    public function veterinarias(){
         //Una ubicaion pertenece a una veterinaria (1)
-        return $this->belongsTo(Veterinaria::class);
+        return $this->hasMany(Veterinaria::class, 'id_ubicacion');
     }
 }

@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('horario_cierre');
             $table->string('telefono');
             $table->json('imagen')->nullable(); // guarda las imagenes
-            $table->json('redes_sociales')->nullable(); // guarda las redes sociales
             $table->decimal('evaluacion', 2,1)->default(0); //evaluaciones
-            //$table->decimal('honorarios');
+            $table->foreignId('id_ubicacion')->constrained('ubicaciones')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+            //$table->json('redes_sociales')->nullable(); // guarda las redes sociales
         });
     }
     /**

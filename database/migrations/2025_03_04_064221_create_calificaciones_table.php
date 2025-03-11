@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ubicaciones', function (Blueprint $table) {
+        Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
-            $table->string('departamento');
-            $table->string('ciudad');
-            $table->string('municipio');
-            $table->string('direccion');
+            $table->foreignId('id_user')->constrained('users');
+            $table->foreignId('id_veterinaria')->constrained('veterinarias');
+            $table->integer('calificacion');
+            $table->string('opinion');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('ubicaciones');
+        Schema::dropIfExists('calificaciones');
     }
 };
