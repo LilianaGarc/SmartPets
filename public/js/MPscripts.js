@@ -1,45 +1,3 @@
-/* jona: logica del carusel */
-let currentIndex = 0;
-
-const container = document.querySelector('.cuadrado-container');
-const items = document.querySelectorAll('.cuadrado');
-const totalItems = items.length;
-const itemsVisible = 4;
-const prevBtn = document.querySelector('.carousel-btn.prev');
-const nextBtn = document.querySelector('.carousel-btn.next');
-
-function moveCarusel(direction) {
-    const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight);
-
-    if (direction === 'next') {
-        if (currentIndex < totalItems - itemsVisible) {
-            currentIndex++;
-        }
-    }
-    else if (direction === 'prev') {
-        if (currentIndex > 0) {
-            currentIndex--;
-        }
-    }
-
-    const offset = -currentIndex * itemWidth;
-    container.style.transform = `translateX(${offset}px)`;
-
-    if (currentIndex === 0) {
-        prevBtn.style.display = 'none';
-    } else {
-        prevBtn.style.display = 'block';
-    }
-
-    if (currentIndex === totalItems - itemsVisible) {
-        nextBtn.style.display = 'none';
-    } else {
-        nextBtn.style.display = 'block';
-    }
-}
-
-moveCarusel();
-
 
 /* jona: efecto del desenfoque de los demas cuadrados */
 const cards = document.querySelectorAll('.cuadrado');
@@ -59,8 +17,6 @@ cards.forEach(card => {
     });
 });
 
-
-/* parallax adopta y rescata*/
 function onScroll() {
     const visionSection = document.querySelector('.vision');
     const misionSection = document.querySelector('.mision');
@@ -71,16 +27,23 @@ function onScroll() {
     if (visionPosition < window.innerHeight * 0.8) {
         visionSection.style.opacity = 1;
         visionSection.style.transform = 'translateY(0)';
+        document.querySelector('.vision h2').style.opacity = 1;
+        document.querySelector('.vision h2').style.transform = 'translateY(0)';
+        document.querySelector('.vision p').style.opacity = 1;
+        document.querySelector('.vision p').style.transform = 'translateY(0)';
     }
 
     if (misionPosition < window.innerHeight * 0.8) {
         misionSection.style.opacity = 1;
         misionSection.style.transform = 'translateY(0)';
+        document.querySelector('.mision h2').style.opacity = 1;
+        document.querySelector('.mision h2').style.transform = 'translateY(0)';
+        document.querySelector('.mision p').style.opacity = 1;
+        document.querySelector('.mision p').style.transform = 'translateY(0)';
     }
 }
 
 window.addEventListener('scroll', onScroll);
-
 onScroll();
 
 function setParallaxEffect() {
@@ -95,5 +58,20 @@ function setParallaxEffect() {
 }
 
 window.addEventListener('scroll', setParallaxEffect);
-
 setParallaxEffect();
+
+
+
+
+let currentIndex = 0;
+const images = document.querySelectorAll('.image-item');
+const totalImages = images.length;
+
+function changeImage() {
+    const container = document.querySelector('.image-container');
+    currentIndex = (currentIndex + 1) % totalImages;
+    container.style.transform = `translateX(-${currentIndex * 33.3333}%)`;
+}
+
+setInterval(changeImage, 5500);
+
