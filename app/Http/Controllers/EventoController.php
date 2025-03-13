@@ -68,7 +68,14 @@ class EventoController
     public function show($id)
     {
         $evento = Evento::findOrFail($id);
-        return view('eventos.show', compact('evento'));
+
+        $eventosRecomendados = Evento::where('id', '!=', $evento->id)
+            ->inRandomOrder()
+            ->take(5)
+            ->get();
+
+        return view('eventos.show', compact('evento', 'eventosRecomendados'));
+
     }
 
 
@@ -80,42 +87,43 @@ class EventoController
 
 
     public function update(Request $request, $id)
+
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'fecha' => 'required|date',
-            'telefono' => 'required| |max:15',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-
+            'telefono' => 'required|string|max:15',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // La imagen es opcional
         ]);
 
-
         $evento = Evento::findOrFail($id);
-
-
         if ($request->hasFile('imagen')) {
             if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
                 Storage::delete('public/' . $evento->imagen);
             }
-            $imagenPath = $request->file('imagen')->store('eventos', 'public');
-            $evento->imagen = $imagenPath;
+
+            $evento->imagen = $request->file('imagen')->store('eventos', 'public');
         }
+
 
         $evento->update([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
             'telefono' => $request->telefono,
-            'imagen' => $evento->imagen ?? null,
+            'imagen' => $evento->imagen,
+
         ]);
 
+        if ($evento->update('all')) {
+
+            return redirect()->route('eventos.index')->with('exito', 'Evento actualizado correctamente.');
+        }
 
 
-        $evento->update($request->all());
-
-        return redirect()->route('eventos.index')->with('exito', 'Evento actualizado correctamente.');
     }
+
 
     public function destroy($id)
     {
@@ -145,4 +153,6 @@ class EventoController
             return redirect()->route('eventos.panel')->with('exito', 'El evento se elimino correctamente.');
         }
     }
+
+
 }
