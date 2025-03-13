@@ -9,6 +9,7 @@
 <body>
 
 @include('MenuPrincipal.Navbar')
+
 <div class="image-carousel">
     <div class="image-container">
         <div class="image-item">
@@ -64,7 +65,7 @@
     <div class="vision-content">
         <h2>Comparte historias de tus mascotas</h2>
         <p>SmartPets te invita a compartir momentos especiales y conectar con una comunidad unida por el amor a los animales.</p>
-        <button class="ver-mas-btn" onclick="window.location.href=''">Ver más</button>
+        <button class="ver-mas-btn" onclick="window.location.href='{{ route('publicaciones.index') }}'">Ver más</button>
     </div>
     <div class="vision-image">
         <img src="{{ asset('images/abrazo.webp') }}" alt="Imagen de visión">
@@ -122,31 +123,31 @@
 </section>
 
 <section class="petshop-section">
-    <h2>Explora nuestro PetShop</h2>
+    <h2>Explora nuestra PetShop</h2>
     <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
     <div class="petshop-container">
         <div class="petshop-item petshop-item-top-left">
-            <img src="{{ asset('images/producto.webp') }}" alt="Producto 1">
-            <div class="petshop-item-text">Juguetes para Perros</div>
+            <img src="{{ asset('images/producto1.webp') }}" alt="Producto 1">
+            <div class="petshop-item-text">Juguetes</div>
         </div>
-        <div class="petshop-item">
-            <img src="{{ asset('images/producto.webp') }}" alt="Producto 2">
-            <div class="petshop-item-text">Camas para Gatos</div>
+        <div class="petshop-item petshop-item-2">
+            <img src="{{ asset('images/producto2.webp') }}" alt="Producto 2">
+            <div class="petshop-item-text">Camas</div>
         </div>
         <div class="petshop-item petshop-item-top-right">
-            <img src="{{ asset('images/producto.webp') }}" alt="Producto 3">
-            <div class="petshop-item-text">Accesorios para Mascotas</div>
+            <img src="{{ asset('images/producto3.webp') }}" alt="Producto 3">
+            <div class="petshop-item-text">Accesorios</div>
         </div>
         <div class="petshop-item petshop-item-bottom-left">
             <img src="{{ asset('images/producto.webp') }}" alt="Producto 4">
-            <div class="petshop-item-text">Comida para Perros</div>
+            <div class="petshop-item-text">Comida </div>
         </div>
         <div class="petshop-item petshop-item-bottom-right">
-            <img src="{{ asset('images/producto.webp') }}" alt="Producto 6">
-            <div class="petshop-item-text">Ropa para Perros</div>
+            <img src="{{ asset('images/producto5.webp') }}" alt="Producto 6">
+            <div class="petshop-item-text">Ropa</div>
         </div>
-        <div class="petshop-item">
-            <img src="{{ asset('images/producto.webp') }}" alt="Producto 5">
+        <div class="petshop-item petshop-item-3">
+            <img src="{{ asset('images/producto6.webp') }}" alt="Producto 5">
             <div class="petshop-item-text">Cuidado Dental</div>
         </div>
 

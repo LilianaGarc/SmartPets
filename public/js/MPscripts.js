@@ -73,5 +73,20 @@ function changeImage() {
     container.style.transform = `translateX(-${currentIndex * 33.3333}%)`;
 }
 
-setInterval(changeImage, 5500);
+function checkScreenSize() {
+    const screenWidth = window.innerWidth;
 
+    if (screenWidth <= 768) {
+        clearInterval(imageInterval);
+        return;
+    }
+
+    if (!imageInterval) {
+        imageInterval = setInterval(changeImage, 5500);
+    }
+}
+
+let imageInterval;
+checkScreenSize();
+
+window.addEventListener('resize', checkScreenSize);

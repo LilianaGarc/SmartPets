@@ -10,12 +10,27 @@
 @include('MenuPrincipal.Navbar')
 
 <div class="container">
-    <h2>
-        <a href="{{ route('adopciones.index') }}" class="btn-volver" style="text-decoration: none;">
-            <i class="fas fa-arrow-left" style="color: #ff7f50; font-size: 24px;"></i>
-        </a>
-        Solicitudes para la adopción
-    </h2>
+    <div class="breadcrumb-container">
+        <ul class="breadcrumb">
+            <li class="breadcrumb__item">
+                <a href="{{ route('index') }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Inicio</span>
+                </a>
+            </li>
+            <li class="breadcrumb__item">
+                <a href="{{ route('adopciones.index') }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Adopciones</span>
+                </a>
+            </li>
+            <li class="breadcrumb__item breadcrumb__item-active">
+                <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Solicitudes</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container2">
 
     @if(session('success'))
         <script>
