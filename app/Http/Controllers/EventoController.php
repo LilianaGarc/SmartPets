@@ -27,9 +27,19 @@ class EventoController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $eventos = Evento::paginate(15);
+
+        $busqueda = $request->input('q');
+
+
+        $eventos = Evento::when($busqueda, function ($query) use ($busqueda) {
+            return $query->where('titulo', 'LIKE', "%$busqueda%")
+                ->orWhere('descripcion', 'LIKE', "%$busqueda%")
+                ->orWhere('fecha', 'LIKE', "%$busqueda%")
+                ->orWhere('telefono', 'LIKE', "%$busqueda%");
+        })->orderBy('fecha', 'asc')->paginate(9);
+
         return view('eventos.index', compact('eventos'));
     }
 
