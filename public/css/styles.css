@@ -175,9 +175,12 @@ body {
     transform: scale(0.6) translateY(100%);
     opacity: 0;
     transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    animation: handAnimation 1s ease-out forwards;
+    animation: handAnimation 0.5s ease-out forwards;
     animation-play-state: paused;
+    pointer-events: none;
+    visibility: visible;
 }
+
 
 @keyframes handAnimation {
     0% {
@@ -213,7 +216,6 @@ body {
     height: 100%;
     background-size: cover;
     background-position: center;
-    cursor: pointer;
 }
 
 .vision .vision-image img {
@@ -240,7 +242,6 @@ body {
 .vision .ver-mas-btn {
     margin-left: auto;
 }
-
 
 .ver-mas-btn2 {
     background-color: #1e4183;
@@ -303,12 +304,6 @@ body {
     animation: postLift 1.5s ease-out forwards;
     animation-delay: 0.5s;
 }
-
-
-
-
-
-
 
 .compartir-mascotas {
     background-color: #ffffff;
@@ -382,6 +377,20 @@ body {
     margin-top: 6vw;
     width: 90%;
     height: auto;
+    padding: 30px 130px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.container2 {
+    margin-top: 3vw;
+    width: 90%;
+    height: auto;
     padding: 20px 80px;
     margin-left: auto;
     margin-right: auto;
@@ -391,6 +400,7 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
 
 form {
     display: flex;
@@ -480,7 +490,7 @@ input[type="file"] {
 
 button[type="submit"], .btn {
     padding: 12px 30px;
-    background-color: #ff7f50;
+    background-color: #1e4183;
     color: white;
     font-size: 1rem;
     font-weight: bold;
@@ -494,7 +504,7 @@ button[type="submit"], .btn {
 }
 
 button[type="submit"]:hover, .btn:hover {
-    background-color: #1e4183;
+    background-color: #ff7c40;
     transform: scale(1.05);
 }
 
@@ -1080,13 +1090,57 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         margin-right: 2vw;
     }
 
+    .image-carousel {
+        width: 100%;
+        max-height: 40vh;
+        top: 0;
+    }
+
+    .image-carousel .image-container {
+        width: 300%;
+        height: 100%;
+        transition: none;
+    }
+
+    .image-item {
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-container img {
+        object-fit: cover;
+    }
+
+    .image-container .carousel-text {
+        font-size: 1.4rem;
+        width: 9%;
+        top: 15%;
+        left: 5%;
+    }
+
+    .image-container .carousel-subtext {
+        font-size: 1.1rem;
+        width: 40%;
+        top: 60%;
+        left: 5%;
+    }
+
+    .image-item:nth-child(n+2) .carousel-text,
+    .image-item:nth-child(n+2) .carousel-subtext {
+        display: none;
+    }
+
+    .carousel-controls {
+        display: none;
+    }
+
     .cuadrado-container-wrapper {
-        height: 40vh;
+        height: 25vh;
         margin-top: 5vw;
     }
 
     .cuadrado-container {
-        gap: 1vw;
+        gap: 2vw;
         display: flex;
         flex-wrap: nowrap;
     }
@@ -1099,28 +1153,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     .cuadrado img {
         width: 100%;
         height: auto;
-    }
-
-    .carousel-btn {
-        font-size: 1.5rem;
-        padding: 0.8rem;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    @media (max-width: 480px) {
-        .carousel-btn {
-            font-size: 1.2rem;
-            padding: 0.6rem;
-        }
-    }
-
-    .carousel-btn.prev {
-        left: 5%;
-    }
-
-    .carousel-btn.next {
-        right: 5%;
     }
 
     .overlay p {
@@ -1137,9 +1169,235 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         font-size: 0.5rem;
     }
 
+    .vision {
+        padding: 10vw;
+        height: 400px;
+    }
+
+    .mision {
+        height: 350px;
+    }
+
+    .vision .vision-image {
+        top: 60%;
+        left: 40%;
+        width: 40%;
+        height: auto;
+        transform: translateX(-50%);
+    }
+
+    .vision-content, .mision-content {
+        max-width: 100%;
+        align-items: center;
+    }
+
+    .vision h2, .mision h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        opacity: 1;
+        text-align: center;
+        transform: translateY(0);
+    }
+
+    .vision p, .mision p {
+        font-size: 1.2rem;
+        max-width: 70%;
+        text-align: center;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hand-img {
+       display: none;
+    }
+
+    .ver-mas-btn, .ver-mas-btn2 {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+    }
+
+    .ver-mas-btn, .ver-mas-btn2 {
+        margin-top: 20px;
+    }
+
+    .compartir-mascota {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 90%;
+    }
+
+    .compartir-mascota .compartir-text {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .compartir-mascota .compartir-text h2{
+        font-size: 1.7rem;
+        width: 100%;
+    }
+
+    .compartir-mascota .compartir-text p {
+        font-size: 1.2rem;
+        padding: 0 80px;
+        width: 100%;
+        color: #1a1a1a;
+    }
+
+    .compartir-mascota .ver-mas-btn2 {
+        margin-left: 130px;
+        margin-bottom: 20px;
+    }
+
+    .phone-animation {
+        width: 250px;
+        height: 450px;
+    }
+
+    .phone {
+        width: 100%;
+        height: 100%;
+        border-radius: 30px;
+        border: rgb(101, 101, 101) solid 3px;
+        background-color: #333;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .screen {
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        overflow: hidden;
+    }
+
+    .notification-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 70%;
+        padding: 8px;
+        height: 25px;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .notification-bar img {
+        width: 60%;
+        height: auto;
+    }
+
+    .fondocel img {
+        width: 80%;
+        height: auto;
+    }
+
+    .message-box {
+        position: absolute;
+        bottom: 120px;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .message {
+        color: white;
+        border-radius: 12px;
+        padding: 5px 10px;
+        max-width: 75%;
+        opacity: 0;
+        transform: scale(0.8);
+        font-size: 12px;
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        transition-delay: 0.5s;
+    }
+
+    .message-left {
+        background-color: #e5e5e5;
+        align-self: flex-start;
+        color: #1a1a1a;
+    }
+
+    .message-right {
+        background-color: #1e4183;
+        align-self: center;
+    }
+
+    .phone:hover .fondocel {
+        filter: blur(3px);
+    }
+
+    .phone:hover .message:nth-child(1) {
+        opacity: 1;
+        transform: scale(1);
+        animation: fade-in 0.5s forwards;
+        animation-delay: 0s;
+    }
+
+    .phone:hover .message:nth-child(2) {
+        transform: scale(1);
+        animation: fade-in 0.5s forwards;
+        animation-delay: 1s;
+    }
+
+    .phone:hover .message:nth-child(3) {
+        transform: scale(1);
+        animation: fade-in 0.5s forwards;
+        animation-delay: 2s;
+    }
+
+    .phone:hover .message:nth-child(4) {
+        transform: scale(1);
+        animation: fade-in 0.5s forwards;
+        animation-delay: 3s;
+    }
+
     .container {
         width: 90%;
         padding: 20px;
+    }
+
+    .container2 {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .breadcrumb-container {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        margin-left: 60px;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .breadcrumb {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .breadcrumb__item {
+        font-size: 14px;
+        padding: 0 20px;
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    .breadcrumb__title {
+        font-size: 11px;
+    }
+
+    .adoption-text {
+        font-size: 10px;
     }
 
     .form-group {
@@ -1297,32 +1555,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         margin-top: 130px;
     }
 
-
-    .vision, .mision {
-        padding: 12vw 5vw;
-    }
-
-    .vision h2, .mision h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .vision p, .mision p {
-        font-size: 0.8rem;
-        line-height: 1.4;
-        max-width: 44%;
-    }
-
-    .vision {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .mision {
-        opacity: 0.8;
-        transform: translateY(0);
-    }
-
     .compartir-mascotas {
         padding: 5vw 5vw;
     }
@@ -1476,7 +1708,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 }
 
 .image-item:nth-child(1) .carousel-text {
-    animation: fadeInText 2s 1s forwards;
+    animation: fadeInText 1s 0.5s forwards;
 }
 
 .image-item:nth-child(1) .carousel-subtext {
@@ -1541,6 +1773,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 .compartir-text p {
     font-size: 18px;
+    line-height: 1.2;
     color: #555;
 }
 
@@ -1706,17 +1939,20 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 .petshop-item {
     background-color: #fff;
-    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     overflow: hidden;
     position: relative;
+    padding-bottom: 20px;
+    padding-top: 10px;
+
 }
 
 .petshop-item img {
     max-width: 100%;
-    height: auto;
+    object-fit: cover;
+    height: 250px;
     border-radius: 10px;
 }
 
@@ -1727,22 +1963,55 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 }
 
 .petshop-item-top-left {
+    background-color: #1e4183;
     grid-column: span 2;
+    color: #ffffff;
 }
 
 .petshop-item-top-right {
     grid-column: span 1;
+    background-color: #e3e3e3;
 }
 
 .petshop-item-bottom-left {
+    background-color: #e3e3e3;
     grid-column: span 1;
+    color: #000000;
 }
 
 .petshop-item-bottom-right {
     grid-column: span 2;
+    background-color: #e3e3e3;
+}
+
+.petshop-item-2 {
+    background-color: rgb(30, 65, 131);
+    grid-column: span 1;
+    color: #ffffff;
+}
+
+.petshop-item-3 {
+    background-color: rgb(30, 65, 131);
+    grid-column: span 1;
+    color: #ffffff;
 }
 
 @media (max-width: 768px) {
+    .petshop-section h2 {
+        font-size: 1.7rem;
+        margin-bottom: 10px;
+    }
+
+    .petshop-section p {
+        font-size: 1.2rem;
+        width: 60%;
+        padding: 10px 40px;
+        text-align: center;
+        margin: 0 auto;
+        color: #1a1a1a;
+        line-height: 1.2;
+    }
+
     .petshop-container {
         grid-template-columns: 1fr 1fr;
     }
@@ -1769,5 +2038,85 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     .petshop-item-bottom-right {
         grid-column: span 1;
     }
+}
+
+
+
+
+
+
+.breadcrumb-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.breadcrumb {
+    display: flex;
+    border-radius: 10px;
+    text-align: center;
+    height: 40px;
+    z-index: 1;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumb__item {
+    height: 100%;
+    background-color: white;
+    color: #252525;
+    font-family: 'Oswald', sans-serif;
+    border-radius: 7px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    transform: skew(-21deg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+    margin: 5px;
+    padding: 0 40px;
+}
+
+.breadcrumb__item:hover {
+    background: #1e4183;
+    color: #FFF;
+}
+
+.breadcrumb__inner {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    z-index: 2;
+    transform: skew(21deg);
+}
+
+.breadcrumb__title {
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.breadcrumb__item a {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.breadcrumb__item-active {
+    background-color: #1e4183;
+    color: #FFF;
+}
+
+.adoption-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
 }
 
