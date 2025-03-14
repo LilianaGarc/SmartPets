@@ -29,13 +29,16 @@ body {
     margin: 0 1.5vw;
     transition: color 0.3s ease, transform 0.3s ease;
 }
+
 .navbar a:hover {
     color: #ff7f50;
     transform: scale(1.1);
 }
 
-.navbar .logo {
-    margin-left: 5vw;
+.navbar .logo img {
+    width: 20vw;
+    height: auto;
+    margin-left: 3vw;
 }
 
 .cuadrado-container-wrapper {
@@ -51,7 +54,6 @@ body {
     position: relative;
     width: 100%;
     height: 20vw;
-    margin-top: 4vw;
     overflow: hidden;
     padding: 2vw 0;
 }
@@ -311,7 +313,6 @@ body {
     padding: 2vw 10vw;
     flex: 1;
 }
-
 
 .button {
     display: flex;
@@ -1075,25 +1076,41 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 /* Ajustes para telefonos */
 @media (max-width: 768px) {
 
-    .body{
+    .body {
         overflow-x: hidden;
+        margin: 0;
     }
 
     .navbar {
         padding: 1rem 2vw;
         flex-direction: row;
         justify-content: space-between;
+        height: 1.5rem;
+        display: flex;
     }
 
-    .navbar .logo {
+    .navbar .a {
         margin-left: 0;
         margin-right: 2vw;
     }
 
+    .navbar .logo {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar .logo img {
+        width: 40vw;
+        max-height: 100%;
+        height: auto;
+        padding: 0;
+    }
+
     .image-carousel {
         width: 100%;
-        max-height: 40vh;
-        top: 0;
+        max-height: 35vh;
+        top: -10px;
     }
 
     .image-carousel .image-container {
@@ -1112,16 +1129,15 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
     .image-container .carousel-text {
-        font-size: 1.4rem;
-        width: 9%;
-        top: 15%;
+        font-size: 1.3rem;
+        top: 20%;
         left: 5%;
     }
 
     .image-container .carousel-subtext {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         width: 40%;
-        top: 60%;
+        top: 65%;
         left: 5%;
     }
 
@@ -1135,24 +1151,36 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
     .cuadrado-container-wrapper {
-        height: 25vh;
-        margin-top: 5vw;
+        height: 55vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        margin:0 auto;
     }
 
     .cuadrado-container {
-        gap: 2vw;
+        gap: 5vw;
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
     }
 
     .cuadrado {
-        height: 16vh;
-        flex: 0 0 22.5%;
+        height: 23vh;
+        flex: 0 0 47%;
+        margin-bottom: 2vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .cuadrado img {
+        padding-top: 10vw;
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
     }
 
     .overlay p {
@@ -1162,46 +1190,55 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
     .cuadrado .texto-overlay {
         top: 18px;
-        font-size: 0.6rem;
-    }
-
-    .btnseccion {
-        font-size: 0.5rem;
+        font-size: 0.9rem;
     }
 
     .vision {
-        padding: 10vw;
-        height: 400px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
     }
 
-    .mision {
-        height: 350px;
+    .mision{
+        height: 300px;
+        display: flex;
+        background-color: rgba(237, 129, 25, 0.86);
+        background-image: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
     }
 
     .vision .vision-image {
-        top: 60%;
-        left: 40%;
-        width: 40%;
-        height: auto;
-        transform: translateX(-50%);
+       display: none;
     }
 
     .vision-content, .mision-content {
         max-width: 100%;
+        display: flex;
+        justify-content: center;
         align-items: center;
+        flex-direction: column;
+        text-align: center;
+        height: 100%;
     }
 
     .vision h2, .mision h2 {
-        font-size: 2rem;
+        font-size: 1.9rem;
         margin-bottom: 1rem;
         opacity: 1;
+        max-width: 100%;
         text-align: center;
         transform: translateY(0);
     }
 
     .vision p, .mision p {
         font-size: 1.2rem;
-        max-width: 70%;
+        max-width: 100%;
         text-align: center;
         opacity: 1;
         transform: translateY(0);
@@ -1211,151 +1248,64 @@ button, .btn-view, .btn-editar, .btn-eliminar {
        display: none;
     }
 
-    .ver-mas-btn, .ver-mas-btn2 {
-        padding: 0.8rem 2rem;
-        font-size: 1.1rem;
-    }
-
-    .ver-mas-btn, .ver-mas-btn2 {
-        margin-top: 20px;
+    .mision .ver-mas-btn, .vision .ver-mas-btn {
+        margin: 0;
     }
 
     .compartir-mascota {
+        padding: 0;
         display: flex;
+        justify-content: center;
+        align-items: center;
         flex-direction: column;
-        gap: 10px;
-        width: 90%;
-    }
-
-    .compartir-mascota .compartir-text {
-        max-width: 100%;
         text-align: center;
     }
 
-    .compartir-mascota .compartir-text h2{
-        font-size: 1.7rem;
+    .compartir-text {
         width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .compartir-text h2 {
+        font-size: 1.9rem;
     }
 
     .compartir-mascota .compartir-text p {
-        font-size: 1.2rem;
-        padding: 0 80px;
-        width: 100%;
-        color: #1a1a1a;
+        font-size: 1.1rem;
     }
 
-    .compartir-mascota .ver-mas-btn2 {
-        margin-left: 130px;
-        margin-bottom: 20px;
-    }
 
     .phone-animation {
-        width: 250px;
-        height: 450px;
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
     }
 
     .phone {
         width: 100%;
-        height: 100%;
-        border-radius: 30px;
-        border: rgb(101, 101, 101) solid 3px;
-        background-color: #333;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .screen {
-        width: 100%;
-        height: 100%;
-        background-color: #ffffff;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        overflow: hidden;
+        height: auto;
     }
 
     .notification-bar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 70%;
-        padding: 8px;
-        height: 25px;
-        border-radius: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .notification-bar img {
-        width: 60%;
-        height: auto;
+        width: 100%;
     }
 
     .fondocel img {
-        width: 80%;
-        height: auto;
+        width: 100%;
     }
 
     .message-box {
-        position: absolute;
-        bottom: 120px;
-        width: 90%;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        bottom: 100px;
+        width: 85%;
     }
 
     .message {
-        color: white;
-        border-radius: 12px;
-        padding: 5px 10px;
-        max-width: 75%;
-        opacity: 0;
-        transform: scale(0.8);
         font-size: 12px;
-        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-        transition-delay: 0.5s;
-    }
-
-    .message-left {
-        background-color: #e5e5e5;
-        align-self: flex-start;
-        color: #1a1a1a;
-    }
-
-    .message-right {
-        background-color: #1e4183;
-        align-self: center;
-    }
-
-    .phone:hover .fondocel {
-        filter: blur(3px);
-    }
-
-    .phone:hover .message:nth-child(1) {
-        opacity: 1;
-        transform: scale(1);
-        animation: fade-in 0.5s forwards;
-        animation-delay: 0s;
-    }
-
-    .phone:hover .message:nth-child(2) {
-        transform: scale(1);
-        animation: fade-in 0.5s forwards;
-        animation-delay: 1s;
-    }
-
-    .phone:hover .message:nth-child(3) {
-        transform: scale(1);
-        animation: fade-in 0.5s forwards;
-        animation-delay: 2s;
-    }
-
-    .phone:hover .message:nth-child(4) {
-        transform: scale(1);
-        animation: fade-in 0.5s forwards;
-        animation-delay: 3s;
+        max-width: 80%;
     }
 
     .container {
@@ -1555,21 +1505,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         margin-top: 130px;
     }
 
-    .compartir-mascotas {
-        padding: 5vw 5vw;
-    }
-
-    .compartir-text h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .compartir-text p {
-        font-size: 0.8rem;
-        line-height: 1.4;
-        max-width: 60%;
-    }
-
     .compartir-imagen img {
         width: 100%;
         max-height: 40vh;
@@ -1595,6 +1530,8 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
 }
+
+
 
 /* Modal imagen grande */
 .modal {
@@ -1635,19 +1572,18 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 }
 
 .image-carousel {
-    top: 5.5vw;
     position: relative;
     width: 90%;
-    height: 50vh;
+    height: calc(100vh - 500px);
     overflow: hidden;
     margin: 0 auto;
-    border-radius: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 100px;
 }
 
 .image-container {
     display: flex;
     width: 300%;
+    height: 100%;
     transition: transform 0.5s ease-in-out;
     background-color: #fff;
 }
@@ -1672,7 +1608,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     position: absolute;
     top: 20%;
     left: 10%;
-    width: 40%;
+    width: 35%;
     color: #fff;
     font-size: 3rem;
     font-weight: bold;
@@ -1684,9 +1620,9 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 .carousel-subtext {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 10%;
-    width: 40%;
+    width: 30%;
     color: #e1e1e1;
     font-size: 1.5rem;
     font-weight: 500;
@@ -1753,26 +1689,26 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 
 
-
 .compartir-mascota {
+    margin: 9vw 10vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5vw;
+    align-content: center;
     background-color: #ffffff;
 }
 
 .compartir-text {
-    max-width: 50%;
+    margin: 0 auto;
 }
 
 .compartir-text h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 1.9rem;
+    margin-bottom: 1rem;
 }
 
 .compartir-text p {
-    font-size: 18px;
+    font-size: 1.1rem;
     line-height: 1.2;
     color: #555;
 }
@@ -1781,6 +1717,9 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     position: relative;
     width: 300px;
     height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .phone {
@@ -1805,18 +1744,18 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     height: 100%;
     background-color: #ffffff;
     position: relative;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
     overflow: hidden;
 }
-
 
 .notification-bar {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 80%;
     padding: 10px;
     height: 30px;
@@ -1827,22 +1766,23 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 }
 
 .notification-bar img {
-    width: 70%;
+    width: 100%;
     height: auto;
 }
 
 .fondocel img {
-    width: 86%;
+    width: 100%;
     height: auto;
 }
 
 .message-box {
     position: absolute;
-    bottom: 140px;
+    bottom: 100px;
     width: 90%;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center;
 }
 
 .message {
@@ -1865,7 +1805,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 .message-right {
     background-color: #1e4183;
-    align-self: center;
+    align-self: flex-end;
 }
 
 .phone:hover .fondocel {
@@ -1998,21 +1938,17 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 @media (max-width: 768px) {
     .petshop-section h2 {
-        font-size: 1.7rem;
+        font-size: 1.9rem;
         margin-bottom: 10px;
     }
 
     .petshop-section p {
-        font-size: 1.2rem;
-        width: 60%;
-        padding: 10px 40px;
-        text-align: center;
-        margin: 0 auto;
-        color: #1a1a1a;
-        line-height: 1.2;
+        padding: 20px 55px;
+        font-size: 1.1rem;
     }
 
     .petshop-container {
+        margin: 0 10px;
         grid-template-columns: 1fr 1fr;
     }
 
