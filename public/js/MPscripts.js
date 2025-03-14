@@ -1,21 +1,29 @@
 
-/* jona: efecto del desenfoque de los demas cuadrados */
+// jona: efecto del desenfoque de los demás cuadrados
 const cards = document.querySelectorAll('.cuadrado');
-cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        cards.forEach(otherCard => {
-            if (otherCard !== card) {
-                otherCard.classList.add('not-hovered');
-            }
-        });
-    });
 
-    card.addEventListener('mouseleave', () => {
-        cards.forEach(otherCard => {
-            otherCard.classList.remove('not-hovered');
+function handleCardHover() {
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            cards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.add('not-hovered');
+                }
+            });
+        });
+
+        card.addEventListener('mouseleave', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('not-hovered');
+            });
         });
     });
-});
+}
+
+if (window.innerWidth > 768) {
+    handleCardHover();
+}
+
 
 function onScroll() {
     const visionSection = document.querySelector('.vision');

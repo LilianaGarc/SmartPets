@@ -10,7 +10,7 @@
 <nav class="navbar" id="navbar">
     <div class="logo">
         <a href="{{ route('index') }}">
-            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" style="width: 20vw; height: auto;">
+            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" >
         </a>
     </div>
     <div>
