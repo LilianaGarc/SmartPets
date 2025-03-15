@@ -41,7 +41,6 @@ body {
     margin-left: 3vw;
 }
 
-
 .cuadrado-container-wrapper {
     background-color: #ffffff;
     background-size: cover;
@@ -60,10 +59,13 @@ body {
 }
 
 .cuadrado-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 2vw;
-    width: 100%;
+    width: 1480px;
     justify-content: center;
+    align-items: center;
+    padding: 1.5vw 0;
 }
 
 .cuadrado {
@@ -79,7 +81,6 @@ body {
     cursor: pointer;
     transition: transform 0.4s ease, box-shadow 0.3s ease, background-color 0.5s ease;
     height: 35vh;
-    flex: 0 0 21%;
     box-sizing: border-box;
 }
 
@@ -98,7 +99,6 @@ body {
 .cuadrado:nth-child(4) .texto-overlay {
     color: #494949;
 }
-
 
 .cuadrado img {
     width: 90%;
@@ -135,10 +135,10 @@ body {
     transition: filter 0.5s ease;
 }
 
-/* jona: efecto desenfoque */
 .cuadrado-container .cuadrado.not-hovered {
     filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
 }
+
 
 
 
@@ -390,7 +390,7 @@ body {
 }
 
 .container2 {
-    margin-top: 3vw;
+    margin-top: 8vw;
     width: 90%;
     height: auto;
     padding: 20px 80px;
@@ -1131,15 +1131,15 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
     .image-container .carousel-text {
         font-size: 1.2rem;
-        top: 20%;
+        top: 10%;
         height: 35%;
         left: 5%;
         width: 30%;
     }
 
     .image-container .carousel-subtext {
-        font-size: 0.8rem;
-        width: 30%;
+        font-size: 0.7rem;
+        width: 35%;
         top: 65%;
         height: 25%;
         left: 5%;
@@ -1154,6 +1154,10 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         display: none;
     }
 
+    .cuadrado-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .cuadrado-container-wrapper {
         height: 50vh;
         display: flex;
@@ -1161,14 +1165,8 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         justify-content: center;
         width: 90%;
         margin:0 auto;
-    }
-
-    .cuadrado-container {
-        gap: 5vw;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
+        transform: none;
+        transition: none;
     }
 
     .cuadrado {
@@ -1179,7 +1177,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         justify-content: center;
         align-items: center;
         transform: none;
-        background: none;
+        transition: none;
     }
 
     .cuadrado img {
@@ -1187,6 +1185,8 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: none;
+        transition: none;
     }
 
     .overlay p {
@@ -1198,6 +1198,29 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         top: 18px;
         font-size: 0.9rem;
     }
+
+    .cuadrado-container-wrapper {
+        transition: none;
+    }
+
+    .cuadrado {
+        transition: none;
+        box-shadow: none;
+    }
+
+    .cuadrado:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .cuadrado img {
+        transition: none;
+    }
+
+    .cuadrado .texto-overlay {
+        transition: none;
+    }
+
 
     .vision {
         height: 300px;
@@ -1533,7 +1556,191 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
 }
+@media (max-width: 1024px) and (min-width: 768px) {
 
+    .body {
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    .navbar {
+        padding: 1rem 2vw;
+        flex-direction: row;
+        justify-content: space-between;
+        height: auto;
+    }
+
+    .navbar .a {
+        margin-left: 0;
+        margin-right: 2vw;
+    }
+
+    .navbar .logo {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar .logo img {
+        width: 30vw;
+        max-height: 100%;
+        height: auto;
+    }
+
+    .image-carousel {
+        width: 100%;
+        max-height: 40vh;
+        top: -20px;
+    }
+
+    .image-carousel .image-container {
+        width: 300%;
+        height: 100%;
+        transition: none;
+    }
+
+    .image-container .carousel-text {
+        top: 30%;
+        font-size: 1.5rem;
+    }
+
+    .image-container .carousel-subtext {
+        font-size: 0.9rem;
+    }
+
+    .cuadrado-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cuadrado-container-wrapper {
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .cuadrado {
+        height: 20vh;
+        margin-bottom: 2vw;
+    }
+
+    .cuadrado img {
+        width: 70%;
+        height: 80%;
+        object-fit: cover;
+    }
+
+    .cuadrado .texto-overlay {
+        font-size: 1rem;
+    }
+
+    .vision,
+    .mision {
+        height: 250px;
+    }
+
+    .mision {
+        background-image: none;
+        background-color: rgba(237, 129, 25, 0.86);
+    }
+
+    .vision h2, .mision h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .vision p, .mision p {
+        font-size: 1.1rem;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .compartir-mascota {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .compartir-text h2 {
+        font-size: 1.7rem;
+    }
+
+    .compartir-mascota .compartir-text p {
+        font-size: 1.1rem;
+    }
+
+    .btn-solicitar, .btn-eliminar {
+        font-size: 0.9rem;
+        padding: 6px 20px;
+    }
+
+    .btn-solicitar:hover, .btn-eliminar:hover {
+        transform: scale(1.02);
+    }
+
+    .solicitudes-container {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .solicitud-card {
+        padding: 12px;
+        gap: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table th,
+    .table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .comprobante-container img {
+        max-height: 180px;
+    }
+
+    .footer {
+        background-color: rgba(189, 76, 76, 0);
+        color: #000000;
+        text-align: center;
+        width: 100%;
+        height: 80px;
+    }
+
+    .adopcion-card img {
+        height: 180px;
+    }
+
+    .message-box {
+        bottom: 90px;
+        width: 90%;
+    }
+
+    .breadcrumb-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb__item .breadcrumb__title {
+        font-size: 10px;
+    }
+
+    .vision .vision-image,
+    .hand-img,
+    .compartir-imagen,
+    .carousel-controls {
+        display: none;
+    }
+}
 
 
 /* Modal imagen grande */
