@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Solicitudes</title>
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
@@ -83,7 +84,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn-eliminar" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
-                                <i class="fas fa-trash"></i>
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                             <span class="tooltiptext">Eliminar solicitud</span>
                         </form>

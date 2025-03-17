@@ -123,11 +123,6 @@ body {
 
 .cuadrado:hover {
     transform: scale(1.1) translateZ(0);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-.cuadrado:hover img {
-    transform: scale(1.1);
 }
 
 .cuadrado-container .cuadrado {
@@ -390,7 +385,7 @@ body {
 }
 
 .container2 {
-    margin-top: 8vw;
+    margin-top: 1vw;
     width: 90%;
     height: auto;
     padding: 20px 80px;
@@ -856,8 +851,9 @@ button[type="submit"]:hover, .btn:hover {
     justify-content: center;
     align-items: center;
     padding: 1em;
+    border: 0px solid transparent;
     border-radius: 1.25em;
-    background-color: rgba(100,77,237,0.08);
+    background-color: rgba(30, 65, 131, 0.23);
     transition: all 0.2s linear;
     text-decoration: none;
     color: black;
@@ -865,14 +861,14 @@ button[type="submit"]:hover, .btn:hover {
 }
 
 
-button, .btn-view, .btn-editar, .btn-eliminar {
+button, .btn-view, .btn-editar {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1em;
     border: 0px solid transparent;
-    background-color: rgba(100,77,237,0.08);
+    background-color: rgba(30, 65, 131, 0.23);
     border-radius: 1.25em;
     transition: all 0.2s linear;
     text-decoration: none;
@@ -886,7 +882,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 6em;
+    width: 5em;
     background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     text-align: center;
@@ -895,7 +891,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     position: absolute;
     z-index: 1;
     bottom: 80%;
-    left: 60%;
     transform: translateY(-50%);
 }
 
@@ -1304,7 +1299,7 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
     .compartir-mascota .compartir-text p {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
 
@@ -1375,6 +1370,9 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         line-height: 1.2;
     }
 
+    .container2 {
+        margin-top: 8vw;
+    }
 
     .form-group {
         width: 100%;
@@ -1424,11 +1422,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         padding: 4px 15px;
     }
 
-    .btn-eliminar {
-        font-size: 1rem;
-        padding: 8px 30px;
-    }
-
     .btn-solicitar:hover {
         transform: scale(1.02);
     }
@@ -1438,8 +1431,9 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
     .btn-eliminar i {
-        font-size: 1.4rem;
+        font-size: 1.1rem;
     }
+
     .dropdown-content form button {
         font-size: 12px;
         padding: 8px;
@@ -1477,7 +1471,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
         width: 100%;
         margin-top: 10px;
     }
-
 
     .btn-view,
     .btn-editar {
@@ -1920,7 +1913,6 @@ button, .btn-view, .btn-editar, .btn-eliminar {
 .compartir-text p {
     font-size: 1.1rem;
     line-height: 1.2;
-    color: #555;
 }
 
 .phone-animation {
@@ -2153,8 +2145,8 @@ button, .btn-view, .btn-editar, .btn-eliminar {
     }
 
     .petshop-section p {
-        padding: 20px 55px;
-        font-size: 1.1rem;
+        padding: 20px 35px;
+        font-size: 1.2rem;
     }
 
     .petshop-container {
