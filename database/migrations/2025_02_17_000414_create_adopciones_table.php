@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('contenido');
             $table->string('imagen')->nullable();
-            $table->boolean('visibilidad');
+            $table->unsignedInteger('visibilidad')->default(0);
             $table->unsignedBigInteger('id_usuario')->nullable()->change();
             $table->string('estado')->default('pendiente')->change();
             $table->timestamps();

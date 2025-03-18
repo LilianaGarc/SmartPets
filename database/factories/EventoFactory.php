@@ -18,6 +18,11 @@ class EventoFactory extends Factory
     {
         return [
             //
+            'titulo' => $this->faker->name(),
+            'descripcion' => $this->faker->text(),
+            'fecha' => $this->faker->date(),
+            'telefono' => $this->faker->phoneNumber(),
+            'imagen' => $this->faker->image(),
         ];
     }
 }

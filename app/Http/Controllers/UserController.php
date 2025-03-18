@@ -12,6 +12,16 @@ class UserController
         $users = User::all();
         return view('panelAdministrativo.usersIndex')->with('users', $users);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $users = User::orderby('created_at', 'desc')
+            ->where('name', 'LIKE', "%$nombre%")
+            ->orWhere('email', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.usersIndex')->with('users', $users);
+    }
+
     /**
      * Display a listing of the resource.
      */

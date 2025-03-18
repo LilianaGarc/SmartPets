@@ -12,6 +12,17 @@ class UbicacionController
         $ubicaciones = Ubicacion::all();
         return view('panelAdministrativo.ubicacionesIndex')->with('ubicaciones', $ubicaciones);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $ubicaciones = Ubicacion::orderby('created_at', 'desc')
+            ->where('direccion', 'LIKE', "%$nombre%")
+            ->orWhere('ciudad', 'LIKE', "%$nombre%")
+            ->orWhere('municipio', 'LIKE', "%$nombre%")
+            ->orWhere('departamento', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.ubicacionesIndex')->with('ubicaciones', $ubicaciones);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -13,6 +13,6 @@ class ChatsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Chat::factory(100)->create();
+
     }
 }

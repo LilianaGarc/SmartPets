@@ -13,22 +13,35 @@ class ProductoController extends Controller
         $productos = Producto::all();
         return view('panelAdministrativo.productosIndex')->with('productos', $productos);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $productos = Producto::orderby('created_at', 'desc')
+            ->where('nombre', 'LIKE', "%$nombre%")
+            ->where('descripcion', 'LIKE', "%$nombre%")
+            ->where('precio', 'LIKE', "%$nombre%")
+            ->orWhere('stock', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.productosIndex')->with('productos', $productos);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = $request->input('query');
-        $productos = Producto::when($query, function ($q) use ($query) {
-            return $q->where('nombre', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%");
-        })->paginate(5);
+        $busqueda = $request->input('query');
+
+        $productos = Producto::when($busqueda, function ($query) use ($busqueda) {
+            return $query->where('nombre', 'LIKE', "%$busqueda%")
+                ->orWhere('descripcion', 'LIKE', "%$busqueda%")
+                ->orWhere('precio', 'LIKE', "%$busqueda%");
+        })->paginate(12);
 
         return view('productos.productos-lista')->with([
-            'productos' => Producto::paginate(12),
+            'productos' => $productos,
             'categorias' => Categoria::limit(5)->get()
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */

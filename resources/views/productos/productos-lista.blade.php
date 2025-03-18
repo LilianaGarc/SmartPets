@@ -107,12 +107,12 @@
             <div class="row g-4">
                 @forelse($productos as $producto)
                     <div class="col-6 col-md-3">
-                        <div class="offer-card h-100">
+                        <div class="offer-card h-80">
                             <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
                             {{ $producto->nombre }}" class="w-100">
-                            <div class="detalles p-2">
-                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
-                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
+                            <div class="detalles p-1 mx-2 d-flex justify-content-center">
+                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
+                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
                             </div>
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
@@ -132,49 +132,7 @@
         </div>
     </section>
 
-    <script>
-        document.getElementById('search-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let query = document.getElementById('search-query').value;
 
-            fetch(`{{ route('productos.buscar') }}?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    let productosContainer = document.querySelector('.row.g-4');
-                    productosContainer.innerHTML = '';
-
-                    if (data.length > 0) {
-                        data.forEach(producto => {
-                            let productoHTML = `
-                            <div class="col-6 col-md-3">
-                                <div class="offer-card h-100">
-                                    <img src="${producto.imagen ? `{{ url('storage/') }}/${producto.imagen}` : `{{ asset('images/img_PorDefecto.jpg') }}`}" alt="${producto.nombre}" class="w-100">
-                                    <div class="detalles p-2">
-                                        <button class="category-pill active" onclick="window.location.href='{{ url('productos') }}/${producto.id}'">Ver</button>
-                                        <button class="category-pill active" onclick="window.location.href='{{ url('productos') }}/${producto.id}/edit'">Editar</button>
-                                    </div>
-                                    <div class="p-3">
-                                        <h6>${producto.nombre}</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                            productosContainer.insertAdjacentHTML('beforeend', productoHTML);
-                        });
-                    } else {
-                        productosContainer.innerHTML = '<div class="col-12"><p class="text-center">No se han encontrado productos.</p></div>';
-                    }
-
-                    // Actualizar la URL sin recargar la página
-                    if (query) {
-                        history.pushState(null, '', `?query=${query}`);
-                    } else {
-                        history.pushState(null, '', '{{ route('productos.index') }}');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

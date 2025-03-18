@@ -11,7 +11,7 @@ class Comentario extends Model
 
     public function publicacion(){
         //Varios comentarios pertenecen una publicacion (N)
-        return $this->belongsTo(Publicacion::class);
+        return $this->belongsTo(Publicacion::class, 'id_publicacion');
     }
 
     public function user(){

@@ -11,62 +11,84 @@
             {{ session('fracaso') }}
         </div>
     @endif
-    <h2>  |   Productos </h2>
+    <h3>  |   Productos </h3>
+    <hr>
+    <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+        <div class="row">
+            <div class="col">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+        </div>
+        </div>
+    </form>
+    <hr>
 
 
-    <table class="table table-striped table-bordered" style="margin: 15px;  ">
-        <thead>
-        <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col">Descripcion</th>
-            <th scope="col">Precio</th>
-            <th scope="col">Stock</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($productos as $producto)
+    <div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
+        <table class="table table-striped table-bordered">
+            <thead>
             <tr>
-                <td>{{  $producto->nombre}}</td>
-                <td>{{  $producto->descripcion}}</td>
-                <td>{{  $producto->precio}}</td>
-                <td>{{  $producto->stock}}</td>
-                <td>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Stock</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($productos as $producto)
+                <tr>
+                    <td>{{  $producto->nombre}}</td>
+                    <td>{{  $producto->descripcion}}</td>
+                    <td>{{  $producto->precio}}</td>
+                    <td>{{  $producto->stock}}</td>
+                    <td style="text-align: center;">
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Detalles</a></li>
+                                <li><a class="dropdown-item" href="#">Editar</a></li>
+                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$producto->id}}">Eliminar</a></li>
+                            </ul>
+                        </div>
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$producto->id}}">
-                        <i class="fas fa-trash"></i>
-                    </button>
 
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalEliminar{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar producto</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Esta seguro de eliminar el producto?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <form method="post" action="{{ route('productos.paneldestroy' , ['id'=>$producto->id]) }}">
-                                        @csrf
-                                        @method('delete')
-                                        <input type="submit" value="Eliminar" class="btn btn-danger">
-                                    </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalEliminar{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar producto</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Esta seguro de eliminar el producto?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form method="post" action="{{ route('productos.paneldestroy' , ['id'=>$producto->id]) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <input type="submit" value="Eliminar" class="btn btn-danger">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </td>
+                    </td>
 
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+
 
 
 @endsection

@@ -10,13 +10,10 @@
 <nav class="navbar" id="navbar">
     <div class="logo">
         <a href="{{ route('index') }}">
-            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" style="width: 20vw; height: auto;">
+            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" >
         </a>
     </div>
     <div>
-        <a href="#">Perfil</a>
-        <a href="#">Ajustes</a>
-        <a href=""></a>
     </div>
 </nav>
 </body>

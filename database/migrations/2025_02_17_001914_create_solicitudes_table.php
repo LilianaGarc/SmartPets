@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('contenido');
             $table->string('comprobante')->nullable();
-            $table->integer('id_usuario');
+            $table->unsignedBigInteger('id_usuario')->nullable();
             $table->integer('id_adopcion');
+            $table->enum('experiencia', ['Sí', 'No'])->nullable();
+            $table->enum('vivienda', ['Casa', 'Departamento'])->nullable();
+            $table->enum('espacio', ['Sí', 'No'])->nullable();
+            $table->enum('otros_animales', ['Sí', 'No'])->nullable();
+            $table->enum('gastos_veterinarios', ['Sí', 'No'])->nullable();
             $table->timestamps();
         });
     }

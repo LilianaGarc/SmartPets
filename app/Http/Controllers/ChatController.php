@@ -12,6 +12,15 @@ class ChatController
         $chats = Chat::all();
         return view('panelAdministrativo.chatsIndex')->with('chats', $chats);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $chats = Chat::orderby('created_at', 'desc')
+            ->where('id_user', 'LIKE', "%$nombre%")
+            ->orWhere('id_user', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.chatsIndex')->with('chats', $chats);
+    }
     /**
      * Display a listing of the resource.
      */

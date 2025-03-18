@@ -12,6 +12,16 @@ class MensajeController
         $mensajes = Mensaje::all();
         return view('panelAdministrativo.mensajesIndex')->with('mensajes', $mensajes);
     }
+
+    public function search( Request $request)
+    {
+        $nombre = $request->get('nombre');
+        $mensajes = Mensaje::orderby('created_at', 'desc')
+            ->where('id_chat', 'LIKE', "%$nombre%")
+            ->where('texto', 'LIKE', "%$nombre%")
+            ->orWhere('fecha', 'LIKE', "%$nombre%")->get();
+        return view('panelAdministrativo.mensajesIndex')->with('mensajes', $mensajes);
+    }
     /**
      * Display a listing of the resource.
      */
