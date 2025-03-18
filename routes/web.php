@@ -9,6 +9,7 @@ use App\Http\Controllers\MensajeController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VeterinariaController;
+use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
 use Illuminate\Support\Facades\Route;
@@ -55,10 +56,18 @@ Route::resource('productos',ProductoController::class);
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
 //Rutas para Veterinarias
+//Administrativas
 Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
 Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
+Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
+
+//Publicas
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
-Route::post('/calificaciones', [VeterinariaController::class, 'storeCalificacion'])->name('calificaciones.store');
+
+Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store'); // Guardar calificación
+Route::get('/calificaciones/{id}/edit', [CalificacionController::class, 'edit'])->name('calificaciones.edit'); // Formulario de edición
+Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update'); // Actualizar calificación
+Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy'); // Eliminar calificación
 
 Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
@@ -69,7 +78,6 @@ Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])-
 Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
 Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
 
-Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
 
 //Rutas para Publicaciones
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
