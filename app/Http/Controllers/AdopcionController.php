@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdopcionController extends Controller
 {
@@ -25,6 +26,9 @@ class AdopcionController extends Controller
     public function index()
     {
         $adopciones = Adopcion::all();
+        foreach ($adopciones as $adopcion) {
+            $adopcion->increment('visibilidad');
+        }
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
 
@@ -37,7 +41,7 @@ class AdopcionController extends Controller
     {
         $request->validate([
             'contenido' => 'required|string|max:255',
-            'imagen' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $rutaImagen = null;
@@ -53,6 +57,43 @@ class AdopcionController extends Controller
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
+
+    public function edit($id)
+    {
+        $adopcion = Adopcion::findOrFail($id);
+        return view('adopciones.edit', compact('adopcion'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'contenido' => 'required|string|max:255',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $adopcion = Adopcion::findOrFail($id);
+
+        if ($request->hasFile('imagen')) {
+            if ($adopcion->imagen) {
+                Storage::disk('public')->delete($adopcion->imagen);
+            }
+
+            $rutaImagen = $request->file('imagen')->store('adopciones', 'public');
+            $adopcion->imagen = $rutaImagen;
+        }
+
+        $adopcion->contenido = $request->contenido;
+        $adopcion->save();
+
+        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito.');
+    }
+
+    public function show($id)
+    {
+        $adopcion = Adopcion::findOrFail($id);
+        return view('adopciones.show', compact('adopcion'));
+    }
+
 
     public function destroy($id)
     {

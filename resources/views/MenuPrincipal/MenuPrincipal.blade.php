@@ -10,91 +10,166 @@
 
 @include('MenuPrincipal.Navbar')
 
-<div class="cuadrado-container-wrapper">
-    <button class="carousel-btn prev" onclick="moveCarusel('prev')" style="display: none;">←</button>
-
-    <div class="cuadrado-container">
-        <div class="cuadrado">
-            <div class="texto-overlay">Comparte historias de tus mascotas</div>
-            <img src="{{ asset('images/golden.webp') }}" alt="Mascota 1">
-            <div class="overlay">
-                <p>Comparte el día a día de tu mascota</p>
-                <button class="btnseccion" onclick="window.location.href='{{ route('publicaciones.index') }}'">Crear publicación</button>
-            </div>
+<div class="image-carousel">
+    <div class="image-container">
+        <div class="image-item">
+            <img src="{{ asset('images/disfruta.webp') }}" alt="Comparte momentos con tus mascotas">
+            <div class="carousel-text">Comparte momentos inolvidables con tus mascotas</div>
+            <div class="carousel-subtext">El amor incondicional de una mascota transforma tu vida. ¡Vívelo cada día!</div>
         </div>
 
-        <div class="cuadrado">
-            <div class="texto-overlay">Adopta una mascota</div>
-            <img src="{{ asset('images/cat.webp') }}" alt="Mascota 2">
-            <div class="overlay">
-                <p>Pon en adopción y adopta tu mascota preferida</p>
-                <button class="btnseccion" onclick="window.location.href='{{ route('adopciones.index') }}'">Adoptar mascota</button>
-            </div>
+        <div class="image-item">
+            <img src="{{ asset('images/comparte.webp') }}" alt="Adopta y rescata mascotas">
+            <div class="carousel-text black-text">Adopta y rescata, da un hogar lleno de amor</div>
+            <div class="carousel-subtext black-text">Tu gesto de amor puede cambiar la vida de un animal. Haz la diferencia hoy mismo.</div>
         </div>
 
-        <div class="cuadrado">
-            <div class="texto-overlay">Crea eventos</div>
-            <img src="{{ asset('images/conejito.webp') }}" alt="Mascota 3">
-            <div class="overlay">
-                <p>Crea y asiste a eventos para tus mascotas</p>
-                <button class="btnseccion" onclick="window.location.href='{{route('eventos.index')}}">Crear a eventos</button>
-            </div>
-        </div>
-
-        <div class="cuadrado">
-            <div class="texto-overlay">Chatea con tus amigos</div>
-            <img src="{{ asset('images/perrito.webp') }}" alt="Mascota 4">
-            <div class="overlay">
-                <p>Chatea con personas que comparten gustos de tus mascotas</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Ir al PetChat</button>
-            </div>
-        </div>
-
-        <div class="cuadrado">
-            <div class="texto-overlay">Encuentra tus veterinarias</div>
-            <img src="{{ asset('images/perrito3.webp') }}" alt="Mascota 6">
-            <div class="overlay">
-                <p>Descubre tus veterinarias mas cercanas</p>
-                <button class="btnseccion" onclick="window.location.href='{{ route('veterinarias.index') }}'">Ir a veterinarias</button>
-            </div>
-        </div>
-
-        <div class="cuadrado">
-            <div class="texto-overlay">Descubre tu mascota ideal</div>
-            <img src="{{ asset('images/ave.webp') }}" alt="Mascota 7">
-            <div class="overlay">
-                <p>Descubre cúal seria tu mascota ideal</p>
-                <button class="btnseccion" onclick="scrollToCarousel()">Mascota ideal</button>
-            </div>
-        </div>
-
-        <div class="cuadrado">
-            <div class="texto-overlay">PetShop</div>
-            <img src="{{ asset('images/fisgon.webp') }}" alt="Mascota 8">
-            <div class="overlay">
-                <p>Compra productos de necesidad para tus mascotas</p>
-                <button class="btnseccion" onclick="window.location.href='{{ route('productos.index') }}'">Ir a Petshop</button>
-            </div>
+        <div class="image-item">
+            <img src="{{ asset('images/eventos.webp') }}" alt="Asiste a eventos para apoyar a tus mascotas">
+            <div class="carousel-text">Apoya el bienestar de tus mascotas en eventos especiales</div>
+            <div class="carousel-subtext">Participa en eventos que promuevan el amor y el cuidado de los animales. ¡Tu presencia es valiosa!</div>
         </div>
     </div>
+</div>
 
-    <button class="carousel-btn next" onclick="moveCarusel('next')">→</button>
+
+
+<div class="cuadrado-container-wrapper">
+
+    <div class="cuadrado-container">
+        <div class="cuadrado" onclick="window.location.href='{{route('eventos.index')}}'">
+            <div class="texto-overlay">Eventos</div>
+            <img src="{{ asset('images/conejito.webp') }}" alt="Mascota 3">
+        </div>
+
+        <div class="cuadrado" onclick="window.location.href='{{ route('adopciones.index') }}'">
+            <div class="texto-overlay">Adopta una mascota</div>
+            <img src="{{ asset('images/cat.webp') }}" alt="Mascota 2">
+        </div>
+
+        <div class="cuadrado" onclick="window.location.href='{{ route('veterinarias.index') }}'">
+            <div class="texto-overlay">Encuentra tus veterinarias</div>
+            <img src="{{ asset('images/perrito3.webp') }}" alt="Mascota 6">
+        </div>
+
+        <div class="cuadrado" onclick="window.location.href='{{ route('productos.index') }}'">
+            <div class="texto-overlay">PetShop</div>
+            <img src="{{ asset('images/fisgon.webp') }}" alt="Mascota 8">
+        </div>
+    </div>
 
 
 </div>
-<section class="vision">
-    <div class="vision-text">
-        <h2>Rescata mascotas</h2>
-        <p>SmartPets se dedica a la misión de rescatar a animales que han sido abandonados, maltratados o que se encuentran en situaciones de vulnerabilidad.</p>
+
+<div class="vision">
+    <div class="vision-content">
+        <h2>Comparte historias de tus mascotas</h2>
+        <p>SmartPets te invita a compartir momentos especiales y conectar con una comunidad unida por el amor a los animales.</p>
+        <button class="ver-mas-btn" onclick="window.location.href='{{ route('publicaciones.index') }}'">Ver más</button>
+    </div>
+    <div class="vision-image">
+        <img src="{{ asset('images/abrazo.webp') }}" alt="Imagen de visión">
+    </div>
+    <div class="hand-img">
+        <img src="{{ asset('images/mano.webp') }}" alt="Mano">
+    </div>
+</div>
+
+<div class="mision">
+    <div class="mision-content">
+        <h2>Descubre tu mascota ideal</h2>
+        <p>SmartPets está diseñado para ayudarte a encontrar a tu compañero de vida perfecto, conectándote con animales que necesitan un hogar.</p>
+        <button class="ver-mas-btn" onclick="window.location.href=''">Ver más</button>
+    </div>
+</div>
+
+
+
+<section class="compartir-mascota">
+    <div class="compartir-text">
+        <h2>Usa el Petchat, chatea y comparte</h2>
+        <p>Conéctate con otros amantes de los animales, comparte consejos, historias y crea una red de apoyo para ti y tus mascotas.</p>
+        <button class="ver-mas-btn2" onclick="window.location.href=''">Ver más</button>
+    </div>
+
+    <div class="phone-animation">
+        <div class="phone">
+            <div class="screen">
+
+                <div class="notification-bar">
+                    <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets">
+                </div>
+                <div class="fondocel">
+                    <img src="{{ asset('images/perro.gif') }}" alt="Smart Pets">
+                </div>
+
+                <div class="message-box">
+                    <div class="message message-left">
+                        <p>¡Hola! ¿Qué tal está Canelito?</p>
+                    </div>
+                    <div class="message message-right">
+                        <p>Todo bien, está corriendo feliz por el parque. 🐶</p>
+                    </div>
+                    <div class="message message-left">
+                        <p>¡Qué lindo! Cuéntame más sobre él!</p>
+                    </div>
+                    <div class="message message-right">
+                        <p>Es un cachorro muy juguetón, siempre está feliz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="mision">
-    <div class="mision-text">
-        <h2>Adopta mascotas</h2>
-        <p>SmartPets está diseñado para conectar a personas que buscan un nuevo compañero de vida con animales que necesitan un hogar.</p>
+<section class="petshop-section">
+    <h2>Explora nuestra PetShop</h2>
+    <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
+    <div class="petshop-container">
+        <div class="petshop-item petshop-item-top-left">
+            <img src="{{ asset('images/producto1.webp') }}" alt="Producto 1">
+            <div class="petshop-item-text">Juguetes</div>
+        </div>
+        <div class="petshop-item petshop-item-2">
+            <img src="{{ asset('images/producto2.webp') }}" alt="Producto 2">
+            <div class="petshop-item-text">Camas</div>
+        </div>
+        <div class="petshop-item petshop-item-top-right">
+            <img src="{{ asset('images/producto3.webp') }}" alt="Producto 3">
+            <div class="petshop-item-text">Accesorios</div>
+        </div>
+        <div class="petshop-item petshop-item-bottom-left">
+            <img src="{{ asset('images/producto.webp') }}" alt="Producto 4">
+            <div class="petshop-item-text">Comida </div>
+        </div>
+        <div class="petshop-item petshop-item-bottom-right">
+            <img src="{{ asset('images/producto5.webp') }}" alt="Producto 6">
+            <div class="petshop-item-text">Ropa</div>
+        </div>
+        <div class="petshop-item petshop-item-3">
+            <img src="{{ asset('images/producto6.webp') }}" alt="Producto 5">
+            <div class="petshop-item-text">Cuidado Dental</div>
+        </div>
+
     </div>
 </section>
+
+
+<section class="compartir-mascotas">
+    <div class="button">
+        <div class="box">S</div>
+        <div class="box">M</div>
+        <div class="box">A</div>
+        <div class="box">R</div>
+        <div class="box">T</div>
+    </div>
+    <p>&copy; 2025 DevStorm: UNAH-TEC Danlí </p>
+</section>
+
+
+
+
+
 <script src="{{ asset('js/MPscripts.js') }}"></script>
 </body>
 </html>

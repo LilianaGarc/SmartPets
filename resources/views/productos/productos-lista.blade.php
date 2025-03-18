@@ -59,8 +59,40 @@
 <body>
 
     @section('nav') @endsection
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{session('error')}}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <section class="py-1 mt-0">
         <div class="container">
+
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" id="search-query">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+
             <h2 class="text-center mb-4">CATEGORIAS</h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
@@ -71,15 +103,16 @@
 
             </div>
             <h2 class="text-center mb-4">PRODUCTOS</h2>
+            <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>
             <div class="row g-4">
                 @forelse($productos as $producto)
                     <div class="col-6 col-md-3">
-                        <div class="offer-card h-100">
+                        <div class="offer-card h-80">
                             <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
                             {{ $producto->nombre }}" class="w-100">
-                            <div class="detalles p-2">
-                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
-                                <button class="category-pill active" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
+                            <div class="detalles p-1 mx-2 d-flex justify-content-center">
+                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
+                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
                             </div>
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
@@ -98,6 +131,9 @@
             </div>
         </div>
     </section>
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

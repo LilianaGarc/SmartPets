@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\PublicacionController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ReaccionController;
@@ -12,10 +15,29 @@ use App\Http\Controllers\VeterinariaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
-use Illuminate\Support\Facades\Route;
 //Faltan rutas de categoria y ubicacion
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth', 'admin')->group(function () {
+
+});
+
+require __DIR__.'/auth.php';
 
 //Jonaaaaa
 Route::get('/', function () {
@@ -36,6 +58,9 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
 Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
 Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
+Route::get('/adopciones/{id}/editar', [AdopcionController::class, 'edit'])->name('adopciones.edit');
+Route::put('/adopciones/{id}', [AdopcionController::class, 'update'])->name('adopciones.update');
+Route::get('/adopciones/{id}', [AdopcionController::class, 'show'])->name('adopciones.show');
 
 Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
 
@@ -47,11 +72,18 @@ Route::delete('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'd
 Route::get('/solicitudes/{id_adopcion}', [SolicitudController::class, 'showSolicitudes'])->name('solicitudes.show');
 Route::get('/solicitudes/{id_adopcion}/editar/{id}', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
 Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
+Route::get('/solicitudes/{id_adopcion}/{id}/detalles', [SolicitudController::class, 'showDetails'])->name('solicitudes.showDetails');
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
+
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
+Route::resource('productos', ProductoController::class);
+
+//Margoth
 Route::resource('productos',ProductoController::class);
+Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
+
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
@@ -63,11 +95,6 @@ Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneld
 
 //Publicas
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
-
-Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store'); // Guardar calificación
-Route::get('/calificaciones/{id}/edit', [CalificacionController::class, 'edit'])->name('calificaciones.edit'); // Formulario de edición
-Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update'); // Actualizar calificación
-Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy'); // Eliminar calificación
 
 Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');

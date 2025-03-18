@@ -18,7 +18,7 @@
             font-size: 100%;
             background-color: #f7f7f7;
             width: 75%;
-            height: 200vh;
+            height: auto;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -60,6 +60,7 @@
             background-color: #ff7f50;
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
+            border: none;
         }
 
         .btnl:hover {
@@ -132,7 +133,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 6%;
+            height: auto;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -247,6 +249,15 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
                 </ul>
             </div>
         </div>
@@ -258,4 +269,3 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
- 

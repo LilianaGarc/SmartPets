@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('telefono');
             $table->date('fecha');
             $table->string('imagen')->nullable();
-
             $table->timestamps();
         });
     }
