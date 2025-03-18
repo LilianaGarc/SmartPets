@@ -83,6 +83,16 @@
 
     <section class="py-1 mt-0">
         <div class="container">
+
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" id="search-query">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+
             <h2 class="text-center mb-4">CATEGORIAS</h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
@@ -121,6 +131,51 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let query = document.getElementById('search-query').value;
+
+            fetch(`{{ route('productos.buscar') }}?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let productosContainer = document.querySelector('.row.g-4');
+                    productosContainer.innerHTML = '';
+
+                    if (data.length > 0) {
+                        data.forEach(producto => {
+                            let productoHTML = `
+                            <div class="col-6 col-md-3">
+                                <div class="offer-card h-100">
+                                    <img src="${producto.imagen ? `{{ url('storage/') }}/${producto.imagen}` : `{{ asset('images/img_PorDefecto.jpg') }}`}" alt="${producto.nombre}" class="w-100">
+                                    <div class="detalles p-2">
+                                        <button class="category-pill active" onclick="window.location.href='{{ url('productos') }}/${producto.id}'">Ver</button>
+                                        <button class="category-pill active" onclick="window.location.href='{{ url('productos') }}/${producto.id}/edit'">Editar</button>
+                                    </div>
+                                    <div class="p-3">
+                                        <h6>${producto.nombre}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                            productosContainer.insertAdjacentHTML('beforeend', productoHTML);
+                        });
+                    } else {
+                        productosContainer.innerHTML = '<div class="col-12"><p class="text-center">No se han encontrado productos.</p></div>';
+                    }
+
+                    // Actualizar la URL sin recargar la página
+                    if (query) {
+                        history.pushState(null, '', `?query=${query}`);
+                    } else {
+                        history.pushState(null, '', '{{ route('productos.index') }}');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

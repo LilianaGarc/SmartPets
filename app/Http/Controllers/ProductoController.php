@@ -16,8 +16,13 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->input('query');
+        $productos = Producto::when($query, function ($q) use ($query) {
+            return $q->where('nombre', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%");
+        })->paginate(5);
+
         return view('productos.productos-lista')->with([
             'productos' => Producto::paginate(12),
             'categorias' => Categoria::limit(5)->get()
@@ -175,4 +180,15 @@ class ProductoController extends Controller
             return redirect()->route('productos.panel')->with('exito', 'El producto se elimino correctamente.');
         }
     }
+
+    public function buscar(Request $request)
+    {
+        $query = $request->input('query');
+        $productos = Producto::when($query, function ($q) use ($query) {
+            return $q->where('nombre', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%");
+        })->get();
+
+        return response()->json($productos);
+    }
+
 }

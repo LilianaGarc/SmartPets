@@ -38,7 +38,10 @@ Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestro
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 
+
 Route::resource('productos',ProductoController::class);
+Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
+
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
