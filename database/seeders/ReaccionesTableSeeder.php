@@ -13,7 +13,7 @@ class ReaccionesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Reaccion::factory(900)->create();
+        Reaccion::factory(70)->create();
 
     }
 }

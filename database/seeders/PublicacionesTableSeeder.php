@@ -13,6 +13,6 @@ class PublicacionesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Publicacion::factory(300)->create();
+        Publicacion::factory(10)->create();
     }
 }

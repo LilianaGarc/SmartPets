@@ -19,7 +19,7 @@
             font-size: 100%;
             background-color: #f7f7f7;
             width: 75%;
-            height: 200vh;
+            height: auto;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -133,7 +133,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 6%;
+            height: auto;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -248,6 +249,15 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
                 </ul>
             </div>
         </div>

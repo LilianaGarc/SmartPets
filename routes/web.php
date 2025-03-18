@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\PublicacionController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ReaccionController;
@@ -11,10 +14,29 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VeterinariaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
-use Illuminate\Support\Facades\Route;
 //Faltan rutas de categoria y ubicacion
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth', 'admin')->group(function () {
+
+});
+
+require __DIR__.'/auth.php';
 
 //Jonaaaaa
 Route::get('/', function () {
@@ -50,7 +72,7 @@ Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'upda
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
-Route::resource('productos',ProductoController::class);
+Route::resource('productos', ProductoController::class);
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
