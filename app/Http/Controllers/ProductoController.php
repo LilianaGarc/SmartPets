@@ -29,7 +29,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view('productos.productos-formulario');
+        $categorias = Categoria::all();
+        return view('productos.productos-formulario', ['categorias' => $categorias]);
 
     }
 
@@ -96,7 +97,9 @@ class ProductoController extends Controller
     public function edit(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('productos.productos-formulario',['producto' => $producto]);
+        $categorias = Categoria::all();
+        return view('productos.productos-formulario',['producto' => $producto, 'categorias' => $categorias]);
+
     }
 
     /**
@@ -152,7 +155,14 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        $eliminados = Producto::destroy($id);
+
+        if ($eliminados > 0) {
+            return redirect()->route('productos.index')->with('success', 'El producto se eliminó correctamente.');
+        } else {
+            return redirect()->route('productos.index')->with('error', 'El producto no se pudo borrar.');
+        }
     }
 
     public function paneldestroy(string $id)

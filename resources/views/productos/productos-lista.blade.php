@@ -59,6 +59,28 @@
 <body>
 
     @section('nav') @endsection
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{session('error')}}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <section class="py-1 mt-0">
         <div class="container">
             <h2 class="text-center mb-4">CATEGORIAS</h2>
@@ -71,6 +93,7 @@
 
             </div>
             <h2 class="text-center mb-4">PRODUCTOS</h2>
+            <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>
             <div class="row g-4">
                 @forelse($productos as $producto)
                     <div class="col-6 col-md-3">
