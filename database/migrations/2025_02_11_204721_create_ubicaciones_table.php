@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('ciudad');
             $table->string('municipio');
             $table->string('direccion');
-            $table->foreignId('veterinaria_id');
             $table->timestamps();
         });
     }

@@ -61,6 +61,7 @@
             background-color: #ff7f50;
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
+            border: none;
         }
 
         .btn:hover {

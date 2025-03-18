@@ -27,20 +27,28 @@ class ProductoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $busqueda = $request->input('query');
+
+        $productos = Producto::when($busqueda, function ($query) use ($busqueda) {
+            return $query->where('nombre', 'LIKE', "%$busqueda%")
+                ->orWhere('descripcion', 'LIKE', "%$busqueda%")
+                ->orWhere('precio', 'LIKE', "%$busqueda%");
+        })->paginate(12);
+
         return view('productos.productos-lista')->with([
-            'productos' => Producto::paginate(12),
+            'productos' => $productos,
             'categorias' => Categoria::limit(5)->get()
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('productos.productos-formulario');
+        $categorias = Categoria::all();
+        return view('productos.productos-formulario', ['categorias' => $categorias]);
 
     }
 
@@ -107,7 +115,9 @@ class ProductoController extends Controller
     public function edit(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('productos.productos-formulario',['producto' => $producto]);
+        $categorias = Categoria::all();
+        return view('productos.productos-formulario',['producto' => $producto, 'categorias' => $categorias]);
+
     }
 
     /**
@@ -163,7 +173,14 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        $eliminados = Producto::destroy($id);
+
+        if ($eliminados > 0) {
+            return redirect()->route('productos.index')->with('success', 'El producto se eliminó correctamente.');
+        } else {
+            return redirect()->route('productos.index')->with('error', 'El producto no se pudo borrar.');
+        }
     }
 
     public function paneldestroy(string $id)
@@ -176,4 +193,15 @@ class ProductoController extends Controller
             return redirect()->route('productos.panel')->with('exito', 'El producto se elimino correctamente.');
         }
     }
+
+    public function buscar(Request $request)
+    {
+        $query = $request->input('query');
+        $productos = Producto::when($query, function ($q) use ($query) {
+            return $q->where('nombre', 'like', "%$query%")->orWhere('descripcion', 'like', "%$query%");
+        })->get();
+
+        return response()->json($productos);
+    }
+
 }

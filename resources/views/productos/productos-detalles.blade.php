@@ -106,6 +106,17 @@
     </head>
     <body>
     <div class="container py-5">
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="product-container p-4">
             <!-- Producto Principal -->
             <div class="row mb-5">
@@ -169,6 +180,15 @@
                     <!-- Botones de Acción -->
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
+                        <form id="delete-form-{{$producto->id}}" action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="confirm-checkbox-{{$producto->id}}" onchange="toggleDeleteButton({{$producto->id}})">
+                                <label class="form-check-label" for="confirm-checkbox-{{$producto->id}}">Confirmar eliminación</label>
+                            </div>
+                            <button class="btn btn-danger btn-lg" type="submit" id="delete-button-{{$producto->id}}" disabled>Eliminar Producto</button>
+                        </form>
                     </div>
 
                 </div>
@@ -192,4 +212,11 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleDeleteButton(id) {
+            let checkbox = document.getElementById(`confirm-checkbox-${id}`);
+            let button = document.getElementById(`delete-button-${id}`);
+            button.disabled = !checkbox.checked;
+        }
+    </script>
 @endsection

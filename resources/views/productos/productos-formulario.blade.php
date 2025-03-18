@@ -68,7 +68,7 @@
     <body>
     <div class="container py-5">
         <div class="form-container p-4 p-md-5">
-            <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Publicar Nuevo Producto' : 'Editar Producto'}}</h2>
+            <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Editar Producto' : 'Publicar Nuevo Producto'}}</h2>
 
             <!-- Mostrar en los errores de las validaciones-->
             @if(session('success'))
@@ -92,7 +92,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ isset($producto) ? route('productos.update',$producto->id) : route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- csrf permite realizar peticiones-->
                 <!-- Información Básica -->
@@ -101,26 +101,24 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="nombre" class="form-label">Nombre del Producto</label>
-                            <input type="text" class="form-control" id= "nombre" name="nombre" value="{{old('nombre')}}" required>
+                            <input type="text" class="form-control" id= "nombre" name="nombre" value="{{old('nombre', $producto->nombre ?? '')}}" required>
                         </div>
 
                         <div class="col-md-6">
                             <label for="precio" class="form-label">Precio</label>
                             <div class="input-group">
                                 <span class="input-group-text">L.</span>
-                                <input type="number" class="form-control" id="precio" name="precio" required value="{{old('precio')}}" step="0.01">
+                                <input type="number" class="form-control" id="precio" name="precio" required value="{{old('precio', $producto->precio ?? '')}}" step="0.01">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="categoria" class="form-label">Categoría de Mascota</label>
                             <select class="form-select" id="categoria" name="categoria" required>
-                                <option value="">Seleccionar categoría</option>
-                                <option value="dog">Perros</option>
-                                <option value="cat">Gatos</option>
-                                <option value="bird">Aves</option>
-                                <option value="fish">Peces</option>
-                                <option value="reptile">Reptiles</option>
-                                <option value="smallPet">Pequeñas Mascotas</option>
+                                @foreach($categorias as $categoria)
+                                    <option value="{{$categoria->id}}"{{old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
+                                    {{$categoria->nombre}}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -129,11 +127,20 @@
                 <!-- Imágenes del Producto -->
                 <div class="mb-4">
                     <h4 class="section-title">Imágenes del Producto</h4>
-                    <div class="image-preview">
+                    <div class="image-preview" id="drop-area">
                         <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
-                        <p class="mb-2">Arrastra y suelta las imágenes aquí o</p>
-                           <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif, .avif" multiple max="5" value="{{old('imagenes[]')}}">
+                        <p class="mb-2">Selecciona las imágenes</p>
+                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif, .avif" multiple>
                         <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
+                    </div>
+                    <div class="mt-3">
+                        @if(isset($producto) && $producto->imagenes)
+                            @foreach($producto->imagenes as $imagen)
+                                <div class="mb-2">
+                                    <img src="{{ url('storage/' . $imagen) }}" alt="Imagen del Producto" class="img-thumbnail" width="100px">
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
 
@@ -142,7 +149,7 @@
                     <h4 class="section-title">Descripción</h4>
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required  > {{old('descripcion')}} </textarea>
+                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required  > {{old('descripcion', $producto->descripcion ?? '')}} </textarea>
                     </div>
                 </div>
 
@@ -152,7 +159,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="stock" class="form-label">Cantidad disponible</label>
-                            <input type="number" class="form-control" id="stock" name="stock" required value="{{old('stock')}}">
+                            <input type="number" class="form-control" id="stock" name="stock" required value="{{old('stock', $producto->stock ?? '')}}">
                         </div>
 
                     </div>
@@ -169,8 +176,8 @@
 
     <script>
         // Detectar clic en el botón y abrir el selector de archivos
-        document.getElementById('select-images-btn').addEventListener('click', function() {
-            document.getElementById('image-input').click();
+        document.getElementById('image-input').addEventListener('click', function() {
+            this.value = null; // Resetear el valor para permitir la misma imagen
         });
 
         // Opcional: mostrar una vista previa de las imágenes seleccionadas
@@ -180,6 +187,25 @@
                 console.log("Imágenes seleccionadas:", files); // Para depuración
             }
         });
+
+        // Manejar arrastrar y soltar
+        const dropArea = document.getElementById('drop-area');
+
+        dropArea.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('dragover');
+        });
+
+        dropArea.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropArea.classList.remove('dragover');
+            const files = event.dataTransfer.files;
+            document.getElementById('image-input').files = files;
+            console.log("Imágenes arrastradas:", files); // Para depuración
     </script>
 
 @endsection

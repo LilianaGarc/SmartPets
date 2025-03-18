@@ -1,52 +1,30 @@
-/* jona: logica del carusel */
-let currentIndex = 0;
 
-const container = document.querySelector('.cuadrado-container');
-const items = document.querySelectorAll('.cuadrado');
-const totalItems = items.length;
-const itemsVisible = 4;
-const prevBtn = document.querySelector('.carousel-btn.prev');
+// jona: efecto del desenfoque de los demás cuadrados
+const cards = document.querySelectorAll('.cuadrado');
 
-function moveCarusel(direction) {
-    const itemWidth = items[0].offsetWidth + parseFloat(getComputedStyle(items[0]).marginRight);
+function handleCardHover() {
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            cards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.add('not-hovered');
+                }
+            });
+        });
 
-    if (direction === 'next') {
-        currentIndex++;
-        if (currentIndex > totalItems - itemsVisible) {
-            currentIndex = 0;
-        }
-        prevBtn.style.display = 'block';
-    } else if (direction === 'prev') {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = totalItems - itemsVisible;
-        }
-    }
-
-    const offset = -currentIndex * itemWidth;
-    container.style.transform = `translateX(${offset}px)`;
+        card.addEventListener('mouseleave', () => {
+            cards.forEach(otherCard => {
+                otherCard.classList.remove('not-hovered');
+            });
+        });
+    });
 }
 
-/* jona: efecto del desenfoque de los demas cuadrados */
-const cards = document.querySelectorAll('.cuadrado');
-cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        cards.forEach(otherCard => {
-            if (otherCard !== card) {
-                otherCard.classList.add('not-hovered');
-            }
-        });
-    });
-
-    card.addEventListener('mouseleave', () => {
-        cards.forEach(otherCard => {
-            otherCard.classList.remove('not-hovered');
-        });
-    });
-});
+if (window.innerWidth > 768) {
+    handleCardHover();
+}
 
 
-/* parallax adopta y rescata*/
 function onScroll() {
     const visionSection = document.querySelector('.vision');
     const misionSection = document.querySelector('.mision');
@@ -57,16 +35,23 @@ function onScroll() {
     if (visionPosition < window.innerHeight * 0.8) {
         visionSection.style.opacity = 1;
         visionSection.style.transform = 'translateY(0)';
+        document.querySelector('.vision h2').style.opacity = 1;
+        document.querySelector('.vision h2').style.transform = 'translateY(0)';
+        document.querySelector('.vision p').style.opacity = 1;
+        document.querySelector('.vision p').style.transform = 'translateY(0)';
     }
 
     if (misionPosition < window.innerHeight * 0.8) {
         misionSection.style.opacity = 1;
         misionSection.style.transform = 'translateY(0)';
+        document.querySelector('.mision h2').style.opacity = 1;
+        document.querySelector('.mision h2').style.transform = 'translateY(0)';
+        document.querySelector('.mision p').style.opacity = 1;
+        document.querySelector('.mision p').style.transform = 'translateY(0)';
     }
 }
 
 window.addEventListener('scroll', onScroll);
-
 onScroll();
 
 function setParallaxEffect() {
@@ -81,5 +66,35 @@ function setParallaxEffect() {
 }
 
 window.addEventListener('scroll', setParallaxEffect);
-
 setParallaxEffect();
+
+
+
+
+let currentIndex = 0;
+const images = document.querySelectorAll('.image-item');
+const totalImages = images.length;
+
+function changeImage() {
+    const container = document.querySelector('.image-container');
+    currentIndex = (currentIndex + 1) % totalImages;
+    container.style.transform = `translateX(-${currentIndex * 33.3333}%)`;
+}
+
+function checkScreenSize() {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 768) {
+        clearInterval(imageInterval);
+        return;
+    }
+
+    if (!imageInterval) {
+        imageInterval = setInterval(changeImage, 5500);
+    }
+}
+
+let imageInterval;
+checkScreenSize();
+
+window.addEventListener('resize', checkScreenSize);
