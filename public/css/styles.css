@@ -84,13 +84,11 @@ body {
     box-sizing: border-box;
 }
 
-.cuadrado:nth-child(3) {
-    background-color: #ee8934;
-}
 
 .cuadrado:nth-child(1),
 .cuadrado:nth-child(2),
-.cuadrado:nth-child(4) {
+.cuadrado:nth-child(4),
+.cuadrado:nth-child(3) {
     background-color: #c5c5c5;
 }
 
@@ -113,7 +111,7 @@ body {
     top: 30px;
     left: 50%;
     transform: translateX(-50%);
-    color: #ffffff;
+    color: #494949;
     width: 90%;
     font-size: 1.5rem;
     font-weight: bold;
@@ -133,8 +131,6 @@ body {
 .cuadrado-container .cuadrado.not-hovered {
     filter: brightness(0.9) saturate(0.1) contrast(1) blur(5px);
 }
-
-
 
 
 .vision, .mision {
@@ -385,19 +381,15 @@ body {
 }
 
 .container2 {
-    margin-top: 1vw;
-    width: 90%;
+    width: 100%;
     height: auto;
-    padding: 20px 80px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 1vw auto 4vw;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 
 form {
     display: flex;
@@ -589,13 +581,12 @@ button[type="submit"]:hover, .btn:hover {
     object-fit: cover;
     border-radius: 10px;
     margin-top: 5px;
-    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .perfil-usuario {
     display: flex;
-    align-items: center;
+    align-items: start;
     margin-bottom: 15px;
 }
 
@@ -911,7 +902,7 @@ button, .btn-view, .btn-editar {
 
 .solicitud-detalle {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-top: 30px;
 }
 
@@ -957,6 +948,26 @@ button, .btn-view, .btn-editar {
     color: #444;
     width: 350px;
 
+}
+
+button[type="submit"], .btn {
+    padding: 12px 30px;
+    background-color: #1e4183;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+button[type="submit"]:hover, .btn:hover {
+    background-color: #ff7c40;
+    transform: scale(1.05);
 }
 
 .comprobante-container {
@@ -1056,6 +1067,13 @@ button, .btn-view, .btn-editar {
     fill: rgb(255, 255, 255);
     animation: slide-in-top 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
+
+.boton-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
 
 @keyframes slide-in-top {
     0% {
@@ -1338,9 +1356,12 @@ button, .btn-view, .btn-editar {
     }
 
     .container2 {
-        width: 90%;
-        padding: 20px;
+        width: 85%;
+        margin-top: 15vw;
+        max-width: 100%;
+        overflow-x: hidden;
     }
+
 
     .breadcrumb-container {
         flex-direction: row;
@@ -1368,10 +1389,6 @@ button, .btn-view, .btn-editar {
         word-wrap: break-word;
         max-width: 100px;
         line-height: 1.2;
-    }
-
-    .container2 {
-        margin-top: 8vw;
     }
 
     .form-group {
@@ -1447,8 +1464,9 @@ button, .btn-view, .btn-editar {
     }
 
     .solicitudes-container {
-        width: 100%;
-        gap: 10px;
+        width: 90%;
+        gap: 20px;
+        padding-bottom: 10vw;
     }
 
     .solicitud-card {

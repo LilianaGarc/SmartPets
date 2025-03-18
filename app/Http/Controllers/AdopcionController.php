@@ -88,6 +88,11 @@ class AdopcionController extends Controller
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito.');
     }
 
+    public function show($id)
+    {
+        $adopcion = Adopcion::findOrFail($id);
+        return view('adopciones.show', compact('adopcion'));
+    }
 
 
     public function destroy($id)

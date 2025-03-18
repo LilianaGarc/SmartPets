@@ -37,6 +37,7 @@ Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopcion
 Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
 Route::get('/adopciones/{id}/editar', [AdopcionController::class, 'edit'])->name('adopciones.edit');
 Route::put('/adopciones/{id}', [AdopcionController::class, 'update'])->name('adopciones.update');
+Route::get('/adopciones/{id}', [AdopcionController::class, 'show'])->name('adopciones.show');
 
 Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
 

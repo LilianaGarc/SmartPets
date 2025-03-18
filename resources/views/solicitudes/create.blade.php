@@ -24,8 +24,8 @@
                 </a>
             </li>
             <li class="breadcrumb__item">
-                <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Solicitudes</span>
+                <a href="{{ route('adopciones.show', $adopcion->id) }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Ver Adopción</span>
                 </a>
             </li>
             <li class="breadcrumb__item breadcrumb__item-active">

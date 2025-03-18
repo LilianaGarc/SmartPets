@@ -95,14 +95,9 @@
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
                         <div class="dropdown-content">
-                            <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET">
-                                <button type="submit" class="btn-solicitar-dropdown">
-                                    <i></i> Solicitar mascota
-                                </button>
-                            </form>
-                            <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET">
-                                <button type="submit" class="btn-ver">
-                                    <i></i> Ver Solicitudes
+                            <form action="{{ route('adopciones.show', $adopcion->id) }}" method="GET">
+                                <button type="submit" class="btn-editar-dropdown">
+                                    <i></i> Ver detalles
                                 </button>
                             </form>
 
@@ -126,10 +121,7 @@
         @endforeach
     </div>
 
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
+
 
 
 <script src="{{ asset('js/Ascripts.js') }}"></script>
