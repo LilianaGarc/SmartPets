@@ -1122,9 +1122,8 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .image-carousel {
-        width: 100%;
-        max-height: 35vh;
-        top: -30px;
+        width: 20%;
+        height: 35vh;
     }
 
     .image-carousel .image-container {
@@ -1172,18 +1171,19 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado-container-wrapper {
-        height: 50vh;
+        height: 64vh;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
+        margin-top: 1%;
         margin:0 auto;
         transform: none;
         transition: none;
     }
 
     .cuadrado {
-        height: 23vh;
+        height: 27vh;
         flex: 0 0 47%;
         margin-bottom: 2vw;
         display: flex;
@@ -1194,13 +1194,18 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado img {
-        padding-top: 10vw;
-        width: 100%;
-        height: 100%;
+        padding-top: 11vw;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 100%;
         object-fit: cover;
+        object-position: top;
         transform: none;
         transition: none;
     }
+
+
 
     .overlay p {
         font-size: 0.3rem;
@@ -1208,8 +1213,8 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado .texto-overlay {
-        top: 18px;
-        font-size: 0.9rem;
+        top: 5px;
+        font-size: 1.0rem;
     }
 
     .cuadrado-container-wrapper {
@@ -1566,7 +1571,6 @@ button[type="submit"]:hover, .btn:hover {
     }
 
 }
-
 @media (min-width: 768px) and (max-width: 1024px) {
 
     .body {
@@ -1575,7 +1579,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar {
-        padding: 1.2rem 2vw;
+        padding: 1.2rem 2%;
         flex-direction: row;
         justify-content: space-between;
         height: auto;
@@ -1584,7 +1588,7 @@ button[type="submit"]:hover, .btn:hover {
 
     .navbar .a {
         margin-left: 0;
-        margin-right: 2vw;
+        margin-right: 2%;
     }
 
     .navbar .logo {
@@ -1594,7 +1598,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar .logo img {
-        width: 35vw;
+        width: 35%;
         max-height: 100%;
         height: auto;
         padding: 0;
@@ -1603,70 +1607,57 @@ button[type="submit"]:hover, .btn:hover {
     .image-carousel {
         width: 100%;
         max-height: 50vh;
-        top: 2vw;
     }
 
-    .image-container .carousel-text {
-        font-size: 1.5rem;
-        top: 30%;
-        height: 35%;
-        left: 5%;
-        width: 30%;
+    .carousel-text {
+        font-size: 5vw;
+        width: 40%;
+        top: 8%;
     }
 
-    .image-container .carousel-subtext {
-        font-size: 1rem;
-        width: 30%;
+    .carousel-subtext {
+        font-size: 3vw;
+        width: 40%;
         top: 65%;
-        height: 25%;
-        left: 5%;
     }
 
     .cuadrado-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .cuadrado-container-wrapper {
-        height: 65vh;
+        height: 40vh;
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         margin: 0 auto;
-        margin-top: 3vw;
+    }
 
+    .cuadrado .texto-overlay {
+        font-size: 1.1rem;
+        top: 2vw;
     }
 
     .cuadrado {
         height: 30vh;
         flex: 0 0 30%;
-        margin-bottom: 2vw;
+        margin-bottom: 2%;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .cuadrado img {
-        width: 80%;
+        width: 100%;
         height: 100%;
         object-fit: cover;
-        padding-top: 10vw;
+        padding-top: 50%;
     }
 
-    .vision {
+    .vision, .mision {
         height: 300px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .mision{
-        height: 300px;
-        display: flex;
-        background-color: rgba(237, 129, 25, 0.86);
-        background-image: none;
         justify-content: center;
         align-items: center;
         flex-direction: column;
@@ -1741,7 +1732,7 @@ button[type="submit"]:hover, .btn:hover {
     .solicitudes-container {
         width: 80%;
         gap: 20px;
-        padding-bottom: 10vw;
+        padding-bottom: 10%;
     }
 
     .solicitud-card {
@@ -1780,7 +1771,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar {
-        padding: 1.2rem 2vw;
+        padding: 1.2rem 2%;
         flex-direction: row;
         justify-content: space-between;
         height: auto;
@@ -1789,7 +1780,7 @@ button[type="submit"]:hover, .btn:hover {
 
     .navbar .a {
         margin-left: 0;
-        margin-right: 2vw;
+        margin-right: 2%;
     }
 
     .navbar .logo {
@@ -1799,7 +1790,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar .logo img {
-        width: 35vw;
+        width: 25%;
         max-height: 100%;
         height: auto;
         padding: 0;
@@ -1808,7 +1799,7 @@ button[type="submit"]:hover, .btn:hover {
     .image-carousel {
         width: 100%;
         max-height: 50vh;
-        top: 5vw;
+        top: 5%;
     }
 
     .image-container .carousel-text {
@@ -1838,13 +1829,13 @@ button[type="submit"]:hover, .btn:hover {
         justify-content: center;
         width: 100%;
         margin: 0 auto;
-        margin-top: 3vw;
+        margin-top: 3%;
     }
 
     .cuadrado {
         height: 30vh;
         flex: 0 0 30%;
-        margin-bottom: 2vw;
+        margin-bottom: 2%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1854,23 +1845,12 @@ button[type="submit"]:hover, .btn:hover {
         width: 80%;
         height: 100%;
         object-fit: cover;
-        padding-top: 10vw;
+        padding-top: 25%;
     }
 
-    .vision {
+    .vision, .mision {
         height: 300px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .mision {
-        height: 300px;
-        display: flex;
-        background-color: rgba(237, 129, 25, 0.86);
-        background-image: none;
         justify-content: center;
         align-items: center;
         flex-direction: column;
@@ -1945,7 +1925,7 @@ button[type="submit"]:hover, .btn:hover {
     .solicitudes-container {
         width: 80%;
         gap: 20px;
-        padding-bottom: 10vw;
+        padding-bottom: 10%;
     }
 
     .solicitud-card {
@@ -1975,30 +1955,6 @@ button[type="submit"]:hover, .btn:hover {
     }
 }
 
-@media (min-width: 900px) and (max-width: 940px) and (orientation: landscape) {
-    .cuadrado-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .cuadrado-container-wrapper {
-        height: 50vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        margin: 0 auto;
-        margin-top: 3vw;
-    }
-
-    .cuadrado {
-        height: 50vh;
-        flex: 0 0 30%;
-        margin-bottom: 2vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
 
 /* Modal imagen grande */
 .modal {
@@ -2041,10 +1997,12 @@ button[type="submit"]:hover, .btn:hover {
 .image-carousel {
     position: relative;
     width: 90%;
-    height: calc(100vh - 500px);
-    overflow: hidden;
-    margin: 0 auto;
-    margin-top: 120px;
+    max-width: 90%;
+    height: 45vh;
+    max-height: 45vh;
+    margin: calc(7vh + 3%) auto 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .image-container {
@@ -2077,7 +2035,7 @@ button[type="submit"]:hover, .btn:hover {
     left: 5%;
     width: 35%;
     color: #fff;
-    font-size: 2.8rem;
+    font-size: 2.5vw;
     font-weight: bold;
     opacity: 0;
     transform: translateY(50px);
@@ -2091,7 +2049,7 @@ button[type="submit"]:hover, .btn:hover {
     left: 5%;
     width: 30%;
     color: #e1e1e1;
-    font-size: 1.5rem;
+    font-size: 1.5vw;
     font-weight: 500;
     opacity: 0;
     transform: translateY(30px);
