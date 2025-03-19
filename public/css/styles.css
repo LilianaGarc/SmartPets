@@ -62,10 +62,10 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2vw;
-    width: 1480px;
+    width: 100%;
     justify-content: center;
     align-items: center;
-    padding: 1.5vw 0;
+    padding: 0 5vw;
 }
 
 .cuadrado {
@@ -120,7 +120,7 @@ body {
 }
 
 .cuadrado:hover {
-    transform: scale(1.1) translateZ(0);
+    transform: scale(1.05) translateZ(0);
 }
 
 .cuadrado-container .cuadrado {
@@ -1176,7 +1176,7 @@ button[type="submit"]:hover, .btn:hover {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 90%;
+        width: 100%;
         margin:0 auto;
         transform: none;
         transition: none;
@@ -1233,7 +1233,6 @@ button[type="submit"]:hover, .btn:hover {
     .cuadrado .texto-overlay {
         transition: none;
     }
-
 
     .vision {
         height: 300px;
@@ -1567,7 +1566,8 @@ button[type="submit"]:hover, .btn:hover {
     }
 
 }
-@media (max-width: 1024px) and (min-width: 768px) {
+
+@media (min-width: 768px) and (max-width: 1024px) {
 
     .body {
         overflow-x: hidden;
@@ -1575,10 +1575,11 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar {
-        padding: 1rem 2vw;
+        padding: 1.2rem 2vw;
         flex-direction: row;
         justify-content: space-between;
         height: auto;
+        display: flex;
     }
 
     .navbar .a {
@@ -1593,30 +1594,32 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .navbar .logo img {
-        width: 30vw;
+        width: 35vw;
         max-height: 100%;
         height: auto;
+        padding: 0;
     }
 
     .image-carousel {
         width: 100%;
-        max-height: 40vh;
-        top: -20px;
-    }
-
-    .image-carousel .image-container {
-        width: 300%;
-        height: 100%;
-        transition: none;
+        max-height: 50vh;
+        top: 2vw;
     }
 
     .image-container .carousel-text {
-        top: 30%;
         font-size: 1.5rem;
+        top: 30%;
+        height: 35%;
+        left: 5%;
+        width: 30%;
     }
 
     .image-container .carousel-subtext {
-        font-size: 0.9rem;
+        font-size: 1rem;
+        width: 30%;
+        top: 65%;
+        height: 25%;
+        left: 5%;
     }
 
     .cuadrado-container {
@@ -1624,47 +1627,91 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado-container-wrapper {
-        height: 50vh;
+        height: 65vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
+        margin-top: 3vw;
+
     }
 
     .cuadrado {
-        height: 20vh;
+        height: 30vh;
+        flex: 0 0 30%;
         margin-bottom: 2vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .cuadrado img {
-        width: 70%;
-        height: 80%;
+        width: 80%;
+        height: 100%;
         object-fit: cover;
+        padding-top: 10vw;
     }
 
-    .cuadrado .texto-overlay {
-        font-size: 1rem;
+    .vision {
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
     }
 
-    .vision,
-    .mision {
-        height: 250px;
-    }
-
-    .mision {
-        background-image: none;
+    .mision{
+        height: 300px;
+        display: flex;
         background-color: rgba(237, 129, 25, 0.86);
+        background-image: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .vision .vision-image {
+        display: none;
     }
 
     .vision h2, .mision h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
     }
 
     .vision p, .mision p {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
+        margin: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .vision-content, .mision-content {
         max-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        height: 100%;
+    }
+
+    .hand-img {
+        display: none;
+    }
+
+    .mision .ver-mas-btn, .vision .ver-mas-btn {
+        margin: 0;
+    }
+
+    .compartir-text {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
         text-align: center;
     }
 
@@ -1678,25 +1725,23 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .compartir-text h2 {
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .compartir-mascota .compartir-text p {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
     }
 
-    .btn-solicitar, .btn-eliminar {
-        font-size: 0.9rem;
-        padding: 6px 20px;
-    }
-
-    .btn-solicitar:hover, .btn-eliminar:hover {
-        transform: scale(1.02);
+    .phone-animation {
+        width: 80%;
+        height: auto;
+        margin-top: 20px;
     }
 
     .solicitudes-container {
-        width: 100%;
-        gap: 10px;
+        width: 80%;
+        gap: 20px;
+        padding-bottom: 10vw;
     }
 
     .solicitud-card {
@@ -1704,55 +1749,256 @@ button[type="submit"]:hover, .btn:hover {
         gap: 12px;
         display: flex;
         flex-direction: column;
+        height: auto;
     }
 
     .table th,
     .table td {
-        font-size: 14px;
+        font-size: 15px;
         padding: 10px;
     }
 
     .comprobante-container img {
-        max-height: 180px;
+        max-height: 220px;
     }
 
     .footer {
-        background-color: rgba(189, 76, 76, 0);
+        background-color: rgba(189, 76, 76, 0.1);
         color: #000000;
         text-align: center;
         width: 100%;
-        height: 80px;
-    }
-
-    .adopcion-card img {
-        height: 180px;
-    }
-
-    .message-box {
-        bottom: 90px;
-        width: 90%;
-    }
-
-    .breadcrumb-container {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        margin-top: 30px;
-        flex-wrap: wrap;
-    }
-
-    .breadcrumb__item .breadcrumb__title {
-        font-size: 10px;
-    }
-
-    .vision .vision-image,
-    .hand-img,
-    .compartir-imagen,
-    .carousel-controls {
-        display: none;
+        height: 120px;
     }
 }
 
+
+@media (min-width: 1024px) and (max-width: 1550px) {
+
+    .body {
+        overflow-x: hidden;
+        margin: 0;
+    }
+
+    .navbar {
+        padding: 1.2rem 2vw;
+        flex-direction: row;
+        justify-content: space-between;
+        height: auto;
+        display: flex;
+    }
+
+    .navbar .a {
+        margin-left: 0;
+        margin-right: 2vw;
+    }
+
+    .navbar .logo {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar .logo img {
+        width: 35vw;
+        max-height: 100%;
+        height: auto;
+        padding: 0;
+    }
+
+    .image-carousel {
+        width: 100%;
+        max-height: 50vh;
+        top: 5vw;
+    }
+
+    .image-container .carousel-text {
+        font-size: 1.9rem;
+        top: 20%;
+        height: 35%;
+        left: 5%;
+        width: 30%;
+    }
+
+    .image-container .carousel-subtext {
+        font-size: 1.2rem;
+        width: 30%;
+        top: 65%;
+        height: 25%;
+        left: 5%;
+    }
+
+    .cuadrado-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cuadrado-container-wrapper {
+        height: 35vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 3vw;
+    }
+
+    .cuadrado {
+        height: 30vh;
+        flex: 0 0 30%;
+        margin-bottom: 2vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cuadrado img {
+        width: 80%;
+        height: 100%;
+        object-fit: cover;
+        padding-top: 10vw;
+    }
+
+    .vision {
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .mision {
+        height: 300px;
+        display: flex;
+        background-color: rgba(237, 129, 25, 0.86);
+        background-image: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .vision .vision-image {
+        display: none;
+    }
+
+    .vision h2, .mision h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .vision p, .mision p {
+        font-size: 1.5rem;
+        margin: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .vision-content, .mision-content {
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        height: 100%;
+    }
+
+    .hand-img {
+        display: none;
+    }
+
+    .mision .ver-mas-btn, .vision .ver-mas-btn {
+        margin: 0;
+    }
+
+    .compartir-text {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .compartir-mascota {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .compartir-text h2 {
+        font-size: 2rem;
+    }
+
+    .compartir-mascota .compartir-text p {
+        font-size: 1.5rem;
+    }
+
+    .phone-animation {
+        width: 80%;
+        height: auto;
+        margin-top: 20px;
+    }
+
+    .solicitudes-container {
+        width: 80%;
+        gap: 20px;
+        padding-bottom: 10vw;
+    }
+
+    .solicitud-card {
+        padding: 12px;
+        gap: 12px;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .table th,
+    .table td {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .comprobante-container img {
+        max-height: 220px;
+    }
+
+    .footer {
+        background-color: rgba(189, 76, 76, 0.1);
+        color: #000000;
+        text-align: center;
+        width: 100%;
+        height: 120px;
+    }
+}
+
+@media (min-width: 900px) and (max-width: 940px) and (orientation: landscape) {
+    .cuadrado-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cuadrado-container-wrapper {
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 3vw;
+    }
+
+    .cuadrado {
+        height: 50vh;
+        flex: 0 0 30%;
+        margin-bottom: 2vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
 
 /* Modal imagen grande */
 .modal {
@@ -1831,7 +2077,7 @@ button[type="submit"]:hover, .btn:hover {
     left: 5%;
     width: 35%;
     color: #fff;
-    font-size: 3rem;
+    font-size: 2.8rem;
     font-weight: bold;
     opacity: 0;
     transform: translateY(50px);
@@ -2174,7 +2420,7 @@ button[type="submit"]:hover, .btn:hover {
 
     .petshop-item-top-left,
     .petshop-item-bottom-right {
-        grid-column: span 2;
+        grid-column: span 1;
     }
 
     .petshop-item-top-right,
@@ -2183,6 +2429,33 @@ button[type="submit"]:hover, .btn:hover {
     }
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+    .petshop-section h2 {
+        font-size: 1.9rem;
+        margin-bottom: 10px;
+    }
+
+    .petshop-section p {
+        padding: 20px 35px;
+        font-size: 1.2rem;
+    }
+
+    .petshop-container {
+        margin: 0 25px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .petshop-item-top-left,
+    .petshop-item-bottom-right {
+        grid-column: span 1;
+    }
+
+    .petshop-item-top-right,
+    .petshop-item-bottom-left {
+        grid-column: span 1;
+    }
+
+}
 @media (max-width: 480px) {
     .petshop-container {
         grid-template-columns: 1fr;
@@ -2196,7 +2469,33 @@ button[type="submit"]:hover, .btn:hover {
     }
 }
 
+@media (min-width: 1025px) and (max-width: 1440px) {
+    .petshop-section h2 {
+        font-size: 1.9rem;
+        margin-bottom: 10px;
+    }
 
+    .petshop-section p {
+        padding: 20px 35px;
+        font-size: 1.2rem;
+    }
+
+    .petshop-container {
+        margin: 0 25px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .petshop-item-top-left,
+    .petshop-item-bottom-right {
+        grid-column: span 1;
+    }
+
+    .petshop-item-top-right,
+    .petshop-item-bottom-left {
+        grid-column: span 1;
+    }
+
+}
 
 
 
