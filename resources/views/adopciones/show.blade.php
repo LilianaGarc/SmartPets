@@ -50,11 +50,11 @@
                 </tr>
                 <tr>
                     <th>Tipo</th>
-                    <td>Perro</td>
+                    <td>{{ $adopcion->tipo_mascota }}</td>
                 </tr>
                 <tr>
                     <th>Nombre de mascota</th>
-                    <td>Firulais</td>
+                    <td>{{ $adopcion->nombre_mascota }}</td>
                 </tr>
 
             </table>

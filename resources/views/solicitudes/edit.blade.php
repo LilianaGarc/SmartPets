@@ -114,7 +114,7 @@
     </form>
 </div>
 
-<script src="{{ asset('js/vistaprevia.js') }}"></script>
+<script src="{{ asset('js/vistaprevias.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 

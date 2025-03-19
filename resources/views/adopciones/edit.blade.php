@@ -50,6 +50,22 @@
     <form action="{{ route('adopciones.update', $adopcion->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        <div class="form-group">
+            <label for="nombre_mascota">Nombre de la Mascota</label>
+            <input type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" required value="{{ old('nombre_mascota', $adopcion->nombre_mascota) }}">
+        </div>
+
+        <div class="form-group">
+            <label for="tipo_mascota">Tipo de Mascota</label>
+            <select name="tipo_mascota" id="tipo_mascota" class="form-control" required>
+                <option value="Perro" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Perro' ? 'selected' : '' }}>Perro</option>
+                <option value="Gato" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Gato' ? 'selected' : '' }}>Gato</option>
+                <option value="Conejo" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Conejo' ? 'selected' : '' }}>Conejo</option>
+                <option value="Tortuga" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Tortuga' ? 'selected' : '' }}>Tortuga</option>
+                <option value="Peces" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Peces' ? 'selected' : '' }}>Peces</option>
+                <option value="Otro" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Otro' ? 'selected' : '' }}>Otro</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label for="contenido">Contenido</label>
@@ -62,6 +78,7 @@
                 <input type="file" name="imagen" id="imagen" accept="image/*" onchange="previewImage()">
                 <label for="imagen">Seleccionar Imagen</label>
             </div>
+
             <div class="file-info">
                 <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
             </div>

@@ -99,7 +99,7 @@ body {
 }
 
 .cuadrado img {
-    width: 90%;
+    width: 75%;
     height: 80%;
     object-fit: cover;
     border-radius: 1rem;
@@ -370,7 +370,7 @@ body {
     margin-top: 6vw;
     width: 90%;
     height: auto;
-    padding: 30px 130px;
+    padding: 30px;
     margin-left: auto;
     margin-right: auto;
     background-color: rgba(255, 255, 255, 0);
@@ -379,6 +379,7 @@ body {
     flex-direction: column;
     align-items: start;
 }
+
 
 .container2 {
     width: 100%;
@@ -553,7 +554,7 @@ button[type="submit"]:hover, .btn:hover {
     background-color: #fff;
     font-family: 'Arial', sans-serif;
     color: #333;
-    margin: 20px 10px;
+    margin: 20px 5px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.7s ease-out;
     opacity: 0;
@@ -588,6 +589,8 @@ button[type="submit"]:hover, .btn:hover {
     display: flex;
     align-items: start;
     margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .foto-perfil {
@@ -1171,7 +1174,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado-container-wrapper {
-        height: 64vh;
+        height: 60vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1183,7 +1186,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado {
-        height: 27vh;
+        height: 25vh;
         flex: 0 0 47%;
         margin-bottom: 2vw;
         display: flex;
@@ -1194,7 +1197,7 @@ button[type="submit"]:hover, .btn:hover {
     }
 
     .cuadrado img {
-        padding-top: 11vw;
+        padding-top: 10vw;
         width: auto;
         max-width: 100%;
         height: auto;
@@ -1204,8 +1207,6 @@ button[type="submit"]:hover, .btn:hover {
         transform: none;
         transition: none;
     }
-
-
 
     .overlay p {
         font-size: 0.3rem;
@@ -1238,6 +1239,7 @@ button[type="submit"]:hover, .btn:hover {
     .cuadrado .texto-overlay {
         transition: none;
     }
+
 
     .vision {
         height: 300px;
@@ -1352,6 +1354,10 @@ button[type="submit"]:hover, .btn:hover {
     .message {
         font-size: 12px;
         max-width: 80%;
+    }
+
+    .tooltip .tooltiptext {
+        display: none;
     }
 
     .container {
@@ -1847,6 +1853,12 @@ button[type="submit"]:hover, .btn:hover {
         object-fit: cover;
         padding-top: 25%;
     }
+
+    .cuadrado .texto-overlay {
+        font-size: 1.1rem;
+        top: 2vw;
+    }
+
 
     .vision, .mision {
         height: 300px;
@@ -2457,11 +2469,22 @@ button[type="submit"]:hover, .btn:hover {
 
 
 
+.filter-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
 
 .breadcrumb-container {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.select-wrapper {
+    width: 200px;
 }
 
 .breadcrumb {
@@ -2532,4 +2555,9 @@ button[type="submit"]:hover, .btn:hover {
     font-weight: bold;
     color: #333;
 }
+
+
+
+
+
 
