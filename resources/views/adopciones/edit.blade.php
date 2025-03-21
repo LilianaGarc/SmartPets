@@ -69,7 +69,7 @@
 
         <div class="form-group">
             <label for="contenido">Contenido</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="255">{{ old('contenido', $adopcion->contenido) }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido', $adopcion->contenido) }}</textarea>
         </div>
 
         <div class="form-group">

@@ -96,8 +96,11 @@
             <p>{{ $adopcion->contenido }}</p>
 
             @if($adopcion->imagen)
-                <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
+                <a href="{{ route('adopciones.show', $adopcion->id) }}">
+                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
+                </a>
             @endif
+
 
             <div class="interacciones">
                 <div class="reactions">

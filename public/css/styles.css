@@ -8,39 +8,6 @@ body {
     overflow-x: hidden;
 }
 
-.navbar {
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1rem;
-    margin: 0 1.5vw;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar a:hover {
-    color: #ff7f50;
-    transform: scale(1.1);
-}
-
-.navbar .logo img {
-    width: 20vw;
-    height: auto;
-    margin-left: 3vw;
-}
-
 .cuadrado-container-wrapper {
     background-color: #ffffff;
     background-size: cover;
@@ -475,26 +442,25 @@ input[type="file"] {
 .input-file-wrapper input[type="file"]:focus + label,
 .input-file-wrapper input[type="file"]:hover + label {
     background-color: #f8f9fa;
-    border-color: #ff7c40;
+    border-color: #000000;
 }
 
 button[type="submit"], .btn {
     padding: 12px 30px;
-    background-color: #1e4183;
-    color: white;
     font-size: 1rem;
     font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
     margin-top: 20px;
+    outline: 0;
+    background: none;
+    border: 1px solid #d9d9d9;
+    color: #515151;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 button[type="submit"]:hover, .btn:hover {
-    background-color: #ff7c40;
+    border: 1px solid #1e4183;
+    color: #1e4183;
     transform: scale(1.05);
 }
 
@@ -552,7 +518,6 @@ button[type="submit"]:hover, .btn:hover {
     text-align: left;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
     color: #333;
     margin: 20px 5px;
     overflow: hidden;
@@ -599,7 +564,7 @@ button[type="submit"]:hover, .btn:hover {
     margin-right: 15px;
     overflow: hidden;
     border-radius: 50%;
-    border: 3px solid #FF7F50;
+    border: 2px solid #d7d7d7;
     background-size: cover;
     background-position: center;
 }
@@ -623,7 +588,7 @@ button[type="submit"]:hover, .btn:hover {
 }
 
 .contador-visitas {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: rgb(169, 169, 169);
     align-self: end;
 }
@@ -647,7 +612,7 @@ button[type="submit"]:hover, .btn:hover {
 .adopcion-card p {
     margin-bottom: 10px;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -854,7 +819,6 @@ button[type="submit"]:hover, .btn:hover {
     cursor: pointer;
 }
 
-
 button, .btn-view, .btn-editar {
     display: flex;
     flex-direction: column;
@@ -903,122 +867,200 @@ button, .btn-view, .btn-editar {
     visibility: visible;
 }
 
-.table {
-    width: 600px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.table th,
-.table td {
-    padding: 12px 15px;
-    text-align: left;
-    font-size: 16px;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-}
-
-.table th {
-    background-color: #1e4183;
-    color: #fff;
-    font-weight: bold;
-}
-
-.table td {
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.table tr:nth-child(even) td {
-    background-color: #f1f1f1;
-}
-
-.comprobante-container {
-    width: 600px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 30px;
-    position: relative;
-    background-color: #f9f9f9;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-}
-
-.comprobante-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.download-button-container .Btn-download {
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 50%;
-    background-color: #ff7c40;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.card {
+    margin-top: 4vw;
+    width: 800px;
+    height: 500px;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: hidden;
 }
 
-.download-button-container .Btn-download:hover {
-    background-color: #e56028;
-    transform: scale(1.1);
+.card2 {
+    margin-top: 4vw;
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    background: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: hidden;
 }
 
-.download-button-container .svgIcon {
-    fill: #fff;
+.card:hover, .car2:hover {
+    box-shadow: 0 8px 17px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
 }
 
-.download-button-container .Btn-download:hover .tooltip {
-    opacity: 1;
+
+.card nav,.card2 nav {
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 2px solid #efefef;
+    text-align: left;
 }
 
-.boton-container {
+.card nav .usuario, .card2 nav .usuario {
+    font-size: 1.8rem;
+    color: #1e4183;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.card-content {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    padding: 30px;
+    gap: 30px;
+    overflow: hidden;
+}
+
+.card-content .photo {
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.card-content .photo img {
+    max-width: 100%;
+    height: auto;
+    max-height: 210px;
+    border-radius: 12px;
+}
+
+.card-content .description {
+    width: 55%;
+    padding: 20px;
+    border-left: 3px solid #efefef;
+}
+
+.card-content .description h1 {
+    color: #1e4183;
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0;
+}
+
+.card-content .description h2 {
+    color: #515151;
+    margin: 10px 0;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.card-content .description p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #727272;
+    padding: 15px 0;
+    margin: 0;
+}
+
+.card-content .description .boton-container {
+    display: flex;
     margin-top: 20px;
 }
 
-button[type="submit"], .btn {
+.card-content .description button {
+    outline: 0;
+    background: none;
+    border: 1px solid #d9d9d9;
     padding: 12px 30px;
-    background-color: #1e4183;
-    color: white;
-    font-size: 1rem;
+    color: #515151;
     font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    text-align: center;
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    text-decoration: none;
+    font-size: 1rem;
 }
 
-button[type="submit"]:hover, .btn:hover {
-    background-color: #ff7c40;
-    transform: scale(1.05);
+.card-content .description button:hover {
+    border: 1px solid #1e4183;
+    color: #1e4183;
 }
+
+:root {
+    --color-dark: #ffffff;
+    --color: #515151;
+    --color2: #d9d9d9;
+    --color-primary: #1e4183;
+    accent-color: #1e4183 ;
+}
+
+.c-btn {
+    margin-top: 1vw;
+    position: relative;
+    overflow: hidden;
+    padding: 0.85rem 2rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color);
+    text-decoration: none;
+    border-radius: 8px;
+    background-color: transparent;
+    backface-visibility: hidden;
+    box-shadow: inset 0 0 0 1px var(--color2);
+
+    transform: translateZ(0);
+
+    &::after {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+
+        top: 0;
+        left: 0;
+        z-index: 1;
+        height: 120%;
+        width: 120%;
+        border-radius: 20%;
+        background-color: var(--color-primary);
+        scale: 0 0;
+        translate: 0 140%;
+        transition: scale 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
+        translate 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+}
+
+.c-btn__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+
+    z-index: 2;
+    font-size: 1.2rem;
+    letter-spacing: 0.025em;
+
+    transition: color 0.32s ease-in-out;
+}
+
+.c-btn:hover {
+    span {
+        color: var(--color-dark);
+    }
+
+    &:after {
+        scale: 1.5 1.5;
+        translate: 0 0;
+
+        border-radius: 50%;
+    }
+}
+
 
 
 @keyframes slide-in-top {
@@ -1039,32 +1081,6 @@ button[type="submit"]:hover, .btn:hover {
     .body {
         overflow-x: hidden;
         margin: 0;
-    }
-
-    .navbar {
-        padding: 1rem 2vw;
-        flex-direction: row;
-        justify-content: space-between;
-        height: 1.5rem;
-        display: flex;
-    }
-
-    .navbar .a {
-        margin-left: 0;
-        margin-right: 2vw;
-    }
-
-    .navbar .logo {
-        max-width: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar .logo img {
-        width: 40vw;
-        max-height: 100%;
-        height: auto;
-        padding: 0;
     }
 
     .image-carousel {
@@ -1315,6 +1331,75 @@ button[type="submit"]:hover, .btn:hover {
         overflow-x: hidden;
     }
 
+    .card {
+        width: 90%;
+        margin-top: 25vw;
+        height: 90%;
+        overflow: hidden;
+    }
+
+    .card2 {
+        width: 80%;
+        margin-top: 50vw;
+        overflow: hidden;
+        height: 105%;
+    }
+
+    @media (max-width: 400px) {
+
+        .body {
+            overflow: hidden;
+            margin: 0;
+        }
+        .card {
+            margin-top: 45vw;
+            width: 90%;
+            height: 105%;
+        }
+
+        .card2{
+            margin-top: 75vw;
+            width: 90%;
+            height: 120%;
+        }
+
+    }
+
+    .card-content {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .card-content .photo {
+        width: 100%;
+        padding: 0;
+    }
+
+    .card-content .photo img {
+        max-height: 250px;
+    }
+
+    .card-content .description {
+        width: 90%;
+        border-left: none;
+    }
+
+    .card-content .description h1 {
+        font-size: 32px;
+    }
+
+    .card-content .description h2 {
+        font-size: 16px;
+    }
+
+    .card-content .description p {
+        font-size: 14px;
+    }
+
+    .card-content .description button {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
 
     .breadcrumb-container {
         flex-direction: row;
@@ -1466,37 +1551,6 @@ button[type="submit"]:hover, .btn:hover {
         max-width: 100%;
     }
 
-    .table {
-        width: 90%;
-    }
-
-    .comprobante-container {
-        width: 90%;
-        height: auto;
-    }
-
-    .comprobante-container img {
-        width: 100%;
-        height: auto;
-    }
-
-    .download-button-container .Btn-download {
-        bottom: 15px;
-        right: 15px;
-    }
-
-    .boton-container {
-        flex-direction: row;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    button[type="submit"], .btn {
-        width: 100%;
-        padding: 10px 20px;
-        font-size: 0.8rem;
-    }
-
     .compartir-mascotas .box {
         width: 100px;
         height: 50px;
@@ -1522,32 +1576,6 @@ button[type="submit"]:hover, .btn:hover {
     .body {
         overflow-x: hidden;
         margin: 0;
-    }
-
-    .navbar {
-        padding: 1.2rem 2%;
-        flex-direction: row;
-        justify-content: space-between;
-        height: auto;
-        display: flex;
-    }
-
-    .navbar .a {
-        margin-left: 0;
-        margin-right: 2%;
-    }
-
-    .navbar .logo {
-        max-width: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar .logo img {
-        width: 35%;
-        max-height: 100%;
-        height: auto;
-        padding: 0;
     }
 
     .image-carousel {
@@ -1689,11 +1717,6 @@ button[type="submit"]:hover, .btn:hover {
         height: auto;
     }
 
-    .table th,
-    .table td {
-        font-size: 15px;
-        padding: 10px;
-    }
 
     .comprobante-container img {
         max-height: 220px;
@@ -1714,32 +1737,6 @@ button[type="submit"]:hover, .btn:hover {
     .body {
         overflow-x: hidden;
         margin: 0;
-    }
-
-    .navbar {
-        padding: 1.2rem 2%;
-        flex-direction: row;
-        justify-content: space-between;
-        height: auto;
-        display: flex;
-    }
-
-    .navbar .a {
-        margin-left: 0;
-        margin-right: 2%;
-    }
-
-    .navbar .logo {
-        max-width: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar .logo img {
-        width: 25%;
-        max-height: 100%;
-        height: auto;
-        padding: 0;
     }
 
     .image-carousel {
@@ -1888,11 +1885,6 @@ button[type="submit"]:hover, .btn:hover {
         height: auto;
     }
 
-    .table th,
-    .table td {
-        font-size: 15px;
-        padding: 10px;
-    }
 
     .comprobante-container img {
         max-height: 220px;
@@ -1914,12 +1906,13 @@ button[type="submit"]:hover, .btn:hover {
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 8vw;
+    top: 5vw;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.8);
-    padding-top: 60px;
+    align-content: center;
+    justify-content: center;
 }
 
 .modal-content {
