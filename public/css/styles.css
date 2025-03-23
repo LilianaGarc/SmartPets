@@ -56,7 +56,7 @@ body {
 .cuadrado:nth-child(2),
 .cuadrado:nth-child(4),
 .cuadrado:nth-child(3) {
-    background-color: #c5c5c5;
+    background-color: #dadada;
 }
 
 .cuadrado:nth-child(1) .texto-overlay,
@@ -801,7 +801,11 @@ button[type="submit"]:hover, .btn:hover {
     word-wrap: break-word;
     line-height: 1.5;
     padding: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 .btn-eliminar {
     all: unset;
@@ -867,31 +871,19 @@ button, .btn-view, .btn-editar {
     visibility: visible;
 }
 
-.card {
-    margin-top: 4vw;
-    width: 800px;
-    height: 500px;
-    position: absolute;
-    background: white;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
-    transition: all 0.3s;
-    border-radius: 15px;
-    padding: 5px;
-    overflow: hidden;
+.card-containerver, .card2-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 20px 0;
 }
 
 .card2 {
-    margin-top: 4vw;
-    width: 800px;
-    height: 600px;
-    position: absolute;
+    width: 80vw;
+    max-width: 800px;
+    height: 68vh;
     background: white;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
     transition: all 0.3s;
     border-radius: 15px;
@@ -899,19 +891,33 @@ button, .btn-view, .btn-editar {
     overflow: hidden;
 }
 
-.card:hover, .car2:hover {
+.card {
+    width: 80vw;
+    max-width: 800px;
+    height: 55vh;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: hidden;
+}
+
+.card:hover,
+.card2:hover {
     box-shadow: 0 8px 17px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
 }
 
-
-.card nav,.card2 nav {
+.card nav,
+.card2 nav {
     width: 100%;
     padding: 20px 0;
     border-bottom: 2px solid #efefef;
     text-align: left;
 }
 
-.card nav .usuario, .card2 nav .usuario {
+.card nav .usuario,
+.card2 nav .usuario {
     font-size: 1.8rem;
     color: #1e4183;
     font-weight: bold;
@@ -920,57 +926,65 @@ button, .btn-view, .btn-editar {
 
 .card-content {
     display: flex;
-    padding: 30px;
-    gap: 30px;
+    padding: 2vw;
+    gap: 2vw;
     overflow: hidden;
 }
 
 .card-content .photo {
     width: 50%;
     text-align: center;
-    padding: 20px;
+    padding: 2vw;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .card-content .photo img {
     max-width: 100%;
     height: auto;
-    max-height: 210px;
+    max-height: 200px;
+    object-fit: cover;
     border-radius: 12px;
 }
 
 .card-content .description {
-    width: 55%;
-    padding: 20px;
+    width: 50%;
+    padding: 2vw;
     border-left: 3px solid #efefef;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .card-content .description h1 {
     color: #1e4183;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 2vw;
     margin: 0;
 }
 
 .card-content .description h2 {
-    color: #515151;
+    color: #2f2f2f;
     margin: 10px 0;
     text-transform: uppercase;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.5vw;
 }
 
 .card-content .description p {
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 1vw;
     color: #727272;
     padding: 15px 0;
     margin: 0;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .card-content .description .boton-container {
     display: flex;
-    margin-top: 20px;
+    margin-top: auto;
 }
 
 .card-content .description button {
@@ -983,6 +997,7 @@ button, .btn-view, .btn-editar {
     transition: all 0.3s ease;
     cursor: pointer;
     font-size: 1rem;
+    margin-right: 10px;
 }
 
 .card-content .description button:hover {
@@ -995,7 +1010,7 @@ button, .btn-view, .btn-editar {
     --color: #515151;
     --color2: #d9d9d9;
     --color-primary: #1e4183;
-    accent-color: #1e4183 ;
+    accent-color: #1e4183;
 }
 
 .c-btn {
@@ -1003,48 +1018,41 @@ button, .btn-view, .btn-editar {
     position: relative;
     overflow: hidden;
     padding: 0.85rem 2rem;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     color: var(--color);
     text-decoration: none;
     border-radius: 8px;
     background-color: transparent;
     backface-visibility: hidden;
     box-shadow: inset 0 0 0 1px var(--color2);
-
     transform: translateZ(0);
+}
 
-    &::after {
-        content: "";
-        pointer-events: none;
-        position: absolute;
-
-        top: 0;
-        left: 0;
-        z-index: 1;
-        height: 120%;
-        width: 120%;
-        border-radius: 20%;
-        background-color: var(--color-primary);
-        scale: 0 0;
-        translate: 0 140%;
-        transition: scale 0.6s cubic-bezier(0.215, 0.61, 0.355, 1),
-        translate 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
+.c-btn::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 120%;
+    width: 120%;
+    border-radius: 20%;
+    background-color: var(--color-primary);
+    scale: 0 0;
+    translate: 0 140%;
+    transition: scale 0.6s cubic-bezier(0.215, 0.61, 0.355, 1), translate 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .c-btn__label {
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-
     z-index: 2;
     font-size: 1.2rem;
     letter-spacing: 0.025em;
-
     transition: color 0.32s ease-in-out;
 }
 
@@ -1056,12 +1064,9 @@ button, .btn-view, .btn-editar {
     &:after {
         scale: 1.5 1.5;
         translate: 0 0;
-
         border-radius: 50%;
     }
 }
-
-
 
 @keyframes slide-in-top {
     0% {
@@ -1105,7 +1110,7 @@ button, .btn-view, .btn-editar {
 
     .image-container .carousel-text {
         font-size: 1.2rem;
-        top: 10%;
+        top: 20%;
         height: 35%;
         left: 5%;
         width: 30%;
@@ -1333,16 +1338,14 @@ button, .btn-view, .btn-editar {
 
     .card {
         width: 90%;
-        margin-top: 25vw;
-        height: 90%;
-        overflow: hidden;
+        height: auto;
     }
 
     .card2 {
-        width: 80%;
-        margin-top: 50vw;
+        width: 90%;
         overflow: hidden;
-        height: 105%;
+        margin-top: 10vw;
+        height: auto;
     }
 
     @media (max-width: 400px) {
@@ -1351,16 +1354,9 @@ button, .btn-view, .btn-editar {
             overflow: hidden;
             margin: 0;
         }
-        .card {
-            margin-top: 45vw;
-            width: 90%;
-            height: 105%;
-        }
 
-        .card2{
-            margin-top: 75vw;
+        .card, .card2 {
             width: 90%;
-            height: 120%;
         }
 
     }
@@ -1938,7 +1934,6 @@ button, .btn-view, .btn-editar {
     text-decoration: none;
     cursor: pointer;
 }
-
 .image-carousel {
     position: relative;
     width: 90%;
@@ -2002,6 +1997,33 @@ button, .btn-view, .btn-editar {
     z-index: 2;
 }
 
+.carousel-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 13px;
+    height: 13px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #fff;
+}
+
+.black-text {
+    color: #444444;
+    width: 28%;
+}
+
 @keyframes fadeInText {
     0% {
         opacity: 0;
@@ -2037,27 +2059,23 @@ button, .btn-view, .btn-editar {
     animation: fadeInText 2s 1.5s forwards;
 }
 
-.black-text {
-    color: #444444;
-    width: 28%;
+@media (max-width: 768px) {
+    .image-carousel {
+        height: 60vh;
+    }
+
+    .image-container {
+        width: 100%;
+    }
+
+    .carousel-dots {
+        display: none;
+    }
+
+    .image-item:not(:first-child) {
+        display: none;
+    }
 }
-
-.carousel-controls {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-    width: 100%;
-    z-index: 10;
-}
-
-
-
-
-
 
 .compartir-mascota {
     margin: 9vw 10vw;

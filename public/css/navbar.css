@@ -124,4 +124,8 @@
     .navbar .menu-items.open {
         width: 60%;
     }
+
+    .navbar .menu-items a {
+        font-size: 1.3rem;
+    }
 }

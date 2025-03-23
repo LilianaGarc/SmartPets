@@ -9,7 +9,6 @@
 <body>
 
 @include('MenuPrincipal.Navbar')
-
 <div class="image-carousel">
     <div class="image-container">
         <div class="image-item">
@@ -29,6 +28,12 @@
             <div class="carousel-text">Apoya el bienestar de tus mascotas en eventos especiales</div>
             <div class="carousel-subtext">Participa en eventos que promuevan el amor y el cuidado de los animales. ¡Tu presencia es valiosa!</div>
         </div>
+    </div>
+
+    <div class="carousel-dots">
+        <span class="dot" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
     </div>
 </div>
 
