@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade')->nullable();
             $table->foreignId('id_veterinaria')->constrained('veterinarias')->onDelete('cascade');
             $table->integer('calificacion');
             $table->string('opinion');

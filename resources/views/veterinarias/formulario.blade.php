@@ -57,7 +57,7 @@
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="telefono" placeholder="Número de teléfono" name="telefono"
+                <input type="tel" class="form-control" id="telefono" placeholder="Número de teléfono" name="telefono" 
                     value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
                 <label for="telefono">Número de teléfono</label>
             </div>

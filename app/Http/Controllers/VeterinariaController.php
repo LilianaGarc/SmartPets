@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Veterinaria;
-use App\Models\Calificacion;
 use App\Models\Ubicacion;
 use Illuminate\Http\Request;
 
@@ -26,6 +25,7 @@ class VeterinariaController extends Controller
             ->get();
         return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
     }
+
     // Método que muestra todas las veterinarias
     public function index()
     {
@@ -39,8 +39,6 @@ class VeterinariaController extends Controller
         $veterinarias = Veterinaria::all();
         return view('veterinarias.formulario')->with('veterinarias', $veterinarias);
     }
-
-    
 
     // Método que almacena una veterinaria
     public function store(Request $request)
@@ -198,19 +196,4 @@ class VeterinariaController extends Controller
         }
     }
 
-    public function storeCalificacion(Request $request)
-    {
-        $request->validate([
-            'calificacion' => 'required|integer|min:0|max:5',
-            'opinion' => 'nullable|string',
-        ]);
-
-        Calificacion::create([
-            'id_veterinaria' => $request->input('id_veterinaria'),
-            'id_user' => auth()->id(),
-            'calificacion' => $request->input('calificacion'),
-            'opinion' => $request->input('opinion'),
-        ]);
-        return redirect()->route('veterinarias.show', $request->input('veterinaria_id'))->with('exito', 'Calificación y opinión enviadas exitosamente');
-    }
 }
