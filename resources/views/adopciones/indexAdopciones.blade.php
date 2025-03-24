@@ -79,6 +79,12 @@
 @endif
 
 <div class="adopciones-container">
+    @if($adopciones->isEmpty())
+        <div class="no-hay">
+            <p class="no-hay-message">¡No hay adopciones disponibles por el momento! 😿</p>
+            <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+        </div>
+    @endif
 @foreach($adopciones as $adopcion)
         <div class="adopcion-card">
             <div class="perfil-usuario">

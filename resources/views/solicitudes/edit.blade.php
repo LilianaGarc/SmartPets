@@ -40,7 +40,7 @@
         </ul>
     </div>
 </div>
-<div class="container2">
+<div class="container4">
 
     <form action="{{ route('solicitudes.update', [$adopcion->id, $solicitud->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf

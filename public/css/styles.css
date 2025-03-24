@@ -347,7 +347,6 @@ body {
     align-items: start;
 }
 
-
 .container2 {
     width: 100%;
     height: auto;
@@ -357,6 +356,55 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.container4, .container5 {
+     background: white;
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+     transition: all 0.3s;
+     border-radius: 15px;
+     padding: 20px;
+     overflow: hidden;
+     margin: 20px auto;
+     max-width: 690px;
+ }
+
+.container3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+.form-container {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1000px;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.form-column {
+    flex: 1;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    display: block;
+}
+
+.image-column {
+    flex: 1;
+    background: #f4f4f4;
+    overflow: hidden;
+    height: 100%;
+}
+
+.image-column img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 form {
@@ -370,7 +418,6 @@ form {
 
 .form-group {
     width: 100%;
-    max-width: 700px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -380,19 +427,12 @@ label {
     font-size: 1.1rem;
     color: #2d2d2d;
     font-weight: 600;
+    margin-bottom: 5px;
 }
 
 textarea,
-input[type="text"]{
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    padding: 12px;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-    width: 88%;
-}
-
+input[type="text"],
+input[type="number"],
 select {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -400,17 +440,12 @@ select {
     padding: 12px;
     background-color: #f9f9f9;
     transition: all 0.3s ease;
-    width: 92%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-input[type="number"] {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
+select {
     padding: 12px;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-    width: 88%;
 }
 
 input[type="file"] {
@@ -420,8 +455,7 @@ input[type="file"] {
 .input-file-wrapper {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    display: inline-block;
+    max-width: 700px;
 }
 
 .input-file-wrapper input[type="file"] + label {
@@ -437,11 +471,12 @@ input[type="file"] {
     text-align: center;
     transition: background-color 0.3s ease, border-color 0.3s ease;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .input-file-wrapper input[type="file"]:focus + label,
 .input-file-wrapper input[type="file"]:hover + label {
-    background-color: #f8f9fa;
+    background-color: #f1f3f5;
     border-color: #000000;
 }
 
@@ -477,7 +512,7 @@ button[type="submit"]:hover, .btn:hover {
 #comprobante-preview,
 #image-preview {
     max-width: 100%;
-    max-height: 150px;
+    max-height: 250px;
     object-fit: contain;
     border-radius: 5px;
     margin-bottom: 5px;
@@ -1334,6 +1369,20 @@ button, .btn-view, .btn-editar {
         margin-top: 14vw;
         max-width: 100%;
         overflow-x: hidden;
+        box-shadow: none;
+    }
+
+    .container5 {
+        width: 80%;
+        overflow: hidden;
+        box-shadow: none;
+    }
+
+    .container4 {
+        width: 80%;
+        overflow: hidden;
+        margin-top: 15vw;
+        box-shadow: none;
     }
 
     .card {
@@ -1348,6 +1397,20 @@ button, .btn-view, .btn-editar {
         height: auto;
     }
 
+    .form-container {
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .image-column {
+       display: none;
+    }
+
+    .form-column {
+        border: none;
+    }
+
+
     @media (max-width: 400px) {
 
         .body {
@@ -1357,6 +1420,11 @@ button, .btn-view, .btn-editar {
 
         .card, .card2 {
             width: 90%;
+        }
+
+        .container3, .container5 {
+          width: 80%;
+            box-shadow: none;
         }
 
     }
@@ -1428,8 +1496,9 @@ button, .btn-view, .btn-editar {
     .form-group {
         width: 100%;
     }
+
     .input-file-wrapper {
-        width: 82%;
+        width: 100%;
     }
 
     textarea, input[type="text"], input[type="file"] {
@@ -2520,6 +2589,25 @@ button, .btn-view, .btn-editar {
     color: #333;
 }
 
+.no-hay {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.no-hay-message {
+    font-size: 24px;
+    color: #6c757d;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .no-hay-message {
+        font-size: 1rem;
+    }
+}
 
 
 

@@ -24,7 +24,7 @@
                 </a>
             </li>
             <li class="breadcrumb__item breadcrumb__item-active">
-                <a href="{{ route('adopciones.create') }}" class="breadcrumb__inner">
+                <a href="{{ route('adopciones.edit', $adopcion->id) }}" class="breadcrumb__inner">
                     <span class="breadcrumb__title">Editar publicación</span>
                 </a>
             </li>
@@ -32,7 +32,7 @@
     </div>
 </div>
 
-<div class="container2">
+<div class="container5">
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {

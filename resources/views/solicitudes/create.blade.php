@@ -36,7 +36,7 @@
         </ul>
     </div>
 </div>
-<div class="container2">
+<div class="container4">
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
