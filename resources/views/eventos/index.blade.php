@@ -1,4 +1,4 @@
-@extends('layout.plantilla')
+@extends('layout.plantillaSaid')
 @section('titulo', 'Lista de Eventos')
 
 @section('contenido')

@@ -23,14 +23,26 @@ class AdopcionController extends Controller
             ->orWhere('visibilidad', 'LIKE', "%$nombre%")->get();
         return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
     }
-    public function index()
+
+    public function index(Request $request)
     {
-        $adopciones = Adopcion::all();
+        $tipo_mascota = $request->get('tipo_mascota');
+
+        $adopciones = Adopcion::query();
+
+        if ($tipo_mascota) {
+            $adopciones = $adopciones->where('tipo_mascota', $tipo_mascota);
+        }
+
+        $adopciones = $adopciones->get();
+
         foreach ($adopciones as $adopcion) {
             $adopcion->increment('visibilidad');
         }
+
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
+
 
     public function create()
     {
@@ -42,6 +54,8 @@ class AdopcionController extends Controller
         $request->validate([
             'contenido' => 'required|string|max:255',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'tipo_mascota' => 'required|string|max:100',
+            'nombre_mascota' => 'required|string|max:100',
         ]);
 
         $rutaImagen = null;
@@ -53,6 +67,8 @@ class AdopcionController extends Controller
             'contenido' => $request->contenido,
             'imagen' => $rutaImagen,
             'visibilidad' => true,
+            'tipo_mascota' => $request->tipo_mascota,
+            'nombre_mascota' => $request->nombre_mascota,
         ]);
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
@@ -68,7 +84,9 @@ class AdopcionController extends Controller
     {
         $request->validate([
             'contenido' => 'required|string|max:255',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'tipo_mascota' => 'required|string|max:100',
+            'nombre_mascota' => 'required|string|max:100',
         ]);
 
         $adopcion = Adopcion::findOrFail($id);
@@ -83,6 +101,9 @@ class AdopcionController extends Controller
         }
 
         $adopcion->contenido = $request->contenido;
+        $adopcion->tipo_mascota = $request->tipo_mascota;
+        $adopcion->nombre_mascota = $request->nombre_mascota;
+
         $adopcion->save();
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito.');

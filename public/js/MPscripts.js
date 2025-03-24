@@ -73,24 +73,48 @@ setParallaxEffect();
 
 let currentIndex = 0;
 const images = document.querySelectorAll('.image-item');
+const dots = document.querySelectorAll('.dot');
 const totalImages = images.length;
 
 function changeImage() {
     const container = document.querySelector('.image-container');
-    currentIndex = (currentIndex + 1) % totalImages;
     container.style.transform = `translateX(-${currentIndex * 33.3333}%)`;
+    updateDots();
 }
+
+function updateDots() {
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[currentIndex].classList.add('active');
+}
+
+function goToImage(index) {
+    currentIndex = index;
+    changeImage();
+}
+
+dots.forEach(dot => {
+    dot.addEventListener('click', (event) => {
+        const index = event.target.getAttribute('data-index');
+        goToImage(index);
+    });
+});
 
 function checkScreenSize() {
     const screenWidth = window.innerWidth;
 
     if (screenWidth <= 768) {
+        images.forEach((image, index) => {
+            if (index !== 0) {
+                image.style.display = 'none';
+            } else {
+                image.style.display = 'block';
+            }
+        });
         clearInterval(imageInterval);
-        return;
-    }
-
-    if (!imageInterval) {
-        imageInterval = setInterval(changeImage, 5500);
+    } else {
+        images.forEach(image => {
+            image.style.display = 'block';
+        });
     }
 }
 

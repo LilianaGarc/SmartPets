@@ -1,3 +1,12 @@
+function showErrorAlert(message) {
+    Swal.fire({
+        title: "¡Error!",
+        text: "Primero debes subir una imagen.",
+        icon: "error",
+        confirmButtonColor: "#ff7f50",
+    });
+}
+
 function confirmDeleteAdopcion(adopcionId) {
     Swal.fire({
         title: "¿Estás seguro?",
