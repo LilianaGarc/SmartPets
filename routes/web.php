@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\PublicacionController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ReaccionController;
@@ -9,12 +12,32 @@ use App\Http\Controllers\MensajeController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VeterinariaController;
+use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
-use Illuminate\Support\Facades\Route;
 //Faltan rutas de categoria y ubicacion
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware('auth', 'admin')->group(function () {
+
+});
+
+require __DIR__.'/auth.php';
 
 //Jonaaaaa
 Route::get('/', function () {
@@ -55,6 +78,7 @@ Route::get('/solicitudes/{id_adopcion}/{id}/detalles', [SolicitudController::cla
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
+Route::resource('productos', ProductoController::class);
 
 //MARGOTH
 //Productos
@@ -67,10 +91,18 @@ Route::resource('/categorias',CategoriaController::class);
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
 //Rutas para Veterinarias
+//Administrativas
 Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
 Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
+Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
+
+//Publicas
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
-Route::post('/calificaciones', [VeterinariaController::class, 'storeCalificacion'])->name('calificaciones.store');
+
+Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
+Route::get('/calificaciones/{id}/edit', [CalificacionController::class, 'edit'])->name('calificaciones.edit');
+Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update'); 
+Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy'); 
 
 Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
@@ -81,7 +113,6 @@ Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])-
 Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
 Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
 
-Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
 
 //Rutas para Publicaciones
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');

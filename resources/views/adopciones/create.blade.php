@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<div class="container2">
+<div class="container3">
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -46,44 +46,70 @@
         </script>
     @endif
 
-    @if(session('fracaso'))
+    @if ($errors->any())
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '{{ session('fracaso') }}',
-                    confirmButtonColor: '#ff7f50',
-                });
+                let errorMessage = '';
+                @foreach ($errors->all() as $error)
+                    errorMessage += '{{ $error }}\n';
+                @endforeach
+
+                showErrorAlert(errorMessage);
             });
         </script>
     @endif
 
-    <form action="{{ route('adopciones.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="contenido">Contenido</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90"></textarea>
+    <div class="form-container">
+        <div class="form-column">
+            <form action="{{ route('adopciones.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="form-group">
+                    <label for="nombre_mascota">Nombre de la Mascota</label>
+                    <input type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" value="{{ old('nombre_mascota') }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo_mascota">Tipo de Mascota</label>
+                    <select name="tipo_mascota" id="tipo_mascota" class="form-control" required>
+                        <option value="Perro" {{ old('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
+                        <option value="Gato" {{ old('tipo_mascota') == 'Gato' ? 'selected' : '' }}>Gato</option>
+                        <option value="Conejo" {{ old('tipo_mascota') == 'Conejo' ? 'selected' : '' }}>Conejo</option>
+                        <option value="Tortuga" {{ old('tipo_mascota') == 'Tortuga' ? 'selected' : '' }}>Tortuga</option>
+                        <option value="Peces" {{ old('tipo_mascota') == 'Peces' ? 'selected' : '' }}>Peces</option>
+                        <option value="Otro" {{ old('tipo_mascota') == 'Otro' ? 'selected' : '' }}>Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contenido">Contenido</label>
+                    <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido') }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagen">Imagen</label>
+                    <div class="input-file-wrapper">
+                        <input type="file" name="imagen" id="imagen" accept="image/*" onchange="previewImage()">
+                        <label for="imagen">Seleccionar Imagen</label>
+                    </div>
+                    <div class="file-info">
+                        <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
+                    </div>
+                </div>
+
+                <div class="form-group image-preview-container" id="image-preview-container" style="display: none;">
+                    <img id="image-preview" src="" alt="Vista previa de la imagen">
+                    <div class="image-caption">Vista Previa</div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Crear Adopción</button>
+            </form>
         </div>
 
-        <div class="form-group">
-            <label for="imagen">Imagen</label>
-            <div class="input-file-wrapper">
-                <input type="file" name="imagen" id="imagen" accept="image/*" onchange="previewImage()">
-                <label for="imagen">Seleccionar Imagen</label>
-            </div>
-            <div class="file-info">
-                <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
-            </div>
+        <div class="image-column">
+            <img src="{{ asset('images/form.webp') }}" alt="formulario">
         </div>
-
-        <div class="form-group image-preview-container" id="image-preview-container" style="display: none;">
-            <img id="image-preview" src="" alt="Vista previa de la imagen">
-            <div class="image-caption">Vista Previa</div>
-        </div>
-
-        <button type="submit" class="btn btn-success">Crear Adopción</button>
-    </form>
+    </div>
 </div>
 
 <script src="{{ asset('js/vistaprevia.js') }}"></script>

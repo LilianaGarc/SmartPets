@@ -4,14 +4,20 @@
 
 @section('contenido')
 <br>
-<a href="{{ route('veterinarias.index') }}" class="btn btn-success mb-3">
-    <i class="fas fa-arrow-left"></i> Volver
-</a>
-@if(isset($veterinaria))
-<h1>Editar Veterinaria</h1>
-@else
-<h1>Creación de Veterinaria</h1>
-@endif
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="mb-0">
+        @if(isset($veterinaria))
+        Editar Veterinaria
+        @else
+        Creación de Veterinaria
+        @endif
+    </h1>
+    <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+        <h7><i class="fa-solid fa-circle-arrow-left"></i></h7>
+    </a>
+</div>
+
 
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -33,6 +39,7 @@
     @endisset
     @csrf
     <br>
+
     <div class="col">
         <div class="form-floating">
             <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
@@ -124,8 +131,12 @@
             </div>
         </div>
     </div>
+    <div class="mb-3">
+            <label for="imagen" class="form-label">Imagenes de la Veterinaria</label>
+            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+        </div>
     <br>
-    <button type="submit" class="btn-guardar">Guardar</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
     <input class="btn btn-danger" type="reset" value="Limpiar">
 </form>
 @endsection

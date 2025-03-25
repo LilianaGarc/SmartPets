@@ -8,7 +8,6 @@
     <title>@yield('titulo')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,7 +18,7 @@
             font-size: 100%;
             background-color: #f7f7f7;
             width: 75%;
-            height: 200vh;
+            height: auto;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -55,7 +54,7 @@
             margin-left: 0vw;
         }
 
-        .btn {
+        .btnl {
             text-decoration: none;
             color: #ffffff;
             background-color: #ff7f50;
@@ -64,7 +63,7 @@
             border: none;
         }
 
-        .btn:hover {
+        .btnl:hover {
             color: #ffffff;
             transform: scale(1.1);
             background-color: #18478b;
@@ -109,7 +108,7 @@
             transform: scale(1.1);
         }
 
-        .round-button {
+        .round-button1 {
             width: 16%;
             border-radius: 50%;
             border: none;
@@ -134,7 +133,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 6%;
+            height: auto;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -249,6 +249,15 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
                 </ul>
             </div>
         </div>

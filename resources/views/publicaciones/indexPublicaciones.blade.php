@@ -19,7 +19,7 @@
                         <button class="round-button">
                             <img src="{{ asset('images/amorperrito.webp') }}" alt="Imagen" class="button-img">
                         </button>
-                        <a href="#" class="btn-user" role="button"><h7><i class="fas fa-plus"></i> Crea una nueva publicacion </h7></a>
+                        <a href="{{ route('publicaciones.create') }}" class="btn-user" role="button"><h7><i class="fas fa-plus"></i> Crea una nueva publicacion </h7></a>
 
                     </div>
                     <hr>
