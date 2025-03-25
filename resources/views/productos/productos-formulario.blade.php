@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="categoria" class="form-label">Categoría de Mascota</label>
+                            <label for="categoria" class="form-label">Seleccionar mascota</label>
                             <select class="form-select" id="categoria" name="categoria" required>
                                 @foreach($categorias as $categoria)
                                     <option value="{{$categoria->id}}"{{old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
@@ -120,6 +120,9 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="col-md-6 mt-auto">
+                            <button type="button" class="btn btn-outline-primary" id="btnAgregar" onclick="window.location.href='{{ route('categorias.create')}}'">Agregar Nueva Categoría</button>
                         </div>
                     </div>
                 </div>
@@ -130,7 +133,7 @@
                     <div class="image-preview" id="drop-area">
                         <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
                         <p class="mb-2">Selecciona las imágenes</p>
-                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif, .avif" multiple>
+                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif" max="5" multiple>
                         <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
                     </div>
                     <div class="mt-3">
@@ -175,10 +178,12 @@
     </div>
 
     <script>
+
         // Detectar clic en el botón y abrir el selector de archivos
         document.getElementById('image-input').addEventListener('click', function() {
             this.value = null; // Resetear el valor para permitir la misma imagen
         });
+
 
         // Opcional: mostrar una vista previa de las imágenes seleccionadas
         document.getElementById('image-input').addEventListener('change', function() {
@@ -206,7 +211,21 @@
             const files = event.dataTransfer.files;
             document.getElementById('image-input').files = files;
             console.log("Imágenes arrastradas:", files); // Para depuración
+
+
+            document.getElementById('image-input').addEventListener('change', function() {
+                const files = this.files;
+                if (files.length > 5) {
+                    alert('No se pueden subir más de 5 imágenes.');
+                    this.value = ''; // Limpiar el input
+                }
+            });
+
+
+
     </script>
+
+
 
 @endsection
 

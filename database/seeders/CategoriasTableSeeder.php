@@ -9,6 +9,36 @@ class CategoriasTableSeeder extends Seeder
 {
     public function run(): void
     {
-        Categoria::factory(100)->create();
+        Categoria::create([
+            'nombre' => 'Perros',
+            'descripcion' => 'Productos para Perros'
+        ]);
+
+        Categoria::create([
+            'nombre' => 'Gatos',
+            'descripcion' => 'Productos para Gatos'
+        ]);
+
+        Categoria::create([
+            'nombre' => 'Conejos',
+            'descripcion' => 'Productos para Conejos'
+        ]);
+
+        Categoria::create([
+            'nombre' => 'Tortugas',
+            'descripcion' => 'Productos para Tortugas'
+        ]);
+
+        Categoria::create([
+            'nombre' => 'Peces',
+            'descripcion' => 'Productos para Peces'
+        ]);
+
+        Categoria::create([
+            'nombre' => 'Otro',
+            'descripcion' => 'Otros productos'
+        ]);
+
+
     }
 }

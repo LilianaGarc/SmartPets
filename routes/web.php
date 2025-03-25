@@ -56,9 +56,12 @@ Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('prod
 
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
 
-//Margoth
+//MARGOTH
+//Productos
 Route::resource('productos',ProductoController::class);
 Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
+//Categorias
+Route::resource('/categorias',CategoriaController::class);
 
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
