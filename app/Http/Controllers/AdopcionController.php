@@ -36,12 +36,9 @@ class AdopcionController extends Controller
 
         $adopciones = $adopciones->get();
 
-        foreach ($adopciones as $adopcion) {
-            $adopcion->increment('visibilidad');
-        }
-
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
+
 
 
     public function create()
@@ -56,19 +53,26 @@ class AdopcionController extends Controller
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'tipo_mascota' => 'required|string|max:100',
             'nombre_mascota' => 'required|string|max:100',
+            'edad_mascota' => 'required|integer|min:0',
+            'raza_mascota' => 'required|string|max:100',
+            'ubicacion_mascota' => 'required|string|max:100',
         ]);
 
-        $rutaImagen = null;
-        if ($request->hasFile('imagen')) {
+        if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
             $rutaImagen = $request->file('imagen')->store('adopciones', 'public');
+        } else {
+            return redirect()->route('adopciones.create')->with('error', 'Por favor sube una imagen válida.');
         }
 
         Adopcion::create([
             'contenido' => $request->contenido,
             'imagen' => $rutaImagen,
-            'visibilidad' => true,
+            'visibilidad' => 0,
             'tipo_mascota' => $request->tipo_mascota,
             'nombre_mascota' => $request->nombre_mascota,
+            'edad_mascota' => $request->edad_mascota,
+            'raza_mascota' => $request->raza_mascota,
+            'ubicacion_mascota' => $request->ubicacion_mascota,
         ]);
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
@@ -87,6 +91,9 @@ class AdopcionController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'tipo_mascota' => 'required|string|max:100',
             'nombre_mascota' => 'required|string|max:100',
+            'edad_mascota' => 'required|integer|min:0',
+            'raza_mascota' => 'required|string|max:100',
+            'ubicacion_mascota' => 'required|string|max:255',
         ]);
 
         $adopcion = Adopcion::findOrFail($id);
@@ -103,17 +110,25 @@ class AdopcionController extends Controller
         $adopcion->contenido = $request->contenido;
         $adopcion->tipo_mascota = $request->tipo_mascota;
         $adopcion->nombre_mascota = $request->nombre_mascota;
+        $adopcion->edad_mascota = $request->edad_mascota;
+        $adopcion->raza_mascota = $request->raza_mascota;
+        $adopcion->ubicacion_mascota = $request->ubicacion_mascota;
 
         $adopcion->save();
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito.');
     }
 
+
     public function show($id)
     {
         $adopcion = Adopcion::findOrFail($id);
+
+        $adopcion->increment('visibilidad');
+
         return view('adopciones.show', compact('adopcion'));
     }
+
 
 
     public function destroy($id)
