@@ -21,4 +21,9 @@ class Resenia extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function producto(): BelongsTo
+    {
+        return $this->belongsTo(Producto::class);
+    }
 }
