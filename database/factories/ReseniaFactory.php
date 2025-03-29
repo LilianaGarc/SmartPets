@@ -15,7 +15,7 @@ class ReseniaFactory extends Factory
     {
         return [
             'titulo' => $this->faker->word(),
-            'contenido' => $this->faker->word(),
+            'contenido' => $this->faker->paragraph(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
