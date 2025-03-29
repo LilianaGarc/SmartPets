@@ -1,12 +1,15 @@
 @extends('productos.productos-layout') , @extends('MenuPrincipal.Navbar')
 @section('titulo','Detalles del producto')
 @section('contenido')
+
     <style>
         :root {
             --orange: #ED8119;
             --blue: #18478B;
             --cream: #FFF8F0;
             --dark: #1F1F1F;
+            --primary-color: #ED8119;
+            --secondary-color: #18478B;
         }
 
         body {
@@ -103,32 +106,81 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-         .accordion-button:not(.collapsed) {
-             background-color: #18478B !important;
-             color: white !important;
-         }
-
-        .accordion-button.collapsed {
-            background-color: #18478B !important;
-            color: white !important;
+        /* Accordion styling */
+        .accordion-item {
+            border-color: var(--secondary-color);
+            margin-bottom: 0.5rem;
         }
 
-        .accordion-button:focus {
-            box-shadow: 0 0 0 0.25rem rgba(24, 71, 139, 0.25) !important;
-        }
-
-        .accordion-item:nth-child(2) .accordion-button {
-            background-color: #ED8119 !important;
+        .accordion-button {
+            background-color: var(--secondary-color) !important;
             color: white !important;
+            padding: 1rem 1.25rem;
+            box-shadow: none !important;
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* Ensure the button takes full width */
         }
 
         .accordion-button::after {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+            margin-left: 1rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+            flex-shrink: 0;
         }
 
-        .accordion-button:not(.collapsed)::after {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
-            transform: rotate(-180deg);
+        .accordion-button.collapsed {
+            border-bottom-width: 0;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+        }
+
+        width: 100%;
+        font-weight: 500;
+        }
+
+        .accordion-body {
+            background-color: #f8f9fa;
+            border: 1px solid var(--secondary-color);
+            border-top: none;
+            padding: 1rem 1.25rem;
+        }
+
+        /* Ensure consistent title width */
+        .accordion-button {
+            position: relative;
+        }
+
+        .accordion-button::after {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Profile image and username styling */
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            max-width: calc(100% - 40px);
+        }
+
+        .username {
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
     </head>
@@ -142,7 +194,6 @@
         @endif
         @if(session('error'))
             <div class="alert alert-danger">
-                {{ session('error') }}
             </div>
         @endif
         <div class="product-container p-4">
@@ -225,74 +276,24 @@
             <div class="tab-content" id="productTabsContent">
                 <div class="tab-pane fade show active" id="reviews">
                     <h4 class="mb-3">RESEÑAS</h4>
-                    <div class="container my-5">
-                        <div class="accordion" id="acordeonEjemplo">
-                            <!-- Ítem 1 -->
+
+                    <div class="container py-5">
+
+                        <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
-                                <h2 class="accordion-header">
+                                <h2 class="accordion-header" id="headingOne">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Título 1
+            <span class="accordion-title">
+              <div class="user-info">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-image">
+                <span class="username">John Doe</span>
+              </div>
+            </span>
                                     </button>
                                 </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#acordeonEjemplo">
+                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ítem 2 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Título 2
-                                    </button>
-                                </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
-                                    <div class="accordion-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ítem 3 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        Título 3
-                                    </button>
-                                </h2>
-                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
-                                    <div class="accordion-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ítem 4 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                        Título 4
-                                    </button>
-                                </h2>
-                                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
-                                    <div class="accordion-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ítem 5 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                        Título 5
-                                    </button>
-                                </h2>
-                                <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
-                                    <div class="accordion-body">
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                        <strong>This is the accordion content.</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisi vel consectetur interdum, nisl nunc egestas nisi, euismod aliquam nisl nunc egestas nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.
                                     </div>
                                 </div>
                             </div>
