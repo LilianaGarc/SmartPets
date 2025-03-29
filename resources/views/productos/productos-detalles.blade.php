@@ -102,6 +102,34 @@
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+         .accordion-button:not(.collapsed) {
+             background-color: #18478B !important;
+             color: white !important;
+         }
+
+        .accordion-button.collapsed {
+            background-color: #18478B !important;
+            color: white !important;
+        }
+
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(24, 71, 139, 0.25) !important;
+        }
+
+        .accordion-item:nth-child(2) .accordion-button {
+            background-color: #ED8119 !important;
+            color: white !important;
+        }
+
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") !important;
+            transform: rotate(-180deg);
+        }
     </style>
     </head>
     <body>
@@ -194,20 +222,83 @@
                 </div>
             </div>
 
-            <!-- Tabs de Información -->
-            <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-bs-toggle="tab" href="#description">Descripción</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="reviews-tab" data-bs-toggle="tab" href="#reviews">Reseñas</a>
-                </li>
-            </ul>
-
             <div class="tab-content" id="productTabsContent">
-                <div class="tab-pane fade show active" id="description">
-                    <h4 class="mb-3">Descripción del Producto</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <div class="tab-pane fade show active" id="reviews">
+                    <h4 class="mb-3">RESEÑAS</h4>
+                    <div class="container my-5">
+                        <div class="accordion" id="acordeonEjemplo">
+                            <!-- Ítem 1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Título 1
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#acordeonEjemplo">
+                                    <div class="accordion-body">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ítem 2 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Título 2
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
+                                    <div class="accordion-body">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ítem 3 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Título 3
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
+                                    <div class="accordion-body">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ítem 4 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                        Título 4
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
+                                    <div class="accordion-body">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ítem 5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                        Título 5
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#acordeonEjemplo">
+                                    <div class="accordion-body">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi amet, natus, porro facere debitis enim quod mollitia molestias ea sint eum? Aliquid culpa quo dolor officia facere cumque, blanditiis eveniet.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
