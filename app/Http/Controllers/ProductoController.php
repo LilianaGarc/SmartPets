@@ -244,5 +244,20 @@ class ProductoController extends Controller
 
         return response()->json($productos);
     }
+    public function agregarReseña(Request $request, $producto_id)
+    {
+     $request->validate([
+         'titulo' => 'required|string|min:5|max:255',
+         'contenido' => 'required|string|min:5',
+     ]);
+     $producto = Producto::findOrFail($producto_id);
+
+     $producto->resenias()->create([
+         'titulo' => $request->titulo,
+         'contenido' => $request->contenido,
+         'user_id' => 1,
+     ]);
+     return redirect()->back()->with('success', 'Reseña agregada correctamente');
+    }
 
 }
