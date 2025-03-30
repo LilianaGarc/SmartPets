@@ -12,6 +12,7 @@ class Resenia extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
+        'producto_id',
         'titulo',
         'contenido',
         'user_id',

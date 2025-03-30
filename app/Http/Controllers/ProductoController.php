@@ -127,7 +127,8 @@ class ProductoController extends Controller
     public function show(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('productos.productos-detalles', compact('producto'));
+        $resenias = $producto->resenias()->with('user')->get();
+        return view('productos.productos-detalles', compact('producto','resenias'));
     }
 
     /**

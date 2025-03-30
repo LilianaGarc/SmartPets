@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ChatsTableSeeder::class,
             CategoriasTableSeeder::class,
             ProductosTableSeeder::class,
-            SolicitudesTableSeeder::class,
+            //SolicitudesTableSeeder::class,
             UbicacionesTableSeeder::class,
             ReseniasTableSeeder::class,
         ]);

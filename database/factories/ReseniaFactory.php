@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Producto;
 use App\Models\Resenia;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,10 +17,11 @@ class ReseniaFactory extends Factory
         return [
             'titulo' => $this->faker->word(),
             'contenido' => $this->faker->paragraph(),
+            'producto_id' => Producto::factory(),
+            'user_id' => User::factory(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-
-            'user_id' => User::factory(),
+            'deleted_at' => null,
         ];
     }
 }

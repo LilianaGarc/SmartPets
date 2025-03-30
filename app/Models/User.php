@@ -31,6 +31,12 @@ class User extends Authenticatable
         return $this->hasMany(Calificacion::class, 'id_usuario');
     }
 
+    public function resenias()
+    {
+        //Un usuario puede tener muchas reseñas (1)
+        $this->hasMany(Resenia::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

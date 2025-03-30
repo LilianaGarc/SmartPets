@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->string('titulo');
             $table->string('contenido');
-            $table->foreignId('user_id');
-            $table->foreignId('producto_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('producto_id');
             $table->foreign('producto_id')->references('id')->on('productos');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
