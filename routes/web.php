@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,13 @@ Route::get('/solicitudes/{id_adopcion}/editar/{id}', [SolicitudController::class
 Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
 Route::get('/solicitudes/{id_adopcion}/{id}/detalles', [SolicitudController::class, 'showDetails'])->name('solicitudes.showDetails');
 
+//Mascota Ideal
+Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+Route::post('/chatbot', [ChatbotController::class, 'store'])->name('chatbot.store');
+Route::get('/chatbot/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
+Route::get('/chatbot/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
+Route::get('/chatbot/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 
@@ -101,8 +109,8 @@ Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('vete
 
 Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
 Route::get('/calificaciones/{id}/edit', [CalificacionController::class, 'edit'])->name('calificaciones.edit');
-Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update'); 
-Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy'); 
+Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update');
+Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
 
 Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');

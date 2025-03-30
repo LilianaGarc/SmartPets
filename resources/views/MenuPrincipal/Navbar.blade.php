@@ -31,7 +31,7 @@
                 <li><a href='{{ route('veterinarias.index') }}'>Veterinarias</a></li>
                 <li><a href='{{ route('productos.index') }}'>PetShop</a></li>
                 <li><a href="#">PetChat</a></li>
-                <li><a href="#">Mascota ideal</a></li>
+                <li><a href="{{ route('chatbot.index') }}">Mascota ideal</a></li>
                 <li><a href="#">Salir</a></li>
             </ul>
         </div>

@@ -84,7 +84,7 @@
     <div class="mision-content">
         <h2>Descubre tu mascota ideal</h2>
         <p>SmartPets está diseñado para ayudarte a encontrar a tu compañero de vida perfecto, conectándote con animales que necesitan un hogar.</p>
-        <button class="ver-mas-btn" onclick="window.location.href=''">Ver más</button>
+        <button class="ver-mas-btn" onclick="window.location.href='{{ route('chatbot.index') }}'">Ver más</button>
     </div>
 </div>
 
