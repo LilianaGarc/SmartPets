@@ -9,7 +9,6 @@
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
-
 <div class="container">
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
@@ -29,9 +28,10 @@
                 </a>
             </li>
         </ul>
+
         <div class="filter-container">
-            <form action="{{ route('adopciones.index') }}" method="GET">
                 <div class="select-wrapper">
+                    <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                     <select name="tipo_mascota" onchange="this.form.submit()" class="select-dropdown">
                         <option value="">Seleccionar tipo de mascota</option>
                         <option value="Perro" {{ request('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
@@ -41,6 +41,15 @@
                         <option value="Peces" {{ request('tipo_mascota') == 'Peces' ? 'selected' : '' }}>Peces</option>
                         <option value="Otro" {{ request('tipo_mascota') == 'Otro' ? 'selected' : '' }}>Otro</option>
                         <option value="" {{ request('tipo_mascota') == '' ? 'selected' : '' }}>Todos</option>
+                    </select>
+                </div>
+
+                <div class="select-wrapper">
+                    <select name="orden" onchange="this.form.submit()" class="select-dropdown">
+                        <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por fecha: Más reciente</option>
+                        <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por fecha: Más antigua</option>
+                        <option value="most_visited" {{ request('orden') == 'most_visited' ? 'selected' : '' }}>Ordenar por vistas: Más vistas</option>
+                        <option value="least_visited" {{ request('orden') == 'least_visited' ? 'selected' : '' }}>Ordenar por vistas: Menos vistas</option>
                     </select>
                 </div>
             </form>

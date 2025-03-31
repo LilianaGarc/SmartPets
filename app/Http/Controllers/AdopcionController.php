@@ -27,11 +27,19 @@ class AdopcionController extends Controller
     public function index(Request $request)
     {
         $tipo_mascota = $request->get('tipo_mascota');
-
+        $orden = $request->get('orden', 'desc');
         $adopciones = Adopcion::query();
 
         if ($tipo_mascota) {
             $adopciones = $adopciones->where('tipo_mascota', $tipo_mascota);
+        }
+
+        if ($orden == 'most_visited') {
+            $adopciones = $adopciones->orderBy('visibilidad', 'desc');
+        } elseif ($orden == 'least_visited') {
+            $adopciones = $adopciones->orderBy('visibilidad', 'asc');
+        } else {
+            $adopciones = $adopciones->orderBy('created_at', $orden);
         }
 
         $adopciones = $adopciones->get();

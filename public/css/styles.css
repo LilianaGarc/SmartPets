@@ -136,7 +136,7 @@ body {
     transform: scale(0.6) translateY(100%);
     opacity: 0;
     transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    animation: handAnimation 0.5s ease-out forwards;
+    animation: handAnimation 0.2s ease-out forwards;
     animation-play-state: paused;
     pointer-events: none;
     visibility: visible;
@@ -159,7 +159,7 @@ body {
 }
 
 .vision-content, .mision-content {
-    max-width: 80%;
+    max-width: 85%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -219,7 +219,6 @@ body {
 .ver-mas-btn2:hover {
     transform: scale(1.1);
 }
-
 
 .mision .ver-mas-btn {
     margin-right: auto;
@@ -543,7 +542,7 @@ button[type="submit"]:hover, .btn:hover {
 
 .adopcion-card {
     width: 100%;
-    max-width: 280px;
+    max-width: 330px;
     height: auto;
     border-radius: 15px;
     padding: 20px;
@@ -602,6 +601,7 @@ button[type="submit"]:hover, .btn:hover {
 .informacion-perfil {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .nombre-usuario {
@@ -620,7 +620,7 @@ button[type="submit"]:hover, .btn:hover {
 .contador-visitas {
     font-size: 0.7rem;
     color: rgb(169, 169, 169);
-    align-self: end;
+    align-self: start;
 }
 
 .adopcion-card p {
@@ -1307,7 +1307,7 @@ button, .btn-view, .btn-editar {
     }
 
     .compartir-text {
-        width: 100%;
+        width: 85%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1323,15 +1323,15 @@ button, .btn-view, .btn-editar {
         font-size: 1.2rem;
     }
 
-
     .phone-animation {
         width: 100%;
         height: auto;
-        margin-top: 20px;
+        margin-top: 50px;
     }
 
     .phone {
         width: 100%;
+        margin: 8vw;
         height: auto;
     }
 
@@ -1423,11 +1423,17 @@ button, .btn-view, .btn-editar {
             width: 100%;
         }
 
-        .container3, .container5 {
+        .container3 {
           width: 100%;
             box-shadow: none;
+            overflow: hidden;
         }
 
+        .container5 {
+            width: 89%;
+            box-shadow: none;
+            overflow: hidden;
+        }
     }
 
     .card-content {
@@ -1464,6 +1470,15 @@ button, .btn-view, .btn-editar {
     .card-content .description button {
         padding: 10px 25px;
         font-size: 0.9rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
     }
 
     .breadcrumb-container {
@@ -1736,6 +1751,43 @@ button, .btn-view, .btn-editar {
         margin: 0;
     }
 
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
+
+    .breadcrumb-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb__item {
+        width: 80px;
+        flex-shrink: 0;
+    }
+
+    .breadcrumb__item .breadcrumb__title {
+        font-size: 11px;
+        white-space: normal;
+        word-wrap: break-word;
+        max-width: 100px;
+        line-height: 1.2;
+    }
+
     .compartir-text {
         width: 100%;
         display: flex;
@@ -1950,6 +2002,14 @@ button, .btn-view, .btn-editar {
         height: auto;
     }
 
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
 
     .comprobante-container img {
         max-height: 220px;
@@ -2146,17 +2206,16 @@ button, .btn-view, .btn-editar {
     }
 }
 
+
 .compartir-mascota {
-    margin: 9vw 10vw;
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
     background-color: #ffffff;
-}
-
-.compartir-text {
-    margin: 0 auto;
 }
 
 .compartir-text h2 {
@@ -2167,11 +2226,12 @@ button, .btn-view, .btn-editar {
 .compartir-text p {
     font-size: 1.1rem;
     line-height: 1.2;
+    margin-right: 4vw;
 }
 
 .phone-animation {
     position: relative;
-    width: 300px;
+    width: 350px;
     height: 500px;
     display: flex;
     justify-content: center;
@@ -2315,6 +2375,14 @@ button, .btn-view, .btn-editar {
     background-color: #ffffff;
 }
 
+.petshop_texto {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
 .petshop-section h2 {
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -2322,14 +2390,31 @@ button, .btn-view, .btn-editar {
 
 .petshop-section p {
     font-size: 1.2rem;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.ver-mas-btn_tienda {
+    background-color: #1e4183;
+    color: #ffffff;
+    padding: 0.8rem 2.5rem;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    cursor: pointer;
     margin-bottom: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.ver-mas-btn_tienda:hover {
+    transform: scale(1.1);
 }
 
 .petshop-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    max-width: 1300px;
+    max-width: 80%;
     margin: 0 auto;
 }
 
@@ -2404,7 +2489,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2431,7 +2515,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2471,7 +2554,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2489,12 +2571,6 @@ button, .btn-view, .btn-editar {
 
 
 
-.filter-container {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-}
-
 .breadcrumb-container {
     display: flex;
     align-items: start;
@@ -2503,22 +2579,46 @@ button, .btn-view, .btn-editar {
     justify-content: space-between;
 }
 
+.filter-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
 .select-wrapper {
-    width: 220px;
+    width: 250px;
     position: relative;
+    display: inline-block;
 }
 
 .select-dropdown {
     width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
+    font-size: 13px;
+    background-color: #fff;
+    border: 1px solid #d0d7e0;
+    border-radius: 10px;
     transition: all 0.3s ease;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
+.select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1e4183;
+    pointer-events: none;
+}
+
+.select-dropdown:focus {
+    border-color: #1e4183;
+    outline: none;
+}
 
 .breadcrumb {
     display: flex;
