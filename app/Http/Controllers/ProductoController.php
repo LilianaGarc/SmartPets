@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -244,7 +245,7 @@ class ProductoController extends Controller
 
         return response()->json($productos);
     }
-    public function agregarReseña(Request $request, $producto_id)
+    public function agregarResenia(Request $request, $producto_id)
     {
      $request->validate([
          'titulo' => 'required|string|min:5|max:255',
@@ -252,10 +253,12 @@ class ProductoController extends Controller
      ]);
      $producto = Producto::findOrFail($producto_id);
 
+     $random = User::inRandomOrder()->first();
+
      $producto->resenias()->create([
          'titulo' => $request->titulo,
          'contenido' => $request->contenido,
-         'user_id' => 1,
+         'user_id' => $random,
      ]);
      return redirect()->back()->with('success', 'Reseña agregada correctamente');
     }

@@ -497,16 +497,18 @@
                                 <h3 class="review-title-header">Nueva Reseña</h3>
                             </div>
                             <div class="review-body">
-                                <form id="review-form" class="review-form">
+                                <form id="review-form" class="review-form" action="{{ route('productos.agregarResenia', $producto->id) }}"
+                                      method="POST">
+                                    @csrf
                                     <div class="review-form-group">
                                         <label for="review-title" class="review-label">Título</label>
-                                        <input type="text" class="review-input" id="review-title"
+                                        <input type="text" class="review-input" id="review-title" name="titulo"
                                                placeholder="Escribe un título para tu reseña">
                                     </div>
 
                                     <div class="review-form-group">
                                         <label for="review-content" class="review-label">Contenido</label>
-                                        <textarea class="review-textarea" id="review-content" rows="4"
+                                        <textarea class="review-textarea" id="review-content" rows="4" name="contenido"
                                                   placeholder="Escribe tu reseña aquí..."></textarea>
                                     </div>
 
@@ -596,13 +598,11 @@
             const title = document.getElementById('review-title').value;
             const content = document.getElementById('review-content').value;
 
-            // Here you would normally send the data to your server
+            // Aquí normalmente enviarías los datos a tu servidor
             console.log('Review submitted:', {title, content});
-            alert('Reseña publicada con éxito!');
 
-            // Reset form and hide it
-            this.reset();
-            toggleForm(false);
+            // Recargar la página después de enviar la reseña
+            location.reload();
         });
     </script>
 @endsection
