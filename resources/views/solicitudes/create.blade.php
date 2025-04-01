@@ -79,29 +79,12 @@
         </div>
 
         <div class="form-group">
-            <label for="vivienda">¿Vive en una casa o en un departamento?</label>
-            <select name="vivienda" id="vivienda" class="form-control" required>
-                <option value="Casa">Casa</option>
-                <option value="Departamento">Departamento</option>
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="espacio">¿Tiene suficiente espacio para la mascota?</label>
             <select name="espacio" id="espacio" class="form-control" required>
                 <option value="Sí">Sí</option>
                 <option value="No">No</option>
             </select>
         </div>
-
-        <div class="form-group">
-            <label for="otros_animales">¿Hay otros animales en su hogar?</label>
-            <select name="otros_animales" id="otros_animales" class="form-control" required>
-                <option value="Sí">Sí</option>
-                <option value="No">No</option>
-            </select>
-        </div>
-
 
         <div class="form-group">
             <label for="gastos_veterinarios">¿Está dispuesto a cubrir los gastos veterinarios?</label>
@@ -111,29 +94,12 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label for="comprobante">Comprobante: Identidad</label>
-            <div class="input-file-wrapper">
-                <input type="file" name="comprobante" id="comprobante" accept="image/*" onchange="previewComprobante()">
-                <label for="comprobante">Seleccionar archivo</label>
-            </div>
-            <div class="file-info">
-                <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
-            </div>
-        </div>
-
-        <div class="form-group image-preview-container" id="comprobante-preview-container" style="display: none;">
-            <img id="comprobante-preview" src="" alt="Vista previa del comprobante">
-            <div class="image-caption">Vista Previa</div>
-        </div>
-
         <input type="hidden" name="id_adopcion" value="{{ $adopcion->id }}">
 
         <button type="submit" class="btn btn-success">Enviar Solicitud</button>
     </form>
 </div>
 
-<script src="{{ asset('js/vistapreviaS.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 

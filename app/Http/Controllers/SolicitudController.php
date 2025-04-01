@@ -55,12 +55,9 @@ class SolicitudController
     {
         $validated = $request->validate([
             'contenido' => 'required|string',
-            'comprobante' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             'id_adopcion' => 'required|integer',
             'experiencia' => 'nullable|in:Sí,No',
-            'vivienda' => 'nullable|in:Casa,Departamento',
             'espacio' => 'nullable|in:Sí,No',
-            'otros_animales' => 'nullable|in:Sí,No',
             'gastos_veterinarios' => 'nullable|in:Sí,No',
         ]);
 
@@ -69,15 +66,9 @@ class SolicitudController
         $solicitud->id_usuario = 0;
         $solicitud->id_adopcion = $validated['id_adopcion'];
         $solicitud->experiencia = $validated['experiencia'] ?? null;
-        $solicitud->vivienda = $validated['vivienda'] ?? null;
         $solicitud->espacio = $validated['espacio'] ?? null;
-        $solicitud->otros_animales = $validated['otros_animales'] ?? null;
         $solicitud->gastos_veterinarios = $validated['gastos_veterinarios'] ?? null;
 
-        if ($request->hasFile('comprobante')) {
-            $comprobante = $request->file('comprobante')->store('comprobantes');
-            $solicitud->comprobante = $comprobante;
-        }
 
         $solicitud->save();
 
@@ -114,13 +105,6 @@ class SolicitudController
         return view('solicitudes.showDetails', compact('solicitud', 'adopcion'));
     }
 
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // SolicitudController.php
-
     public function edit($id_adopcion, $id)
     {
         $adopcion = Adopcion::find($id_adopcion);
@@ -142,11 +126,8 @@ class SolicitudController
     {
         $validated = $request->validate([
             'contenido' => 'required|string',
-            'comprobante' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'experiencia' => 'nullable|in:Sí,No',
-            'vivienda' => 'nullable|in:Casa,Departamento',
             'espacio' => 'nullable|in:Sí,No',
-            'otros_animales' => 'nullable|in:Sí,No',
             'gastos_veterinarios' => 'nullable|in:Sí,No',
         ]);
 
@@ -158,18 +139,9 @@ class SolicitudController
 
         $solicitud->contenido = $validated['contenido'];
         $solicitud->experiencia = $validated['experiencia'] ?? $solicitud->experiencia;
-        $solicitud->vivienda = $validated['vivienda'] ?? $solicitud->vivienda;
         $solicitud->espacio = $validated['espacio'] ?? $solicitud->espacio;
-        $solicitud->otros_animales = $validated['otros_animales'] ?? $solicitud->otros_animales;
         $solicitud->gastos_veterinarios = $validated['gastos_veterinarios'] ?? $solicitud->gastos_veterinarios;
 
-        if ($request->hasFile('comprobante')) {
-            if ($solicitud->comprobante) {
-                unlink(storage_path('app/public/' . $solicitud->comprobante));
-            }
-            $comprobante = $request->file('comprobante')->store('comprobantes');
-            $solicitud->comprobante = $comprobante;
-        }
 
         $solicitud->save();
 

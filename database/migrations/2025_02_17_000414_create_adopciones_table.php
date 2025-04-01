@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('estado')->default('pendiente')->change();
             $table->string('tipo_mascota');
             $table->string('nombre_mascota');
+            $table->integer('edad_mascota');
+            $table->string('raza_mascota');
+            $table->string('ubicacion_mascota');
             $table->timestamps();
         });
     }

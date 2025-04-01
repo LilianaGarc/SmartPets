@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Adopciones</title>
+    <title>Editar Adopción</title>
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
@@ -52,7 +52,7 @@
         @method('PUT')
         <div class="form-group">
             <label for="nombre_mascota">Nombre de la Mascota</label>
-            <input type="text" name="nombre_mascota" id="nombre_mascota" class="form-control" required value="{{ old('nombre_mascota', $adopcion->nombre_mascota) }}">
+            <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" required value="{{ old('nombre_mascota', $adopcion->nombre_mascota) }}">
         </div>
 
         <div class="form-group">
@@ -69,7 +69,22 @@
 
         <div class="form-group">
             <label for="contenido">Contenido</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido', $adopcion->contenido) }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido', $adopcion->contenido) }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="edad_mascota">Edad de la Mascota</label>
+            <input type="number" name="edad_mascota" id="edad_mascota" class="form-control" value="{{ old('edad_mascota', $adopcion->edad_mascota) }}" required min="1" max="30" step="1" oninput="validateAgeInput(this)">
+        </div>
+
+        <div class="form-group">
+            <label for="raza_mascota">Raza de la Mascota</label>
+            <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" required value="{{ old('raza_mascota', $adopcion->raza_mascota) }}">
+        </div>
+
+        <div class="form-group">
+            <label for="ubicacion_mascota">Ubicación de la Mascota</label>
+            <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control" required value="{{ old('ubicacion_mascota', $adopcion->ubicacion_mascota) }}">
         </div>
 
         <div class="form-group">
