@@ -13,6 +13,17 @@ class UserController
         return view('panelAdministrativo.usersIndex')->with('users', $users);
     }
 
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.usersForm');
+    }
+
+    public function paneledit(string $id)
+    {
+        $user = User::findOrFail($id);
+        return view('panelAdministrativo.usersForm')->with('user', $user);
+    }
+
     public function search( Request $request)
     {
         $nombre = $request->get('nombre');
@@ -43,7 +54,31 @@ class UserController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'email' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'usertype' => 'required',
+            'password' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+        ]);
+        $type = $request->input('usertype');
+        if ($type == "Administrador") {
+            $type = "admin";
+        } else { $type = "user"; }
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+        $user->usertype = $type;
+
+
+
+        // Guardar   Save()
+        if ($user->save()){
+            return redirect()->route('users.panel')->with('exito', 'El usuario se creo correctamente.');
+        }else{
+            return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo crear.');
+        }
     }
 
     /**
@@ -67,7 +102,31 @@ class UserController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'email' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/|unique:users,email,'.$id,
+            'usertype' => 'required',
+            'password' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+        ]);
+        $type = $request->input('usertype');
+        if ($type == "Administrador") {
+            $type = "admin";
+        } else { $type = "user"; }
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+        $user->usertype = $type;
+
+
+
+        // Guardar   Save()
+        if ($user->save()){
+            return redirect()->route('users.panel')->with('exito', 'El usuario se edito correctamente.');
+        }else{
+            return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo editar.');
+        }
     }
 
     /**

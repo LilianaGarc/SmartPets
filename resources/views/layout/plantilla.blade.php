@@ -110,7 +110,8 @@
         }
 
         .round-button {
-            width: 16%;
+            width: 15vh;
+            height: 15vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -134,10 +135,9 @@
         }
 
         .round-button-2 {
-            width: 6%;
-            height: auto;
+            width: 6vh;
+            height: 6vh;
             border-radius: 50%;
-            border: none;
             background-color: #ffffff;
             justify-content: center;
             align-items: center;
@@ -216,17 +216,79 @@
         }
 
 
+        .breadcrumb-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
+        .breadcrumb {
+            display: flex;
+            border-radius: 10px;
+            text-align: center;
+            height: 40px;
+            z-index: 1;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
 
+        .breadcrumb__item {
+            height: 100%;
+            background-color: white;
+            color: #252525;
+            font-family: 'Oswald', sans-serif;
+            border-radius: 7px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            transform: skew(-21deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+            margin: 5px;
+            padding: 0 40px;
+        }
 
+        .breadcrumb__item:hover {
+            background: #1e4183;
+            color: #FFF;
+        }
 
+        .breadcrumb__inner {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            z-index: 2;
+            transform: skew(21deg);
+        }
 
+        .breadcrumb__title {
+            font-size: 16px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
+        .breadcrumb__item a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-
-
-
+        .breadcrumb__item-active {
+            background-color: #1e4183;
+            color: #FFF;
+        }
     </style>
+
+
+
+
 </head>
 <body>
 <nav class="navbar" id="navbar">

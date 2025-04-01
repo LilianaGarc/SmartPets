@@ -106,6 +106,7 @@ Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneld
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
 Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
+Route::get('/panel/publicaciones/create', [PublicacionController::class, 'panelcreate'])->name('publicaciones.panelcreate');
 
 Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
 Route::post('/publicaciones/crear', [PublicacionController::class, 'store'])->name('publicaciones.store');
@@ -200,5 +201,9 @@ Route::delete('/panel/ubicaciones/{id}', [UbicacionController::class, 'paneldest
 
 //Rutas para Users
 Route::get('/panel/users', [UserController::class, 'panel'])->name('users.panel');
+Route::get('/panel/users/crear', [UserController::class, 'panelcreate'])->name('users.panelcreate');
+Route::post('/panel/users/crear', [UserController::class, 'store'])->name('users.store');
+Route::get('/panel/users/{id}/editar', [UserController::class, 'paneledit'])->name('users.paneledit')->whereNumber('id');
+Route::put('/panel/users/{id}/editar', [UserController::class, 'update'])->name('users.update')->whereNumber('id');
 Route::get('/panel/buscar/users', [UserController::class, 'search'])->name('users.search');
 Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');

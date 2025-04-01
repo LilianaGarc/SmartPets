@@ -20,7 +20,7 @@
             padding: 0;
             font-size: 100%;
             background-color: #f7f7f7;
-            height: 200vh;
+            height: 80vh;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -110,7 +110,8 @@
         }
 
         .round-button {
-            width: 16%;
+            width: 10vh;
+            height: 10vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -122,7 +123,8 @@
         }
 
         .button-img {
-            width: 100%;
+            width: 10vh;
+            height: 10vh;
             margin: 2%;
             object-fit: cover;
         }
@@ -134,7 +136,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 7vh;
+            height: 7vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -157,8 +160,8 @@
         }
 
         .round-button-comentario {
-            width: 100%;
-            height: 40%;
+            width: 6vh;
+            height: 6vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -169,10 +172,9 @@
         }
 
         .button-img-comentario {
-            width: 90%;
-            height: 90%;
+            width: 100%;
             margin: 0;
-            object-fit: cover;
+            object-fit: cover !important;
         }
 
         .card-comentario{
@@ -352,8 +354,8 @@
 
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item-custom"  href="#">Usuarios</a></li>
-            <li><a class="dropdown-item-custom"  href="#">Publicaciones</a></li>
+            <li><a class="dropdown-item-custom"  href="{{ route('users.panelcreate') }}">Usuarios</a></li>
+            <li><a class="dropdown-item-custom"  href="{{ route('publicaciones.panelcreate') }}">Publicaciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Comentarios</a></li>
             <li><a class="dropdown-item-custom"  href="#">Reacciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Veterinarias</a></li>

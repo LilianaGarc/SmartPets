@@ -14,6 +14,12 @@ class PublicacionController
     {
         $publicaciones = Publicacion::with('user')->get();
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
+
+    }
+
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.publicacionesForm');
     }
 
     public function search( Request $request)
@@ -55,7 +61,7 @@ class PublicacionController
     {
         $request->validate([
             'visibilidad' => 'required',
-            'contenido' => 'required|string|max:255',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
             'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
