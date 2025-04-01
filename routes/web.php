@@ -64,6 +64,7 @@ Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('pr
 Route::resource('/categorias',CategoriaController::class);
 //Reseñas
 Route::post('/productos/{producto}/resenias', [ProductoController::class, 'agregarResenia'])->name('productos.agregarResenia');
+Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'eliminarResenia'])->name('productos.eliminarResenia');
 
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
