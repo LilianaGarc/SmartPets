@@ -2,7 +2,7 @@
 @section('titulo', 'Veterinarias')
 @section('contenido')
 <div class="container-fluid">
-    
+
     @if(session('exito'))
     <div class="alert alert-success p-2" role="alert">
         {{ session('exito') }}
@@ -15,7 +15,7 @@
     </div>
     @endif
 
-    <h1 class="d-flex justify-content-between align-items-center mb-2 text-center">Veterinarias
+    <h1 class="d-flex justify-content-between align-items-center mb-2 text-center"><b>Veterinarias</b>
         <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}">
             <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="20px" class="me-1">Nuevo
         </a>
@@ -38,8 +38,13 @@
                 <tbody class="table-group-divider">
                     @if($veterinarias->isEmpty())
                     <tr>
-                        <td colspan="7" class="text-center p-2"><i class="fas fa-info-circle text-warning"></i> No hay veterinarias registradas</td>
+                        <td colspan="7" class="text-center p-2">
+                            <p class="text-muted text-center">No hay veterinarias registradas</p>
+                            <br>
+                            <img src="images//vacio.svg" alt="No hay veterinarias" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+                        </td>
                     </tr>
+
                     @endif
                     @foreach ($veterinarias as $veterinaria)
                     <tr>

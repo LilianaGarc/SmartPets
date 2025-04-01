@@ -40,7 +40,7 @@
         </ul>
     </div>
 </div>
-<div class="container2">
+<div class="container4">
 
     <form action="{{ route('solicitudes.update', [$adopcion->id, $solicitud->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -114,7 +114,7 @@
     </form>
 </div>
 
-<script src="{{ asset('js/vistaprevia.js') }}"></script>
+<script src="{{ asset('js/vistapreviaS.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 

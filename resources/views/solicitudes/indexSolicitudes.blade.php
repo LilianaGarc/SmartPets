@@ -66,40 +66,47 @@
     @endif
 
     <div class="solicitudes-container">
-        @foreach($solicitudes as $solicitud)
-            <div class="solicitud-card">
-                <div class="content-wrapper">
-                    <p class="solicitud-text">{{ $solicitud->contenido }}</p>
-                    <div class="tooltip">
-                        <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <span class="tooltiptext">Ver solicitud</span>
-                    </div>
-
-                    <div class="tooltip">
-                        <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <span class="tooltiptext">Editar solicitud</span>
-                    </div>
-
-                    <div class="tooltip">
-                        <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-eliminar" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <span class="tooltiptext">Eliminar solicitud</span>
-                        </form>
-                    </div>
-
-                </div>
+        @if($solicitudes->isEmpty())
+            <div class="no-hay">
+                <p class="no-hay-message">¡No hay solicitudes para tu mascota por el momento! 😿</p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay solicitudes" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
             </div>
-        @endforeach
+        @else
+            @foreach($solicitudes as $solicitud)
+                <div class="solicitud-card">
+                    <div class="content-wrapper">
+                        <p class="solicitud-text">{{ $solicitud->contenido }}</p>
+                        <div class="tooltip">
+                            <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <span class="tooltiptext">Ver solicitud</span>
+                        </div>
+
+                        <div class="tooltip">
+                            <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <span class="tooltiptext">Editar solicitud</span>
+                        </div>
+
+                        <div class="tooltip">
+                            <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn-eliminar" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <span class="tooltiptext">Eliminar solicitud</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     </div>
 </div>
+
 
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

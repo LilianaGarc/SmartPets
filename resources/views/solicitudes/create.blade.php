@@ -36,13 +36,38 @@
         </ul>
     </div>
 </div>
-<div class="container2">
+<div class="container4">
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
 
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let errorMessage = '';
+                @foreach ($errors->all() as $error)
+                    errorMessage += '{{ $error }}\n';
+                @endforeach
+
+                showErrorAlert(errorMessage);
+            });
+        </script>
+    @endif
     <form action="{{ route('solicitudes.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
             <label for="contenido">Motivo de la Solicitud</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90"></textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido') }}</textarea>
         </div>
 
         <div class="form-group">
@@ -108,7 +133,7 @@
     </form>
 </div>
 
-<script src="{{ asset('js/vistaprevia.js') }}"></script>
+<script src="{{ asset('js/vistapreviaS.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 

@@ -14,7 +14,9 @@ class Adopcion extends Model
         'imagen',
         'visibilidad',
         'estado',
-        'id_usuario'
+        'id_usuario',
+        'tipo_mascota',
+        'nombre_mascota',
     ];
     public function solicitudes(){
         //Una adopcion puede tener muchas solicitudes (1)

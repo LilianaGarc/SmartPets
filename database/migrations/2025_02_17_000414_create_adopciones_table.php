@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('visibilidad')->default(0);
             $table->unsignedBigInteger('id_usuario')->nullable()->change();
             $table->string('estado')->default('pendiente')->change();
+            $table->string('tipo_mascota');
+            $table->string('nombre_mascota');
             $table->timestamps();
         });
     }

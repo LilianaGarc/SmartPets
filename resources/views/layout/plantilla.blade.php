@@ -55,7 +55,7 @@
             margin-left: 0vw;
         }
 
-        .btn {
+        .btnl {
             text-decoration: none;
             color: #ffffff;
             background-color: #ff7f50;
@@ -64,7 +64,7 @@
             border: none;
         }
 
-        .btn:hover {
+        .btnl:hover {
             color: #ffffff;
             transform: scale(1.1);
             background-color: #18478b;
@@ -138,6 +138,7 @@
             width: 6vh;
             height: 6vh;
             border-radius: 50%;
+            border: none;
             background-color: #ffffff;
             justify-content: center;
             align-items: center;
