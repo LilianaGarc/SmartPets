@@ -556,55 +556,47 @@
                                             data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
                                             aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
                                             aria-controls="collapse{{ $index }}">
-                                        <span class="accordion-title">
-                                        <span class="username">{{ $resenia->user->name }}</span>
-                            </div>
-                            </span>
-                            </button>
-                            </h2>
-                            <div id="collapse{{ $index }}"
-                                 class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}"
-                                 aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <strong>{{ $resenia->titulo }}</strong>
-                                    <p>{{ $resenia->contenido }}</p>
-
-
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="ModalResenia{{$resenia->id}}">
-                                        Eliminar
+                <span class="accordion-title">
+                    <span class="username">{{ $resenia->user->name }}</span>
+                </span>
                                     </button>
+                                </h2>
+                                <div id="collapse{{ $index }}"
+                                     aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <strong>{{ $resenia->titulo }}</strong>
+                                        <p>{{ $resenia->contenido }}</p>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1" aria-labelledby="ModalReseniaLabel{{$resenia->id}}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="ModalReseniaLabel{{$resenia->id}}">Eliminar Reseña</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ¿Estás seguro de que deseas eliminar esta reseña?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <form action="{{ route('productos.eliminarResenia', $resenia->id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalResenia{{$resenia->id}}">
+                                            Eliminar
+                                        </button>
 
-                                                    </form>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1" aria-labelledby="ModalReseniaLabel{{$resenia->id}}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="ModalReseniaLabel{{$resenia->id}}">Eliminar Reseña</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ¿Estás seguro de que deseas eliminar esta reseña?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="{{ route('productos.eliminarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-
-                    </div>
-
-                    @endforeach
+                                @endforeach
                 </div>
             </div>
             <!-- FIN ACORDEON -->

@@ -264,10 +264,10 @@ class ProductoController extends Controller
      return redirect()->back()->with('success', 'Reseña agregada correctamente');
     }
 
-    public function eliminarResenia($resenia_id, $producto_id)
+    public function eliminarResenia($producto_id, $resenia_id)
     {
         $producto = Producto::findOrFail($producto_id);
-        $resenia = $producto->resenias()->firstOrFail($resenia_id);
+        $resenia = $producto->resenias()->where('id', $resenia_id)->firstOrFail();
         $resenia->delete();
         return redirect()->back()->with('success', 'Reseña eliminada correctamente');
     }
