@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartPets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
@@ -84,7 +86,7 @@
     <div class="mision-content">
         <h2>Descubre tu mascota ideal</h2>
         <p>SmartPets está diseñado para ayudarte a encontrar a tu compañero de vida perfecto, conectándote con animales que necesitan un hogar.</p>
-        <button class="ver-mas-btn" onclick="window.location.href=''">Ver más</button>
+        <button class="ver-mas-btn" onclick="window.location.href='{{ route('chatbot.index') }}'">Ver más</button>
     </div>
 </div>
 
@@ -128,8 +130,11 @@
 </section>
 
 <section class="petshop-section">
+    <div class="petshop_texto">
     <h2>Explora nuestra PetShop</h2>
     <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
+    <button class="ver-mas-btn_tienda" onclick="window.location.href='{{ route('productos.index') }}'">Ver más</button>
+    </div>
     <div class="petshop-container">
         <div class="petshop-item petshop-item-top-left">
             <img src="{{ asset('images/producto1.webp') }}" alt="Producto 1">
@@ -155,7 +160,6 @@
             <img src="{{ asset('images/producto6.webp') }}" alt="Producto 5">
             <div class="petshop-item-text">Cuidado Dental</div>
         </div>
-
     </div>
 </section>
 
@@ -170,9 +174,6 @@
     </div>
     <p>&copy; 2025 DevStorm: UNAH-TEC Danlí </p>
 </section>
-
-
-
 
 
 <script src="{{ asset('js/MPscripts.js') }}"></script>

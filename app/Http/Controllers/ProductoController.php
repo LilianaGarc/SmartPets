@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Resenia;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
@@ -55,20 +58,40 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         // Validación de datos
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
             'descripcion' => 'nullable|string',
             'categoria' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ], [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'precio.required' => 'El precio del producto es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'descripcion.string' => 'La descripción debe ser un texto.',
+            'categoria.required' => 'La categoría es obligatoria.',
+            'stock.required' => 'La cantidad disponible es obligatoria.',
+            'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
+            'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.'
         ]);
 
+        // Validar la cantidad de imágenes
+        if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
+            return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         // Crear o encontrar la categoría
-        $categoria = Categoria::firstOrCreate(['nombre' => $request->categoria]);
+        $categoria = $request->categoria_id ? Categoria::findOrFail($request->categoria_id) : Categoria::firstOrCreate(['nombre' => $request->categoria]);
 
         // Almacenar las imágenes si están presentes
         $imagenesGuardadas = [];
@@ -94,7 +117,7 @@ class ProductoController extends Controller
         $producto->imagen5 = $imagenesGuardadas[4] ?? null;
 
         if ($producto->save()) {
-            return redirect()->back()->with('success', 'Producto publicado correctamente');
+            return redirect()->route('productos.index')->with('success', 'Producto publicado correctamente');
         } else {
             return redirect()->back()->with('error', 'Error al publicar producto');
         }
@@ -106,7 +129,8 @@ class ProductoController extends Controller
     public function show(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('productos.productos-detalles', compact('producto'));
+        $resenias = $producto->resenias()->with('user')->get();
+        return view('productos.productos-detalles', compact('producto','resenias'));
     }
 
     /**
@@ -126,17 +150,36 @@ class ProductoController extends Controller
     public function update(Request $request, string $id)
     {
         // Validación de datos
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
             'descripcion' => 'nullable|string',
             'categoria' => 'required|string|max:255',
             'stock' => 'required|integer|min:0',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ], [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'precio.required' => 'El precio del producto es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'descripcion.string' => 'La descripción debe ser un texto.',
+            'categoria.required' => 'La categoría es obligatoria.',
+            'stock.required' => 'La cantidad disponible es obligatoria.',
+            'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
+            'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.'
         ]);
 
+        // Validar la cantidad de imágenes
+        if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
+            return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         // Crear o encontrar la categoría
-        $categoria = Categoria::firstOrCreate(['nombre' => $request->categoria]);
+        $categoria = $request->categoria_id ? Categoria::findOrFail($request->categoria_id) : Categoria::firstOrCreate(['nombre' => $request->categoria]);
 
         // Almacenar las imágenes si están presentes
         $imagenesGuardadas = [];
@@ -148,23 +191,23 @@ class ProductoController extends Controller
             }
         }
 
-        // Crear el producto
+        // Actualizar el producto
         $producto = Producto::findOrFail($id);
         $producto->nombre = $request->input('nombre');
         $producto->precio = $request->input('precio');
         $producto->descripcion = $request->input('descripcion');
         $producto->categoria_id = $categoria->id;
         $producto->stock = $request->input('stock');
-        $producto->imagen = $imagenesGuardadas[0] ?? null;
-        $producto->imagen2 = $imagenesGuardadas[1] ?? null;
-        $producto->imagen3 = $imagenesGuardadas[2] ?? null;
-        $producto->imagen4 = $imagenesGuardadas[3] ?? null;
-        $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+        $producto->imagen = $imagenesGuardadas[0] ?? $producto->imagen;
+        $producto->imagen2 = $imagenesGuardadas[1] ?? $producto->imagen2;
+        $producto->imagen3 = $imagenesGuardadas[2] ?? $producto->imagen3;
+        $producto->imagen4 = $imagenesGuardadas[3] ?? $producto->imagen4;
+        $producto->imagen5 = $imagenesGuardadas[4] ?? $producto->imagen5;
 
         if ($producto->save()) {
-            return redirect()->back()->with('success', 'Producto publicado correctamente');
+            return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
         } else {
-            return redirect()->back()->with('error', 'Error al publicar producto');
+            return redirect()->back()->with('error', 'Error al actualizar producto');
         }
     }
 
@@ -202,6 +245,31 @@ class ProductoController extends Controller
         })->get();
 
         return response()->json($productos);
+    }
+    public function agregarResenia(Request $request, $producto_id)
+    {
+     $request->validate([
+         'titulo' => 'required|string|min:5|max:255',
+         'contenido' => 'required|string|min:5',
+     ]);
+     $producto = Producto::findOrFail($producto_id);
+
+     $random = User::inRandomOrder()->first();
+
+     $producto->resenias()->create([
+         'titulo' => $request->titulo,
+         'contenido' => $request->contenido,
+         'user_id' => $random,
+     ]);
+     return redirect()->back()->with('success', 'Reseña agregada correctamente');
+    }
+
+    public function eliminarResenia($producto_id, $resenia_id)
+    {
+        $producto = Producto::findOrFail($producto_id);
+        $resenia = $producto->resenias()->where('id', $resenia_id)->firstOrFail();
+        $resenia->delete();
+        return redirect()->back()->with('success', 'Reseña eliminada correctamente');
     }
 
 }

@@ -31,22 +31,25 @@ class CalificacionController extends Controller
      */
     public function store(Request $request)
     {
+        $id_user = Auth::id() ?? 1; // Usa el ID autenticado o 1 como valor por defecto
         $request->validate([
-            'calificacion' => 'required|integer|min:0|max:5',
+            'calificacion' => 'required|integer|min:1|max:5',
             'opinion' => 'nullable|string|max:500',
         ]);
 
         $calificacion = Calificacion::create([
-            'id_user' => Auth::check() ? Auth::id() : null, // Si hay usuario autenticado, lo asigna; si no, lo deja nulo
+            'id_user' => $id_user,
             'id_veterinaria' => $request->input('id_veterinaria'),
             'calificacion' => $request->input('calificacion'),
-            'opinion' => $request->input('opinion'),
+            'opinion' => $request->input('opinion') ?? 'Sin opinión',
+            'updated_at' => now(),
+            'created_at' => now(),
         ]);
 
         if ($calificacion->save()){
-            return redirect()->route('veterinarias.show',['id'=>$id])->with('exito', 'Su Opinión ha sido enviada.');
-        }else{
-            return redirect()->route('veterinarias.show',['id'=>$id])->with('fracaso', 'Su Opinión no ha sido enviada.');
+            return redirect()->route('veterinarias.show', ['id' => $request->input('id_veterinaria')])->with('exito', 'Su Opinión ha sido realizada.');
+        } else {
+            return redirect()->route('veterinarias.show', ['id' => $request->input('id_veterinaria')])->with('fracaso', 'Su Opinión no ha sido enviada.');
         }
     }
 
@@ -55,8 +58,8 @@ class CalificacionController extends Controller
      */
     public function show(string $id)
     {
-        $calificaciones = Calificacion::with('user')->where('id_veterinaria', $id)->get();
-        return view('calificaciones.index')->with('calificaciones', $calificaciones);
+        $veterinaria = Veterinaria::with(['ubicacion', 'calificacion.user'])->findOrFail($id);
+        return view('veterinarias.unaVeterinaria')->with('veterinaria', $veterinaria);
     }
 
     /**
@@ -77,6 +80,8 @@ class CalificacionController extends Controller
             'opinion' => 'nullable|string|max:500',
         ]);
     
+        $calificacion = Calificacion::findOrFail($id);
+
         $calificacion->update([
             'calificacion' => $request->rating,
             'opinion' => $request->opinion,
@@ -90,6 +95,7 @@ class CalificacionController extends Controller
      */
     public function destroy(string $id)
     {
+        $calificacion = Calificacion::findOrFail($id);
         $calificacion->delete();
         return redirect()->back()->with('success', 'Calificación eliminada.');
     }

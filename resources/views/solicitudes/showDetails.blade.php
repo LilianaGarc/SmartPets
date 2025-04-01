@@ -51,9 +51,9 @@
             <div class="photo" onclick="function openImageModal() {
             }
             openImageModal()">
-                @if($solicitud->comprobante)
-                    <img src="{{ asset('storage/' . $solicitud->comprobante) }}" alt="Comprobante" class="adopcion-img">
-                @endif
+
+                    <img src="{{ asset('images/img_PorDefecto.jpg') }}" alt="Comprobante" class="adopcion-img">
+
                 <div class="wrapper">
                     <a href="{{ asset('storage/' . $solicitud->comprobante) }}" class="c-btn" download>
                             <span class="c-btn__label">Descargar
@@ -70,10 +70,16 @@
                 <p>{{ \Carbon\Carbon::parse($solicitud->created_at)->format('d M Y, H:i') }}</p>
                 <p>Motivo de la solicitud: {{ $solicitud->contenido }}</p>
                 <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
-                <p>Tipo de vivienda: {{ $solicitud->vivienda }}</p>
                 <p>Espacio disponible: {{ $solicitud->espacio }}</p>
-                <p>Otras mascotas: {{ $solicitud->otros_animales }}</p>
                 <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
+                <div class="solicitud-actions">
+                    <button class="action-btn accept-btn">
+                        <i class="fas fa-check-circle"></i> Aceptar Solicitud
+                    </button>
+                    <button class="action-btn reject-btn">
+                        <i class="fas fa-times-circle"></i> Rechazar Solicitud
+                    </button>
+                </div>
             </div>
         </div>
     </div>

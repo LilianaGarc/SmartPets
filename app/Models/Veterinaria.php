@@ -14,16 +14,7 @@ class Veterinaria extends Model
         'horario_apertura',
         'horario_cierre',
         'telefono',
-        'imagen',
-        'redes_sociales',
-        'evaluacion',
         'id_ubicacion',
-    ];
-
-    // convierte los json en array
-    protected $casts = [
-        'imagen' => 'array',
-        'redes_sociales' => 'array',
     ];
 
     public function ubicacion(){
@@ -31,16 +22,24 @@ class Veterinaria extends Model
         return $this->belongsTo(Ubicacion::class, 'id_ubicacion');
     }
 
+    public function imagenes() {
+        return $this->hasMany(Imagen::class, 'id_veterinaria');
+    }
+
+    public function redes() {
+        return $this->hasMany(RedSocial::class,'id_veterinaria');
+    }
+
     public function calificaciones(){
         //Una veterinaria tiene muchas calificaciones (1)
         return $this->hasMany(Calificacion::class, 'id_veterinaria');
     }
 
-    public function getCalifiacionPromedio(){
-        return $this->calificaciones()->avg('calificacion');
+    public function getCalificacionPromedioAttribute(){
+        return $this->calificaciones()->avg('calificacion') ?? 0;
     }
 
-    public function getNumeroCalificaciones(){
+    public function getNumeroCalificacionesAttribute(){
         return $this->calificaciones()->count();
     }
 }
