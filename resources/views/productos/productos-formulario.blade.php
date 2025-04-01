@@ -121,9 +121,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6 mt-auto">
-                            <button type="button" class="btn btn-outline-primary" id="btnAgregar" onclick="window.location.href='{{ route('categorias.create')}}'">Agregar Nueva Categoría</button>
-                        </div>
                     </div>
                 </div>
 

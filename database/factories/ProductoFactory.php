@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class ProductoFactory extends Factory
             'nombre'=>fake()->words(3, true),
             'descripcion'=>fake()->words(10, true),
             'precio'=>fake()->randomFloat(2, 1, 1000),
-            'categoria_id'=>fake()->numberBetween(1, 10),
+            'categoria_id'=>Categoria::find(1),
             'stock'=>fake()->numberBetween(1, 100),
             'imagen'=>null,
             'imagen2'=>null,

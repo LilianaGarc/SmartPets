@@ -38,7 +38,5 @@ class CategoriasTableSeeder extends Seeder
             'nombre' => 'Otro',
             'descripcion' => 'Otros productos'
         ]);
-
-
     }
 }

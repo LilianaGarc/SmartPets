@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Resenia;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -127,7 +129,8 @@ class ProductoController extends Controller
     public function show(string $id)
     {
         $producto = Producto::findOrFail($id);
-        return view('productos.productos-detalles', compact('producto'));
+        $resenias = $producto->resenias()->with('user')->get();
+        return view('productos.productos-detalles', compact('producto','resenias'));
     }
 
     /**
@@ -242,6 +245,31 @@ class ProductoController extends Controller
         })->get();
 
         return response()->json($productos);
+    }
+    public function agregarResenia(Request $request, $producto_id)
+    {
+     $request->validate([
+         'titulo' => 'required|string|min:5|max:255',
+         'contenido' => 'required|string|min:5',
+     ]);
+     $producto = Producto::findOrFail($producto_id);
+
+     $random = User::inRandomOrder()->first();
+
+     $producto->resenias()->create([
+         'titulo' => $request->titulo,
+         'contenido' => $request->contenido,
+         'user_id' => $random,
+     ]);
+     return redirect()->back()->with('success', 'Reseña agregada correctamente');
+    }
+
+    public function eliminarResenia($producto_id, $resenia_id)
+    {
+        $producto = Producto::findOrFail($producto_id);
+        $resenia = $producto->resenias()->where('id', $resenia_id)->firstOrFail();
+        $resenia->delete();
+        return redirect()->back()->with('success', 'Reseña eliminada correctamente');
     }
 
 }
