@@ -11,7 +11,7 @@ body {
     background-size: cover;
     color: white;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
     animation: backgroundAnimation 10s infinite alternate;
 }
 
@@ -54,7 +54,6 @@ h1 {
     font-size: 2.5rem;
     color: #1e4183;
     margin-bottom: 30px;
-    font-weight: lighter;
 }
 
 p {

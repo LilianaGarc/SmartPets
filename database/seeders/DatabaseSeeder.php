@@ -19,20 +19,6 @@ class DatabaseSeeder extends Seeder
             TiposMascotaTableSeeder::class,
             PreguntasTableSeeder::class,
             RespuestasTableSeeder::class,
-            PublicacionesTableSeeder::class,
-            ComentariosTableSeeder::class,
-            ReaccionesTableSeeder::class,
-            UsersTableSeeder::class,
-            VeterinariasTableSeeder::class,
-            AdopcionesTableSeeder::class,
-            EventosTableSeeder::class,
-            MensajesTableSeeder::class,
-            ChatsTableSeeder::class,
-            CategoriasTableSeeder::class,
-            ProductosTableSeeder::class,
-            SolicitudesTableSeeder::class,
-            UbicacionesTableSeeder::class,
-            ReseniasTableSeeder::class,
         ]);
     }
 }
