@@ -1,23 +1,26 @@
 @extends('layout.plantillaSaid')
 @section('titulo', 'Veterinarias')
 @section('contenido')
+
 <div class="container-fluid">
 
     @if(session('exito'))
-    <div class="alert alert-success p-2" role="alert">
-        {{ session('exito') }}
+    <div class="alert alert-success d-flex align-items-center p-2" role="alert">
+        <i class="fa-solid fa-check-circle me-2"></i>
+        <div>{{ session('exito') }}</div>
     </div>
     @endif
 
     @if(session('fracaso'))
-    <div class="alert alert-danger p-2" role="alert">
-        {{ session('fracaso') }}
+    <div class="alert alert-danger d-flex align-items-center p-2" role="alert">
+        <i class="fa-solid fa-xmark-circle me-2"></i>
+        <div>{{ session('fracaso') }}</div>
     </div>
     @endif
 
     <h1 class="d-flex justify-content-between align-items-center mb-2 text-center"><b>Veterinarias</b>
-        <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}" style="font-size: 65%;">
-            <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="20px" class="me-1">Nuevo
+        <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}" style="font-size: 45%;">
+            <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="28px" height="28px" class="me-1">Nuevo
         </a>
     </h1>
 

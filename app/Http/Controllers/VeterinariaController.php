@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Veterinaria;
 use App\Models\Ubicacion;
+use App\Models\Imagen;
+use App\Models\RedSocial;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 
 class VeterinariaController extends Controller
@@ -15,7 +18,7 @@ class VeterinariaController extends Controller
         return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
     }
 
-    public function search( Request $request)
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
         $veterinarias = Veterinaria::orderby('created_at', 'desc')
@@ -54,13 +57,12 @@ class VeterinariaController extends Controller
             'municipio' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
-            'evaluacion' => 'nullable|numeric|min:0|max:5',
+            'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'redes.*.tipo_red_social' => 'nullable|string|max:255',
+            'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
 
-        // Validación adicional para asegurarse de que las horas no sean iguales
-        if ($request->input('horario_apertura') == $request->input('horario_cierre')) {
-            return back()->withErrors(['horario_cierre' => 'La hora de apertura y la hora de cierre no pueden ser iguales.'])->withInput();
-        }
 
         // Crear la ubicación  modificando el -> 19/02/2025
         $ubicacion = Ubicacion::create([
@@ -68,6 +70,8 @@ class VeterinariaController extends Controller
             'municipio' => $request->input('municipio'),
             'ciudad' => $request->input('ciudad'),
             'direccion' => $request->input('direccion'),
+            'latitud' => $request->input('latitud'),
+            'longitud' => $request->input('longitud'),
         ]);
 
         // Crear la veterinaria
@@ -82,6 +86,24 @@ class VeterinariaController extends Controller
             'id_ubicacion' => $ubicacion->id,
         ]);
 
+        // Guardar las imágenes
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                $path = $imagen->store('veterinarias', 'public');
+                $veterinaria->imagenes()->create(['path' => $path, 'id_veterinaria' => $veterinaria->id]);
+            }
+        }
+
+        if ($request->has('redes')) {
+            foreach ($request->input('redes') as $red) {
+                $veterinaria->redes()->create([
+                    'tipo_red_social' => $red['tipo_red_social'] ?? null,
+                    'nombre_usuario' => $red['nombre_usuario'] ?? null,
+                    'id_veterinaria' => $veterinaria->id,
+                ]);
+            }
+        }
+
         if ($veterinaria->save()) {
             // mensaje de que todo salio bien
             return redirect()->route('veterinarias.index')->with('exito', 'La veterinaria se registrada exitosamente');
@@ -90,11 +112,11 @@ class VeterinariaController extends Controller
             return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo registrar');
         }
     }
-   
+
     // Método que muestra una veterinaria
     public function show(string $id)
     {
-        $veterinaria = Veterinaria::with(['ubicacion','calificaciones.user'])->findOrFail($id);
+        $veterinaria = Veterinaria::with(['ubicacion', 'calificaciones.user'])->findOrFail($id);
         return view('veterinarias.unaVeterinaria')->with('veterinaria', $veterinaria);
     }
 
@@ -103,7 +125,7 @@ class VeterinariaController extends Controller
      */
     public function edit(string $id)
     {
-        $veterinaria = Veterinaria::with('ubicacion')->findOrFail($id);
+        $veterinaria = Veterinaria::with('ubicacion','imagenes')->findOrFail($id);
         return view('veterinarias.formulario')->with('veterinaria', $veterinaria);
     }
 
@@ -123,33 +145,23 @@ class VeterinariaController extends Controller
             'ciudad' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
-            'evaluacion' => 'nullable|numeric|min:0|max:5',
+            'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'redes.*.tipo_red_social' => 'nullable|string|max:255',
+            'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
 
-        // Validación adicional para asegurarse de que las horas no sean iguales
-        if ($request->input('horario_apertura') == $request->input('horario_cierre')) {
-            return back()->withErrors(['horario_cierre' => 'La hora de apertura y la hora de cierre no pueden ser iguales.'])->withInput();
-        }
-
-        //manejo de imagenes  -> solo quedan la funcion faltaron pruebas
-        $imagenes = [];
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $imagen) {
-                $path = $imagen->store('imagenes', 'public');
-                $imagenes[] = $path;
-            }
-        }
-
-        $redes_sociales = $request->input('redes_sociales', []);
-        $veterinaria = Veterinaria::findOrFail($id);
+        $veterinaria = Veterinaria::with('imagenes','redes')->findOrFail($id);
         $ubicacion = Ubicacion::findOrFail($veterinaria->id_ubicacion);
-    
+
         // actualizar la ubicación
         $ubicacion->update([
             'departamento' => $request->input('departamento'),
             'ciudad' => $request->input('ciudad'),
             'municipio' => $request->input('municipio'),
             'direccion' => $request->input('direccion'),
+            'latitud' => $request->input('latitud'),
+            'longitud' => $request->input('longitud'),
         ]);
 
         // Actualizar la veterinaria
@@ -159,10 +171,38 @@ class VeterinariaController extends Controller
             'horario_apertura' => $request->input('horario_apertura'),
             'horario_cierre' => $request->input('horario_cierre'),
             'telefono' => $request->input('telefono'),
-            'imagen' => json_encode($imagenes),
-            'evaluacion' => $request->input('evaluacion', 0),
+            'whatsapp' => $request->input('whatsapp'),
         ]);
 
+        if($request->has('existing_imagenes')){
+            $imageneAEliminar = $veterinaria->imagenes()->whereNotIn('id', $request->input('existing_imagenes'))->get();
+            foreach ($imageneAEliminar as $imagen) {
+                if ($imagen && \Storage::disk('public')->exists($imagen->path)) {
+                    $imagen->update(['path' => $imagen->path]);
+                }
+                $imagen->delete();
+            }
+        }
+        if($request->hasFile('imagenes')){
+            foreach ($request->file('imagenes') as $imagen) {
+                $path = $imagen->store('veterinarias', 'public');
+                $veterinaria->imagenes()->create(['path' => $path]);
+            }
+
+        }
+        // Manejo de redes sociales
+        if ($request->has('redes')) {
+            // Eliminar redes sociales antiguas
+            $veterinaria->redes()->delete();
+
+            // Guardar nuevas redes sociales
+            foreach ($request->input('redes') as $red) {
+                $veterinaria->redes()->create([
+                    'tipo_red_social' => $red['tipo_red_social'] ?? null,
+                    'nombre_usuario' => $red['nombre_usuario'] ?? null,
+                ]);
+            }
+        }
         // Guardar la veterinaria
         if ($veterinaria->save()) {
             // mensaje de que todo salio bien
@@ -195,5 +235,4 @@ class VeterinariaController extends Controller
             return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo eliminar');
         }
     }
-
 }

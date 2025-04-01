@@ -11,22 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ubicaciones', function (Blueprint $table) {
+        Schema::create('imagenes', function (Blueprint $table) {
             $table->id();
-            $table->string('departamento');
-            $table->string('ciudad');
-            $table->string('municipio');
-            $table->string('direccion');
-            $table->decimal('latitud', 10, 8)->nullable();
-            $table->decimal('longitud', 11, 8)->nullable();
+            $table->string('path')->nullable();
+            $table->foreignId('id_veterinaria')->constrained('veterinarias')->onDelete('cascade');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('ubicaciones');
+        Schema::dropIfExists('imagenes');
     }
 };
