@@ -468,15 +468,32 @@
                               action="{{ route('productos.destroy', $producto->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="confirm-checkbox-{{$producto->id}}"
-                                       onchange="toggleDeleteButton({{$producto->id}})">
-                                <label class="form-check-label" for="confirm-checkbox-{{$producto->id}}">Confirmar
-                                    eliminación</label>
-                            </div>
-                            <button class="btn btn-danger btn-lg" type="submit" id="delete-button-{{$producto->id}}"
-                                    disabled>Eliminar Producto
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalProducto">
+                                Eliminar Producto
                             </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModalProducto" tabindex="-1" aria-labelledby="ModalProductoLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="ModalProductoLabel">Modal title</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancelar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Estás seguro de que deseas eliminar este producto?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -551,9 +568,42 @@
                                 <div class="accordion-body">
                                     <strong>{{ $resenia->titulo }}</strong>
                                     <p>{{ $resenia->contenido }}</p>
+
+
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="ModalResenia{{$resenia->id}}">
+                                        Eliminar
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1" aria-labelledby="ModalReseniaLabel{{$resenia->id}}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="ModalReseniaLabel{{$resenia->id}}">Eliminar Reseña</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ...
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{{ route('productos.eliminarResenia', $resenia->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
+
                     </div>
+
                     @endforeach
                 </div>
             </div>
