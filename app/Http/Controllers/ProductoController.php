@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Producto;
+use App\Models\Resenia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -261,6 +262,14 @@ class ProductoController extends Controller
          'user_id' => $random,
      ]);
      return redirect()->back()->with('success', 'Reseña agregada correctamente');
+    }
+
+    public function eliminarResenia($resenia_id, $producto_id)
+    {
+        $producto = Producto::findOrFail($producto_id);
+        $resenia = $producto->resenias()->firstOrFail($resenia_id);
+        $resenia->delete();
+        return redirect()->back()->with('success', 'Reseña eliminada correctamente');
     }
 
 }

@@ -556,8 +556,8 @@
                                             data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
                                             aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
                                             aria-controls="collapse{{ $index }}">
-                    <span class="accordion-title">
-                            <span class="username">{{ $resenia->user->name }}</span>
+                                        <span class="accordion-title">
+                                        <span class="username">{{ $resenia->user->name }}</span>
                             </div>
                             </span>
                             </button>
@@ -584,7 +584,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    ...
+                                                    ¿Estás seguro de que deseas eliminar esta reseña?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <form action="{{ route('productos.eliminarResenia', $resenia->id) }}" method="POST">
