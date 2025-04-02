@@ -172,8 +172,73 @@
         <div class="box">R</div>
         <div class="box">T</div>
     </div>
-    <p>&copy; 2025 DevStorm: UNAH-TEC Danlí </p>
 </section>
+
+<footer class="footer">
+    <div class="footer__parralax">
+        <div class="footer__parralax-trees"></div>
+        <div class="footer__parralax-moto"></div>
+        <div class="footer__parralax-secondplan"></div>
+        <div class="footer__parralax-premierplan"></div>
+        <div class="footer__parralax-voiture"></div>
+    </div>
+    <div class="containerfooter">
+        <div class="footer__columns">
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>SmartPets</span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="" class="footer__nav-link">Iniciar Sesión</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('adopciones.index')}}" class="footer__nav-link">Adopciones</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('publicaciones.index')}}" class="footer__nav-link">Publicaciones</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('veterinarias.index')}}" class="footer__nav-link">Veterinarias</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>‎ </span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="{{route('chatbot.index')}}" class="footer__nav-link">Mascota ideal</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="#" class="footer__nav-link">PetChat</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('eventos.index')}}" class="footer__nav-link">Eventos</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('productos.index')}}" class="footer__nav-link">PetShop</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>‎ </span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=smartpets@gmail.com&su=Consulta%20de%20producto&body=Hola,%20me%20interesa%20saber%20más%20sobre%20el%20producto" class="footer__nav-link" target="_blank">smartpets@gmail.com</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="footer__copyrights">
+            <p>&copy; 2025 DevStorm. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
+
 
 
 <script src="{{ asset('js/MPscripts.js') }}"></script>
