@@ -50,7 +50,7 @@
                     <li><a href="{{ route('veterinarias.index') }}"><i class="fas fa-user-md"></i> Veterinarias</a></li>
                     <li><a href="{{ route('productos.index') }}"><i class="fas fa-store"></i> PetShop</a></li>
                     <li><a href="#"><i class="fas fa-comments"></i> PetChat</a></li>
-                    <li><a href="#"><i class="fas fa-paw"></i> Mascota ideal</a></li>
+                    <li><a href="{{ route('chatbot.index') }}"><i class="fas fa-paw"></i> Mascota ideal</a></li>
                 </ul>
             </div>
 

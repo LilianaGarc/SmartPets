@@ -9,7 +9,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -43,14 +42,13 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 250px; /* 📌 Ajustado para hacer el menú más compacto */
+    width: 250px;
     height: 100vh;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     flex-direction: column;
     transition: right 0.3s ease-in-out;
-    padding: 20px 0; /* 📌 Añadido espacio interno */
 }
 
 .navbar .menu-items.open {
@@ -62,35 +60,46 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
 }
 
 .navbar .menu-items li {
-    margin: 1rem 0; /* 📌 Espaciado más compacto */
-    transition: transform 0.3s ease;
+    width: 100%;
+    transition: transform 0.3s ease, width 0.3s ease;
 }
 
-/* 📌 Mejoras en los enlaces */
 .navbar .menu-items a {
     text-decoration: none;
     color: #0e2431;
     font-weight: 500;
-    font-size: 1.3rem; /* 📌 Tamaño de fuente ajustado */
+    font-size: 1.7rem;
     display: flex;
-    align-items: center;
-    gap: 10px; /* 📌 Espacio entre icono y texto */
-    transition: color 0.3s ease;
+    align-items: start;
+    justify-content: start;
+    transition: color 0.3s ease, background-color 0.3s ease, width 0.3s ease;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: start;
+    padding: 8px 0 8px 20%;
 }
 
-/* 📌 Ajuste en los iconos */
 .navbar .menu-items a i {
-    font-size: 1.2rem; /* 📌 Iconos más pequeños */
+    margin-right: 10px;
 }
 
 .navbar .menu-items a:hover {
-    color: #ff7c40;
+    color: #fff;
+    background: linear-gradient(135deg, #ff864e 83%, rgba(255, 255, 255, 0) 83%);
+    transition: background 0.3s ease;
 }
 
-/* 📌 Ajustes en el botón de hamburguesa */
+.navbar .menu-items a:focus {
+    background: linear-gradient(135deg, #ff864e 83%, rgba(30, 65, 131, 0) 83%);
+    color: white;
+    transition: background 0.3s ease;
+}
+
 .nav-container .hamburger-lines .line {
     display: block;
     height: 3px;
@@ -113,7 +122,6 @@
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* 📌 Responsividad mejorada */
 @media (max-width: 768px) {
     .navbar {
         padding: 1rem 2vw;
@@ -138,6 +146,18 @@
     }
 
     .navbar .menu-items a {
-        font-size: 1.2rem; /* 📌 Texto más ajustado en móviles */
+        font-size: 1.2rem;
+    }
+
+    .navbar .menu-items a:hover,
+    .navbar .menu-items a:focus {
+        background: none;
+        color: #0e2431;
+    }
+
+    .navbar .menu-items a:hover {
+        width: 100%;
     }
 }
+
+
