@@ -100,12 +100,12 @@
         .btn-user {
             text-decoration: none;
             color: #ffffff;
-            background-color: rgba(183, 17, 17, 0);
+            background-color: rgb(3, 45, 129);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
-            margin-top: 2%;
+            margin-top: 1vh;
             width: 20vw;
-            padding: 1%;
+            padding: 2vh;
         }
         .btn-user:hover {
             transform: scale(1.1);
@@ -126,7 +126,7 @@
 
         .button-img {
             width: 100%;
-            margin: 2%;
+            margin: 0;
             object-fit: cover;
         }
 

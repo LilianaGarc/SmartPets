@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
-=======
-
 use App\Http\Controllers\ChatbotController;
->>>>>>> e9d7ae5e3aabc2ef97317738d0821b9a75d00820
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicacionController;
@@ -212,10 +208,6 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 
-<<<<<<< HEAD
-Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
-
-=======
 //Mascota Ideal
 Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
 Route::post('/chatbot', [ChatbotController::class, 'store'])->name('chatbot.store');
@@ -269,7 +261,6 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 //Rutas para Publicaciones
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
 Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
->>>>>>> e9d7ae5e3aabc2ef97317738d0821b9a75d00820
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
