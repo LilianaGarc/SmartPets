@@ -12,17 +12,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin-left: 15%;
-            margin-top: 9%;
-            margin-bottom: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             padding: 0;
+            margin: 0;
+            margin-top: 15vh !important;
             font-size: 100%;
             background-color: #f7f7f7;
-            width: 75%;
-            height: auto;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            flex-direction: column;
         }
+
 
         .navbar {
             background-color: rgb(255, 255, 255);
@@ -34,7 +37,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             z-index: 100;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
@@ -97,12 +100,11 @@
         .btn-user {
             text-decoration: none;
             color: #ffffff;
-            font-size: 120%;
-            background-color: #18478b;
+            background-color: rgba(183, 17, 17, 0);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
             margin-top: 2%;
-            width: 30%;
+            width: 20vw;
             padding: 1%;
         }
         .btn-user:hover {
@@ -221,6 +223,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            margin-bottom: 2.5vh;
         }
 
         .breadcrumb {
@@ -329,7 +332,11 @@
 
     </div>
 </nav>
-@yield('contenido')
+<div class="container">
+    @yield('contenido')
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
