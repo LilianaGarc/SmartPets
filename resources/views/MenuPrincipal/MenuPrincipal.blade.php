@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartPets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
@@ -84,7 +86,7 @@
     <div class="mision-content">
         <h2>Descubre tu mascota ideal</h2>
         <p>SmartPets está diseñado para ayudarte a encontrar a tu compañero de vida perfecto, conectándote con animales que necesitan un hogar.</p>
-        <button class="ver-mas-btn" onclick="window.location.href=''">Ver más</button>
+        <button class="ver-mas-btn" onclick="window.location.href='{{ route('chatbot.index') }}'">Ver más</button>
     </div>
 </div>
 
@@ -128,8 +130,11 @@
 </section>
 
 <section class="petshop-section">
+    <div class="petshop_texto">
     <h2>Explora nuestra PetShop</h2>
     <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
+    <button class="ver-mas-btn_tienda" onclick="window.location.href='{{ route('productos.index') }}'">Ver más</button>
+    </div>
     <div class="petshop-container">
         <div class="petshop-item petshop-item-top-left">
             <img src="{{ asset('images/producto1.webp') }}" alt="Producto 1">
@@ -155,7 +160,6 @@
             <img src="{{ asset('images/producto6.webp') }}" alt="Producto 5">
             <div class="petshop-item-text">Cuidado Dental</div>
         </div>
-
     </div>
 </section>
 
@@ -168,10 +172,72 @@
         <div class="box">R</div>
         <div class="box">T</div>
     </div>
-    <p>&copy; 2025 DevStorm: UNAH-TEC Danlí </p>
 </section>
 
-
+<footer class="footer">
+    <div class="footer__parralax">
+        <div class="footer__parralax-trees"></div>
+        <div class="footer__parralax-moto"></div>
+        <div class="footer__parralax-secondplan"></div>
+        <div class="footer__parralax-premierplan"></div>
+        <div class="footer__parralax-voiture"></div>
+    </div>
+    <div class="containerfooter">
+        <div class="footer__columns">
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>SmartPets</span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="" class="footer__nav-link">Iniciar Sesión</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('adopciones.index')}}" class="footer__nav-link">Adopciones</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('publicaciones.index')}}" class="footer__nav-link">Publicaciones</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('veterinarias.index')}}" class="footer__nav-link">Veterinarias</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>‎ </span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="{{route('chatbot.index')}}" class="footer__nav-link">Mascota ideal</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="#" class="footer__nav-link">PetChat</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('eventos.index')}}" class="footer__nav-link">Eventos</a>
+                        </li>
+                        <li class="footer__nav-item">
+                            <a href="{{route('productos.index')}}" class="footer__nav-link">PetShop</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="footer__col">
+                <h3 class="footer__col-title"><span>‎ </span></h3>
+                <nav class="footer__nav">
+                    <ul class="footer__nav-list">
+                        <li class="footer__nav-item">
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=smartpets@gmail.com&su=Consulta%20de%20producto&body=Hola,%20me%20interesa%20saber%20más%20sobre%20el%20producto" class="footer__nav-link" target="_blank">smartpets@gmail.com</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="footer__copyrights">
+            <p>&copy; 2025 DevStorm. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
 
 
 

@@ -9,7 +9,6 @@
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
-
 <div class="container">
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
@@ -29,9 +28,10 @@
                 </a>
             </li>
         </ul>
+
         <div class="filter-container">
-            <form action="{{ route('adopciones.index') }}" method="GET">
                 <div class="select-wrapper">
+                    <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                     <select name="tipo_mascota" onchange="this.form.submit()" class="select-dropdown">
                         <option value="">Seleccionar tipo de mascota</option>
                         <option value="Perro" {{ request('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
@@ -43,13 +43,19 @@
                         <option value="" {{ request('tipo_mascota') == '' ? 'selected' : '' }}>Todos</option>
                     </select>
                 </div>
+
+                <div class="select-wrapper">
+                    <select name="orden" onchange="this.form.submit()" class="select-dropdown">
+                        <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por fecha: Más reciente</option>
+                        <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por fecha: Más antigua</option>
+                        <option value="most_visited" {{ request('orden') == 'most_visited' ? 'selected' : '' }}>Ordenar por vistas: Más vistas</option>
+                        <option value="least_visited" {{ request('orden') == 'least_visited' ? 'selected' : '' }}>Ordenar por vistas: Menos vistas</option>
+                    </select>
+                </div>
             </form>
         </div>
     </div>
 </div>
-
-
-
 
 @if(session('success'))
     <script>
@@ -85,7 +91,7 @@
             <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
         </div>
     @endif
-@foreach($adopciones as $adopcion)
+    @foreach($adopciones as $adopcion)
         <div class="adopcion-card">
             <div class="perfil-usuario">
                 <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');"></div>
@@ -107,40 +113,30 @@
                 </a>
             @endif
 
+            <div class="dropdown">
+                <button class="dropbtn">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-content">
+                    <form action="{{ route('adopciones.show', $adopcion->id) }}" method="GET">
+                        <button type="submit" class="btn-editar-dropdown">
+                            <i></i> Ver detalles
+                        </button>
+                    </form>
 
-            <div class="interacciones">
-                <div class="reactions">
-                    <img src="{{ asset('images/amor.webp') }}" class="reaction-img" id="amor" data-hover="{{ asset('images/amor2.webp') }}">
-                    <img src="{{ asset('images/risa.webp') }}" class="reaction-img" id="risa" data-hover="{{ asset('images/risa2.webp') }}">
-                    <img src="{{ asset('images/triste.webp') }}" class="reaction-img" id="triste" data-hover="{{ asset('images/llorar2.webp') }}">
-                    <img src="{{ asset('images/enojado.webp') }}" class="reaction-img" id="enojado" data-hover="{{ asset('images/enojado2.webp') }}">
-                </div>
+                    <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
+                        <button type="submit" class="btn-editar-dropdown">
+                            <i></i> Editar
+                        </button>
+                    </form>
 
-                <div class="dropdown">
-                    <button class="dropbtn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <form action="{{ route('adopciones.show', $adopcion->id) }}" method="GET">
-                            <button type="submit" class="btn-editar-dropdown">
-                                <i></i> Ver detalles
-                            </button>
-                        </form>
-
-                        <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
-                            <button type="submit" class="btn-editar-dropdown">
-                                <i></i> Editar
-                            </button>
-                        </form>
-
-                        <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                                <i></i> Eliminar
-                            </button>
-                        </form>
-                    </div>
+                    <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
+                            <i></i> Eliminar
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

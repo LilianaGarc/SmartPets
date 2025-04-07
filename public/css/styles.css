@@ -136,7 +136,7 @@ body {
     transform: scale(0.6) translateY(100%);
     opacity: 0;
     transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    animation: handAnimation 0.5s ease-out forwards;
+    animation: handAnimation 0.2s ease-out forwards;
     animation-play-state: paused;
     pointer-events: none;
     visibility: visible;
@@ -159,7 +159,7 @@ body {
 }
 
 .vision-content, .mision-content {
-    max-width: 80%;
+    max-width: 85%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -220,7 +220,6 @@ body {
     transform: scale(1.1);
 }
 
-
 .mision .ver-mas-btn {
     margin-right: auto;
 }
@@ -271,6 +270,7 @@ body {
     text-align: center;
     padding: 2vw 10vw;
     flex: 1;
+    margin-bottom: 15vw;
 }
 
 .button {
@@ -374,14 +374,14 @@ body {
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 .form-container {
     display: flex;
     align-items: stretch;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     flex-wrap: wrap;
     overflow: hidden;
 }
@@ -397,8 +397,7 @@ body {
 .image-column {
     flex: 1;
     background: #f4f4f4;
-    overflow: hidden;
-    height: 100%;
+    height: 73vw;
 }
 
 .image-column img {
@@ -534,7 +533,6 @@ button[type="submit"]:hover, .btn:hover {
     border: 1px solid #ddd;
 }
 
-
 .adopciones-container {
     display: flex;
     flex-wrap: wrap;
@@ -545,11 +543,10 @@ button[type="submit"]:hover, .btn:hover {
 
 .adopcion-card {
     width: 100%;
-    max-width: 280px;
-    max-height: 550px;
+    max-width: 330px;
     height: auto;
     border-radius: 15px;
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
     text-align: left;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
@@ -560,9 +557,6 @@ button[type="submit"]:hover, .btn:hover {
     opacity: 0;
     transform: translateY(50px);
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .adopcion-card.fade-in-up {
@@ -578,11 +572,12 @@ button[type="submit"]:hover, .btn:hover {
 
 .adopcion-card img {
     width: 100%;
-    height: 250px;
+    height: 350px;
     object-fit: cover;
     border-radius: 10px;
     margin-top: 5px;
     transition: transform 0.3s ease;
+    position: relative;
 }
 
 .perfil-usuario {
@@ -607,6 +602,7 @@ button[type="submit"]:hover, .btn:hover {
 .informacion-perfil {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .nombre-usuario {
@@ -625,14 +621,7 @@ button[type="submit"]:hover, .btn:hover {
 .contador-visitas {
     font-size: 0.7rem;
     color: rgb(169, 169, 169);
-    align-self: end;
-}
-
-.reaction-img {
-    height: 40px !important;
-    width: 40px !important;
-    cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    align-self: start;
 }
 
 .adopcion-card p {
@@ -658,26 +647,6 @@ button[type="submit"]:hover, .btn:hover {
     color: #888;
 }
 
-.interacciones {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-    font-size: 16px;
-    width: 100%;
-}
-
-.reactions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.reaction-img:hover {
-    transform: scale(1.3);
-    filter: brightness(0.9) contrast(1.7);
-}
-
 .btn-eliminard {
     background-color: #1e4183;
     color: white;
@@ -700,10 +669,11 @@ button[type="submit"]:hover, .btn:hover {
     color: #1e4183;
     transform: scale(1.05);
 }
-
 .dropdown {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
 }
 
 .dropbtn {
@@ -720,7 +690,7 @@ button[type="submit"]:hover, .btn:hover {
 .dropdown-content {
     display: none;
     position: absolute;
-    bottom: 100%;
+    top: 100%;
     right: 0;
     min-width: 180px;
     background-color: rgb(255, 255, 255);
@@ -756,10 +726,6 @@ button[type="submit"]:hover, .btn:hover {
     transform: scale(1.03);
 }
 
-.dropdown-content button i {
-    margin-right: 8px;
-}
-
 .btn-editar-dropdown {
     background-color: #1e4183;
     color: #fff;
@@ -777,14 +743,6 @@ button[type="submit"]:hover, .btn:hover {
     transform: scale(1.03);
 }
 
-.btn-editar-dropdown i {
-    margin-right: 8px;
-}
-
-.btn-editar-dropdown:focus, .dropdown-content form button:focus {
-    outline: none;
-    border: 2px solid #1e4183;
-}
 
 @keyframes slideUp {
     from {
@@ -897,8 +855,6 @@ button, .btn-view, .btn-editar {
     top: 50%;
     right: 100%;
     margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
     border-color: transparent rgba(0, 0, 0, 0.6) transparent transparent;
 }
 
@@ -916,8 +872,8 @@ button, .btn-view, .btn-editar {
 
 .card2 {
     width: 80vw;
-    max-width: 800px;
-    height: 68vh;
+    max-width: 1000px;
+    height: auto;
     background: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
     transition: all 0.3s;
@@ -928,8 +884,8 @@ button, .btn-view, .btn-editar {
 
 .card {
     width: 80vw;
-    max-width: 800px;
-    height: 55vh;
+    max-width: 1000px;
+    height: auto;
     background: white;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
     transition: all 0.3s;
@@ -977,7 +933,7 @@ button, .btn-view, .btn-editar {
 .card-content .photo img {
     max-width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 350px;
     object-fit: cover;
     border-radius: 12px;
 }
@@ -1017,6 +973,49 @@ button, .btn-view, .btn-editar {
     white-space: normal;
 }
 
+.card-content .description .solicitud-actions {
+    display: flex;
+    margin-top: 1vw;
+}
+
+.card-content .description .action-btn {
+    font-size: 1rem;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.card-content .description .solicitud-actions .accept-btn {
+    background-color: rgb(255, 255, 255);
+    color: rgb(76, 175, 80);
+}
+
+.card-content .description .solicitud-actions .accept-btn:hover {
+    background-color: #45a049;
+    color: rgb(255, 255, 255);
+}
+
+.card-content .description .solicitud-actions .reject-btn {
+    background-color: #ffffff;
+    color: #f44336;
+}
+
+.card-content .description .solicitud-actions .reject-btn:hover {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.card-content .description .accept-btn i, .reject-btn i {
+    font-size: 1.3rem;
+}
+
+
 .card-content .description .boton-container {
     display: flex;
     margin-top: auto;
@@ -1035,7 +1034,7 @@ button, .btn-view, .btn-editar {
     margin-right: 10px;
 }
 
-.card-content .description button:hover {
+.description button:hover {
     border: 1px solid #1e4183;
     color: #1e4183;
 }
@@ -1046,6 +1045,8 @@ button, .btn-view, .btn-editar {
     --color2: #d9d9d9;
     --color-primary: #1e4183;
     accent-color: #1e4183;
+    --footer-bg: #343e46;
+    --footer-text: #ffffff;
 }
 
 .c-btn {
@@ -1309,7 +1310,7 @@ button, .btn-view, .btn-editar {
     }
 
     .compartir-text {
-        width: 100%;
+        width: 85%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1325,15 +1326,15 @@ button, .btn-view, .btn-editar {
         font-size: 1.2rem;
     }
 
-
     .phone-animation {
         width: 100%;
         height: auto;
-        margin-top: 20px;
+        margin-top: 50px;
     }
 
     .phone {
         width: 100%;
+        margin: 8vw;
         height: auto;
     }
 
@@ -1365,7 +1366,7 @@ button, .btn-view, .btn-editar {
     }
 
     .container2 {
-        width: 85%;
+        width: 90%;
         margin-top: 14vw;
         max-width: 100%;
         overflow-x: hidden;
@@ -1373,25 +1374,25 @@ button, .btn-view, .btn-editar {
     }
 
     .container5 {
-        width: 80%;
+        width: 90%;
         overflow: hidden;
         box-shadow: none;
     }
 
     .container4 {
-        width: 80%;
+        width: 90%;
         overflow: hidden;
         margin-top: 15vw;
         box-shadow: none;
     }
 
     .card {
-        width: 90%;
+        width: 100%;
         height: auto;
     }
 
     .card2 {
-        width: 90%;
+        width: 100%;
         overflow: hidden;
         margin-top: 10vw;
         height: auto;
@@ -1410,6 +1411,9 @@ button, .btn-view, .btn-editar {
         border: none;
     }
 
+    .close {
+        margin-top: 10vw;
+    }
 
     @media (max-width: 400px) {
 
@@ -1419,14 +1423,20 @@ button, .btn-view, .btn-editar {
         }
 
         .card, .card2 {
-            width: 90%;
+            width: 100%;
         }
 
-        .container3, .container5 {
-          width: 80%;
+        .container3 {
+          width: 100%;
             box-shadow: none;
+            overflow: hidden;
         }
 
+        .container5 {
+            width: 89%;
+            box-shadow: none;
+            overflow: hidden;
+        }
     }
 
     .card-content {
@@ -1463,6 +1473,15 @@ button, .btn-view, .btn-editar {
     .card-content .description button {
         padding: 10px 25px;
         font-size: 0.9rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
     }
 
     .breadcrumb-container {
@@ -1507,12 +1526,11 @@ button, .btn-view, .btn-editar {
 
     .adopcion-card {
         width: 85%;
-        max-width: 100%;
-        padding: 10px;
+        max-width: 95%;
     }
 
     .adopcion-card img {
-        height: 200px;
+        height: 350px;
     }
 
     .adopcion-card .contenido {
@@ -1567,7 +1585,7 @@ button, .btn-view, .btn-editar {
     }
 
     .solicitudes-container {
-        width: 90%;
+        width: 93%;
         gap: 20px;
         padding-bottom: 10vw;
     }
@@ -1734,6 +1752,43 @@ button, .btn-view, .btn-editar {
 
     .mision .ver-mas-btn, .vision .ver-mas-btn {
         margin: 0;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
+
+    .breadcrumb-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        flex-wrap: wrap;
+    }
+
+    .breadcrumb__item {
+        width: 80px;
+        flex-shrink: 0;
+    }
+
+    .breadcrumb__item .breadcrumb__title {
+        font-size: 11px;
+        white-space: normal;
+        word-wrap: break-word;
+        max-width: 100px;
+        line-height: 1.2;
     }
 
     .compartir-text {
@@ -1950,6 +2005,14 @@ button, .btn-view, .btn-editar {
         height: auto;
     }
 
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .select-wrapper {
+        width: 100%;
+    }
 
     .comprobante-container img {
         max-height: 220px;
@@ -2146,17 +2209,16 @@ button, .btn-view, .btn-editar {
     }
 }
 
+
 .compartir-mascota {
-    margin: 9vw 10vw;
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
     background-color: #ffffff;
-}
-
-.compartir-text {
-    margin: 0 auto;
 }
 
 .compartir-text h2 {
@@ -2167,11 +2229,12 @@ button, .btn-view, .btn-editar {
 .compartir-text p {
     font-size: 1.1rem;
     line-height: 1.2;
+    margin-right: 4vw;
 }
 
 .phone-animation {
     position: relative;
-    width: 300px;
+    width: 350px;
     height: 500px;
     display: flex;
     justify-content: center;
@@ -2315,6 +2378,14 @@ button, .btn-view, .btn-editar {
     background-color: #ffffff;
 }
 
+.petshop_texto {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+
 .petshop-section h2 {
     font-size: 2.5rem;
     margin-bottom: 10px;
@@ -2322,14 +2393,31 @@ button, .btn-view, .btn-editar {
 
 .petshop-section p {
     font-size: 1.2rem;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.ver-mas-btn_tienda {
+    background-color: #1e4183;
+    color: #ffffff;
+    padding: 0.8rem 2.5rem;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    cursor: pointer;
     margin-bottom: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.ver-mas-btn_tienda:hover {
+    transform: scale(1.1);
 }
 
 .petshop-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    max-width: 1300px;
+    max-width: 80%;
     margin: 0 auto;
 }
 
@@ -2404,7 +2492,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2431,7 +2518,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2471,7 +2557,6 @@ button, .btn-view, .btn-editar {
     }
 
     .petshop-container {
-        margin: 0 25px;
         grid-template-columns: 1fr 1fr;
     }
 
@@ -2489,12 +2574,6 @@ button, .btn-view, .btn-editar {
 
 
 
-.filter-container {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-}
-
 .breadcrumb-container {
     display: flex;
     align-items: start;
@@ -2503,22 +2582,46 @@ button, .btn-view, .btn-editar {
     justify-content: space-between;
 }
 
+.filter-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
 .select-wrapper {
-    width: 220px;
+    width: 250px;
     position: relative;
+    display: inline-block;
 }
 
 .select-dropdown {
     width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    background-color: #ffffff;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
+    font-size: 13px;
+    background-color: #fff;
+    border: 1px solid #d0d7e0;
+    border-radius: 10px;
     transition: all 0.3s ease;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
+.select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1e4183;
+    pointer-events: none;
+}
+
+.select-dropdown:focus {
+    border-color: #1e4183;
+    outline: none;
+}
 
 .breadcrumb {
     display: flex;
@@ -2610,6 +2713,178 @@ button, .btn-view, .btn-editar {
 }
 
 
+.containerfooter {
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.footer {
+    position: relative;
+    padding: 3rem 5%;
+    color: var(--footer-text);
+    background: var(--footer-bg);
+    margin-top: auto;
+    height: auto;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.footer__columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer__col {
+    width: 30%;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.footer__col-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: start;
+    color: var(--footer-text);
+}
+
+.footer a {
+    display: flex;
+    align-items: center;
+    color: var(--footer-text);
+    text-decoration: none;
+    font-size: 1.4rem;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ff7c40;
+}
+
+.footer__nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer__nav-item {
+    font-size: 1.6rem;
+}
+
+.footer__nav-link {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.footer__nav-link:hover {
+    transform: translateX(5px);
+}
+
+.footer__copyrights {
+    padding-top: 3rem;
+    margin-top: 3rem;
+    border-top: 1px solid rgba(var(--footer-text), 0.2);
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.footer__copyrights p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer__copyrights a {
+    margin-left: 0.5rem;
+    color: var(--footer-text);
+}
+
+@keyframes parralax {
+    0% {
+        background-position: 260px;
+    }
+    100% {
+        background-position: -10000vw;
+    }
+}
+
+@keyframes voiture {
+    0% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(-5deg);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+.footer__parralax {
+    position: absolute;
+    left: 0;
+    top: -300px;
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.footer__parralax-premierplan {
+    background-position: 260px;
+}
+
+.footer__parralax-trees,
+.footer__parralax-premierplan,
+.footer__parralax-secondplan {
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat-x;
+    background-position-y: 100% !important;
+    animation: parralax 600s linear infinite;
+}
+
+.footer__parralax-voiture {
+    position: absolute;
+    bottom: 10px;
+    left: 40%;
+    margin-left: 250px;
+    height: 200px;
+    width: 206px;
+    background: url(https://media.tenor.com/f5IqNksAcW0AAAAj/woof-running.gif);
+    background-repeat: no-repeat;
+    animation: voiture 1s linear infinite;
+}
+
+.footer__parralax-premierplan {
+    background-image: url(https://media.tenor.com/lN4vBkMnxSAAAAAi/nima1-nimakrmanji.gif);
+    animation-duration: 10000s;
+}
 
 
+@media screen and (max-width: 768px) {
+    .footer__parralax,
+    .footer__parralax-voiture,
+    .footer__parralax-premierplan,
+    .footer__parralax-trees,
+    .footer__parralax-secondplan,
+    .footer {
+        display: none;
+    }
 
+}

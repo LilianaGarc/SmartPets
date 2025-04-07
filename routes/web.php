@@ -1,4 +1,9 @@
 <?php
+<<<<<<< HEAD
+=======
+
+use App\Http\Controllers\ChatbotController;
+>>>>>>> e9d7ae5e3aabc2ef97317738d0821b9a75d00820
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicacionController;
@@ -207,8 +212,64 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 
+<<<<<<< HEAD
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
 
+=======
+//Mascota Ideal
+Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+Route::post('/chatbot', [ChatbotController::class, 'store'])->name('chatbot.store');
+Route::get('/chatbot/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
+Route::get('/chatbot/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
+Route::get('/chatbot/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+
+//Rutas para Productos
+Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
+
+Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
+Route::resource('productos', ProductoController::class);
+
+//MARGOTH
+//Productos
+Route::resource('productos',ProductoController::class);
+Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
+//Categorias
+Route::resource('/categorias',CategoriaController::class);
+//Reseñas
+Route::post('/productos/{producto}/resenias', [ProductoController::class, 'agregarResenia'])->name('productos.agregarResenia');
+Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'eliminarResenia'])->name('productos.eliminarResenia');
+
+
+Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
+
+//Rutas para Veterinarias
+//Administrativas
+Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
+Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
+Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
+
+//Publicas
+Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+
+Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
+Route::get('/calificaciones/{id}/edit', [CalificacionController::class, 'edit'])->name('calificaciones.edit');
+Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->name('calificaciones.update');
+Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
+
+Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
+Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
+
+Route::get('/veterinarias/{id}', [VeterinariaController::class, 'show'])->name('veterinarias.show')->whereNumber('id');
+Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])->name('veterinarias.edit')->whereNumber('id');
+
+Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
+Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
+
+
+//Rutas para Publicaciones
+Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
+Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
+>>>>>>> e9d7ae5e3aabc2ef97317738d0821b9a75d00820
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');

@@ -9,7 +9,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -61,29 +60,50 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
 }
 
 .navbar .menu-items li {
-    margin: 1.5rem 0;
-    transition: transform 0.3s ease;
+    width: 100%;
+    transition: transform 0.3s ease, width 0.3s ease;
 }
 
 .navbar .menu-items a {
     text-decoration: none;
     color: #0e2431;
     font-weight: 500;
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
+    font-size: 1.7rem;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    transition: color 0.3s ease, background-color 0.3s ease, width 0.3s ease;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: start;
+    padding: 8px 0 8px 20%;
+}
+
+.navbar .menu-items a i {
+    margin-right: 10px;
 }
 
 .navbar .menu-items a:hover {
-    color: #ff7c40;
+    color: #fff;
+    background: linear-gradient(135deg, #ff864e 83%, rgba(255, 255, 255, 0) 83%);
+    transition: background 0.3s ease;
+}
+
+.navbar .menu-items a:focus {
+    background: linear-gradient(135deg, #ff864e 83%, rgba(30, 65, 131, 0) 83%);
+    color: white;
+    transition: background 0.3s ease;
 }
 
 .nav-container .hamburger-lines .line {
     display: block;
-    height: 4px;
-    width: 30px;
+    height: 3px;
+    width: 25px;
     margin: 5px 0;
     background-color: #0e2431;
     border-radius: 5px;
@@ -114,7 +134,7 @@
 
     .nav-container .hamburger-lines {
         display: block;
-        padding-right:2vw;
+        padding-right: 2vw;
     }
 
     .navbar .logo img {
@@ -126,6 +146,18 @@
     }
 
     .navbar .menu-items a {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+
+    .navbar .menu-items a:hover,
+    .navbar .menu-items a:focus {
+        background: none;
+        color: #0e2431;
+    }
+
+    .navbar .menu-items a:hover {
+        width: 100%;
     }
 }
+
+
