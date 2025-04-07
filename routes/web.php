@@ -209,11 +209,11 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 
 //Mascota Ideal
-Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
-Route::post('/chatbot', [ChatbotController::class, 'store'])->name('chatbot.store');
-Route::get('/chatbot/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
-Route::get('/chatbot/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
-Route::get('/chatbot/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
+Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
+Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
+Route::get('/mascotaideal/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
+Route::get('/mascotaideal/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');

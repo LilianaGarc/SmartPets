@@ -270,7 +270,7 @@ body {
     text-align: center;
     padding: 2vw 10vw;
     flex: 1;
-    margin-bottom: 15vw;
+    margin-bottom: 16vw;
 }
 
 .button {
@@ -2839,8 +2839,8 @@ button, .btn-view, .btn-editar {
 .footer__parralax {
     position: absolute;
     left: 0;
-    top: -300px;
-    height: 300px;
+    top: -200px;
+    height: 200px;
     width: 100%;
     overflow: hidden;
 }
