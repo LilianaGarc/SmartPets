@@ -147,7 +147,7 @@ button:active {
 @media (max-width: 768px) {
     body {
         background: #ffffff;
-        margin-top: 20px;
+        margin-top: 5px;
         animation: none;
     }
 

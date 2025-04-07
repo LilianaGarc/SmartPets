@@ -10,12 +10,16 @@ class ChatbotController extends Controller
 {
     public function index()
     {
-        if (session()->has('answers') && count(session()->get('answers')) > 0) {
+        $answers = session()->get('answers', []);
+
+        $pregunta = Pregunta::whereNotIn('id', array_keys($answers))->first();
+
+        if (!$pregunta) {
             return redirect()->route('chatbot.result');
         }
 
-        $pregunta = Pregunta::first();
         session()->put('current_question_id', $pregunta->id);
+
         return view('chatbot.index', compact('pregunta'));
     }
 
