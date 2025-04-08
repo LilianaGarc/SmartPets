@@ -420,7 +420,9 @@
                             alt="
                             {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
                     </div>
+
                 </div>
+                <!-- Fin Galería de Imágenes -->
 
                 <!-- Información del Producto -->
                 <div class="col-md-6">
@@ -653,6 +655,25 @@
 
             // Recargar la página después de enviar la reseña
             location.reload();
+        });
+
+        <!-- Codigo agregado 08-04 martes -->
+        // Seleccionamos la imagen principal y todas las miniaturas dentro de la galería existente
+        const mainImage = document.querySelector('.main-image img'); // Imagen principal
+        const thumbnails = document.querySelectorAll('.thumbnail-image'); // Miniaturas
+
+        // Recorremos todas las miniaturas y les añadimos un evento de clic
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                // Guardamos temporalmente el src de la imagen principal
+                const tempSrc = mainImage.src;
+
+                // Intercambiamos el src de la imagen principal con el de la miniatura
+                mainImage.src = thumbnail.src;
+
+                // Asignamos el src temporal a la miniatura
+                thumbnail.src = tempSrc;
+            });
         });
     </script>
 @endsection
