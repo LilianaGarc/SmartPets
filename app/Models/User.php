@@ -37,6 +37,12 @@ class User extends Authenticatable
         $this->hasMany(Resenia::class);
     }
 
+    public function productos()
+    {
+        //Un usuario puede tener muchos productos (1)
+        return $this->hasMany(Producto::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
