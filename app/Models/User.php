@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Adopcion;
 
 class User extends Authenticatable
 {
@@ -35,6 +36,11 @@ class User extends Authenticatable
     {
         //Un usuario puede tener muchas reseñas (1)
         $this->hasMany(Resenia::class);
+    }
+
+    public function adopciones()
+    {
+        return $this->hasMany(Adopcion::class, 'id_usuario');
     }
 
     /**

@@ -19,4 +19,10 @@ class Solicitud extends Model
         //Varios solicitudes pertenecen una adopcion (N)
         return $this->belongsTo(Adopcion::class, 'id_adopcion');
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
+    }
+
 }

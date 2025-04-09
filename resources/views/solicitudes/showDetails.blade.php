@@ -44,15 +44,12 @@
 
 <div class="card2-container">
     <div class="card2">
-        <nav>
-            <span class="usuario">{{"Anonymous" }}</span>
-        </nav>
         <div class="card-content">
             <div class="photo" onclick="function openImageModal() {
             }
             openImageModal()">
 
-                    <img src="{{ asset('images/img_PorDefecto.jpg') }}" alt="Comprobante" class="adopcion-img">
+                <img src="{{ asset('images/fotodeperfil.webp') }}" alt="Comprobante" class="adopcion-img">
 
                 <div class="wrapper">
                     <a href="{{ asset('storage/' . $solicitud->comprobante) }}" class="c-btn" download>
@@ -66,20 +63,23 @@
 
             </div>
             <div class="description">
-                <h1>Usuario</h1>
+                <h1><strong></strong> {{ $solicitud->usuario->name }}</h1>
                 <p>{{ \Carbon\Carbon::parse($solicitud->created_at)->format('d M Y, H:i') }}</p>
                 <p>Motivo de la solicitud: {{ $solicitud->contenido }}</p>
                 <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
                 <p>Espacio disponible: {{ $solicitud->espacio }}</p>
                 <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
-                <div class="solicitud-actions">
-                    <button class="action-btn accept-btn">
-                        <i class="fas fa-check-circle"></i> Aceptar Solicitud
-                    </button>
-                    <button class="action-btn reject-btn">
-                        <i class="fas fa-times-circle"></i> Rechazar Solicitud
-                    </button>
-                </div>
+
+                @if(auth()->user()->id === $adopcion->id_usuario)
+                    <div class="solicitud-actions">
+                        <button class="action-btn accept-btn">
+                            <i class="fas fa-check-circle"></i> Aceptar Solicitud
+                        </button>
+                        <button class="action-btn reject-btn">
+                            <i class="fas fa-times-circle"></i> Rechazar Solicitud
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -30,8 +30,8 @@
         </ul>
 
         <div class="filter-container">
+            <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                 <div class="select-wrapper">
-                    <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                     <select name="tipo_mascota" onchange="this.form.submit()" class="select-dropdown">
                         <option value="">Seleccionar tipo de mascota</option>
                         <option value="Perro" {{ request('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
@@ -56,6 +56,8 @@
         </div>
     </div>
 </div>
+
+
 
 @if(session('success'))
     <script>
@@ -96,7 +98,7 @@
             <div class="perfil-usuario">
                 <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');"></div>
                 <div class="informacion-perfil">
-                    <p class="nombre-usuario">Anonymous</p>
+                    <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
                     <p class="fecha-publicacion">
                         Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
                     </p>
@@ -113,32 +115,29 @@
                 </a>
             @endif
 
-            <div class="dropdown">
-                <button class="dropbtn">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-content">
-                    <form action="{{ route('adopciones.show', $adopcion->id) }}" method="GET">
-                        <button type="submit" class="btn-editar-dropdown">
-                            <i></i> Ver detalles
-                        </button>
-                    </form>
+            @if(Auth::check() && Auth::id() === $adopcion->id_usuario)
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-content">
 
-                    <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
-                        <button type="submit" class="btn-editar-dropdown">
-                            <i></i> Editar
-                        </button>
-                    </form>
+                        <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
+                            <button type="submit" class="btn-editar-dropdown">
+                                <i></i> Editar
+                            </button>
+                        </form>
 
-                    <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                            <i></i> Eliminar
-                        </button>
-                    </form>
+                        <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
+                                <i></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     @endforeach
 </div>

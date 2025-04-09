@@ -38,7 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/adopciones/{id}', [AdopcionController::class, 'update'])->name('adopciones.update');
     Route::get('/adopciones/{id}', [AdopcionController::class, 'show'])->name('adopciones.show');
 
-
 //Rutas para Solicitudes
     Route::get('/solicitudes/crear/{id_adopcion}', [SolicitudController::class, 'create'])->name('solicitudes.create');
     Route::post('/solicitudes', [SolicitudController::class, 'store'])->name('solicitudes.store');

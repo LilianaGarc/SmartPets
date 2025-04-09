@@ -28,9 +28,11 @@ class SolicitudController
      */
     public function index()
     {
-        $solicitudes = Solicitud::with('adopcion')->get();
+        $solicitudes = Solicitud::with('adopcion', 'usuario')->get();
+
         return view('solicitudes.indexSolicitudes', compact('solicitudes'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -63,19 +65,16 @@ class SolicitudController
 
         $solicitud = new Solicitud();
         $solicitud->contenido = $validated['contenido'];
-        $solicitud->id_usuario = 0;
+        $solicitud->id_usuario = auth()->user()->id;
         $solicitud->id_adopcion = $validated['id_adopcion'];
         $solicitud->experiencia = $validated['experiencia'] ?? null;
         $solicitud->espacio = $validated['espacio'] ?? null;
         $solicitud->gastos_veterinarios = $validated['gastos_veterinarios'] ?? null;
 
-
         $solicitud->save();
 
         return redirect()->route('adopciones.index')->with('success', 'Solicitud enviada con éxito');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -88,10 +87,18 @@ class SolicitudController
             return redirect()->route('adopciones.index')->with('error', 'Adopción no encontrada.');
         }
 
-        $solicitudes = $adopcion->solicitudes;
+        if (auth()->user()->id === $adopcion->id_usuario) {
+            $solicitudes = $adopcion->solicitudes;
+        } else {
+            $solicitudes = Solicitud::where('id_usuario', auth()->user()->id)
+                ->where('id_adopcion', $adopcion->id)
+                ->get();
+        }
 
         return view('solicitudes.indexSolicitudes', compact('solicitudes', 'adopcion'));
     }
+
+
 
     public function showDetails($id_adopcion, $id)
     {
@@ -102,8 +109,13 @@ class SolicitudController
             return redirect()->route('adopciones.index')->with('error', 'Adopción o solicitud no encontrada.');
         }
 
+        if (auth()->user()->id !== $adopcion->id_usuario && auth()->user()->id !== $solicitud->id_usuario) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para ver esta solicitud.');
+        }
+
         return view('solicitudes.showDetails', compact('solicitud', 'adopcion'));
     }
+
 
     public function edit($id_adopcion, $id)
     {
@@ -116,6 +128,10 @@ class SolicitudController
 
         if (!$solicitud) {
             return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada.');
+        }
+
+        if ($solicitud->id_usuario !== auth()->user()->id) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para editar esta solicitud.');
         }
 
         return view('solicitudes.edit', compact('solicitud', 'adopcion'));
@@ -166,6 +182,10 @@ class SolicitudController
 
         if (!$solicitud) {
             return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada en esta adopción.');
+        }
+
+        if ($solicitud->id_usuario !== auth()->user()->id) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para eliminar esta solicitud.');
         }
 
         $solicitud->delete();

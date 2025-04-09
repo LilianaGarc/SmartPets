@@ -35,13 +35,11 @@
 <div class="card-containerver">
     <div class="card">
         <nav>
-            <span class="usuario">{{"Anonymous" }}</span>
+            <span class="usuario">{{ $adopcion->usuario->name }}</span>
         </nav>
 
         <div class="card-content">
-            <div class="photo" onclick="function openImageModal() {
-                    }
-                    openImageModal()">
+            <div class="photo" onclick="function openImageModal() { } openImageModal()">
                 @if($adopcion->imagen)
                     <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
                 @endif
@@ -61,21 +59,26 @@
                 <h1>{{ $adopcion->nombre_mascota }}</h1>
                 <h2>{{ $adopcion->tipo_mascota }}</h2>
                 <p>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
-                <p><strong>Edad:</strong> {{ $adopcion->edad_mascota }} años</p> <!-- Campo de Edad -->
-                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p> <!-- Campo de Raza -->
-                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p> <!-- Campo de Ubicación -->
-
+                <p><strong>Edad:</strong> {{ $adopcion->edad_mascota }} años</p>
+                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
+                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
 
                 <p>{{ $adopcion->contenido }}</p>
 
                 <div class="boton-container">
-                    <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
-                        <button type="submit">Solicitar</button>
-                    </form>
+                    @if(auth()->user()->id === $adopcion->id_usuario)
+                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
+                            <button type="submit">Solicitudes</button>
+                        </form>
+                    @else
+                        <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
+                            <button type="submit">Solicitar</button>
+                        </form>
 
-                    <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
-                        <button type="submit">Solicitudes</button>
-                    </form>
+                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
+                            <button type="submit">Mis Solicitudes</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

@@ -1594,13 +1594,18 @@ button, .btn-view, .btn-editar {
         padding: 12px;
         gap: 12px;
         display: flex;
-        flex-direction: column;
-        height: auto;
+        justify-content: center;
+        height: 30vw;
     }
 
     .solicitud-text {
         font-size: 0.85rem;
         flex-grow: 1;
+    }
+
+    .content-wrapper .foto-perfil,
+    .content-wrapper .solicitud-textt{
+        display: none;
     }
 
     .botones {
@@ -1622,6 +1627,7 @@ button, .btn-view, .btn-editar {
         text-decoration: none;
         width: 25%;
     }
+
     .solicitud-detalle {
         flex-direction: column;
         align-items: center;

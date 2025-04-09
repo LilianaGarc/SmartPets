@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Adopcion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class AdopcionController extends Controller
 {
@@ -81,14 +82,21 @@ class AdopcionController extends Controller
             'edad_mascota' => $request->edad_mascota,
             'raza_mascota' => $request->raza_mascota,
             'ubicacion_mascota' => $request->ubicacion_mascota,
+            'id_usuario' => Auth::id(),
         ]);
 
         return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
 
+
     public function edit($id)
     {
         $adopcion = Adopcion::findOrFail($id);
+
+        if ($adopcion->id_usuario != Auth::id()) {
+            return redirect()->route('adopciones.index')->with('fracaso', 'No tienes permiso para editar esta publicación.');
+        }
+
         return view('adopciones.edit', compact('adopcion'));
     }
 
@@ -142,9 +150,18 @@ class AdopcionController extends Controller
     public function destroy($id)
     {
         $adopcion = Adopcion::findOrFail($id);
+
+        if ($adopcion->id_usuario != Auth::id()) {
+            return redirect()->route('adopciones.index')->with('fracaso', 'No tienes permiso para eliminar esta publicación.');
+        }
+
+        if ($adopcion->imagen) {
+            Storage::disk('public')->delete($adopcion->imagen);
+        }
+
         $adopcion->delete();
 
-        return redirect()->route('adopciones.index')->with('success', 'Publicación eliminada correctamente');
+        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción eliminada.');
     }
 
     public function paneldestroy(string $id)
