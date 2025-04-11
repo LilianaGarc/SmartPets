@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicacionController;
@@ -30,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    //Rutas perfil
+    Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
+    Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('perfil.index');
+    Route::post('/perfil/actualizar-foto', [PerfilController::class, 'actualizarFoto'])->name('perfil.actualizarFoto');
 
     Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
     Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
@@ -192,6 +199,7 @@ require __DIR__.'/auth.php';
 Route::get('/', function () {
     return redirect()->route('animacion');
 });
+
 
 Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');

@@ -29,7 +29,12 @@ class AdopcionController extends Controller
     {
         $tipo_mascota = $request->get('tipo_mascota');
         $orden = $request->get('orden', 'desc');
+
         $adopciones = Adopcion::query();
+
+        if (Auth::check()) {
+            $adopciones->where('id_usuario', '!=', Auth::id());
+        }
 
         if ($tipo_mascota) {
             $adopciones = $adopciones->where('tipo_mascota', $tipo_mascota);
@@ -47,6 +52,7 @@ class AdopcionController extends Controller
 
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
+
 
 
 

@@ -96,7 +96,13 @@
     @foreach($adopciones as $adopcion)
         <div class="adopcion-card">
             <div class="perfil-usuario">
-                <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');"></div>
+                @php
+                    $foto = $adopcion->usuario->fotoperfil
+                            ? asset('storage/' . $adopcion->usuario->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
+                @endphp
+
+                <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
                 <div class="informacion-perfil">
                     <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
                     <p class="fecha-publicacion">

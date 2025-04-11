@@ -79,7 +79,13 @@
                 @foreach($solicitudes as $solicitud)
                     <div class="solicitud-card">
                         <div class="content-wrapper">
-                            <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');"></div>
+                            @php
+                                $foto = $solicitud->usuario->fotoperfil
+                                        ? asset('storage/' . $solicitud->usuario->fotoperfil)
+                                        : asset('images/fotodeperfil.webp');
+                            @endphp
+
+                            <div class="foto-perfil" style="background-image: url('{{ $foto }}');"></div>
                             <p class="solicitud-textt"><strong></strong> {{ $solicitud->usuario->name }}:</p>
                             <p class="solicitud-text">{{ $solicitud->contenido }}</p>
                             @if(auth()->user()->id === $adopcion->id_usuario)

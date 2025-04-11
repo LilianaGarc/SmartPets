@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
 </head>
 
@@ -17,6 +17,19 @@
                     <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets">
                 </a>
             </div>
+
+            @auth
+                <div class="username flex items-center gap-2">
+                    <a href="{{ route('perfil.index', ['id' => Auth::id()]) }}" class="flex items-center gap-2 hover:text-blue-500 transition">
+                        <img
+                            src="{{ Auth::user()->fotoperfil ? asset('storage/' . Auth::user()->fotoperfil) : asset('images/fotodeperfil.webp') }}"
+                            alt="Foto de perfil"
+                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <span class="hide-profile-name">{{ Auth::user()->name }}</span>
+                    </a>
+                </div>
+            @endauth
+
 
             <div class="hamburger-lines" id="hamburger">
                 <span class="line line1"></span>
