@@ -5,15 +5,13 @@
 <div class="card shadow-sm p-4 mb-4">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <!-- Título de la veterinaria -->
             <h2 class="card-title fw-bold">{{ $veterinaria->nombre }}</h2>
-            <!-- Botón verde -->
+            
             <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </a>
         </div>
         <div class="row">
-            <!-- Información de la veterinaria -->
             <div class="col-md-6">
                 <h5 class="card-subtitle mb-3 text-muted"><b>Propietario:</b> {{ $veterinaria->nombre_veterinario }}</h5>
                 <p class="card-text">
@@ -33,7 +31,6 @@
                 </p>
             </div>
 
-            <!-- Mapa -->
             <div class="col-md-6">
                 <div id="map" style="height: 320px;"></div>
             </div>
@@ -41,7 +38,6 @@
     </div>
 </div>
 
-<!-- Imágenes de la veterinaria -->
 <div class="card shadow-sm p-4 mb-4">
     <div class="card-body">
         <h3 class="card-title mb-3 fw-bold">Imágenes de la Veterinaria</h3>
@@ -58,6 +54,7 @@
         </div>
     </div>
 </div>
+
 <div class="card shadow-sm p-4 mb-4">
     <div class="card-body">
         <h3 class="card-title mb-3 fw-bold">Calificar y Opinar</h3>
