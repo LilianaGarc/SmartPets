@@ -12,6 +12,7 @@ class Producto extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = ['nombre','descripcion','precio','categoria_id','stock','imagen','imagen2','imagen3',
         'imagen4', 'imagen5','activo'];
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
@@ -20,6 +21,11 @@ class Producto extends Model
     public function resenias(): HasMany
     {
         return $this->hasMany(Resenia::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

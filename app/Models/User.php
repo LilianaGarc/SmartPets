@@ -38,9 +38,19 @@ class User extends Authenticatable
         $this->hasMany(Resenia::class);
     }
 
+
     public function adopciones()
     {
-        return $this->hasMany(Adopcion::class, 'id_usuario');
+        return $this->hasMany(Adopcion::class, 'id_usuario');{
+            //Un usuario puede tener muchas adopciones (1)
+        }
+    }
+
+    public function productos()
+    {
+        //Un usuario puede tener muchos productos (1)
+        return $this->hasMany(Producto::class);
+
     }
 
     /**
