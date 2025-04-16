@@ -93,7 +93,7 @@
                 </div>
             </nav>
 
-            <h2 class="text-center mb-4">CATEGORIAS</h2>
+            <h2 class="text-center mb-4"></h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
                     <button class="category-pill active">{{$categoria->nombre}}</button>
@@ -102,7 +102,7 @@
                 @endforelse
 
             </div>
-            <h2 class="text-center mb-4">PRODUCTOS</h2>
+            <h2 class="text-center mb-4"></h2>
             <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>
             <div class="row g-4">
                 @forelse($productos as $producto)
