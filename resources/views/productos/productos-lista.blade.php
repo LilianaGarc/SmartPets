@@ -86,9 +86,10 @@
 
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
-                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET">
+                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET"
+                    onsubmit="return document.getElementById('search-query').value.trim() !== '';">
                         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" id="search-query">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>
@@ -96,7 +97,10 @@
             <h2 class="text-center mb-4"></h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
-                    <button class="category-pill active">{{$categoria->nombre}}</button>
+                    <form action="{{ route('productos.index') }}"method="GET">
+                        <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
+                        <button class="category-pill {{request('$categoria')==$categoria->id?'active':''}}" type="submit">{{$categoria->nombre}}</button>
+                    </form>
                 @empty
                     <p class="text-center">No se han encontrado categorias.</p>
                 @endforelse
