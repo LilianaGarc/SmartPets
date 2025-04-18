@@ -67,7 +67,7 @@
         @csrf
         <div class="form-group">
             <label for="contenido">Motivo de la Solicitud</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido') }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="90" placeholder="Explica por qué deseas adoptar a esta mascota">{{ old('contenido') }}</textarea>
         </div>
 
         <div class="form-group">

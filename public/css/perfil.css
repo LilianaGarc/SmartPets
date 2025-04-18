@@ -99,13 +99,14 @@ body {
 
 .tabs {
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 30px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
     border-bottom: 2px solid #ddd;
-    padding: 14px 20px;
+    padding: 14px 40px;
     margin: 0;
     background-color: white;
+    box-sizing: border-box;
 }
 
 .tab {
@@ -149,6 +150,17 @@ body {
     overflow: hidden;
     position: relative;
 }
+
+.tab i {
+    font-size: 18px;
+    display: inline-block;
+    margin: 0;
+}
+
+.tab .tab-text {
+    display: inline;
+}
+
 
 .contador-visitas {
     position: absolute;
@@ -201,17 +213,21 @@ body {
         font-size: 15px;
     }
 
-    .tabs {
-        flex-wrap: wrap;
-        overflow-x: visible;
-        justify-content: space-between;
-        gap: 6px;
-        padding: 10px 10px;
+    .tab {
+        flex-direction: column;
+        align-items: center;
+        padding: 6px;
+        font-size: 12px;
     }
 
-    .tab {
-        font-size: 14px;
-        padding: 8px 12px;
+    .tab .tab-text {
+        display: none;
+    }
+
+    .tabs {
+        justify-content: space-around;
+        padding: 6px 4px;
+        gap: 0;
     }
 
     .contenido {

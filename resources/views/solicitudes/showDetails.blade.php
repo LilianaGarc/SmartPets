@@ -28,27 +28,61 @@
                     <span class="breadcrumb__title">Ver Adopción</span>
                 </a>
             </li>
-            <li class="breadcrumb__item">
-                <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Solicitudes</span>
-                </a>
-            </li>
-            <li class="breadcrumb__item breadcrumb__item-active">
-                <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Ver solicitud</span>
-                </a>
-            </li>
+
+            @if(auth()->user()->id === $adopcion->id_usuario)
+                <li class="breadcrumb__item">
+                    <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Solicitudes</span>
+                    </a>
+                </li>
+                <li class="breadcrumb__item breadcrumb__item-active">
+                    <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Ver solicitud</span>
+                    </a>
+                </li>
+            @elseif($solicitud && auth()->user()->id === $solicitud->id_usuario)
+                <li class="breadcrumb__item breadcrumb__item-active">
+                    <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Mi solicitud</span>
+                    </a>
+                </li>
+            @endif
+
         </ul>
     </div>
 </div>
 
+
 <div class="card2-container">
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
     <div class="card2">
         <div class="card-content">
-            <div class="photo" onclick="function openImageModal() {
-            }
-            openImageModal()">
-
+            <div class="photo" onclick="function openImageModal() { } openImageModal()">
                 @php
                     $foto = $solicitud->usuario->fotoperfil
                         ? asset('storage/' . $solicitud->usuario->fotoperfil)
@@ -56,7 +90,6 @@
                 @endphp
 
                 <img src="{{ $foto }}" alt="Foto de perfil" class="adopcion-img">
-
             </div>
             <div class="description">
                 <h1><strong></strong> {{ $solicitud->usuario->name }}</h1>
@@ -65,15 +98,56 @@
                 <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
                 <p>Espacio disponible: {{ $solicitud->espacio }}</p>
                 <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
+                <p>Correo: {{ $solicitud->usuario->email }}</p>
+                <p>Estado de la solicitud: <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
 
-                @if(auth()->user()->id === $adopcion->id_usuario)
-                    <div class="solicitud-actions">
-                        <button class="action-btn accept-btn">
-                            <i class="fas fa-check-circle"></i> Aceptar Solicitud
+                @php
+                    $hayAceptada = $adopcion->solicitudes()->where('estado', 'aceptada')->exists();
+                @endphp
+
+                <script>
+                    const yaHayAceptada = {{ $hayAceptada ? 'true' : 'false' }};
+                </script>
+
+                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado !== 'aceptada')
+                    <button type="button" class="action-btn accept-btn" onclick="confirmarAceptarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
+                        <i class="fas fa-check-circle"></i> Aceptar Solicitud
+                    </button>
+
+                    <form id="form-aceptar-{{ $solicitud->id }}" action="{{ route('solicitudes.aceptar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @endif
+
+                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado === 'aceptada')
+                    <button type="button" class="action-btn cancel-btn" onclick="confirmarCancelarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
+                        <i class="fas fa-times-circle"></i> Cancelar Aceptación
+                    </button>
+
+                    <form id="form-cancelar-{{ $solicitud->id }}" action="{{ route('solicitudes.cancelar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @endif
+
+
+
+
+
+            @if(auth()->user()->id === $solicitud->id_usuario)
+                    <div class="boton-container">
+                    <form action="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" method="GET">
+                        <button type="submit" class="btn-editard">
+                            Editar
                         </button>
-                        <button class="action-btn reject-btn">
-                            <i class="fas fa-times-circle"></i> Rechazar Solicitud
+                    </form>
+
+                    <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn-eliminard" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
+                            Eliminar
                         </button>
+                    </form>
                     </div>
                 @endif
             </div>

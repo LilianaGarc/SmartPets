@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Adopcion;
 use Illuminate\Http\Request;
 use App\Models\Solicitud;
+use App\Notifications\SolicitudAceptada;
+
 
 class SolicitudController
 {
@@ -161,7 +163,7 @@ class SolicitudController
 
         $solicitud->save();
 
-        return redirect()->route('solicitudes.show', $id_adopcion)->with('success', 'Solicitud actualizada con éxito.');
+        return redirect()->route('solicitudes.showDetails', [$id_adopcion, $id])->with('success', 'Solicitud actualizada con éxito.');
     }
 
 
@@ -194,7 +196,6 @@ class SolicitudController
     }
 
 
-
     public function paneldestroy(string $id)
     {
         $eliminados = Solicitud::destroy($id);
@@ -205,4 +206,53 @@ class SolicitudController
             return redirect()->route('solicitudes.panel')->with('exito', 'La solicitud se elimino correctamente.');
         }
     }
+
+    public function aceptar($id_adopcion, $id_solicitud)
+    {
+        $adopcion = Adopcion::find($id_adopcion);
+        $solicitud = Solicitud::find($id_solicitud);
+
+        if (!$adopcion || !$solicitud || $solicitud->id_adopcion !== $adopcion->id) {
+            return redirect()->back()->with('fracaso', 'Solicitud o adopción no válida.');
+        }
+
+        if (auth()->user()->id !== $adopcion->id_usuario) {
+            return redirect()->back()->with('fracaso', 'No tienes permiso para aceptar esta solicitud.');
+        }
+
+        Solicitud::where('id_adopcion', $id_adopcion)
+            ->where('id', '!=', $id_solicitud)
+            ->update(['estado' => 'pendiente']);
+
+        $solicitud->estado = 'aceptada';
+        $solicitud->save();
+
+        $solicitud->usuario->notify(new SolicitudAceptada($solicitud));
+        return redirect()->route('solicitudes.show', $id_adopcion)->with('success', '¡Solicitud aceptada con éxito!');
+    }
+
+    public function cancelarAceptacion($id_adopcion, $id_solicitud)
+    {
+        $adopcion = Adopcion::find($id_adopcion);
+        $solicitud = Solicitud::find($id_solicitud);
+
+        if (!$adopcion || !$solicitud || $solicitud->id_adopcion !== $adopcion->id) {
+            return redirect()->back()->with('fracaso', 'Solicitud o adopción no válida.');
+        }
+
+        if (auth()->user()->id !== $adopcion->id_usuario) {
+            return redirect()->back()->with('fracaso', 'No tienes permiso para cancelar esta solicitud.');
+        }
+
+        if ($solicitud->estado !== 'aceptada') {
+            return redirect()->back()->with('fracaso', 'Esta solicitud no ha sido aceptada.');
+        }
+
+        $solicitud->estado = 'pendiente';
+        $solicitud->save();
+
+        return redirect()->route('solicitudes.show', $id_adopcion)->with('success', 'La solicitud aceptada fue cancelada con éxito.');
+    }
+
+
 }

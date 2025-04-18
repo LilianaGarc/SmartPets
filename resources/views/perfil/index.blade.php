@@ -29,23 +29,35 @@
     </div>
 
     <div class="tabs">
-        <button class="tab activo" onclick="cambiarTab('publicaciones')">Publicaciones</button>
-        <button class="tab" onclick="cambiarTab('adopciones')">Adopciones</button>
-        <button class="tab" onclick="cambiarTab('veterinarias')">Veterinarias</button>
-        <button class="tab" onclick="cambiarTab('eventos')">Eventos</button>
-        <button class="tab" onclick="cambiarTab('mascota')">Mascota Ideal</button>
-        <button class="tab" onclick="cambiarTab('petshop')">Petshop</button>
+        <button class="tab activo" onclick="cambiarTab('publicaciones')" title="Publicaciones">
+            <i class="fas fa-clone"></i>
+            <span class="tab-text">Publicaciones</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('adopciones')" title="Adopciones">
+            <i class="fas fa-paw"></i>
+            <span class="tab-text">Adopciones</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('veterinarias')" title="Veterinarias">
+            <i class="fas fa-clinic-medical"></i>
+            <span class="tab-text">Veterinarias</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('eventos')" title="Eventos">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="tab-text">Eventos</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('mascota')" title="Mascota Ideal">
+            <i class="fas fa-heart"></i>
+            <span class="tab-text">Mascota Ideal</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('petshop')" title="Petshop">
+            <i class="fas fa-store"></i>
+            <span class="tab-text">Petshop</span>
+        </button>
     </div>
+
 
     <div class="contenido">
         <div id="publicaciones" class="grid activo">
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
-            <div class="card"></div>
             <div class="card"></div>
         </div>
 
@@ -84,7 +96,12 @@
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('activo'));
         document.querySelectorAll('.grid').forEach(grid => grid.classList.remove('activo'));
         document.getElementById(tabId).classList.add('activo');
-        event.target.classList.add('activo');
+        const botones = document.querySelectorAll('.tab');
+        botones.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(tabId)) {
+                btn.classList.add('activo');
+            }
+        });
     }
 
     lucide.createIcons();
