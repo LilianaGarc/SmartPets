@@ -65,45 +65,49 @@
         </script>
     @endif
 
-        <div class="solicitudes-container">
-            @if($solicitudes->isEmpty())
-                <div class="no-hay">
-                    @if(auth()->user()->id === $adopcion->id_usuario)
-                        <p class="no-hay-message">¡Aún no hay solicitudes para tu mascota! 😿</p>
-                    @else
-                        <p class="no-hay-message">¡No has hecho ninguna solicitud aún! 😿</p>
-                    @endif
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay solicitudes" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
-                </div>
-            @else
-                @foreach($solicitudes as $solicitud)
-                    <div class="solicitud-card">
-                        <div class="content-wrapper">
-                            @php
-                                $foto = $solicitud->usuario->fotoperfil
-                                        ? asset('storage/' . $solicitud->usuario->fotoperfil)
-                                        : asset('images/fotodeperfil.webp');
-                            @endphp
+    <div class="solicitudes-container">
+        @if($solicitudes->isEmpty())
+            <div class="no-hay">
+                @if(auth()->user()->id === $adopcion->id_usuario)
+                    <p class="no-hay-message">¡Aún no hay solicitudes para tu mascota! 😿</p>
+                @else
+                    <p class="no-hay-message">¡No has hecho ninguna solicitud aún! 😿</p>
+                @endif
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay solicitudes" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+            </div>
+        @else
+            @foreach($solicitudes as $solicitud)
+                @php
+                    $estadoClase = $solicitud->estado === 'aceptada' ? 'solicitud-card aceptada' : 'solicitud-card';
+                $foto = $solicitud->usuario->fotoperfil
+                            ? asset('storage/' . $solicitud->usuario->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
+                @endphp
 
-                            <div class="foto-perfil" style="background-image: url('{{ $foto }}');"></div>
-                            <p class="solicitud-textt"><strong></strong> {{ $solicitud->usuario->name }}:</p>
-                            <p class="solicitud-text">{{ $solicitud->contenido }}</p>
-                            @if(auth()->user()->id === $adopcion->id_usuario)
+                <div class="{{ $estadoClase }}">
+                    <div class="content-wrapper">
+                        <div class="foto-perfil" style="background-image: url('{{ $foto }}');"></div>
+                        <p class="solicitud-textt"><strong></strong> {{ $solicitud->usuario->name }}:</p>
+                        <p class="solicitud-text">{{ $solicitud->contenido }}</p>
+                        <p class="estado-label"> <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
+
+                        @if(auth()->user()->id === $adopcion->id_usuario)
+                            <div class="tooltip">
+                                <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <span class="tooltiptext">Ver solicitud</span>
+                            </div>
+                        @else
+                            @if(auth()->user()->id === $solicitud->id_usuario)
                                 <div class="tooltip">
                                     <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <span class="tooltiptext">Ver solicitud</span>
                                 </div>
-                            @else
-                                @if(auth()->user()->id === $solicitud->id_usuario)
-                                    <div class="tooltip">
-                                        <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="btn-view">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <span class="tooltiptext">Ver solicitud</span>
-                                    </div>
 
+                                @if($solicitud->estado !== 'aceptada')
                                     <div class="tooltip">
                                         <a href="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" class="btn-editar">
                                             <i class="fas fa-edit"></i>
@@ -123,11 +127,12 @@
                                     </div>
                                 @endif
                             @endif
-                        </div>
+                        @endif
                     </div>
-                @endforeach
-            @endif
-        </div>
+                </div>
+            @endforeach
+        @endif
+    </div>
 </div>
 
 <script src="{{ asset('js/alerts.js') }}"></script>

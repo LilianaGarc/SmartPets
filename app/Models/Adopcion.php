@@ -16,7 +16,7 @@ class Adopcion extends Model
         'visibilidad',
         'tipo_mascota',
         'nombre_mascota',
-        'edad_mascota',
+        'fecha_nacimiento',
         'raza_mascota',
         'ubicacion_mascota',
         'id_usuario',
@@ -30,6 +30,11 @@ class Adopcion extends Model
     public function solicitudes(){
         //Una adopcion puede tener muchas solicitudes (1)
         return $this->hasMany(Solicitud::class, 'id_adopcion');
+    }
+
+    public function solicitudAceptada()
+    {
+        return $this->hasOne(Solicitud::class, 'id_adopcion')->where('estado', 'aceptada');
     }
 
 

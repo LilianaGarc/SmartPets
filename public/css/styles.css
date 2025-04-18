@@ -407,6 +407,7 @@ body {
 }
 
 form {
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -433,6 +434,7 @@ textarea,
 input[type="text"],
 input[type="number"],
 select {
+    font-family: Arial, sans-serif;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
@@ -479,12 +481,12 @@ input[type="file"] {
     border-color: #000000;
 }
 
-button[type="submit"], .btn {
+button[type="submit"], .btn, button[type="button"] {
     padding: 12px 30px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-top: 20px;
     outline: 0;
+    margin-top: 1vw;
     background: none;
     border: 1px solid #d9d9d9;
     color: #515151;
@@ -496,6 +498,16 @@ button[type="submit"]:hover, .btn:hover {
     border: 1px solid #1e4183;
     color: #1e4183;
     transform: scale(1.05);
+}
+
+input[type="date"] {
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: all 0.3s ease-in-out;
 }
 
 .image-preview-container {
@@ -647,6 +659,82 @@ button[type="submit"]:hover, .btn:hover {
     color: #888;
 }
 
+.card-containerver {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    position: relative;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    color: #1e4183;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    min-width: 140px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-content form button {
+    width: 100%;
+    background: none;
+    border: none;
+    margin-top: 0;
+    padding: 12px;
+    font-size: 14px;
+    text-align: center;
+    color: #1e4183;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 4px;
+}
+
+.dropdown-content form button:hover {
+    background-color: #1e4183;
+    color: white;
+    transform: scale(1.03);
+}
+
+.dropdown-content form .btn-editar-dropdown{
+   margin-top: 0;
+}
+
 .btn-eliminard {
     background-color: #1e4183;
     color: white;
@@ -658,90 +746,13 @@ button[type="submit"]:hover, .btn:hover {
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 
-.btn-eliminard:hover, .btn-ver:hover, .btn-solicitar-dropdown:hover, .btn-editar-dropdown:hover {
-    color: #1e4183;
+.btn-eliminard:hover {
+    background-color: #162f5c;
     transform: scale(1.05);
 }
-.dropdown {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
-}
 
-.dropbtn {
-    background-color: transparent;
-    border: none;
-    color: #1e4183;
-    font-size: 18px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 4px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    min-width: 180px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 4px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: translateY(-10px);
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.dropdown-content form button {
-    width: 100%;
-    text-align: center;
-    border: none;
-    background-color: #f7f7f7;
-    color: #333;
-    font-size: 14px;
-    padding: 12px;
-    border-radius: 4px;
-    margin: 0;
-    transition: all 0.2s ease;
-}
-
-.dropdown-content form button:hover {
-    background-color: rgb(30, 65, 131);
-    color: #fff;
-    transform: scale(1.03);
-}
-
-.btn-editar-dropdown {
-    background-color: #1e4183;
-    color: #fff;
-    font-size: 14px;
-    padding: 12px;
-    border-radius: 4px;
-    border: none;
-    width: 100%;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.btn-editar-dropdown:hover {
-    background-color: #1a3d72;
-    transform: scale(1.03);
-}
 
 
 @keyframes slideUp {
@@ -755,12 +766,54 @@ button[type="submit"]:hover, .btn:hover {
     }
 }
 
+.mi-solicitud-card {
+    height: auto;
+    background-color: #f0f8ff;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mi-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.mi-foto-perfil {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+.mi-nombre {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
 .solicitudes-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-top: 20px;
-    width: 60%;
+    width: 80%;
+}
+
+.solicitud-card.aceptada {
+    background-color: rgba(212, 237, 218, 0.82);
+    border: 2px solid rgba(40, 167, 69, 0.44);
+}
+
+.estado-label {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    color: #333;
 }
 
 .solicitud-card {
@@ -799,8 +852,8 @@ button[type="submit"]:hover, .btn:hover {
     text-overflow: ellipsis;
 }
 
-
 .btn-eliminar {
+    margin: 0;
     all: unset;
     display: flex;
     flex-direction: column;
@@ -928,12 +981,13 @@ button, .btn-view, .btn-editar {
     padding: 2vw;
     cursor: pointer;
     overflow: hidden;
+    align-content: center;
 }
 
 .card-content .photo img {
     max-width: 100%;
     height: auto;
-    max-height: 350px;
+    max-height: 400px;
     object-fit: cover;
     border-radius: 12px;
 }
@@ -1018,7 +1072,7 @@ button, .btn-view, .btn-editar {
 
 .card-content .description .boton-container {
     display: flex;
-    margin-top: auto;
+    width: 60%;
 }
 
 .card-content .description button {

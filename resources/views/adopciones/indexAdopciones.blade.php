@@ -121,29 +121,7 @@
                 </a>
             @endif
 
-            @if(Auth::check() && Auth::id() === $adopcion->id_usuario)
-                <div class="dropdown">
-                    <button class="dropbtn">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-content">
 
-                        <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
-                            <button type="submit" class="btn-editar-dropdown">
-                                <i></i> Editar
-                            </button>
-                        </form>
-
-                        <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                                <i></i> Eliminar
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            @endif
         </div>
     @endforeach
 </div>

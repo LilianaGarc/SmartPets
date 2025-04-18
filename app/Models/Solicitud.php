@@ -11,6 +11,7 @@ class Solicitud extends Model
     protected $table = 'solicitudes';
     protected $fillable = [
         'contenido',
+        'estado',
         'experiencia',
         'espacio',
         'gastos_veterinarios',

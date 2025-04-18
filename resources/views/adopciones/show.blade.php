@@ -34,44 +34,83 @@
 
 <div class="card-containerver">
     <div class="card">
-        <nav>
-            <span class="usuario">{{ $adopcion->usuario->name }}</span>
-        </nav>
+        @if(Auth::check() && Auth::id() === $adopcion->id_usuario)
+            <div class="dropdown">
+                <button class="dropbtn" title="Opciones">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-content">
+                    <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
+                        <button type="submit" class="btn-editar-dropdown">
+                            Editar
+                        </button>
+                    </form>
+
+                    <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
+                             Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endif
+
+
 
         <div class="card-content">
             <div class="photo" onclick="function openImageModal() { } openImageModal()">
                 @if($adopcion->imagen)
                     <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
                 @endif
-
             </div>
 
             <div class="description">
                 <h1>{{ $adopcion->nombre_mascota }}</h1>
                 <h2>{{ $adopcion->tipo_mascota }}</h2>
                 <p>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
-                <p><strong>Edad:</strong> {{ $adopcion->edad_mascota }} años</p>
+                <p><strong>{{ $adopcion->contenido }}</strong></p>
+                @php
+                    use Carbon\Carbon;
+                    $fechaNacimiento = Carbon::parse($adopcion->fecha_nacimiento);
+                    $edad = $fechaNacimiento->diff(Carbon::now());
+
+                    if ($edad->y == 0 && $edad->m == 0 && $edad->d == 0) {
+                        $edadTexto = 'Recién nacido';
+                    } else {
+                        $edadTexto = $edad->y . ' años, ' . $edad->m . ' meses, ' . $edad->d . ' días';
+                    }
+                @endphp
+                <p><strong>Edad:</strong> {{ $edadTexto }}</p>
                 <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
                 <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
+                @auth
+                    @php
+                        $miSolicitud = \App\Models\Solicitud::where('id_usuario', auth()->id())
+                            ->where('id_adopcion', $adopcion->id)
+                            ->first();
+                    @endphp
 
-                <p>{{ $adopcion->contenido }}</p>
+                    <div class="boton-container">
+                        @if(auth()->id() === $adopcion->id_usuario)
+                            <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
+                                <button type="submit">Solicitudes</button>
+                            </form>
+                        @else
+                            @if(!$miSolicitud)
+                                <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
+                                    <button type="submit">Solicitar</button>
+                                </form>
+                            @else
+                                <form action="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $miSolicitud->id]) }}" method="GET" style="display: inline-block;">
+                                    <button type="submit">Mi Solicitud</button>
+                                </form>
+                            @endif
+                        @endif
+                    </div>
+                @endauth
 
-                <div class="boton-container">
-                    @if(auth()->user()->id === $adopcion->id_usuario)
-                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
-                            <button type="submit">Solicitudes</button>
-                        </form>
-
-                    @else
-                        <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
-                            <button type="submit">Solicitar</button>
-                        </form>
-
-                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
-                            <button type="submit">Mi Solicitud</button>
-                        </form>
-                    @endif
-                </div>
             </div>
         </div>
     </div>
@@ -84,5 +123,6 @@
 
 <script src="{{ asset('js/Modalscripts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('js/alerts.js') }}"></script>
 </body>
 </html>
