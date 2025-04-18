@@ -14,6 +14,12 @@ class PublicacionController
     {
         $publicaciones = Publicacion::with('user')->get();
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
+
+    }
+
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.publicacionesForm');
     }
 
     public function search( Request $request)
@@ -45,7 +51,7 @@ class PublicacionController
      */
     public function create()
     {
-        //
+        return view('publicaciones.crearPublicaciones');
     }
 
     /**
@@ -53,7 +59,25 @@ class PublicacionController
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'visibilidad' => 'required',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
+        }
+
+        Publicacion::create([
+            'visibilidad' => $request->visibilidad,
+            'contenido' => $request->contenido,
+            'imagen' => $rutaImagen,
+
+        ]);
+
+        return redirect()->route('publicaciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
 
     /**
@@ -104,7 +128,13 @@ class PublicacionController
      */
     public function destroy(string $id)
     {
-        //
+        $eliminados = Publicacion::destroy($id);
+
+        if ($eliminados < 0){
+            return redirect()->route('publicaciones.index')->with('fracaso', 'La publicacion no se pudo borrar.');
+        }else {
+            return redirect()->route('publicaciones.index')->with('exito', 'La publicacion se elimino correctamente.');
+        }
     }
 
     public function paneldestroy(string $id)

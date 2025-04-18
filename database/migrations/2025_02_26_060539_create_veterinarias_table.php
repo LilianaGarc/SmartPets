@@ -15,14 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('nombre_veterinario');
-            $table->string('horario_apertura');
-            $table->string('horario_cierre');
+            $table->time('horario_apertura');
+            $table->time('horario_cierre');
             $table->string('telefono');
-            $table->json('imagen')->nullable(); // guarda las imagenes
-            $table->decimal('evaluacion', 2,1)->default(0); //evaluaciones
+            $table->string('whatsapp')->nullable();
             $table->foreignId('id_ubicacion')->constrained('ubicaciones')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            //$table->json('redes_sociales')->nullable(); // guarda las redes sociales
         });
     }
     /**

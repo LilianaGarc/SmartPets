@@ -1,29 +1,32 @@
 @extends('layout.plantillaSaid')
 @section('titulo', 'Veterinarias')
 @section('contenido')
+
 <div class="container-fluid">
-    
+
     @if(session('exito'))
-    <div class="alert alert-success p-2" role="alert">
-        {{ session('exito') }}
+    <div class="alert alert-success d-flex align-items-center p-2" role="alert">
+        <i class="fa-solid fa-check-circle me-2"></i>
+        <div>{{ session('exito') }}</div>
     </div>
     @endif
 
     @if(session('fracaso'))
-    <div class="alert alert-danger p-2" role="alert">
-        {{ session('fracaso') }}
+    <div class="alert alert-danger d-flex align-items-center p-2" role="alert">
+        <i class="fa-solid fa-xmark-circle me-2"></i>
+        <div>{{ session('fracaso') }}</div>
     </div>
     @endif
 
-    <h1 class="d-flex justify-content-between align-items-center mb-2 text-center">Veterinarias
-        <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}">
-            <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="20px" class="me-1">Nuevo
+    <h1 class="d-flex justify-content-between align-items-center mb-2 text-center"><b>Veterinarias</b>
+        <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}" style="font-size: 45%;">
+            <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="28px" height="28px" class="me-1">Nuevo
         </a>
     </h1>
 
     <div class="container-fluid p-0">
-        <div class="table-responsive w-100 p-0 m-0">
-            <table class="table table-hover table-bordered">
+        <div class="table-responsive border border-2 rounded-3">
+            <table class="table table-hover table-bordered w-100 text-center align-middle">
                 <thead class="table-light">
                     <tr>
                         <th scope="col">#</th>
@@ -35,12 +38,17 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
+                
                 <tbody class="table-group-divider">
                     @if($veterinarias->isEmpty())
                     <tr>
-                        <td colspan="7" class="text-center p-2"><i class="fas fa-info-circle text-warning"></i> No hay veterinarias registradas</td>
+                        <td colspan="7" class="text-center p-2">
+                            <p class="text-muted text-center">No hay veterinarias registradas</p>
+                            <img src="images//vacio.svg" alt="No hay veterinarias" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+                        </td>
                     </tr>
                     @endif
+
                     @foreach ($veterinarias as $veterinaria)
                     <tr>
                         <td>{{ $veterinaria->id }}</td>
@@ -79,12 +87,12 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>@endforeach
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-    <br>
     <div class="d-flex justify-content-center">
         {{ $veterinarias->links('pagination::bootstrap-5') }}
     </div>

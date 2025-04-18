@@ -12,17 +12,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin-left: 15%;
-            margin-top: 9%;
-            margin-bottom: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             padding: 0;
+            margin: 0;
+            margin-top: 15vh !important;
             font-size: 100%;
             background-color: #f7f7f7;
-            width: 75%;
-            height: 200vh;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            flex-direction: column;
         }
+
 
         .navbar {
             background-color: rgb(255, 255, 255);
@@ -34,7 +37,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             z-index: 100;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
@@ -55,7 +58,7 @@
             margin-left: 0vw;
         }
 
-        .btn {
+        .btnl {
             text-decoration: none;
             color: #ffffff;
             background-color: #ff7f50;
@@ -64,7 +67,7 @@
             border: none;
         }
 
-        .btn:hover {
+        .btnl:hover {
             color: #ffffff;
             transform: scale(1.1);
             background-color: #18478b;
@@ -97,20 +100,20 @@
         .btn-user {
             text-decoration: none;
             color: #ffffff;
-            font-size: 120%;
-            background-color: #18478b;
+            background-color: rgb(3, 45, 129);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
-            margin-top: 2%;
-            width: 30%;
-            padding: 1%;
+            margin-top: 1vh;
+            width: 20vw;
+            padding: 2vh;
         }
         .btn-user:hover {
             transform: scale(1.1);
         }
 
         .round-button {
-            width: 16%;
+            width: 15vh;
+            height: 15vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -123,7 +126,7 @@
 
         .button-img {
             width: 100%;
-            margin: 2%;
+            margin: 0;
             object-fit: cover;
         }
 
@@ -134,7 +137,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 6vh;
+            height: 6vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -215,17 +219,80 @@
         }
 
 
+        .breadcrumb-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 2.5vh;
+        }
 
+        .breadcrumb {
+            display: flex;
+            border-radius: 10px;
+            text-align: center;
+            height: 40px;
+            z-index: 1;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
 
+        .breadcrumb__item {
+            height: 100%;
+            background-color: white;
+            color: #252525;
+            font-family: 'Oswald', sans-serif;
+            border-radius: 7px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            transform: skew(-21deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+            margin: 5px;
+            padding: 0 40px;
+        }
 
+        .breadcrumb__item:hover {
+            background: #1e4183;
+            color: #FFF;
+        }
 
+        .breadcrumb__inner {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            z-index: 2;
+            transform: skew(21deg);
+        }
 
+        .breadcrumb__title {
+            font-size: 16px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
+        .breadcrumb__item a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-
-
-
+        .breadcrumb__item-active {
+            background-color: #1e4183;
+            color: #FFF;
+        }
     </style>
+
+
+
+
 </head>
 <body>
 <nav class="navbar" id="navbar">
@@ -249,6 +316,15 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
                 </ul>
             </div>
         </div>
@@ -256,7 +332,11 @@
 
     </div>
 </nav>
-@yield('contenido')
+<div class="container">
+    @yield('contenido')
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

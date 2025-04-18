@@ -16,8 +16,13 @@ return new class extends Migration
             $table->string('contenido');
             $table->string('imagen')->nullable();
             $table->unsignedInteger('visibilidad')->default(0);
-            $table->unsignedBigInteger('id_usuario')->nullable()->change();
-            $table->string('estado')->default('pendiente')->change();
+            $table->unsignedBigInteger('id_usuario');
+            $table->string('estado')->default('pendiente');
+            $table->string('tipo_mascota');
+            $table->string('nombre_mascota');
+            $table->integer('edad_mascota');
+            $table->string('raza_mascota');
+            $table->string('ubicacion_mascota');
             $table->timestamps();
         });
     }

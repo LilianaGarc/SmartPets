@@ -23,7 +23,7 @@
                     <span class="breadcrumb__title">Adopciones</span>
                 </a>
             </li>
-            <li class="breadcrumb__item">
+            <li class="breadcrumb__item breadcrumb__item-active">
                 <a href="{{ route('adopciones.show', $adopcion->id) }}" class="breadcrumb__inner">
                     <span class="breadcrumb__title">Ver Adopción</span>
                 </a>
@@ -32,71 +32,53 @@
     </div>
 </div>
 
-<div class="container2">
-    <div class="solicitud-detalle">
-        <div class="solicitud-info">
-            <table class="table">
-                <tr>
-                    <th>Usuario</th>
-                    <td>Anonymus</td>
-                </tr>
-                <tr>
-                    <th>Fecha de Publicación</th>
-                    <td>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</td>
-                </tr>
-                <tr>
-                    <th>Contenido de la Publicación</th>
-                    <td>{{ $adopcion->contenido }}</td>
-                </tr>
-                <tr>
-                    <th>Tipo</th>
-                    <td>Perro</td>
-                </tr>
-                <tr>
-                    <th>Nombre de mascota</th>
-                    <td>Firulais</td>
-                </tr>
+<div class="card-containerver">
+    <div class="card">
+        <nav>
+            <span class="usuario">{{ $adopcion->usuario->name }}</span>
+        </nav>
 
-            </table>
-        </div>
+        <div class="card-content">
+            <div class="photo" onclick="function openImageModal() { } openImageModal()">
+                @if($adopcion->imagen)
+                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
+                @endif
 
-        <div class="comprobante-container">
-            @if($adopcion->imagen)
-                <div>
-                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" id="imageClick">
+            </div>
+
+            <div class="description">
+                <h1>{{ $adopcion->nombre_mascota }}</h1>
+                <h2>{{ $adopcion->tipo_mascota }}</h2>
+                <p>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                <p><strong>Edad:</strong> {{ $adopcion->edad_mascota }} años</p>
+                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
+                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
+
+                <p>{{ $adopcion->contenido }}</p>
+
+                <div class="boton-container">
+                    @if(auth()->user()->id === $adopcion->id_usuario)
+                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
+                            <button type="submit">Solicitudes</button>
+                        </form>
+
+                    @else
+                        <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
+                            <button type="submit">Solicitar</button>
+                        </form>
+
+                        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
+                            <button type="submit">Mi Solicitud</button>
+                        </form>
+                    @endif
                 </div>
-                <div class="download-button-container">
-                    <a href="{{ asset('storage/' . $adopcion->imagen) }}" download class="Btn-download">
-                        <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                        </svg>
-                        <span class="icon2"></span>
-                        <span class="tooltip">Descargar</span>
-                    </a>
-                </div>
-            @endif
+            </div>
         </div>
-
-
-    </div>
-    <div class="boton-container">
-        <form action="{{ route('solicitudes.create', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block; margin-right: 10px;">
-            <button type="submit" class="btn btn-success">
-                Solicitar
-            </button>
-        </form>
-
-        <form action="{{ route('solicitudes.show', ['id_adopcion' => $adopcion->id]) }}" method="GET" style="display: inline-block;">
-            <button type="submit" class="btn btn-success">
-                 Solicitudes
-            </button>
-        </form>
     </div>
 </div>
 
-
 <div id="imageModal" class="modal">
-    <span class="close">&times;</span>
+    <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
 </div>
 

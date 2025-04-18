@@ -9,6 +9,7 @@
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
+
 <div class="container">
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
@@ -41,62 +42,52 @@
     </div>
 </div>
 
-<div class="container2">
+<div class="card2-container">
+    <div class="card2">
+        <div class="card-content">
+            <div class="photo" onclick="function openImageModal() {
+            }
+            openImageModal()">
 
-    <div class="solicitud-detalle">
-        <div class="solicitud-info">
-            <table class="table">
-                <tr>
-                    <th>Motivo de la solicitud</th>
-                    <td>{{ $solicitud->contenido }}</td>
-                </tr>
-                <tr>
-                    <th>Experiencia previa</th>
-                    <td>{{ $solicitud->experiencia }}</td>
-                </tr>
-                <tr>
-                    <th>Tipo de vivienda</th>
-                    <td>{{ $solicitud->vivienda }}</td>
-                </tr>
-                <tr>
-                    <th>Espacio disponible</th>
-                    <td>{{ $solicitud->espacio }}</td>
-                </tr>
-                <tr>
-                    <th>Otros Animales</th>
-                    <td>{{ $solicitud->otros_animales }}</td>
-                </tr>
-                <tr>
-                    <th>Gastos Veterinarios</th>
-                    <td>{{ $solicitud->gastos_veterinarios }}</td>
-                </tr>
-            </table>
+                @php
+                    $foto = $solicitud->usuario->fotoperfil
+                        ? asset('storage/' . $solicitud->usuario->fotoperfil)
+                        : asset('images/fotodeperfil.webp');
+                @endphp
+
+                <img src="{{ $foto }}" alt="Foto de perfil" class="adopcion-img">
+
+            </div>
+            <div class="description">
+                <h1><strong></strong> {{ $solicitud->usuario->name }}</h1>
+                <p>{{ \Carbon\Carbon::parse($solicitud->created_at)->format('d M Y, H:i') }}</p>
+                <p>Motivo de la solicitud: {{ $solicitud->contenido }}</p>
+                <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
+                <p>Espacio disponible: {{ $solicitud->espacio }}</p>
+                <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
+
+                @if(auth()->user()->id === $adopcion->id_usuario)
+                    <div class="solicitud-actions">
+                        <button class="action-btn accept-btn">
+                            <i class="fas fa-check-circle"></i> Aceptar Solicitud
+                        </button>
+                        <button class="action-btn reject-btn">
+                            <i class="fas fa-times-circle"></i> Rechazar Solicitud
+                        </button>
+                    </div>
+                @endif
+            </div>
         </div>
-
-        <div class="comprobante-container">
-            @if($solicitud->comprobante)
-                <div>
-                    <a href="{{ asset('storage/' . $solicitud->comprobante) }}" target="_blank">
-                        <img src="{{ asset('storage/' . $solicitud->comprobante) }}" alt="Comprobante">
-                    </a>
-                </div>
-                <div class="download-button-container">
-                    <a href="{{ asset('storage/' . $solicitud->comprobante) }}" download class="Btn-download">
-                        <svg class="svgIcon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M169.4 470.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 370.8 224 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 306.7L54.6 265.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"></path>
-                        </svg>
-                        <span class="icon2"></span>
-                        <span class="tooltip">Descargar</span>
-                    </a>
-                </div>
-            @endif
-        </div>
-
     </div>
 </div>
 
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
 
 <script src="{{ asset('js/alerts.js') }}"></script>
+<script src="{{ asset('js/Modalscripts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

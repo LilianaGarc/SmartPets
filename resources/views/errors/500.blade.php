@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página no encontrada - 404</title>
+    <title>Servidor no disponible - 500</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <style>
         html, body {
             height: 100%;

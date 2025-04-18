@@ -1,0 +1,206 @@
+.navbar {
+    width: 100%;
+    box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 92%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.navbar .logo img {
+    margin-left: 0;
+    width: 20vw;
+    height: auto;
+}
+
+.navbar .username {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 6vw;
+    z-index: 110;
+    font-size: 1.2rem;
+    color: #1e1e1e;
+    font-weight: 600;
+    gap: 8px;
+}
+
+.navbar .username i {
+    font-size: 1.4rem;
+    color: #232323;
+    transition: transform 0.3s ease;
+}
+
+.navbar .username span {
+    display: inline-block;
+    padding-left: 5px;
+}
+
+.navbar .username a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar .hamburger-lines {
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: 2vw;
+    z-index: 110;
+}
+
+.navbar .menu-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    flex-direction: column;
+    transition: right 0.3s ease-in-out;
+}
+
+.navbar .menu-items.open {
+    right: 0;
+    width: 22%;
+}
+
+.navbar .menu-items ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.navbar .menu-items li {
+    width: 100%;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.navbar .menu-items a {
+    text-decoration: none;
+    color: #0e2431;
+    font-weight: 500;
+    font-size: 1.7rem;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    transition: color 0.3s ease, background-color 0.3s ease, width 0.3s ease;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: start;
+    padding: 8px 0 8px 20%;
+}
+
+.navbar .menu-items a i {
+    margin-right: 10px;
+}
+
+.navbar .menu-items a:hover {
+    color: #fff;
+    background: linear-gradient(135deg, #ff864e 83%, rgba(255, 255, 255, 0) 83%);
+    transition: background 0.3s ease;
+}
+
+.navbar .menu-items a:focus {
+    background: linear-gradient(135deg, #ff864e 83%, rgba(30, 65, 131, 0) 83%);
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.nav-container .hamburger-lines .line {
+    display: block;
+    height: 3px;
+    width: 25px;
+    margin: 5px 0;
+    background-color: #0e2431;
+    border-radius: 5px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar .hamburger-lines.open .line1 {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar .hamburger-lines.open .line2 {
+    opacity: 0;
+}
+
+.navbar .hamburger-lines.open .line3 {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem 2vw;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-container .hamburger-lines {
+        display: block;
+        padding-right: 2vw;
+    }
+
+    .navbar .logo img {
+        width: 30vw;
+    }
+
+    .navbar .username img {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .navbar .username span.hide-profile-name {
+        display: none;
+    }
+
+    .navbar .username {
+        right: 15vw;
+    }
+
+    .navbar .menu-items.open {
+        width: 60%;
+    }
+
+    .navbar .menu-items a {
+        font-size: 1.2rem;
+    }
+
+    .navbar .menu-items a:hover,
+    .navbar .menu-items a:focus {
+        background: none;
+        color: #0e2431;
+    }
+
+    .navbar .menu-items a:hover {
+        width: 100%;
+    }
+}
+
+

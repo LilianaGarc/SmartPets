@@ -20,7 +20,7 @@
             padding: 0;
             font-size: 100%;
             background-color: #f7f7f7;
-            height: 200vh;
+            height: 80vh;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
@@ -110,7 +110,8 @@
         }
 
         .round-button {
-            width: 16%;
+            width: 10vh;
+            height: 10vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -122,7 +123,8 @@
         }
 
         .button-img {
-            width: 100%;
+            width: 10vh;
+            height: 10vh;
             margin: 2%;
             object-fit: cover;
         }
@@ -134,7 +136,8 @@
         }
 
         .round-button-2 {
-            width: 7%;
+            width: 7vh;
+            height: 7vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -157,8 +160,8 @@
         }
 
         .round-button-comentario {
-            width: 100%;
-            height: 40%;
+            width: 6vh;
+            height: 6vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
@@ -169,10 +172,9 @@
         }
 
         .button-img-comentario {
-            width: 90%;
-            height: 90%;
+            width: 100%;
             margin: 0;
-            object-fit: cover;
+            object-fit: cover !important;
         }
 
         .card-comentario{
@@ -317,6 +319,15 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                               onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
                 </ul>
             </div>
         </div>
@@ -343,8 +354,8 @@
 
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item-custom"  href="#">Usuarios</a></li>
-            <li><a class="dropdown-item-custom"  href="#">Publicaciones</a></li>
+            <li><a class="dropdown-item-custom"  href="{{ route('users.panelcreate') }}">Usuarios</a></li>
+            <li><a class="dropdown-item-custom"  href="{{ route('publicaciones.panelcreate') }}">Publicaciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Comentarios</a></li>
             <li><a class="dropdown-item-custom"  href="#">Reacciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Veterinarias</a></li>

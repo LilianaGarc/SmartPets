@@ -28,9 +28,11 @@ class SolicitudController
      */
     public function index()
     {
-        $solicitudes = Solicitud::with('adopcion')->get();
+        $solicitudes = Solicitud::with('adopcion', 'usuario')->get();
+
         return view('solicitudes.indexSolicitudes', compact('solicitudes'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -55,36 +57,24 @@ class SolicitudController
     {
         $validated = $request->validate([
             'contenido' => 'required|string',
-            'comprobante' => 'required|file|mimes:jpeg,png,pdf|max:2048',
             'id_adopcion' => 'required|integer',
             'experiencia' => 'nullable|in:Sí,No',
-            'vivienda' => 'nullable|in:Casa,Departamento',
             'espacio' => 'nullable|in:Sí,No',
-            'otros_animales' => 'nullable|in:Sí,No',
             'gastos_veterinarios' => 'nullable|in:Sí,No',
         ]);
 
         $solicitud = new Solicitud();
         $solicitud->contenido = $validated['contenido'];
-        $solicitud->id_usuario = 0;
+        $solicitud->id_usuario = auth()->user()->id;
         $solicitud->id_adopcion = $validated['id_adopcion'];
         $solicitud->experiencia = $validated['experiencia'] ?? null;
-        $solicitud->vivienda = $validated['vivienda'] ?? null;
         $solicitud->espacio = $validated['espacio'] ?? null;
-        $solicitud->otros_animales = $validated['otros_animales'] ?? null;
         $solicitud->gastos_veterinarios = $validated['gastos_veterinarios'] ?? null;
-
-        if ($request->hasFile('comprobante')) {
-            $comprobante = $request->file('comprobante')->store('comprobantes');
-            $solicitud->comprobante = $comprobante;
-        }
 
         $solicitud->save();
 
         return redirect()->route('adopciones.index')->with('success', 'Solicitud enviada con éxito');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -97,10 +87,18 @@ class SolicitudController
             return redirect()->route('adopciones.index')->with('error', 'Adopción no encontrada.');
         }
 
-        $solicitudes = $adopcion->solicitudes;
+        if (auth()->user()->id === $adopcion->id_usuario) {
+            $solicitudes = $adopcion->solicitudes;
+        } else {
+            $solicitudes = Solicitud::where('id_usuario', auth()->user()->id)
+                ->where('id_adopcion', $adopcion->id)
+                ->get();
+        }
 
         return view('solicitudes.indexSolicitudes', compact('solicitudes', 'adopcion'));
     }
+
+
 
     public function showDetails($id_adopcion, $id)
     {
@@ -111,15 +109,13 @@ class SolicitudController
             return redirect()->route('adopciones.index')->with('error', 'Adopción o solicitud no encontrada.');
         }
 
+        if (auth()->user()->id !== $adopcion->id_usuario && auth()->user()->id !== $solicitud->id_usuario) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para ver esta solicitud.');
+        }
+
         return view('solicitudes.showDetails', compact('solicitud', 'adopcion'));
     }
 
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // SolicitudController.php
 
     public function edit($id_adopcion, $id)
     {
@@ -134,6 +130,10 @@ class SolicitudController
             return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada.');
         }
 
+        if ($solicitud->id_usuario !== auth()->user()->id) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para editar esta solicitud.');
+        }
+
         return view('solicitudes.edit', compact('solicitud', 'adopcion'));
     }
 
@@ -142,11 +142,8 @@ class SolicitudController
     {
         $validated = $request->validate([
             'contenido' => 'required|string',
-            'comprobante' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'experiencia' => 'nullable|in:Sí,No',
-            'vivienda' => 'nullable|in:Casa,Departamento',
             'espacio' => 'nullable|in:Sí,No',
-            'otros_animales' => 'nullable|in:Sí,No',
             'gastos_veterinarios' => 'nullable|in:Sí,No',
         ]);
 
@@ -158,18 +155,9 @@ class SolicitudController
 
         $solicitud->contenido = $validated['contenido'];
         $solicitud->experiencia = $validated['experiencia'] ?? $solicitud->experiencia;
-        $solicitud->vivienda = $validated['vivienda'] ?? $solicitud->vivienda;
         $solicitud->espacio = $validated['espacio'] ?? $solicitud->espacio;
-        $solicitud->otros_animales = $validated['otros_animales'] ?? $solicitud->otros_animales;
         $solicitud->gastos_veterinarios = $validated['gastos_veterinarios'] ?? $solicitud->gastos_veterinarios;
 
-        if ($request->hasFile('comprobante')) {
-            if ($solicitud->comprobante) {
-                unlink(storage_path('app/public/' . $solicitud->comprobante));
-            }
-            $comprobante = $request->file('comprobante')->store('comprobantes');
-            $solicitud->comprobante = $comprobante;
-        }
 
         $solicitud->save();
 
@@ -194,6 +182,10 @@ class SolicitudController
 
         if (!$solicitud) {
             return redirect()->route('solicitudes.show', $id_adopcion)->with('error', 'Solicitud no encontrada en esta adopción.');
+        }
+
+        if ($solicitud->id_usuario !== auth()->user()->id) {
+            return redirect()->route('solicitudes.show', $adopcion->id)->with('error', 'No tienes permiso para eliminar esta solicitud.');
         }
 
         $solicitud->delete();
