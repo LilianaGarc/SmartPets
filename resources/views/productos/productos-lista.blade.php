@@ -84,11 +84,13 @@
     <section class="py-1 mt-0">
         <div class="container">
 
+
+            <!-- BARRA DE BUSQUEDA -->
             <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
                     <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET"
                     onsubmit="return document.getElementById('search-query').value.trim() !== '';">
-                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" id="search-query">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" value="{{ old('query',$query ?? '') }}" id="search-query">
                         <button class="btn btn-outline-success" type="submit">Buscar</button>
                     </form>
                 </div>
@@ -96,6 +98,7 @@
 
             <h2 class="text-center mb-4"></h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+                <!-- CATEGORIAS -->
                 @forelse($categorias as $categoria)
                     <form action="{{ route('productos.index') }}" method="GET">
                         <input type="hidden" name="query" value="{{ request('query') }}">

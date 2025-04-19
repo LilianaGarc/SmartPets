@@ -428,9 +428,8 @@
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" style="color: var(--blue)">Inicio</a></li>
-                            <li class="breadcrumb-item"><a href="#" style="color: var(--blue)">Perros</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Alimentos</li>
+                            <li class="breadcrumb-item"><a href="{{ route('productos.index')}}" style="color: var(--blue)">Productos</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('productos.index',['categoria_id'=>$producto->categoria_id]) }}" style="color: var(--blue)">{{$producto->categoria->nombre}}</a></li>
                         </ol>
                     </nav>
 
