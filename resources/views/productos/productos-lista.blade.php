@@ -87,11 +87,11 @@
 
             <!-- BARRA DE BUSQUEDA -->
             <nav class="navbar bg-body-tertiary">
-                <div class="container-fluid">
+                <div class="container-fluid mx-3 px-3 my-2">
                     <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET"
                     onsubmit="return document.getElementById('search-query').value.trim() !== '';">
                         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" value="{{ old('query',$query ?? '') }}" id="search-query">
-                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>

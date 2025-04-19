@@ -380,7 +380,7 @@
 
 @section('contenido')
 
-    <div class="container py-5">
+    <div class="container-fluid mx-2  py-5">
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -508,6 +508,8 @@
                         </ul>
                     </div>
                 @endif
+
+                <h1 class="mb-4">Reseñas</h1>
                 <!-- ACORDEON -->
                 <div class="">
 
@@ -548,7 +550,9 @@
                             </div>
                         </div>
                     </div>
-                    <h1 class="mb-4">Reseñas</h1>
+
+
+
                     <div class="accordion" id="accordionExample">
                         @foreach($resenias as $index => $resenia)
                             <div class="accordion-item">

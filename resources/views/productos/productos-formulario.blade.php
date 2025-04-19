@@ -1,4 +1,4 @@
-@extends('productos.productos-layout')
+@extends('productos.productos-layout'), @extends('MenuPrincipal.Navbar')
 @section('titulo','Formulario Producto')
 @section('contenido')
     <style>
@@ -66,7 +66,8 @@
     </style>
     </head>
     <body>
-    <div class="container py-5">
+    @section('nav') @endsection
+    <div class="container-fluid mx-3 px-3 mt-2" >
         <div class="form-container p-4 p-md-5">
             <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Editar Producto' : 'Publicar Nuevo Producto'}}</h2>
 
