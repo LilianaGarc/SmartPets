@@ -116,9 +116,9 @@
                         </div>
                         <div class="col-md-6">
                             <label for="categoria" class="form-label">Seleccionar mascota</label>
-                            <select class="form-select" id="categoria" name="categoria" required>
+                            <select class="form-select" id="categoria" name="categoria_id" required>
                                 @foreach($categorias as $categoria)
-                                    <option value="{{$categoria->id}}"{{old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
+                                    <option value="{{$categoria->id}}"{{ old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
                                     {{$categoria->nombre}}
                                     </option>
                                 @endforeach

@@ -99,6 +99,7 @@
                 @forelse($categorias as $categoria)
                     <form action="{{ route('productos.index') }}" method="GET">
                         <input type="hidden" name="query" value="{{ request('query') }}">
+                        <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
                         <button class="category-pill {{ request('categoria_id') == $categoria->id ? 'active' : '' }}" type="submit">
                             {{ $categoria->nombre }}
                         </button>

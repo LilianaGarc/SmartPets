@@ -60,7 +60,7 @@ class ProductoController extends Controller
             $productos->where('categoria_id', $categoriaId);
         }
         $productos = $productos->paginate(12);
-        $categorias = Categoria::all();
+        $categorias = Categoria::limit(6)->get();
         return view('productos.productos-lista', compact('productos', 'categorias'));
     }
     /**
@@ -172,7 +172,7 @@ class ProductoController extends Controller
             'nombre' => 'required|string|max:255',
             'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
             'descripcion' => 'nullable|string',
-            'categoria' => 'required|string|max:255',
+            'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
         ], [
@@ -180,7 +180,7 @@ class ProductoController extends Controller
             'precio.required' => 'El precio del producto es obligatorio.',
             'precio.numeric' => 'El precio debe ser un número.',
             'descripcion.string' => 'La descripción debe ser un texto.',
-            'categoria.required' => 'La categoría es obligatoria.',
+            'categoria_id.required' => 'La categoría es obligatoria.',
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
             'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
@@ -197,7 +197,8 @@ class ProductoController extends Controller
         }
 
         // Crear o encontrar la categoría
-        $categoria = $request->categoria_id ? Categoria::findOrFail($request->categoria_id) : Categoria::firstOrCreate(['nombre' => $request->categoria]);
+        //$categoria = $request->categoria_id ? Categoria::findOrFail($request->categoria_id) : Categoria::firstOrCreate(['nombre' => $request->categoria]);
+        $categoria = Categoria::findOrFail($request->categoria_id);
 
         // Almacenar las imágenes si están presentes
         $imagenesGuardadas = [];
