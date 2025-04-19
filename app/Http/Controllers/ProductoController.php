@@ -32,7 +32,7 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $busqueda = $request->input('query');
+        /*$busqueda = $request->input('query');
         $categoriaId = $request->input('categoria_id');
 
         $productos = Producto::when($busqueda, function ($query) use ($busqueda) {
@@ -48,6 +48,20 @@ class ProductoController extends Controller
             'categorias' => Categoria::limit(5)->get(),
             'categoriaId' => $categoriaId,
         ]);
+        */
+
+        $query = $request->input('query');
+        $categoriaId = $request->input('categoria_id');
+        $productos = Producto::query();
+        if ($query){
+            $productos->where('nombre', 'LIKE', '%'.$query.'%');
+        }
+        if ($categoriaId){
+            $productos->where('categoria_id', $categoriaId);
+        }
+        $productos = $productos->paginate(12);
+        $categorias = Categoria::all();
+        return view('productos.productos-lista', compact('productos', 'categorias'));
     }
     /**
      * Show the form for creating a new resource.

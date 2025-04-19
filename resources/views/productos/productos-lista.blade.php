@@ -98,7 +98,7 @@
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
                     <form action="{{ route('productos.index') }}" method="GET">
-                        <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
+                        <input type="hidden" name="query" value="{{ request('query') }}">
                         <button class="category-pill {{ request('categoria_id') == $categoria->id ? 'active' : '' }}" type="submit">
                             {{ $categoria->nombre }}
                         </button>
