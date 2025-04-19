@@ -97,14 +97,15 @@
             <h2 class="text-center mb-4"></h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
                 @forelse($categorias as $categoria)
-                    <form action="{{ route('productos.index') }}"method="GET">
+                    <form action="{{ route('productos.index') }}" method="GET">
                         <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
-                        <button class="category-pill {{request('$categoria')==$categoria->id?'active':''}}" type="submit">{{$categoria->nombre}}</button>
+                        <button class="category-pill {{ request('categoria_id') == $categoria->id ? 'active' : '' }}" type="submit">
+                            {{ $categoria->nombre }}
+                        </button>
                     </form>
                 @empty
-                    <p class="text-center">No se han encontrado categorias.</p>
+                    <p class="text-center">No se han encontrado categorías.</p>
                 @endforelse
-
             </div>
             <h2 class="text-center mb-4"></h2>
             <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>

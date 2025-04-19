@@ -94,6 +94,9 @@
 
             <form action="{{ isset($producto) ? route('productos.update',$producto->id) : route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @if(isset($producto))
+                    @method('PUT')
+                @endif
                 <!-- csrf permite realizar peticiones-->
                 <!-- Información Básica -->
                 <div class="mb-4">
