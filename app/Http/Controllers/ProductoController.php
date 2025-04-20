@@ -32,24 +32,6 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        /*$busqueda = $request->input('query');
-        $categoriaId = $request->input('categoria_id');
-
-        $productos = Producto::when($busqueda, function ($query) use ($busqueda) {
-            return $query->where('nombre', 'LIKE', "%$busqueda%")
-                ->orWhere('descripcion', 'LIKE', "%$busqueda%")
-                ->orWhere('precio', 'LIKE', "%$busqueda%");
-        })-> when($categoriaId, function ($query) use ($categoriaId) {
-            return $query->where('categoria_id', $categoriaId);
-        })->paginate(12);
-
-        return view('productos.productos-lista')->with([
-            'productos' => $productos,
-            'categorias' => Categoria::limit(5)->get(),
-            'categoriaId' => $categoriaId,
-        ]);
-        */
-
         $query = $request->input('query');
         $categoriaId = $request->input('categoria_id');
         $productos = Producto::query();
@@ -278,7 +260,7 @@ class ProductoController extends Controller
      $producto->resenias()->create([
          'titulo' => $request->titulo,
          'contenido' => $request->contenido,
-         'user_id' => $random,
+         'user_id' => $random->id,
      ]);
      return redirect()->back()->with('success', 'Reseña agregada correctamente');
     }

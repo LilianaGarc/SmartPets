@@ -224,7 +224,6 @@ Route::get('/mascotaideal/reiniciar', [ChatbotController::class, 'reiniciar'])->
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
-
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
 Route::resource('productos', ProductoController::class);
 

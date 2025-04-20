@@ -389,6 +389,7 @@
         @endif
         @if(session('error'))
             <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
         <div class="product-container p-4">
@@ -646,19 +647,6 @@
                 reviewContainer.classList.add('review-visible');
             }
         }
-
-        // Form submission
-        document.getElementById('review-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const title = document.getElementById('review-title').value;
-            const content = document.getElementById('review-content').value;
-
-            // Aquí normalmente enviarías los datos a tu servidor
-            console.log('Review submitted:', {title, content});
-
-            // Recargar la página después de enviar la reseña
-            location.reload();
-        });
 
         <!-- Codigo agregado 08-04 martes -->
         // Seleccionamos la imagen principal y todas las miniaturas dentro de la galería existente
