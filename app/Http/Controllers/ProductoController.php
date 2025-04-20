@@ -110,6 +110,7 @@ class ProductoController extends Controller
         $producto->descripcion = $request->input('descripcion');
         $producto->categoria_id = $categoria->id;
         $producto->stock = $request->input('stock');
+        $producto->user_id = auth()->id(); // Asignar el ID del usuario autenticado
         $producto->imagen = $imagenesGuardadas[0] ?? null;
         $producto->imagen2 = $imagenesGuardadas[1] ?? null;
         $producto->imagen3 = $imagenesGuardadas[2] ?? null;

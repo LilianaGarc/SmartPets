@@ -464,6 +464,8 @@
                     </div>
 
                     <!-- Botones de Acción -->
+                    @auth
+                       @if( auth()->check() && auth()->id()===$producto->user_id)
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
                         <form id="delete-form-{{$producto->id}}"
@@ -496,8 +498,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            </form>
+                            </div>
+                        @endif
+                    @endauth
                 </div>
 
                 @if($errors->any())
@@ -574,8 +578,9 @@
                                         <p>{{ $resenia->contenido }}</p>
 
                                         <!-- Button trigger modal -->
+                                        <!-- Eliminar Reseña -->
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalResenia{{$resenia->id}}">
-                                            Eliminar
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
 
                                         <!-- Modal -->
