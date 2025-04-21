@@ -15,6 +15,8 @@ class Ubicacion extends Model
         'ciudad',
         'departamento',
         'municipio',
+        'latitud',
+        'longitud',
     ];
 
     public function veterinarias(){

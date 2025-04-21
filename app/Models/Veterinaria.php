@@ -14,6 +14,7 @@ class Veterinaria extends Model
         'horario_apertura',
         'horario_cierre',
         'telefono',
+        'whatsapp',
         'id_ubicacion',
     ];
 

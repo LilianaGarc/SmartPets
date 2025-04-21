@@ -66,7 +66,7 @@
                     <div class="col-12 col-md-6">
                         <div class="form-floating">
                             <input type="tel" class="form-control" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
-                            <label for="whatsapp">Número de WhatsApp:</label>
+                            <label for="whatsapp">Número de WhatsApp</label>
                         </div>
                     </div>
 
@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <br>
-                <!-- Imágenes y Redes Sociales -->
+
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <h5 class="form-label">Imágenes de la Veterinaria</h5>
@@ -174,6 +174,7 @@
                             @endif
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <h5 class="form-label">Redes Sociales</h5>
                         <hr>
@@ -194,6 +195,7 @@
                                 <button type="button" class="btn btn-primary w-100" onclick="addSocialLink()">Agregar</button>
                             </div>
                         </div>
+
                         <div id="socialLinks" class="mt-3"></div>
                         @if(isset($veterinaria) && !$veterinaria->redes->isEmpty())
                         @foreach ($veterinaria->redes as $red)
@@ -213,7 +215,6 @@
             </form>
         </div>
     </div>
-
 
     <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -340,8 +341,8 @@
             input.files = dataTransfer.files;
         }
 
-        let socialCount = 0;
 
+        let socialCount = 0;
         function addSocialLink() {
             const network = document.getElementById('socialNetwork').value;
             const username = document.getElementById('socialUsername').value;
