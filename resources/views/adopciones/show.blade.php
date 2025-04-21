@@ -73,13 +73,33 @@
                 <p><strong>{{ $adopcion->contenido }}</strong></p>
                 @php
                     use Carbon\Carbon;
+
                     $fechaNacimiento = Carbon::parse($adopcion->fecha_nacimiento);
                     $edad = $fechaNacimiento->diff(Carbon::now());
+                    $diferenciaHoras = $fechaNacimiento->diffInHours(Carbon::now());
 
-                    if ($edad->y == 0 && $edad->m == 0 && $edad->d == 0) {
+                    if ($diferenciaHoras < 24) {
                         $edadTexto = 'Recién nacido';
                     } else {
-                        $edadTexto = $edad->y . ' años, ' . $edad->m . ' meses, ' . $edad->d . ' días';
+                        $edadTexto = '';
+
+                        if ($edad->y == 1) {
+                            $edadTexto .= '1 año, ';
+                        } elseif ($edad->y > 1) {
+                            $edadTexto .= $edad->y . ' años, ';
+                        }
+
+                        if ($edad->m == 1) {
+                            $edadTexto .= '1 mes, ';
+                        } elseif ($edad->m > 1) {
+                            $edadTexto .= $edad->m . ' meses, ';
+                        }
+
+                        if ($edad->d == 1) {
+                            $edadTexto .= '1 día';
+                        } elseif ($edad->d > 1) {
+                            $edadTexto .= $edad->d . ' días';
+                        }
                     }
                 @endphp
                 <p><strong>Edad:</strong> {{ $edadTexto }}</p>

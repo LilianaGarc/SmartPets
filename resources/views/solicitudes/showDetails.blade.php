@@ -82,24 +82,43 @@
     @endif
     <div class="card2">
         <div class="card-content">
-            <div class="photo" onclick="function openImageModal() { } openImageModal()">
-                @php
-                    $foto = $solicitud->usuario->fotoperfil
-                        ? asset('storage/' . $solicitud->usuario->fotoperfil)
-                        : asset('images/fotodeperfil.webp');
-                @endphp
 
-                <img src="{{ $foto }}" alt="Foto de perfil" class="adopcion-img">
+            <div class="photo" onclick="function openImageModal() { } openImageModal()">
+            @if(auth()->user()->id === $solicitud->id_usuario)
+                    <h2 style="color: #1e4183;">{{ $adopcion->nombre_mascota }}</h2>
+                    @php
+                        $fotoMascota = $adopcion->imagen
+                            ? asset('storage/' . $adopcion->imagen)
+                            : asset('images/default-mascota.webp');
+                    @endphp
+
+                    <img src="{{ $fotoMascota }}" alt="Foto de la mascota" class="adopcion-img">
+                @else
+                    @php
+                        $fotoUsuario = $solicitud->usuario->fotoperfil
+                            ? asset('storage/' . $solicitud->usuario->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
+                    @endphp
+
+                    <img src="{{ $fotoUsuario }}" alt="Foto de perfil" class="adopcion-img">
+                @endif
             </div>
+
             <div class="description">
-                <h1><strong></strong> {{ $solicitud->usuario->name }}</h1>
+                <h1><strong>
+                        @if(auth()->user()->id === $solicitud->id_usuario)
+                            Tu solicitud:
+                        @else
+                            {{ $solicitud->usuario->name }}
+                        @endif
+                    </strong></h1>
                 <p>{{ \Carbon\Carbon::parse($solicitud->created_at)->format('d M Y, H:i') }}</p>
                 <p>Motivo de la solicitud: {{ $solicitud->contenido }}</p>
                 <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
                 <p>Espacio disponible: {{ $solicitud->espacio }}</p>
                 <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
                 <p>Correo: {{ $solicitud->usuario->email }}</p>
-                <p>Estado de la solicitud: <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
+                <p style="color: #1e4183;">Estado de la solicitud: <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
 
                 @php
                     $hayAceptada = $adopcion->solicitudes()->where('estado', 'aceptada')->exists();
