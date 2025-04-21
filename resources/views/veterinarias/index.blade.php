@@ -33,6 +33,15 @@
         </a>
     </h1>
 
+    @if($veterinarias->isEmpty())
+        <div class="card shadow-sm border p-5">
+            <div class="text-center">
+                <p class="text-muted mb-3">No hay veterinarias registradas</p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" class="mx-auto d-block" style="width: 200px; opacity: 0.7;">
+            </div>
+        </div>
+    @else
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach ($veterinarias as $veterinaria)
         @php
@@ -82,6 +91,7 @@
     <div class="d-flex justify-content-center">
         {{ $veterinarias->links('pagination::bootstrap-5') }}
     </div>
+    @endif
 </div>
 
 @endsection
