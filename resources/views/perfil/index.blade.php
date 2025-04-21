@@ -35,7 +35,11 @@
         </button>
         <button class="tab" onclick="cambiarTab('adopciones')" title="Adopciones">
             <i class="fas fa-paw"></i>
-            <span class="tab-text">Adopciones</span>
+            <span class="tab-text">Mascotas en adopción</span>
+        </button>
+        <button class="tab" onclick="cambiarTab('solicitudes')" title="Solicitudes">
+            <i class="fas fa-paper-plane"></i>
+            <span class="tab-text">Solicitudes enviadas</span>
         </button>
         <button class="tab" onclick="cambiarTab('veterinarias')" title="Veterinarias">
             <i class="fas fa-clinic-medical"></i>
@@ -78,6 +82,34 @@
                 @endforeach
             @endif
         </div>
+
+        <div id="solicitudes" class="grid">
+            @if($adopcionesSolicitadas->isEmpty())
+                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has enviado solicitudes! 🐾</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay solicitudes" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                </div>
+            @else
+                @foreach($adopcionesSolicitadas as $item)
+                    @php
+                        $adopcion = $item['adopcion'];
+                        $solicitud = $item['solicitud'];
+                    @endphp
+                    @if($adopcion && $adopcion->imagen)
+                        <div class="card">
+                            <a href="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $solicitud->id]) }}">
+                                <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
+                            </a>
+                            <p style="text-align:center; font-size: 14px;">
+                                Estado: <strong>{{ ucfirst($solicitud->estado ?? 'pendiente') }}</strong>
+                            </p>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
+
+
 
 
         <div id="veterinarias" class="grid"></div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
+use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +26,20 @@ class PerfilController extends Controller
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
 
-        return view('perfil.index', compact('user', 'adopciones'));
+        $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
+
+        $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
+            return [
+                'adopcion' => $solicitud->adopcion,
+                'solicitud' => $solicitud,
+            ];
+        })->filter(function ($item) {
+            return $item['adopcion'] !== null;
+        });
+
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas'));
     }
+
 
     public function actualizarFoto(Request $request)
     {
