@@ -44,6 +44,10 @@ class AdopcionController extends Controller
             $adopciones->orderBy('visibilidad', 'desc');
         } elseif ($orden == 'least_visited') {
             $adopciones->orderBy('visibilidad', 'asc');
+        } elseif ($orden == 'accepted_requests') {
+            $adopciones->whereHas('solicitudAceptada', function ($query) {
+                $query->where('estado', 'aceptada');
+            });
         } else {
             $adopciones->orderBy('created_at', $orden);
         }
@@ -55,11 +59,7 @@ class AdopcionController extends Controller
                 return true;
             }
 
-            if (Auth::check() && Auth::id() === $adopcion->id_usuario) {
-                return true;
-            }
-
-            if (Auth::check() && Auth::id() === $adopcion->solicitudAceptada->id_usuario) {
+            if (Auth::check() && (Auth::id() === $adopcion->id_usuario || Auth::id() === $adopcion->solicitudAceptada->id_usuario)) {
                 return true;
             }
 
@@ -68,8 +68,6 @@ class AdopcionController extends Controller
 
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
-
-
 
 
 
@@ -161,15 +159,31 @@ class AdopcionController extends Controller
 
     public function show($id)
     {
-        $adopcion = Adopcion::findOrFail($id);
+        $adopcion = Adopcion::with('solicitudAceptada')->findOrFail($id);
+        $user = Auth::user();
 
-        if ($adopcion->id_usuario != Auth::id()) {
+        if ($adopcion->solicitudAceptada) {
+            $permitido = $user && (
+                    $user->id === $adopcion->id_usuario ||
+                    $user->id === $adopcion->solicitudAceptada->id_usuario
+                );
+
+            if (!$permitido) {
+                return redirect()->route('adopciones.index')->with('fracaso', 'No tienes acceso a esta publicación.');
+            }
+        }
+
+        $visitedKey = 'visited_adopcion_' . $adopcion->id;
+
+        if (!$user || !session()->has($visitedKey)) {
             $adopcion->increment('visibilidad');
+            if ($user) {
+                session()->put($visitedKey, true);
+            }
         }
 
         return view('adopciones.show', compact('adopcion'));
     }
-
 
 
     public function destroy($id)

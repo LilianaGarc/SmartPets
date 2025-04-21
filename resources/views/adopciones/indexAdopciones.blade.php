@@ -50,6 +50,7 @@
                         <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por fecha: Más antigua</option>
                         <option value="most_visited" {{ request('orden') == 'most_visited' ? 'selected' : '' }}>Ordenar por vistas: Más vistas</option>
                         <option value="least_visited" {{ request('orden') == 'least_visited' ? 'selected' : '' }}>Ordenar por vistas: Menos vistas</option>
+                        <option value="accepted_requests" {{ request('orden') == 'accepted_requests' ? 'selected' : '' }}>Ordenar por solicitudes aceptadas</option>
                     </select>
                 </div>
             </form>
@@ -93,37 +94,49 @@
             <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
         </div>
     @endif
-    @foreach($adopciones as $adopcion)
-        <div class="adopcion-card">
-            <div class="perfil-usuario">
-                @php
-                    $foto = $adopcion->usuario->fotoperfil
-                            ? asset('storage/' . $adopcion->usuario->fotoperfil)
-                            : asset('images/fotodeperfil.webp');
-                @endphp
+        @foreach($adopciones as $adopcion)
+            <div class="adopcion-card">
+                <div class="perfil-usuario">
+                    @php
+                        $foto = $adopcion->usuario->fotoperfil
+                                ? asset('storage/' . $adopcion->usuario->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                    @endphp
 
-                <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
-                <div class="informacion-perfil">
-                    <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
-                    <p class="fecha-publicacion">
-                        Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
-                    </p>
-                    <p class="contador-visitas">
-                        <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
-                    </p>
+                    <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
+                    <div class="informacion-perfil">
+                        <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
+                        <p class="fecha-publicacion">
+                            Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
+                        </p>
+                        <p class="contador-visitas">
+                            <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
+                        </p>
+
+                        @if ($adopcion->solicitudAceptada && $adopcion->solicitudAceptada->id_usuario === Auth::id())
+                            <p class="estado-adopcion" style="font-size: 0.9rem;">
+                                <a href="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $adopcion->solicitudAceptada->id]) }}"
+                                   style="color: #1e4183; font-weight: bold; text-decoration: none;"
+                                   title="Ver estado de la solicitud">
+                                    Solicitud Aceptada
+                                    <i class="fas fa-check-circle" style="margin-left: 5px;"></i>
+                                </a>
+                            </p>
+                        @endif
+
+
+                    </div>
                 </div>
+                <p>{{ $adopcion->contenido }}</p>
+
+                @if($adopcion->imagen)
+                    <a href="{{ route('adopciones.show', $adopcion->id) }}">
+                        <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
+                    </a>
+                @endif
             </div>
-            <p>{{ $adopcion->contenido }}</p>
+        @endforeach
 
-            @if($adopcion->imagen)
-                <a href="{{ route('adopciones.show', $adopcion->id) }}">
-                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
-                </a>
-            @endif
-
-
-        </div>
-    @endforeach
 </div>
 
 <script src="{{ asset('js/Ascripts.js') }}"></script>

@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\JuegoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -218,11 +219,15 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 
 //Mascota Ideal
-Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
-Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
-Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
-Route::get('/mascotaideal/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
-Route::get('/mascotaideal/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
+    Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
+    Route::get('/mascotaideal/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
+    Route::get('/mascotaideal/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+    Route::get('/chatbot/navegar/{question_id}', [ChatbotController::class, 'navegar'])->name('chatbot.navegar');
+
+});
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
@@ -275,6 +280,8 @@ Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('pub
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 
 Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+
+Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 
 
 
