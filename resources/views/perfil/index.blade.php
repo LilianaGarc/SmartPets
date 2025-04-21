@@ -45,13 +45,9 @@
             <i class="fas fa-calendar-alt"></i>
             <span class="tab-text">Eventos</span>
         </button>
-        <button class="tab" onclick="cambiarTab('mascota')" title="Mascota Ideal">
-            <i class="fas fa-heart"></i>
-            <span class="tab-text">Mascota Ideal</span>
-        </button>
         <button class="tab" onclick="cambiarTab('petshop')" title="Petshop">
             <i class="fas fa-store"></i>
-            <span class="tab-text">Petshop</span>
+            <span class="tab-text">Productos</span>
         </button>
     </div>
 
@@ -86,7 +82,6 @@
 
         <div id="veterinarias" class="grid"></div>
         <div id="eventos" class="grid"></div>
-        <div id="mascota" class="grid"></div>
         <div id="petshop" class="grid"></div>
     </div>
 </div>
