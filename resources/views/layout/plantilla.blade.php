@@ -14,48 +14,8 @@
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            margin-top: 15vh !important;
-            font-size: 100%;
             background-color: #f7f7f7;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
             flex-direction: column;
-        }
-
-
-        .navbar {
-            background-color: rgb(255, 255, 255);
-            padding: 1.5vw;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            z-index: 100;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: #333;
-            font-size: 1rem;
-            margin: 0 1.5vw;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-        .navbar a:hover {
-            color: #ff7f50;
-            transform: scale(1.1);
-        }
-
-        .navbar .logo {
-            margin-left: 0vw;
         }
 
         .btnl {
@@ -295,43 +255,7 @@
 
 </head>
 <body>
-<nav class="navbar" id="navbar">
-    <div class="logo">
-        <a href="{{ route('index') }}">
-            <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets" style="width: 20vw; height: auto;">
-        </a>
-    </div>
-    <div class="row">
-        <div class="col-10">
-            <a class="navicon" href="{{ route('index') }}" ><i class="fa-solid fa-house"></i></a>
-            <a class="navicon" href="{{ route('publicaciones.index') }}"><i class="fa-solid fa-image"></i></a>
-            <a class="navicon" href="#"><i class="fas fa-envelope"></i></a>
-            <a class="navicon" href="#"><i class="fas fa-user-circle"></i></a>
-        </div>
-        <div class="col-1">
-            <div class="btn-group dropstart" style="font-size: 100% !important;">
-                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Ajustes</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
 
-                        <x-responsive-nav-link :href="route('logout')"
-                                               onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
-                    </form>
-                </ul>
-            </div>
-        </div>
-
-
-    </div>
-</nav>
 <div class="container">
     @yield('contenido')
 </div>

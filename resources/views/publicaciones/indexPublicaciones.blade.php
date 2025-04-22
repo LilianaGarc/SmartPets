@@ -1,3 +1,4 @@
+@include('MenuPrincipal.Navbar')
 @extends('layout.plantilla')
 @section('titulo','Publicaciones')
 @section('contenido')
@@ -35,7 +36,9 @@
             </div>
         </div>
         <div class="col">
-
+            <div class="container-md" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <a href="{{ route('publicaciones.create') }}" class="btn-user" role="button"><h7><i class="fas fa-plus"></i> Crear una publicacion<img src="{{ asset('images/perritoPublicacion.webp') }}" alt="Imagen" class="button-img"></h7></a>
+            </div>
             <hr>
             <div class="row">
                 @foreach($publicaciones as $publicacion)

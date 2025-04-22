@@ -1,3 +1,4 @@
+@include('MenuPrincipal.Navbar')
 @extends('layout.plantilla')
 @section('titulo','Comentarios')
 @section('contenido')
