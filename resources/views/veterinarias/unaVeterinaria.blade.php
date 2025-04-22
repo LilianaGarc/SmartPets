@@ -202,7 +202,7 @@
                         <div class="d-flex align-items-center">
                             @php
                             $foto = null;
-                            if ($calificacions->user && $calificacion->user->fotoperfil) {
+                            if ($calificacion->user && $calificacion->user->fotoperfil) {
                                 $foto = asset('storage/' . $calificacion->user->fotoperfil);
                             } else {
                                 $foto = asset('images/fotodeperfil.webp');
