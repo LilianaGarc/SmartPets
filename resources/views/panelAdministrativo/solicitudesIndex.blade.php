@@ -1,4 +1,4 @@
-@extends('panelAdministrativo.administrativePanel')
+@extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
     @if(session('exito'))
@@ -14,7 +14,7 @@
     <h3>  |   Solicitudes </h3>
 
     <hr>
-    <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+    <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">

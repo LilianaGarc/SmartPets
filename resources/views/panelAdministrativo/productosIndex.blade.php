@@ -1,4 +1,4 @@
-@extends('panelAdministrativo.administrativePanel')
+@extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
     @if(session('exito'))
@@ -13,7 +13,7 @@
     @endif
     <h3>  |   Productos </h3>
     <hr>
-    <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+    <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">

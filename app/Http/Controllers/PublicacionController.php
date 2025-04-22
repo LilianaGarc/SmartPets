@@ -14,6 +14,7 @@ class PublicacionController
     {
         $publicaciones = Publicacion::with('user')->get();
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
+        //return view('panelAdministrativo.plantillaPanel');
 
     }
 
