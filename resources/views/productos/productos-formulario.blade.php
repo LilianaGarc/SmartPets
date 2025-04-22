@@ -1,4 +1,4 @@
-@extends('productos.productos-layout')
+@extends('productos.productos-layout'), @extends('MenuPrincipal.Navbar')
 @section('titulo','Formulario Producto')
 @section('contenido')
     <style>
@@ -66,7 +66,8 @@
     </style>
     </head>
     <body>
-    <div class="container py-5">
+    @section('nav') @endsection
+    <div class="container-fluid mx-3 px-3 mt-2" >
         <div class="form-container p-4 p-md-5">
             <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Editar Producto' : 'Publicar Nuevo Producto'}}</h2>
 
@@ -94,6 +95,9 @@
 
             <form action="{{ isset($producto) ? route('productos.update',$producto->id) : route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @if(isset($producto))
+                    @method('PUT')
+                @endif
                 <!-- csrf permite realizar peticiones-->
                 <!-- Información Básica -->
                 <div class="mb-4">
@@ -113,9 +117,9 @@
                         </div>
                         <div class="col-md-6">
                             <label for="categoria" class="form-label">Seleccionar mascota</label>
-                            <select class="form-select" id="categoria" name="categoria" required>
+                            <select class="form-select" id="categoria" name="categoria_id" required>
                                 @foreach($categorias as $categoria)
-                                    <option value="{{$categoria->id}}"{{old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
+                                    <option value="{{$categoria->id}}"{{ old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
                                     {{$categoria->nombre}}
                                     </option>
                                 @endforeach

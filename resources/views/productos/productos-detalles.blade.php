@@ -380,7 +380,7 @@
 
 @section('contenido')
 
-    <div class="container py-5">
+    <div class="container-fluid mx-2  py-5">
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -389,6 +389,7 @@
         @endif
         @if(session('error'))
             <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
         <div class="product-container p-4">
@@ -428,9 +429,11 @@
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#" style="color: var(--blue)">Inicio</a></li>
-                            <li class="breadcrumb-item"><a href="#" style="color: var(--blue)">Perros</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Alimentos</li>
+                            <li class="breadcrumb-item"><a href="{{ route('productos.index')}}"
+                                                           style="color: var(--blue)">Productos</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="{{ route('productos.index',['categoria_id'=>$producto->categoria_id]) }}"
+                                    style="color: var(--blue)">{{$producto->categoria->nombre}}</a></li>
                         </ol>
                     </nav>
 
@@ -453,51 +456,64 @@
 
                     <p class="mb-4">{{$producto->descripcion}}</p>
 
-                    <!-- Selector de Cantidad -->
-                    <div class="mb-4">
-                        <label class="form-label">{{$producto->stock}} unidades disponibles</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary">-</button>
-                            <input type="number" class="form-control quantity-input" value="1" min="1">
-                            <button class="btn btn-outline-secondary">+</button>
-                        </div>
-                    </div>
 
                     <!-- Botones de Acción -->
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
-                        <form id="delete-form-{{$producto->id}}"
-                              action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalProducto">
-                                Eliminar Producto
-                            </button>
+                    @auth
+                        @if( auth()->check() && auth()->id()===$producto->user_id)
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-auto">
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModalProducto" tabindex="-1" aria-labelledby="ModalProductoLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="ModalProductoLabel">Modal title</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancelar"></button>
+                                    <form id="delete-form-{{$producto->id}}"
+                                          action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#ModalProducto">
+                                            Eliminar
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="ModalProducto" tabindex="-1"
+                                             aria-labelledby="ModalProductoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="ModalProductoLabel">Eliminar Producto</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Cancelar"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ¿Estás seguro de que deseas eliminar este producto?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="{{ route('productos.destroy', $producto->id) }}"
+                                                              method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancelar
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="modal-body">
-                                            ¿Estás seguro de que deseas eliminar este producto?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <form action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        </div>
+                                    </form>
+                                    </div>
+                                    <div class="col-auto">
+
+                                         <button class="btn btn-warning"
+                                            onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar
+                                         </button>
                                     </div>
                                 </div>
+
                             </div>
-                        </form>
-                    </div>
+                        @endif
+                    @endauth
                 </div>
 
                 @if($errors->any())
@@ -509,47 +525,55 @@
                         </ul>
                     </div>
                 @endif
+
+                <h1 class="mb-4">Reseñas</h1>
                 <!-- ACORDEON -->
                 <div class="">
 
-                    <div class="review-system">
-                        <!-- Circular Toggle Button -->
-                        <button id="review-toggle-btn" class="review-toggle-btn">
-                            <span class="review-toggle-icon">+</span>
-                        </button>
+                    @auth
 
-                        <!-- Review Form Container -->
-                        <div id="review-container" class="review-container review-hidden">
-                            <div class="review-header">
-                                <h3 class="review-title-header">Nueva Reseña</h3>
-                            </div>
-                            <div class="review-body">
-                                <form id="review-form" class="review-form" action="{{ route('productos.agregarResenia', $producto->id) }}"
-                                      method="POST">
-                                    @csrf
-                                    <div class="review-form-group">
-                                        <label for="review-title" class="review-label">Título</label>
-                                        <input type="text" class="review-input" id="review-title" name="titulo"
-                                               placeholder="Escribe un título para tu reseña">
-                                    </div>
+                        <div class="review-system">
+                            <!-- Circular Toggle Button -->
+                            <button id="review-toggle-btn" class="review-toggle-btn">
+                                <span class="review-toggle-icon">+</span>
+                            </button>
 
-                                    <div class="review-form-group">
-                                        <label for="review-content" class="review-label">Contenido</label>
-                                        <textarea class="review-textarea" id="review-content" rows="4" name="contenido"
-                                                  placeholder="Escribe tu reseña aquí..."></textarea>
-                                    </div>
-
-                                    <div class="review-actions">
-                                        <button type="submit" class="review-button review-button-publish">Publicar
-                                        </button>
-                                        <button type="button" class="review-button review-button-cancel">Cancelar
-                                        </button>
-                                    </div>
-                                </form>
+                            <!-- Review Form Container -->
+                            <!-- En el formulario de reseñas -->
+                            <div id="review-container" class="review-container {{ isset($mostrarFormulario) ? 'review-visible' : 'review-hidden' }}">
+                                <div class="review-header">
+                                    <h2 class="review-title-header">{{ isset($resenia) ? 'Editar Reseña' : 'Escribir Reseña' }}</h2>
+                                </div>
+                                <div class="review-body">
+                                    <form id="review-form" class="review-form"
+                                          action="{{ isset($resenia) ? route('productos.editarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) : route('productos.agregarResenia', $producto->id) }}"
+                                          method="POST">
+                                        @csrf
+                                        @if(isset($resenia))
+                                            @method('PUT')
+                                        @endif
+                                        <div class="review-form-group">
+                                            <label for="review-title" class="review-label">Título</label>
+                                            <input type="text" class="review-input" id="review-title" name="titulo"
+                                                   value="{{ old('titulo', $resenia->titulo ?? '') }}" placeholder="Escribe un título para tu reseña">
+                                        </div>
+                                        <div class="review-form-group">
+                                            <label for="review-content" class="review-label">Contenido</label>
+                                            <textarea class="review-textarea" id="review-content" rows="4" name="contenido"
+                                                      placeholder="Escribe tu reseña aquí...">{{ old('contenido', $resenia->contenido ?? '') }}</textarea>
+                                        </div>
+                                        <div class="review-actions">
+                                            <button type="submit" class="review-button review-button-publish">
+                                                {{ isset($resenia) ? 'Actualizar' : 'Publicar' }}
+                                            </button>
+                                            <button type="button" class="review-button review-button-cancel">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <h1 class="mb-4">Reseñas</h1>
+                    @endauth
+
                     <div class="accordion" id="accordionExample">
                         @foreach($resenias as $index => $resenia)
                             <div class="accordion-item">
@@ -570,110 +594,154 @@
                                         <p>{{ $resenia->contenido }}</p>
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalResenia{{$resenia->id}}">
-                                            Eliminar
-                                        </button>
+                                        <!-- Eliminar Reseña -->
+                                        @auth
+                                            @if( auth()->check() && auth()->id()===$resenia->user_id)
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#ModalResenia{{$resenia->id}}">
+                                                    <i class="fa fa-trash-alt"></i>
+                                                </button>
+                                                <!-- Editar Reseña -->
+                                                <button type="button" class="btn btn-warning" onclick="location.href='{{ route('productos.mostrarFormularioEdicion', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}'">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1" aria-labelledby="ModalReseniaLabel{{$resenia->id}}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="ModalReseniaLabel{{$resenia->id}}">Eliminar Reseña</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        ¿Estás seguro de que deseas eliminar esta reseña?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <form action="{{ route('productos.eliminarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                        </form>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1"
+                                                     aria-labelledby="ModalReseniaLabel{{$resenia->id}}"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5"
+                                                                    id="ModalReseniaLabel{{$resenia->id}}">Eliminar
+                                                                    Reseña</h1>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar esta reseña?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <form
+                                                                    action="{{ route('productos.eliminarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Cancelar
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-danger">
+                                                                        Eliminar
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            @endif
+                                        @endauth
                                     </div>
                                 </div>
                                 @endforeach
+                            </div>
+                    </div>
+                    <!-- FIN ACORDEON -->
                 </div>
             </div>
-            <!-- FIN ACORDEON -->
         </div>
-    </div>
-    </div>
-    <script>
-        function toggleDeleteButton(id) {
-            let checkbox = document.getElementById(`confirm-checkbox-${id}`);
-            let button = document.getElementById(`delete-button-${id}`);
-            button.disabled = !checkbox.checked;
-        }
-
-        // Toggle form visibility
-        const toggleBtn = document.getElementById('review-toggle-btn');
-        const reviewContainer = document.getElementById('review-container');
-        const cancelBtn = document.querySelector('.review-button-cancel');
-
-        toggleBtn.addEventListener('click', function () {
-            toggleForm();
-        });
-
-        cancelBtn.addEventListener('click', function () {
-            toggleForm(false);
-        });
-
-        function toggleForm(show) {
-            if (show === undefined) {
-                // Toggle based on current state
-                toggleBtn.classList.toggle('active');
-                reviewContainer.classList.toggle('review-hidden');
-                reviewContainer.classList.toggle('review-visible');
-            } else if (show === false) {
-                // Force hide
-                toggleBtn.classList.remove('active');
-                reviewContainer.classList.add('review-hidden');
-                reviewContainer.classList.remove('review-visible');
-            } else {
-                // Force show
-                toggleBtn.classList.add('active');
-                reviewContainer.classList.remove('review-hidden');
-                reviewContainer.classList.add('review-visible');
+        <script>
+            function toggleDeleteButton(id) {
+                let checkbox = document.getElementById(`confirm-checkbox-${id}`);
+                let button = document.getElementById(`delete-button-${id}`);
+                button.disabled = !checkbox.checked;
             }
-        }
 
-        // Form submission
-        document.getElementById('review-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const title = document.getElementById('review-title').value;
-            const content = document.getElementById('review-content').value;
+            // Toggle form visibility
+            const toggleBtn = document.getElementById('review-toggle-btn');
+            const reviewContainer = document.getElementById('review-container');
+            const cancelBtn = document.querySelector('.review-button-cancel');
 
-            // Aquí normalmente enviarías los datos a tu servidor
-            console.log('Review submitted:', {title, content});
-
-            // Recargar la página después de enviar la reseña
-            location.reload();
-        });
-
-        <!-- Codigo agregado 08-04 martes -->
-        // Seleccionamos la imagen principal y todas las miniaturas dentro de la galería existente
-        const mainImage = document.querySelector('.main-image img'); // Imagen principal
-        const thumbnails = document.querySelectorAll('.thumbnail-image'); // Miniaturas
-
-        // Recorremos todas las miniaturas y les añadimos un evento de clic
-        thumbnails.forEach(thumbnail => {
-            thumbnail.addEventListener('click', () => {
-                // Guardamos temporalmente el src de la imagen principal
-                const tempSrc = mainImage.src;
-
-                // Intercambiamos el src de la imagen principal con el de la miniatura
-                mainImage.src = thumbnail.src;
-
-                // Asignamos el src temporal a la miniatura
-                thumbnail.src = tempSrc;
+            toggleBtn.addEventListener('click', function () {
+                toggleForm();
             });
-        });
-    </script>
+
+            cancelBtn.addEventListener('click', function () {
+                toggleForm(false);
+            });
+
+            function toggleForm(show) {
+                if (show === undefined) {
+                    // Toggle based on current state
+                    toggleBtn.classList.toggle('active');
+                    reviewContainer.classList.toggle('review-hidden');
+                    reviewContainer.classList.toggle('review-visible');
+                } else if (show === false) {
+                    // Force hide
+                    toggleBtn.classList.remove('active');
+                    reviewContainer.classList.add('review-hidden');
+                    reviewContainer.classList.remove('review-visible');
+                } else {
+                    // Force show
+                    toggleBtn.classList.add('active');
+                    reviewContainer.classList.remove('review-hidden');
+                    reviewContainer.classList.add('review-visible');
+                }
+            }
+
+            <!-- Codigo agregado 08-04 martes -->
+            // Seleccionamos la imagen principal y todas las miniaturas dentro de la galería existente
+            const mainImage = document.querySelector('.main-image img'); // Imagen principal
+            const thumbnails = document.querySelectorAll('.thumbnail-image'); // Miniaturas
+
+            // Recorremos todas las miniaturas y les añadimos un evento de clic
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    // Guardamos temporalmente el src de la imagen principal
+                    const tempSrc = mainImage.src;
+
+                    // Intercambiamos el src de la imagen principal con el de la miniatura
+                    mainImage.src = thumbnail.src;
+
+                    // Asignamos el src temporal a la miniatura
+                    thumbnail.src = tempSrc;
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggleBtn = document.getElementById('review-toggle-btn');
+                const reviewContainer = document.getElementById('review-container');
+                const cancelBtn = document.querySelector('.review-button-cancel');
+
+                // Función para mostrar/ocultar el formulario
+                function toggleForm(show) {
+                    if (show === undefined) {
+                        reviewContainer.classList.toggle('review-hidden');
+                        reviewContainer.classList.toggle('review-visible');
+                        toggleBtn.classList.toggle('active');
+                    } else {
+                        reviewContainer.classList.remove(show ? 'review-hidden' : 'review-visible');
+                        reviewContainer.classList.add(show ? 'review-visible' : 'review-hidden');
+                        toggleBtn.classList.toggle('active', show);
+                    }
+                }
+
+                // Mostrar el formulario automáticamente si estamos en modo edición
+                if (@json(isset($mostrarFormulario) && $mostrarFormulario)) {
+                    toggleForm(true);
+                }
+
+                // Event listeners
+                toggleBtn.addEventListener('click', () => toggleForm());
+
+                cancelBtn.addEventListener('click', () => {
+                    toggleForm(false);
+                    // Redirigir solo si estamos en modo edición
+                    if (window.location.href.includes('/editar')) {
+                        window.location.href = '{{ route("productos.show", $producto->id) }}';
+                    }
+                });
+            });
+        </script>
 @endsection
