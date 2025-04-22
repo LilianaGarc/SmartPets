@@ -201,6 +201,12 @@
                     <div class="card mb-3 p-3 border-0 shadow-sm">
                         <div class="d-flex align-items-center">
                             @php
+                            $foto = null;
+                            if ($calificacion->user && $calificacion->user->fotoperfil) {
+                                $foto = asset('storage/' . $calificacion->user->fotoperfil);
+                            } else {
+                                $foto = asset('images/fotodeperfil.webp');
+                            }
                                 $foto = $veterinaria->usuario->fotoperfil
                                     ? asset('storage/' . $veterinaria->usuario->fotoperfil)
                                     : asset('images/fotodeperfil.webp');
