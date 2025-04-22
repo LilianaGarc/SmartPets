@@ -10,6 +10,35 @@
 
 </head>
 <body>
+@if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session('success') }}',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        });
+    </script>
+@endif
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                timer: 4000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        });
+    </script>
+@endif
+
 @include('MenuPrincipal.Navbar')
 <div class="perfil">
     <div class="cabecera">
@@ -27,6 +56,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="tabs">
         <button class="tab activo" onclick="cambiarTab('publicaciones')" title="Publicaciones">
@@ -117,7 +147,7 @@
         <div id="petshop" class="grid"></div>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function cambiarTab(tabId) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('activo'));

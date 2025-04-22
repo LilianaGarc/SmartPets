@@ -44,8 +44,14 @@ class PerfilController extends Controller
     public function actualizarFoto(Request $request)
     {
         $request->validate([
-            'fotoperfil' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'fotoperfil' => 'required|image|mimes:jpeg,png,jpg,gif,webp,bmp,tiff|max:5120',
+        ], [
+            'fotoperfil.required' => 'Por favor selecciona una imagen.',
+            'fotoperfil.image' => 'El archivo debe ser una imagen válida.',
+            'fotoperfil.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif, webp, bmp o tiff.',
+            'fotoperfil.max' => 'La imagen no debe pesar más de 5MB.',
         ]);
+
 
         $user = Auth::user();
 
