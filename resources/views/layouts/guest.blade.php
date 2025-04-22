@@ -11,255 +11,337 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
 
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
-            body {
-                width: 100%;
-            }
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-            .w-full {
-                width: 100%;
-            }
-
-            *,
-            *::before,
-            *::after {
-                box-sizing: border-box;
-            }
-
-            body {
+            *{
                 margin: 0;
-                font-family: Roboto, -apple-system, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
-                background: #3b4465;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Montserrat", sans-serif;
             }
-
-            .forms-section {
+            body{
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #F0F4F3;
+            }
+            .container{
+                width: 800px;
+                height: 500px;
+                display: flex;
+                position: relative;
+                background-color: white;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 0 10px rgb(0,0,0,0.3);
+            }
+            .container-form{
+                width: 100%;
+                overflow: hidden;
+            }
+            .container-form form{
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 20px;
+                transition: transform 0.5s ease-in-out;
             }
-
-            .section-title {
-                font-size: 32px;
-                letter-spacing: 1px;
-                color: #fff;
-                text-align: center;
+            .container-form h2{
+                font-size: 30px;
+                margin-bottom: 20px;
             }
+            .container-form span{
+                font-size: 12px;
+                margin-bottom: 15px;
 
-            .forms {
+            }
+            .container-input{
+                width: 300px;
+                height: 40px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                padding: 0 15px;
+                background-color: #EEEEEE;
+            }
+            .container-input input{
+                border: none;
+                outline: none;
+                width: 100%;
+                height: 100%;
+                background-color: inherit;
+            }
+            .container-form a{
+                color: black;
+                font-size: 14px;
+                margin-bottom: 20px;
+                margin-top: 5px;
+            }
+            .container-form button{
+                width: 170px;
+                height: 45px;
+                font-size: 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                background-color: #ff7f50;
+                color: white;
+            }
+            .button {
+                width: 170px;
+                height: 45px;
+                font-size: 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                color: white;
+                background-color: transparent;
+            }
+            /* Animacion del formulario*/
+            .sign-up{
+                transform: translateX(-100%);
+            }
+            .container.toggle .sign-in{
+                transform: translateX(100%);
+            }
+            .container.toggle .sign-up{
+                transform: translateX(0);
+            }
+            /*Welcome*/
+            .container-welcome{
+                position: absolute;
+                width: 50%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                transform: translateX(100%);
+                background-color: #18478b;
+                transition: transform 0.5s ease-in-out, border-radius 0.5s ease-in-out;
+                overflow: hidden;
+                border-radius: 50% 0 0 50%;
+            }
+            .container.toggle .container-welcome{
+                transform: translateX(0);
+                border-radius: 0 50% 50% 0;
+                background-color: #ff7f50;
+            }
+            .container.toggle .container-form button{
+                background-color: #18478b;
+            }
+            .container-welcome .welcome{
+                position: absolute;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                width: 100%;
-                max-width: 400px;
-                margin-top: 30px;
+                gap: 20px;
+                padding: 0 50px;
+                color: white;
+                transition: transform 0.5s ease-in-out;
             }
-
-            .form-wrapper {
-                animation: hideLayer .3s ease-out forwards;
-                width: 100%;
+            .welcome-sign-in{
+                transform: translateX(100%);
             }
-
-            .form-wrapper.is-active {
-                animation: showLayer .3s ease-in forwards;
+            .container-welcome h3{
+                font-size: 40px;
             }
-
-            .switcher {
-                position: relative;
-                cursor: pointer;
-                display: block;
-                margin-right: auto;
-                margin-left: auto;
-                padding: 0;
-                text-transform: uppercase;
-                font-family: inherit;
-                font-size: 16px;
-                letter-spacing: .5px;
-                color: #999;
-                background-color: transparent;
-                border: none;
-                outline: none;
-                transform: translateX(0);
-                transition: all .3s ease-out;
+            .container-welcome p{
+                font-size: 14px;
                 text-align: center;
             }
-
-            .switcher-login .underline::before {
-                transform: translateX(101%);
+            .container-welcome .button{
+                border: 2px solid white;
             }
-
-            .switcher-signup .underline::before {
-                transform: translateX(-101%);
-            }
-
-            .underline {
-                position: absolute;
-                bottom: -5px;
-                left: 0;
-                overflow: hidden;
-                pointer-events: none;
-                width: 100%;
-                height: 2px;
-            }
-
-            .underline::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: inherit;
-                display: block;
-                width: inherit;
-                height: inherit;
-                background-color: currentColor;
-                transition: transform .2s ease-out;
-            }
-
-            .form {
-                overflow: hidden;
-                width: 100%;
-                margin-top: 30px;
-                padding: 30px 25px;
-                border-radius: 5px;
-                transform-origin: top;
-                background-color: #fff;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .input-block {
-                margin-bottom: 20px;
-            }
-
-            .input-block label {
-                font-size: 14px;
-                color: #a1b4b4;
-            }
-
-            .input-block input {
-                display: block;
-                width: 100%;
-                margin-top: 8px;
-                padding-right: 15px;
-                padding-left: 15px;
-                font-size: 16px;
-                line-height: 40px;
-                color: #3b4465;
-                background: #eef9fe;
-                border: 1px solid #cddbef;
-                border-radius: 2px;
-            }
-
-            .form [type='submit'] {
-                opacity: 0;
-                display: block;
-                min-width: 120px;
-                margin: 30px auto 10px;
-                font-size: 18px;
-                line-height: 40px;
-                border-radius: 25px;
-                border: none;
-                transition: all .3s ease-out;
-            }
-
-            .form-wrapper.is-active .form [type='submit'] {
-                opacity: 1;
+            .container.toggle .welcome-sign-in{
                 transform: translateX(0);
-                transition: all .4s ease-in;
+            }
+            .container.toggle .welcome-sign-up{
+                transform: translateX(-100%);
+            }
+            .welcome-image{
+                width: 17vw;
+                height: auto;
+                margin-bottom: -10vh;
+                margin-top: -5vh;
             }
 
-            .btn-login {
-                color: #fbfdff;
-                background: #a7e245;
-                transform: translateX(-30%);
-            }
 
-            .btn-signup {
-                color: #a7e245;
-                background: #fbfdff;
-                box-shadow: inset 0 0 0 2px #a7e245;
-                transform: translateX(30%);
-            }
-
-            /* Media Queries for responsiveness */
+            /* Cambio, reduccion de pantalla */
             @media (max-width: 768px) {
-                .section-title {
+                .container {
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+                }
+
+                .container-form {
+                    width: 100%;
+                    height: 50%;
+                    transform: translateY(0);
+                }
+
+                .sign-up {
+                    transform: translateY(100%);
+                }
+
+                .container.toggle .sign-in {
+                    transform: translateY(-100%);
+                }
+
+                .container.toggle .sign-up {
+                    transform: translateY(0);
+                }
+
+                .container-welcome {
+                    width: 100%;
+                    height: 50%;
+                    background-color: #18478b;
+                    transform: translateY(100%);
+                    border-radius: 0!important;
+                }
+
+                .container.toggle .container-welcome {
+                    transform: translateY(0);
+                    background-color: #ff7f50;
+                }
+
+                .container-welcome .welcome {
+                    gap: 15px;
+                }
+
+                .container-welcome h3 {
+                    font-size: 25px;
+                }
+
+                .container-welcome p {
+                    font-size: 12px;
+                }
+
+                .container-welcome .button {
+                    border: 1px solid white !important;
+                    background-color: transparent !important;
+                }
+
+                .welcome-image {
+                    width: 30vw;
+                    height: auto;
+                }
+
+                .container .button {
+                    width: 100%;
+                    height: 45px;
+                    font-size: 15px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    margin-top: 10px;
+                    background-color: #ff7f50;
+                    color: white;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .container-form h2 {
                     font-size: 24px;
                 }
 
-                .forms {
-                    flex-direction: column;
-                    max-width: 100%;
-                    margin-top: 20px;
+                .container-form span {
+                    font-size: 10px;
                 }
 
-                .form-wrapper {
-                    width: 100%;
+                .container-input {
+                    width: 80%;
                 }
 
-                .form {
-                    padding: 20px;
-                }
-
-                .switcher {
+                .container-input input {
                     font-size: 14px;
                 }
 
-                .input-block input {
-                    font-size: 14px;
+                .container-welcome h3 {
+                    font-size: 22px;
                 }
 
-                .btn-login, .btn-signup {
-                    font-size: 16px;
-                    line-height: 35px;
-                    padding: 10px 20px;
+                .welcome-image {
+                    width: 40vw;
+                }
+
+                .container-welcome .button {
+                    font-size: 14px;
+                }
+                .welcome-image {
+                    width: 60vw;
+                    height: auto;
+                    margin-bottom: -60px!important;
                 }
             }
 
-            @media (max-width: 480px) {
-                .section-title {
-                    font-size: 20px;
+            @media (min-width: 769px) {
+                .container {
+                    flex-direction: row;
                 }
 
-                .forms {
-                    margin-top: 15px;
+                .container-form {
+                    width: 50%;
                 }
 
-                .form {
-                    padding: 15px;
+                .container-welcome {
+                    width: 50%;
+                    background-color: #18478b;
+                    transform: translateX(100%);
+                    border-radius: 50% 0 0 50%;
                 }
 
-                .input-block input {
+                .container.toggle .container-welcome {
+                    transform: translateX(0);
+                    background-color: #ff7f50;
+                }
+
+                .container.toggle .container-form button {
+                    background-color: #18478b;
+                }
+
+                .container-welcome .welcome {
+                    gap: 10px;
+                }
+
+                .container-welcome h3 {
+                    font-size: 40px;
+                }
+
+                .container-welcome p {
                     font-size: 14px;
-                    padding: 12px;
                 }
 
-                .btn-login, .btn-signup {
-                    font-size: 14px;
-                    line-height: 30px;
-                    padding: 8px 15px;
+                .container-welcome .button {
+                    border: solid white;
                 }
 
-                .switcher {
-                    font-size: 12px;
+                .welcome-image {
+                    width: 20vw;
+                    height: auto;
+                    margin-bottom: -8vh;
+                    margin-top: -5vh;
                 }
             }
-
-
 
         </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
-        </div>
+    <body>
+    {{ $slot }}
     </body>
 </html>

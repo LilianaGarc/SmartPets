@@ -133,8 +133,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
 
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
-
 });
+
 
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
@@ -231,7 +231,6 @@ Route::middleware(['auth'])->group(function() {
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
-
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
 Route::resource('productos', ProductoController::class);
 
@@ -245,6 +244,8 @@ Route::get('/productos/categoria/{categoria}', [ProductoController::class, 'inde
 //Reseñas
 Route::post('/productos/{producto}/resenias', [ProductoController::class, 'agregarResenia'])->name('productos.agregarResenia');
 Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'eliminarResenia'])->name('productos.eliminarResenia');
+Route::put('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'editarResenia'])->name('productos.editarResenia');
+Route::get('/productos/{producto}/resenias/{resenia}/editar', [ProductoController::class, 'mostrarFormularioEdicion'])->name('productos.mostrarFormularioEdicion');
 
 
 
@@ -277,6 +278,7 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 //Rutas para Publicaciones
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
 Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
+
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
