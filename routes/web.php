@@ -276,8 +276,6 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 
 
 //Rutas para Publicaciones
-Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
-Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
 
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
