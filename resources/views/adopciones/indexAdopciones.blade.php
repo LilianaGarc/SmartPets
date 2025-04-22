@@ -30,8 +30,8 @@
         </ul>
 
         <div class="filter-container">
+            <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                 <div class="select-wrapper">
-                    <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
                     <select name="tipo_mascota" onchange="this.form.submit()" class="select-dropdown">
                         <option value="">Seleccionar tipo de mascota</option>
                         <option value="Perro" {{ request('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
@@ -50,12 +50,15 @@
                         <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por fecha: Más antigua</option>
                         <option value="most_visited" {{ request('orden') == 'most_visited' ? 'selected' : '' }}>Ordenar por vistas: Más vistas</option>
                         <option value="least_visited" {{ request('orden') == 'least_visited' ? 'selected' : '' }}>Ordenar por vistas: Menos vistas</option>
+                        <option value="accepted_requests" {{ request('orden') == 'accepted_requests' ? 'selected' : '' }}>Ordenar por solicitudes aceptadas</option>
                     </select>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
 
 @if(session('success'))
     <script>
@@ -91,56 +94,49 @@
             <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
         </div>
     @endif
-    @foreach($adopciones as $adopcion)
-        <div class="adopcion-card">
-            <div class="perfil-usuario">
-                <div class="foto-perfil" style="background-image: url('{{ asset('images/fotodeperfil.webp') }}');"></div>
-                <div class="informacion-perfil">
-                    <p class="nombre-usuario">Anonymous</p>
-                    <p class="fecha-publicacion">
-                        Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
-                    </p>
-                    <p class="contador-visitas">
-                        <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
-                    </p>
+        @foreach($adopciones as $adopcion)
+            <div class="adopcion-card">
+                <div class="perfil-usuario">
+                    @php
+                        $foto = $adopcion->usuario->fotoperfil
+                                ? asset('storage/' . $adopcion->usuario->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                    @endphp
+
+                    <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
+                    <div class="informacion-perfil">
+                        <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
+                        <p class="fecha-publicacion">
+                            Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
+                        </p>
+                        <p class="contador-visitas">
+                            <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
+                        </p>
+
+                        @if ($adopcion->solicitudAceptada && $adopcion->solicitudAceptada->id_usuario === Auth::id())
+                            <p class="estado-adopcion" style="font-size: 0.9rem;">
+                                <a href="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $adopcion->solicitudAceptada->id]) }}"
+                                   style="color: #1e4183; font-weight: bold; text-decoration: none;"
+                                   title="Ver estado de la solicitud">
+                                    Solicitud Aceptada
+                                    <i class="fas fa-check-circle" style="margin-left: 5px;"></i>
+                                </a>
+                            </p>
+                        @endif
+
+
+                    </div>
                 </div>
+                <p>{{ $adopcion->contenido }}</p>
+
+                @if($adopcion->imagen)
+                    <a href="{{ route('adopciones.show', $adopcion->id) }}">
+                        <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
+                    </a>
+                @endif
             </div>
-            <p>{{ $adopcion->contenido }}</p>
+        @endforeach
 
-            @if($adopcion->imagen)
-                <a href="{{ route('adopciones.show', $adopcion->id) }}">
-                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img" data-id="{{ $adopcion->id }}">
-                </a>
-            @endif
-
-            <div class="dropdown">
-                <button class="dropbtn">
-                    <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-content">
-                    <form action="{{ route('adopciones.show', $adopcion->id) }}" method="GET">
-                        <button type="submit" class="btn-editar-dropdown">
-                            <i></i> Ver detalles
-                        </button>
-                    </form>
-
-                    <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
-                        <button type="submit" class="btn-editar-dropdown">
-                            <i></i> Editar
-                        </button>
-                    </form>
-
-                    <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" id="delete-form-{{$adopcion->id}}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                            <i></i> Eliminar
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endforeach
 </div>
 
 <script src="{{ asset('js/Ascripts.js') }}"></script>

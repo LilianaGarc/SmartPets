@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PublicacionesTableSeeder::class,
             ComentariosTableSeeder::class,
             ReaccionesTableSeeder::class,
+            CategoriasTableSeeder::class,
         ]);
     }
 }

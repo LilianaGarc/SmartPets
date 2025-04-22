@@ -28,58 +28,147 @@
                     <span class="breadcrumb__title">Ver Adopción</span>
                 </a>
             </li>
-            <li class="breadcrumb__item">
-                <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Solicitudes</span>
-                </a>
-            </li>
-            <li class="breadcrumb__item breadcrumb__item-active">
-                <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Ver solicitud</span>
-                </a>
-            </li>
+
+            @if(auth()->user()->id === $adopcion->id_usuario)
+                <li class="breadcrumb__item">
+                    <a href="{{ route('solicitudes.show', $adopcion->id) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Solicitudes</span>
+                    </a>
+                </li>
+                <li class="breadcrumb__item breadcrumb__item-active">
+                    <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Ver solicitud</span>
+                    </a>
+                </li>
+            @elseif($solicitud && auth()->user()->id === $solicitud->id_usuario)
+                <li class="breadcrumb__item breadcrumb__item-active">
+                    <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitud->id]) }}" class="breadcrumb__inner">
+                        <span class="breadcrumb__title">Mi solicitud</span>
+                    </a>
+                </li>
+            @endif
+
         </ul>
     </div>
 </div>
 
+
 <div class="card2-container">
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
     <div class="card2">
-        <nav>
-            <span class="usuario">{{"Anonymous" }}</span>
-        </nav>
         <div class="card-content">
-            <div class="photo" onclick="function openImageModal() {
-            }
-            openImageModal()">
 
-                    <img src="{{ asset('images/img_PorDefecto.jpg') }}" alt="Comprobante" class="adopcion-img">
+            <div class="photo" onclick="function openImageModal() { } openImageModal()">
+            @if(auth()->user()->id === $solicitud->id_usuario)
+                    <h2 style="color: #1e4183;">{{ $adopcion->nombre_mascota }}</h2>
+                    @php
+                        $fotoMascota = $adopcion->imagen
+                            ? asset('storage/' . $adopcion->imagen)
+                            : asset('images/default-mascota.webp');
+                    @endphp
 
-                <div class="wrapper">
-                    <a href="{{ asset('storage/' . $solicitud->comprobante) }}" class="c-btn" download>
-                            <span class="c-btn__label">Descargar
-                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M7.50005 1.04999C7.74858 1.04999 7.95005 1.25146 7.95005 1.49999V8.41359L10.1819 6.18179C10.3576 6.00605 10.6425 6.00605 10.8182 6.18179C10.994 6.35753 10.994 6.64245 10.8182 6.81819L7.81825 9.81819C7.64251 9.99392 7.35759 9.99392 7.18185 9.81819L4.18185 6.81819C4.00611 6.64245 4.00611 6.35753 4.18185 6.18179C4.35759 6.00605 4.64251 6.00605 4.81825 6.18179L7.05005 8.41359V1.49999C7.05005 1.25146 7.25152 1.04999 7.50005 1.04999ZM2.5 10C2.77614 10 3 10.2239 3 10.5V12C3 12.5539 3.44565 13 3.99635 13H11.0012C11.5529 13 12 12.5528 12 12V10.5C12 10.2239 12.2239 10 12.5 10C12.7761 10 13 10.2239 13 10.5V12C13 13.1041 12.1062 14 11.0012 14H3.99635C2.89019 14 2 13.103 2 12V10.5C2 10.2239 2.22386 10 2.5 10Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                    </a>
-                </div>
+                    <img src="{{ $fotoMascota }}" alt="Foto de la mascota" class="adopcion-img">
+                @else
+                    @php
+                        $fotoUsuario = $solicitud->usuario->fotoperfil
+                            ? asset('storage/' . $solicitud->usuario->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
+                    @endphp
 
+                    <img src="{{ $fotoUsuario }}" alt="Foto de perfil" class="adopcion-img">
+                @endif
             </div>
+
             <div class="description">
-                <h1>Usuario</h1>
+                <h1><strong>
+                        @if(auth()->user()->id === $solicitud->id_usuario)
+                            Tu solicitud:
+                        @else
+                            {{ $solicitud->usuario->name }}
+                        @endif
+                    </strong></h1>
                 <p>{{ \Carbon\Carbon::parse($solicitud->created_at)->format('d M Y, H:i') }}</p>
                 <p>Motivo de la solicitud: {{ $solicitud->contenido }}</p>
                 <p>Experiencia previa: {{ $solicitud->experiencia }}</p>
                 <p>Espacio disponible: {{ $solicitud->espacio }}</p>
                 <p>Gastos Veterinarios: {{ $solicitud->gastos_veterinarios }}</p>
-                <div class="solicitud-actions">
-                    <button class="action-btn accept-btn">
+                <p>Correo: {{ $solicitud->usuario->email }}</p>
+                <p style="color: #1e4183;">Estado de la solicitud: <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
+
+                @php
+                    $hayAceptada = $adopcion->solicitudes()->where('estado', 'aceptada')->exists();
+                @endphp
+
+                <script>
+                    const yaHayAceptada = {{ $hayAceptada ? 'true' : 'false' }};
+                </script>
+
+                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado !== 'aceptada')
+                    <button type="button" class="action-btn accept-btn" onclick="confirmarAceptarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
                         <i class="fas fa-check-circle"></i> Aceptar Solicitud
                     </button>
-                    <button class="action-btn reject-btn">
-                        <i class="fas fa-times-circle"></i> Rechazar Solicitud
+
+                    <form id="form-aceptar-{{ $solicitud->id }}" action="{{ route('solicitudes.aceptar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @endif
+
+                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado === 'aceptada')
+                    <button type="button" class="action-btn cancel-btn" onclick="confirmarCancelarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
+                        <i class="fas fa-times-circle"></i> Cancelar Aceptación
                     </button>
-                </div>
+
+                    <form id="form-cancelar-{{ $solicitud->id }}" action="{{ route('solicitudes.cancelar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                @endif
+
+
+
+
+
+            @if(auth()->user()->id === $solicitud->id_usuario)
+                    <div class="boton-container">
+                    <form action="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" method="GET">
+                        <button type="submit" class="btn-editard">
+                            Editar
+                        </button>
+                    </form>
+
+                    <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn-eliminard" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
+                            Eliminar
+                        </button>
+                    </form>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

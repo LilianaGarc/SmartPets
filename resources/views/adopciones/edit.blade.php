@@ -73,8 +73,10 @@
         </div>
 
         <div class="form-group">
-            <label for="edad_mascota">Edad de la Mascota</label>
-            <input type="number" name="edad_mascota" id="edad_mascota" class="form-control" value="{{ old('edad_mascota', $adopcion->edad_mascota) }}" required min="1" max="30" step="1" oninput="validateAgeInput(this)">
+            <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
+                   value="{{ old('fecha_nacimiento', isset($adopcion) ? \Carbon\Carbon::parse($adopcion->fecha_nacimiento)->format('Y-m-d') : '') }}"
+                   required>
         </div>
 
         <div class="form-group">

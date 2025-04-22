@@ -66,7 +66,7 @@
 
                     <div class="form-group">
                         <label for="nombre_mascota">Nombre de la Mascota</label>
-                        <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" value="{{ old('nombre_mascota') }}" required>
+                        <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" value="{{ old('nombre_mascota') }}" placeholder="Ingresa el nombre de tu mascota" required>
                     </div>
 
                     <div class="form-group">
@@ -82,23 +82,29 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="edad_mascota">Edad de la Mascota</label>
-                        <input type="number" name="edad_mascota" id="edad_mascota" class="form-control" value="{{ old('edad_mascota') }}" required min="1" max="30" step="1" oninput="validateAgeInput(this)">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
+                        <input type="date"
+                               name="fecha_nacimiento"
+                               id="fecha_nacimiento"
+                               class="form-control"
+                               value="{{ old('fecha_nacimiento', \Carbon\Carbon::now()->format('Y-m-d')) }}"
+                               required
+                               max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                     </div>
 
                     <div class="form-group">
                         <label for="raza_mascota">Raza de la Mascota</label>
-                        <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" value="{{ old('raza_mascota') }}" required>
+                        <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" value="{{ old('raza_mascota') }}" placeholder="Ingresa la raza de tu mascota" required>
                     </div>
 
                     <div class="form-group">
                         <label for="ubicacion_mascota">Ubicación de la Mascota</label>
-                        <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control"  value="{{ old('ubicacion_mascota') }}" required>
+                        <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota" required>
                     </div>
 
                     <div class="form-group">
                         <label for="contenido">Contenido</label>
-                        <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido') }}</textarea>
+                        <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" placeholder="Ingresa una breve descripción de tu mascota">{{ old('contenido') }}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -107,6 +113,7 @@
                             <input type="file" name="imagen" id="imagen" accept="image/*" onchange="previewImage()">
                             <label for="imagen">Seleccionar Imagen</label>
                         </div>
+
                         <div class="file-info">
                             <span>Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
                         </div>

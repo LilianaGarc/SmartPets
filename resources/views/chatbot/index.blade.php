@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mascota Ideal</title>
     <link rel="stylesheet" href="{{ asset('css/mascotaideal.css') }}">
-
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
 
 <form action="{{ route('chatbot.store') }}" method="POST">
     @csrf
+
+    <h2>Pregunta {{ $currentQuestionNumber }} de {{ $totalQuestions }}</h2>
+
     <h1>{{ $pregunta->texto_pregunta }}</h1>
 
     @foreach($pregunta->respuestas as $respuesta)
         <div>
             <input type="radio" name="respuesta_id" value="{{ $respuesta->id }}" id="respuesta{{ $respuesta->id }}" required
-                   @if(session()->has('answers') && isset(session('answers')[$pregunta->id]) && session('answers')[$pregunta->id]->id == $respuesta->id) checked @endif>
+                   @if(isset($answers[$pregunta->id]) && $answers[$pregunta->id] == $respuesta->id) checked @endif>
             <label for="respuesta{{ $respuesta->id }}">{{ $respuesta->texto_respuesta }}</label>
         </div>
     @endforeach
@@ -29,8 +31,8 @@
 
         <button type="submit" class="next">Siguiente</button>
     </div>
-</form>
 
+</form>
 
 </body>
 </html>

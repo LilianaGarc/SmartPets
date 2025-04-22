@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\JuegoController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicacionController;
@@ -31,13 +33,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    //Rutas perfil
+    Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
+    Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('perfil.index');
+    Route::post('/perfil/actualizar-foto', [PerfilController::class, 'actualizarFoto'])->name('perfil.actualizarFoto');
+
     Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
     Route::post('/adopciones', [AdopcionController::class, 'store'])->name('adopciones.store');
     Route::delete('/adopciones/{id}', [AdopcionController::class, 'destroy'])->name('adopciones.destroy');
     Route::get('/adopciones/{id}/editar', [AdopcionController::class, 'edit'])->name('adopciones.edit');
     Route::put('/adopciones/{id}', [AdopcionController::class, 'update'])->name('adopciones.update');
     Route::get('/adopciones/{id}', [AdopcionController::class, 'show'])->name('adopciones.show');
-
 
 //Rutas para Solicitudes
     Route::get('/solicitudes/crear/{id_adopcion}', [SolicitudController::class, 'create'])->name('solicitudes.create');
@@ -47,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/solicitudes/{id_adopcion}/editar/{id}', [SolicitudController::class, 'edit'])->name('solicitudes.edit');
     Route::put('/solicitudes/{id_adopcion}/{id}', [SolicitudController::class, 'update'])->name('solicitudes.update');
     Route::get('/solicitudes/{id_adopcion}/{id}/detalles', [SolicitudController::class, 'showDetails'])->name('solicitudes.showDetails');
+    Route::post('/solicitudes/{adopcion}/{solicitud}/aceptar', [SolicitudController::class, 'aceptar'])->name('solicitudes.aceptar');
+    Route::post('/adopciones/{id_adopcion}/solicitudes/{id_solicitud}/cancelar', [SolicitudController::class, 'cancelarAceptacion'])->name('solicitudes.cancelar');
 
 //Rutas para Productos
     Route::resource('productos', ProductoController::class);
@@ -194,6 +203,7 @@ Route::get('/', function () {
     return redirect()->route('animacion');
 });
 
+
 Route::get('/index', function () {
     return view('MenuPrincipal.MenuPrincipal');
 })->name('index');
@@ -209,15 +219,18 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 
 //Mascota Ideal
-Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
-Route::post('/chatbot', [ChatbotController::class, 'store'])->name('chatbot.store');
-Route::get('/chatbot/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
-Route::get('/chatbot/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
-Route::get('/chatbot/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+Route::middleware(['auth'])->group(function() {
+    Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
+    Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');  // Ruta para ir atrás
+    Route::get('/mascotaideal/result', [ChatbotController::class, 'mostrarResultado'])->name('chatbot.result');
+    Route::get('/mascotaideal/reiniciar', [ChatbotController::class, 'reiniciar'])->name('chatbot.reiniciar');
+    Route::get('/chatbot/navegar/{question_id}', [ChatbotController::class, 'navegar'])->name('chatbot.navegar');
+
+});
 
 //Rutas para Productos
 Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
-
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
 Route::resource('productos', ProductoController::class);
 
@@ -227,9 +240,13 @@ Route::resource('productos',ProductoController::class);
 Route::get('/productos/buscar', [ProductoController::class, 'buscar'])->name('productos.buscar');
 //Categorias
 Route::resource('/categorias',CategoriaController::class);
+Route::get('/productos/categoria/{categoria}', [ProductoController::class, 'index'])->name('productos.categoria');
 //Reseñas
 Route::post('/productos/{producto}/resenias', [ProductoController::class, 'agregarResenia'])->name('productos.agregarResenia');
 Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'eliminarResenia'])->name('productos.eliminarResenia');
+Route::put('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'editarResenia'])->name('productos.editarResenia');
+Route::get('/productos/{producto}/resenias/{resenia}/editar', [ProductoController::class, 'mostrarFormularioEdicion'])->name('productos.mostrarFormularioEdicion');
+
 
 
 Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
@@ -267,6 +284,8 @@ Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('pub
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 
 Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+
+Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 
 
 

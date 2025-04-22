@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Veterinaria;
 use App\Models\Ubicacion;
-use App\Models\Imagen;
-use App\Models\RedSocial;
 use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 
@@ -32,7 +30,7 @@ class VeterinariaController extends Controller
     // Método que muestra todas las veterinarias
     public function index()
     {
-        $veterinarias = Veterinaria::paginate(10);
+        $veterinarias = Veterinaria::paginate(6);
         return view('veterinarias.index')->with('veterinarias', $veterinarias);
     }
 
@@ -46,7 +44,7 @@ class VeterinariaController extends Controller
     // Método que almacena una veterinaria
     public function store(Request $request)
     {
-        // Validación de los datos
+        // Validación de la información
         $request->validate([
             'nombre' => 'required|string|max:255',
             'nombre_veterinario' => 'required|string|max:255',
@@ -56,6 +54,8 @@ class VeterinariaController extends Controller
             'ciudad' => 'required|string|max:100',
             'municipio' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
             'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
@@ -63,8 +63,7 @@ class VeterinariaController extends Controller
             'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
 
-
-        // Crear la ubicación  modificando el -> 19/02/2025
+        // Crear la ubicación
         $ubicacion = Ubicacion::create([
             'departamento' => $request->input('departamento'),
             'municipio' => $request->input('municipio'),
@@ -94,6 +93,7 @@ class VeterinariaController extends Controller
             }
         }
 
+        // Guardar la red
         if ($request->has('redes')) {
             foreach ($request->input('redes') as $red) {
                 $veterinaria->redes()->create([
@@ -104,6 +104,7 @@ class VeterinariaController extends Controller
             }
         }
 
+        // Proceso de guardado
         if ($veterinaria->save()) {
             // mensaje de que todo salio bien
             return redirect()->route('veterinarias.index')->with('exito', 'La veterinaria se registrada exitosamente');
@@ -125,7 +126,7 @@ class VeterinariaController extends Controller
      */
     public function edit(string $id)
     {
-        $veterinaria = Veterinaria::with('ubicacion','imagenes')->findOrFail($id);
+        $veterinaria = Veterinaria::with('ubicacion', 'imagenes')->findOrFail($id);
         return view('veterinarias.formulario')->with('veterinaria', $veterinaria);
     }
 
@@ -134,7 +135,7 @@ class VeterinariaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validación de los datos
+        // Validación de los información al actualizar.
         $request->validate([
             'nombre' => 'required|string|max:255',
             'nombre_veterinario' => 'required|string|max:255',
@@ -144,6 +145,8 @@ class VeterinariaController extends Controller
             'municipio' => 'required|string|max:100',
             'ciudad' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
             'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
@@ -151,10 +154,10 @@ class VeterinariaController extends Controller
             'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
 
-        $veterinaria = Veterinaria::with('imagenes','redes')->findOrFail($id);
+        $veterinaria = Veterinaria::with('imagenes', 'redes')->findOrFail($id);
         $ubicacion = Ubicacion::findOrFail($veterinaria->id_ubicacion);
 
-        // actualizar la ubicación
+        // Actualizar la ubicación
         $ubicacion->update([
             'departamento' => $request->input('departamento'),
             'ciudad' => $request->input('ciudad'),
@@ -174,7 +177,8 @@ class VeterinariaController extends Controller
             'whatsapp' => $request->input('whatsapp'),
         ]);
 
-        if($request->has('existing_imagenes')){
+        // Actualizar la imagen si se elimina una anterior o si se ingresa una nueva al sistema
+        if ($request->has('existing_imagenes')) {
             $imageneAEliminar = $veterinaria->imagenes()->whereNotIn('id', $request->input('existing_imagenes'))->get();
             foreach ($imageneAEliminar as $imagen) {
                 if ($imagen && \Storage::disk('public')->exists($imagen->path)) {
@@ -183,16 +187,16 @@ class VeterinariaController extends Controller
                 $imagen->delete();
             }
         }
-        if($request->hasFile('imagenes')){
+
+        // Se sube la imagen
+        if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $imagen) {
                 $path = $imagen->store('veterinarias', 'public');
                 $veterinaria->imagenes()->create(['path' => $path]);
             }
-
         }
-        // Manejo de redes sociales
+        // Manejo de redes sociales en la actualización.
         if ($request->has('redes')) {
-            // Eliminar redes sociales antiguas
             $veterinaria->redes()->delete();
 
             // Guardar nuevas redes sociales
@@ -203,6 +207,7 @@ class VeterinariaController extends Controller
                 ]);
             }
         }
+
         // Guardar la veterinaria
         if ($veterinaria->save()) {
             // mensaje de que todo salio bien

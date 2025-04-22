@@ -180,7 +180,7 @@
         <div class="footer__parralax-moto"></div>
         <div class="footer__parralax-secondplan"></div>
         <div class="footer__parralax-premierplan"></div>
-        <div class="footer__parralax-voiture"></div>
+        <div class="footer__parralax-voiture" id="secret-dog"></div>
     </div>
     <div class="containerfooter">
         <div class="footer__columns">
@@ -189,16 +189,16 @@
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
                         <li class="footer__nav-item">
-                            <a href="" class="footer__nav-link">Iniciar Sesión</a>
+                            <a href="{{route('publicaciones.index')}}" class="footer__nav-link">Publicaciones</a>
                         </li>
                         <li class="footer__nav-item">
                             <a href="{{route('adopciones.index')}}" class="footer__nav-link">Adopciones</a>
                         </li>
                         <li class="footer__nav-item">
-                            <a href="{{route('publicaciones.index')}}" class="footer__nav-link">Publicaciones</a>
+                            <a href="{{route('veterinarias.index')}}" class="footer__nav-link">Veterinarias</a>
                         </li>
                         <li class="footer__nav-item">
-                            <a href="{{route('veterinarias.index')}}" class="footer__nav-link">Veterinarias</a>
+                            <a href="{{route('chatbot.index')}}" class="footer__nav-link">Mascota ideal</a>
                         </li>
                     </ul>
                 </nav>
@@ -207,9 +207,6 @@
                 <h3 class="footer__col-title"><span>‎ </span></h3>
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
-                        <li class="footer__nav-item">
-                            <a href="{{route('chatbot.index')}}" class="footer__nav-link">Mascota ideal</a>
-                        </li>
                         <li class="footer__nav-item">
                             <a href="#" class="footer__nav-link">PetChat</a>
                         </li>
@@ -227,7 +224,7 @@
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
                         <li class="footer__nav-item">
-                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=smartpets@gmail.com&su=Consulta%20de%20producto&body=Hola,%20me%20interesa%20saber%20más%20sobre%20el%20producto" class="footer__nav-link" target="_blank">smartpets@gmail.com</a>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=smartpetsunah@gmail.com&su=Consulta&body=Hola,%20me%20gustaría%20saber%20más%20sobre..." class="footer__nav-link" target="_blank">smartpetsunah@gmail.com</a>
                         </li>
                     </ul>
                 </nav>
@@ -242,5 +239,11 @@
 
 
 <script src="{{ asset('js/MPscripts.js') }}"></script>
+<script>
+    document.getElementById('secret-dog').addEventListener('click', function () {
+        window.location.href = "{{ route('juego.index') }}";
+    });
+</script>
+
 </body>
 </html>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Adopcion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class AdopcionController extends Controller
 {
@@ -28,21 +29,42 @@ class AdopcionController extends Controller
     {
         $tipo_mascota = $request->get('tipo_mascota');
         $orden = $request->get('orden', 'desc');
+
         $adopciones = Adopcion::query();
 
+        if (Auth::check()) {
+            $adopciones->where('id_usuario', '!=', Auth::id());
+        }
+
         if ($tipo_mascota) {
-            $adopciones = $adopciones->where('tipo_mascota', $tipo_mascota);
+            $adopciones->where('tipo_mascota', $tipo_mascota);
         }
 
         if ($orden == 'most_visited') {
-            $adopciones = $adopciones->orderBy('visibilidad', 'desc');
+            $adopciones->orderBy('visibilidad', 'desc');
         } elseif ($orden == 'least_visited') {
-            $adopciones = $adopciones->orderBy('visibilidad', 'asc');
+            $adopciones->orderBy('visibilidad', 'asc');
+        } elseif ($orden == 'accepted_requests') {
+            $adopciones->whereHas('solicitudAceptada', function ($query) {
+                $query->where('estado', 'aceptada');
+            });
         } else {
-            $adopciones = $adopciones->orderBy('created_at', $orden);
+            $adopciones->orderBy('created_at', $orden);
         }
 
-        $adopciones = $adopciones->get();
+        $adopciones = $adopciones->with('solicitudAceptada')->get();
+
+        $adopciones = $adopciones->filter(function ($adopcion) {
+            if (!$adopcion->solicitudAceptada) {
+                return true;
+            }
+
+            if (Auth::check() && (Auth::id() === $adopcion->id_usuario || Auth::id() === $adopcion->solicitudAceptada->id_usuario)) {
+                return true;
+            }
+
+            return false;
+        });
 
         return view('adopciones.indexAdopciones', compact('adopciones'));
     }
@@ -61,7 +83,7 @@ class AdopcionController extends Controller
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'tipo_mascota' => 'required|string|max:100',
             'nombre_mascota' => 'required|string|max:100',
-            'edad_mascota' => 'required|integer|min:0',
+            'fecha_nacimiento' => 'required|date|before_or_equal:today',
             'raza_mascota' => 'required|string|max:100',
             'ubicacion_mascota' => 'required|string|max:100',
         ]);
@@ -78,17 +100,24 @@ class AdopcionController extends Controller
             'visibilidad' => 0,
             'tipo_mascota' => $request->tipo_mascota,
             'nombre_mascota' => $request->nombre_mascota,
-            'edad_mascota' => $request->edad_mascota,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
             'raza_mascota' => $request->raza_mascota,
             'ubicacion_mascota' => $request->ubicacion_mascota,
+            'id_usuario' => Auth::id(),
         ]);
 
-        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción creada con éxito.');
+        return redirect()->route('adopciones.index')->with('success', 'La publicación de adopción se ha creado con éxito. Podrás ver tu publicación en tu perfil. ☺️');
     }
+
 
     public function edit($id)
     {
         $adopcion = Adopcion::findOrFail($id);
+
+        if ($adopcion->id_usuario != Auth::id()) {
+            return redirect()->route('adopciones.index')->with('fracaso', 'No tienes permiso para editar esta publicación.');
+        }
+
         return view('adopciones.edit', compact('adopcion'));
     }
 
@@ -99,7 +128,7 @@ class AdopcionController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'tipo_mascota' => 'required|string|max:100',
             'nombre_mascota' => 'required|string|max:100',
-            'edad_mascota' => 'required|integer|min:0',
+            'fecha_nacimiento' => 'required|date|before_or_equal:today',
             'raza_mascota' => 'required|string|max:100',
             'ubicacion_mascota' => 'required|string|max:255',
         ]);
@@ -118,33 +147,60 @@ class AdopcionController extends Controller
         $adopcion->contenido = $request->contenido;
         $adopcion->tipo_mascota = $request->tipo_mascota;
         $adopcion->nombre_mascota = $request->nombre_mascota;
-        $adopcion->edad_mascota = $request->edad_mascota;
+        $adopcion->fecha_nacimiento = $request->fecha_nacimiento;
         $adopcion->raza_mascota = $request->raza_mascota;
         $adopcion->ubicacion_mascota = $request->ubicacion_mascota;
 
         $adopcion->save();
 
-        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito.');
+        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito. Podrás ver tu publicación en tu perfil. ☺️');
     }
 
 
     public function show($id)
     {
-        $adopcion = Adopcion::findOrFail($id);
+        $adopcion = Adopcion::with('solicitudAceptada')->findOrFail($id);
+        $user = Auth::user();
 
-        $adopcion->increment('visibilidad');
+        if ($adopcion->solicitudAceptada) {
+            $permitido = $user && (
+                    $user->id === $adopcion->id_usuario ||
+                    $user->id === $adopcion->solicitudAceptada->id_usuario
+                );
+
+            if (!$permitido) {
+                return redirect()->route('adopciones.index')->with('fracaso', 'No tienes acceso a esta publicación.');
+            }
+        }
+
+        $visitedKey = 'visited_adopcion_' . $adopcion->id;
+
+        if (!$user || !session()->has($visitedKey)) {
+            $adopcion->increment('visibilidad');
+            if ($user) {
+                session()->put($visitedKey, true);
+            }
+        }
 
         return view('adopciones.show', compact('adopcion'));
     }
 
 
-
     public function destroy($id)
     {
         $adopcion = Adopcion::findOrFail($id);
+
+        if ($adopcion->id_usuario != Auth::id()) {
+            return redirect()->route('adopciones.index')->with('fracaso', 'No tienes permiso para eliminar esta publicación.');
+        }
+
+        if ($adopcion->imagen) {
+            Storage::disk('public')->delete($adopcion->imagen);
+        }
+
         $adopcion->delete();
 
-        return redirect()->route('adopciones.index')->with('success', 'Publicación eliminada correctamente');
+        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción eliminada.');
     }
 
     public function paneldestroy(string $id)

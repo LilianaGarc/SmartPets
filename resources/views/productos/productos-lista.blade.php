@@ -84,25 +84,34 @@
     <section class="py-1 mt-0">
         <div class="container">
 
+
+            <!-- BARRA DE BUSQUEDA -->
             <nav class="navbar bg-body-tertiary">
-                <div class="container-fluid">
-                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET">
-                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" id="search-query">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                <div class="container-fluid mx-3 px-3 my-2">
+                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET"
+                    onsubmit="return document.getElementById('search-query').value.trim() !== '';">
+                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" value="{{ old('query',$query ?? '') }}" id="search-query">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>
 
-            <h2 class="text-center mb-4">CATEGORIAS</h2>
+            <h2 class="text-center mb-4"></h2>
             <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+                <!-- CATEGORIAS -->
                 @forelse($categorias as $categoria)
-                    <button class="category-pill active">{{$categoria->nombre}}</button>
+                    <form action="{{ route('productos.index') }}" method="GET">
+                        <input type="hidden" name="query" value="{{ request('query') }}">
+                        <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
+                        <button class="category-pill {{ request('categoria_id') == $categoria->id ? 'active' : '' }}" type="submit">
+                            {{ $categoria->nombre }}
+                        </button>
+                    </form>
                 @empty
-                    <p class="text-center">No se han encontrado categorias.</p>
+                    <p class="text-center">No se han encontrado categorías.</p>
                 @endforelse
-
             </div>
-            <h2 class="text-center mb-4">PRODUCTOS</h2>
+            <h2 class="text-center mb-4"></h2>
             <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>
             <div class="row g-4">
                 @forelse($productos as $producto)
@@ -112,7 +121,6 @@
                             {{ $producto->nombre }}" class="w-100">
                             <div class="detalles p-1 mx-2 d-flex justify-content-center">
                                 <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
-                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
                             </div>
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
