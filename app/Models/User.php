@@ -29,7 +29,7 @@ class User extends Authenticatable
 
     public function calificaciones(){
         //Un usuario puede tener muchas calificaciones (1)
-        return $this->hasMany(Calificacion::class, 'id_usuario');
+        return $this->hasMany(Calificacion::class, 'id_user');
     }
 
     public function resenias()

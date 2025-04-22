@@ -163,9 +163,11 @@
     <div class="card shadow-sm p-4 mb-4">
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Calificar y Opinar</h3>
+            @auth
             <form action="{{ route('calificaciones.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="id_veterinaria" value="{{ $veterinaria->id }}">
+                <input type="hidden" name="id_usuario" value="{{ auth()->user()->id }}">
                 <div class="mb-3">
                     <label for="calificacion" class="form-label fw-bold">Calificación:</label>
                     <div class="star-rating">
@@ -184,6 +186,7 @@
                 <button type="submit" class="btn btn-primary">Enviar</button>
                 <input class="btn btn-danger" type="reset" value="Limpiar">
             </form>
+            @endauth
         </div>
     </div>
 
@@ -200,18 +203,13 @@
                 @foreach ($veterinaria->calificaciones as $calificacion)
                     <div class="card mb-3 p-3 border-0 shadow-sm">
                         <div class="d-flex align-items-center">
-                            @php
-                            $foto = null;
-                            if ($calificacion->user && $calificacion->user->fotoperfil) {
-                                $foto = asset('storage/' . $calificacion->user->fotoperfil);
-                            } else {
-                                $foto = asset('images/fotodeperfil.webp');
-                            }
-                                $foto = $veterinaria->usuario->fotoperfil
-                                    ? asset('storage/' . $veterinaria->usuario->fotoperfil)
-                                    : asset('images/fotodeperfil.webp');
-                            @endphp
-                            <img src="{{ $foto }}" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        @php
+                            $fotoPerfil = $calificacion->user && $calificacion->user->fotoperfil
+                            ? asset('storage/' . $calificacion->user->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
+                        @endphp
+    
+                            <img src="{{ $fotoPerfil }}" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
                              <div>
                                 <h5 class="mb-1 fw-bold">{{ $calificacion->user->name }}</h5>
                                     <div class="text-warning">
