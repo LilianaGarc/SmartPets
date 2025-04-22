@@ -456,59 +456,61 @@
 
                     <p class="mb-4">{{$producto->descripcion}}</p>
 
-                    <!-- Selector de Cantidad -->
-                    <div class="mb-4">
-                        <label class="form-label">{{$producto->stock}} unidades disponibles</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary">-</button>
-                            <input type="number" class="form-control quantity-input" value="1" min="1">
-                            <button class="btn btn-outline-secondary">+</button>
-                        </div>
-                    </div>
 
                     <!-- Botones de Acción -->
                     @auth
                         @if( auth()->check() && auth()->id()===$producto->user_id)
                             <div class="d-grid gap-2">
                                 <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
-                                <form id="delete-form-{{$producto->id}}"
-                                      action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#ModalProducto">
-                                        Eliminar Producto
-                                    </button>
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-auto">
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="ModalProducto" tabindex="-1"
-                                         aria-labelledby="ModalProductoLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="ModalProductoLabel">Modal
-                                                        title</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Cancelar"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    ¿Estás seguro de que deseas eliminar este producto?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <form action="{{ route('productos.destroy', $producto->id) }}"
-                                                          method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancelar
-                                                        </button>
-                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <form id="delete-form-{{$producto->id}}"
+                                          action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#ModalProducto">
+                                            Eliminar
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="ModalProducto" tabindex="-1"
+                                             aria-labelledby="ModalProductoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="ModalProductoLabel">Eliminar Producto</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Cancelar"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ¿Estás seguro de que deseas eliminar este producto?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="{{ route('productos.destroy', $producto->id) }}"
+                                                              method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancelar
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </form>
                                     </div>
-                                </form>
+                                    <div class="col-auto">
+
+                                         <button class="btn btn-warning"
+                                            onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar
+                                         </button>
+                                    </div>
+                                </div>
+
                             </div>
                         @endif
                     @endauth

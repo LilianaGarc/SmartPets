@@ -121,7 +121,6 @@
                             {{ $producto->nombre }}" class="w-100">
                             <div class="detalles p-1 mx-2 d-flex justify-content-center">
                                 <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
-                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar</button>
                             </div>
                             <div class="p-3">
                                 <h6>{{$producto->nombre}}</h6>
