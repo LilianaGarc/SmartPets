@@ -31,7 +31,7 @@ class CalificacionController extends Controller
      */
     public function store(Request $request)
     {
-        $id_user = Auth::id() ?? 1; // Usa el ID autenticado o 1 como valor por defecto
+        $id_user = Auth::id(); // Usa el ID autenticado
         $request->validate([
             'calificacion' => 'required|integer|min:1|max:5',
             'opinion' => 'nullable|string|max:500',
@@ -67,7 +67,8 @@ class CalificacionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $calificacion = Calificacion::findOrFail($id);
+        return view('veterinarias.unaVeterinaria')->with('calificacion', $calificacion);
     }
 
     /**

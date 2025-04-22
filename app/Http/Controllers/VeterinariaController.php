@@ -81,6 +81,7 @@ class VeterinariaController extends Controller
             'horario_apertura' => $request->input('horario_apertura'),
             'horario_cierre' => $request->input('horario_cierre'),
             'telefono' => $request->input('telefono'),
+            'whatsapp' => $request->input('whatsapp'),
             'evaluacion' => $request->input('evaluacion', 0),
             'id_ubicacion' => $ubicacion->id,
         ]);
