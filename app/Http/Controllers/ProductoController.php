@@ -261,7 +261,7 @@ class ProductoController extends Controller
      $producto->resenias()->create([
          'titulo' => $request->titulo,
          'contenido' => $request->contenido,
-         'user_id' => $random->id,
+         'user_id' => auth()->id(),
      ]);
      return redirect()->back()->with('success', 'Reseña agregada correctamente');
     }
@@ -270,8 +270,56 @@ class ProductoController extends Controller
     {
         $producto = Producto::findOrFail($producto_id);
         $resenia = $producto->resenias()->where('id', $resenia_id)->firstOrFail();
+        // Verificar si el usuario autenticado es el autor de la reseña
+        if ($resenia->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'No tienes permiso para eliminar esta reseña');
+        }
         $resenia->delete();
         return redirect()->back()->with('success', 'Reseña eliminada correctamente');
+    }
+
+    public function editarResenia(Request $request, $producto_id, $resenia_id)
+    {
+        $request->validate([
+            'titulo' => 'required|string|min:5|max:255',
+            'contenido' => 'required|string|min:5',
+        ]);
+
+        $producto = Producto::findOrFail($producto_id);
+        $resenia = Resenia::where('producto_id', $producto_id)
+            ->where('id', $resenia_id)
+            ->firstOrFail();
+
+        // Verificar si el usuario autenticado es el autor de la reseña
+        if ($resenia->user_id !== auth()->id()) {
+            return redirect()->back()->with('error', 'No tienes permiso para editar esta reseña');
+        }
+
+        // Actualizar la reseña
+        $resenia->update([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido
+        ]);
+
+        // Obtener todas las reseñas del producto
+        $resenias = $producto->resenias()->with('user')->get();
+
+        return redirect()->route('productos.show', $producto_id)
+            ->with('success', 'Reseña actualizada correctamente');
+    }
+
+    public function mostrarFormularioEdicion($producto_id, $resenia_id)
+    {
+        $producto = Producto::findOrFail($producto_id);
+        $resenia = Resenia::findOrFail($resenia_id);
+        $resenias = $producto->resenias()->with('user')->get();
+
+        return view('productos.productos-detalles', [
+            'producto' => $producto,
+            'resenia' => $resenia,
+            'resenias' => $resenias,
+            'mostrarFormulario' => true
+        ]);
     }
 
 }
