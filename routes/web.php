@@ -124,8 +124,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
 
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
-
 });
+
 
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
@@ -261,6 +261,7 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 //Rutas para Publicaciones
 Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
 Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
+
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');

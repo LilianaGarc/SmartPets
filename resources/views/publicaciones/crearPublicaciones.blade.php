@@ -19,12 +19,12 @@
                         <span class="breadcrumb__title">Inicio</span>
                     </a>
                 </li>
-                <li class="breadcrumb__item breadcrumb__item-active">
+                <li class="breadcrumb__item">
                     <a href="{{ route('publicaciones.index') }}" class="breadcrumb__inner">
                         <span class="breadcrumb__title">Publicaciones</span>
                     </a>
                 </li>
-                <li class="breadcrumb__item">
+                <li class="breadcrumb__item breadcrumb__item-active">
                     <a href="{{ route('publicaciones.create') }}" class="breadcrumb__inner">
                         <span class="breadcrumb__title">Crear publicación</span>
                     </a>
