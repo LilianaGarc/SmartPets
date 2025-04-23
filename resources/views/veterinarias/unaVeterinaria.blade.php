@@ -227,7 +227,7 @@
 
                         <!-- Botones para editar y eliminar -->
                         <!-- Solo mostrar si el usuario está autenticado y es el propietario de la calificación -->
-                        @if (auth()->check() && auth()->user()->id == $calificacion->user_id)
+                        @if (auth()->check() && auth()->id() == $calificacion->id_user)
                             <div class="text-end mt-2">
                                 <!-- Botón para editar -->
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar{{ $calificacion->id }}">
@@ -238,7 +238,6 @@
                                 <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ $calificacion->id }}">
                                     <i class="fas fa-trash me-1"></i>Eliminar
                                 </button>
-                        
                             </div>
                         @endif
                     </div>
@@ -259,6 +258,7 @@
                     <form action="{{ route('calificaciones.update', $calificacion->id) }}" method="POST">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="id_veterinaria" value="{{ $veterinaria->id }}">
                         <div class="modal-body">
                             <div class="mb-3">
                                  <label class="form-label fw-bold">Calificación:</label>
@@ -277,7 +277,7 @@
                                         <textarea class="form-control" 
                                             id="opinion{{ $calificacion->id }}" 
                                             name="opinion" 
-                                            rows="3">{{ $calificacion->opinion }}
+                                            rows="3">{{ trim($calificacion->opinion) }}
                                         </textarea>
                                 </div>
                         </div>
