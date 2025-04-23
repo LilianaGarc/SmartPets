@@ -32,6 +32,7 @@
         <table class="table table-striped table-bordered" >
             <thead>
             <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Nombre de la Veterinaria</th>
                 <th scope="col">Nombre del Veterinario</th>
                 <th scope="col">Telefono</th>
@@ -40,6 +41,7 @@
             <tbody>
             @foreach($veterinarias as $veterinaria)
                 <tr>
+                    <td>{{ $veterinaria->id }}</td>
                     <td>{{  $veterinaria->nombre}}</td>
                     <td>{{  $veterinaria->nombre_veterinario}}</td>
                     <td>{{  $veterinaria->telefono}}</td>
@@ -51,8 +53,8 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Detalles</a></li>
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
-                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$veterinarias->id}}">Eliminar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('veterinarias.edit', ['id' => $veterinaria->id]) }}">Editar</a></li>
+                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$veterinaria->id}}">Eliminar</a></li>
                             </ul>
                         </div>
 

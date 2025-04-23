@@ -75,7 +75,6 @@ class VeterinariaController extends Controller
 
         // Crear la veterinaria
         $veterinaria = Veterinaria::create([
-            'id' => $request->input('id'),
             'nombre' => $request->input('nombre'),
             'nombre_veterinario' => $request->input('nombre_veterinario'),
             'horario_apertura' => $request->input('horario_apertura'),

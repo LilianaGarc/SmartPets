@@ -3,7 +3,7 @@
 @section('titulo', 'Creación de Veterinaria')
 
 @section('contenido')
-<di class="container mt-4">
+<div class="container mt-2">
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">

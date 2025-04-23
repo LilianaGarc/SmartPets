@@ -358,7 +358,7 @@
             <li><a class="dropdown-item-custom"  href="{{ route('publicaciones.panelcreate') }}">Publicaciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Comentarios</a></li>
             <li><a class="dropdown-item-custom"  href="#">Reacciones</a></li>
-            <li><a class="dropdown-item-custom"  href="#">Veterinarias</a></li>
+            <li><a class="dropdown-item-custom"  href="{{ route('veterinarias.create') }}">Veterinarias</a></li>
             <li><a class="dropdown-item-custom"  href="#">Adopciones</a></li>
             <li><a class="dropdown-item-custom"  href="#">Eventos</a></li>
             <li><a class="dropdown-item-custom"  href="#">Mensajes</a></li>
