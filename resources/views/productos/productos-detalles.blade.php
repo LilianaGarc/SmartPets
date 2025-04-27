@@ -243,17 +243,14 @@
         transform: translateY(-20px);
         max-height: 0;
         margin: 0;
-        padding: 0;
         border: none;
         pointer-events: none;
-        visibility: hidden;
     }
 
     .review-visible {
         opacity: 1;
         transform: translateY(0);
-        max-height: 1000px;
-        visibility: visible;
+        max-height: 1000px; /* Arbitrary large value */
         pointer-events: auto;
     }
 

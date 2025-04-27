@@ -1,4 +1,4 @@
-@extends('productos.productos-layout'), @extends('MenuPrincipal.Navbar')
+@extends('productos.productos-layout') @extends('MenuPrincipal.Navbar')
 @section('titulo', 'Lista de Productos')
 
 @section('contenido')

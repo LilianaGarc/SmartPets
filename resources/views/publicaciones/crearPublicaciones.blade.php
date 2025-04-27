@@ -1,6 +1,8 @@
+@include('MenuPrincipal.Navbar')
 @extends('layout.plantilla')
 @section('titulo','Crear publicacion')
 @section('contenido')
+
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -19,12 +21,12 @@
                         <span class="breadcrumb__title">Inicio</span>
                     </a>
                 </li>
-                <li class="breadcrumb__item breadcrumb__item-active">
+                <li class="breadcrumb__item">
                     <a href="{{ route('publicaciones.index') }}" class="breadcrumb__inner">
                         <span class="breadcrumb__title">Publicaciones</span>
                     </a>
                 </li>
-                <li class="breadcrumb__item">
+                <li class="breadcrumb__item breadcrumb__item-active">
                     <a href="{{ route('publicaciones.create') }}" class="breadcrumb__inner">
                         <span class="breadcrumb__title">Crear publicación</span>
                     </a>
@@ -36,59 +38,52 @@
     <div class="row">
         <div class="col-11">
             <div class="card">
-                <form method="post"
+                <form method="post" enctype="multipart/form-data"
                       @if (isset($publicacion))
                           action="{{ route('publicaciones.update', ['id'=>$publicacion->id]) }}"
                       @else
                           action="{{ route('publicaciones.store') }}"
-                       @endif>
+                    @endif>
+                    @csrf
                     @isset($publicacion)
                         @method('put')
                     @endisset
-                    @csrf
-                        <div class="card-body">
-                            @if(isset($publicacion))
-                                <h5>Editar publicacion</h5>
-                            @else
-                                <h5>Crear publicacion</h5>
-                            @endif
-                            <hr>
-                            <h5 class="card-title">
-                                <button class="round-button-2">
-                                    <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-2">
-                                </button>
-                                User name</h5>
-                            <div class="col">
-                                <select class="form-select" id="visibilidad" aria-label="visibilidad" name="visibilidad" style="width: 11%; height: 8%; margin: 1.5%; font-size: 80%;">
 
-                                    @if(isset($publicacion))
-                                        {{ $publicacion->visibilidad ? "selected" : "" }}>
-                                    @else
-                                        <option selected><i class="fa-solid fa-earth-americas"></i> publico</option>
-                                    @endif
-                                    <option>privado</option>
-                                </select>
-                            </div>
+                    <div class="card-body">
+                        <h5>{{ isset($publicacion) ? 'Editar publicación' : 'Crear publicación' }}</h5>
+                        <hr>
+                        @php
+                            $fotoPerfil = auth()->user()->fotoperfil
+                                ? asset('storage/' . auth()->user()->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
 
-                            <div class="col">
-                                <div class="form-floating">
-                                    <div class="col-10">
-                                        <textarea class="form-control" placeholder="¿Que quieres compartir?" name="contenido" id="contenido" style="width: 116%; margin: 1.5%; height: 200px !important;" value="{{ isset($publicacion) ? $publicacion->contenido : old('contenido') }}"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <input type="file" class="form-control" id="imagen" name="imagen"  accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="width: 96%; margin: 1.5%">
-                            </div>
-
-                            <br>
-                            <button type="submit" class="btn">Publicar</button>
-                            <button type="reset" class="btn">Cancelar</button>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoPerfil }}'); margin-right: 10px;"></div>
+                            <h5 class="mb-0">{{ auth()->user()->name }}</h5>
                         </div>
+
+
+                        <div class="col">
+                            <select class="form-select" name="visibilidad" style="width: 20%; margin: 1.5%;">
+                                <option value="publico" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'publico' ? 'selected' : '' }}>Público</option>
+                                <option value="privado" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'privado' ? 'selected' : '' }}>Privado</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%;">
+                        </div>
+
+                        <button type="submit" class="btn btn-light">Publicar</button>
+                        <button type="reset" class="btn btn-light">Cancelar</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-
 @endsection

@@ -1,3 +1,4 @@
+@include('MenuPrincipal.Navbar')
 @extends('layout.plantilla')
 @section('titulo','Comentarios')
 @section('contenido')
@@ -12,6 +13,30 @@
         </div>
     @endif
     <div>
+
+        <div class="row">
+            <div class="container">
+                <div class="breadcrumb-container">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item">
+                            <a href="{{ route('index') }}" class="breadcrumb__inner">
+                                <span class="breadcrumb__title">Inicio</span>
+                            </a>
+                        </li>
+                        <li class="breadcrumb__item ">
+                            <a href="{{ route('publicaciones.index') }}" class="breadcrumb__inner">
+                                <span class="breadcrumb__title">Publicaciones</span>
+                            </a>
+                        </li>
+                        <li class="breadcrumb__item breadcrumb__item-active">
+                            <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="breadcrumb__inner">
+                                <span class="breadcrumb__title">Comentarios</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         <form method="post" action="{{ route('comentarios.store', ['id'=> $publicacion->id]) }}">
             @csrf
             <div class="card-nuevo-comentario mb-3">
@@ -42,14 +67,20 @@
                         <div class="card-publicacion mb-3">
                             <div class="card-body">
                                 <h3 class="card-title">
-                                    <button class="round-button-2">
-                                        <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-2">
-                                    </button>
-                                    @if($publicacion->user)
-                                        {{ $publicacion->user->name }}
-                                    @else
-                                        Usuario no disponible
-                                    @endif</h3>
+                                    @php
+                                        $foto = $publicacion->user && $publicacion->user->fotoperfil
+                                            ? asset('storage/' . $publicacion->user->fotoperfil)
+                                            : asset('images/fotodeperfil.webp');
+                                    @endphp
+
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $foto }}'); margin-right: 10px;"></div>
+                                        <h5 class="mb-0">
+                                            {{ $publicacion->user ? $publicacion->user->name : 'Usuario no disponible' }}
+                                        </h5>
+                                    </div>
+                                </h3>
+
                                 <p class="card-text">{{ $publicacion->contenido }}</p>
                                 <p class="card-text"><small class="text-body-secondary">{{$publicacion->updated_at->diffForHumans()}}</small></p>
 
@@ -70,30 +101,32 @@
                             <div>
                                 @foreach($comentarios as $comentario)
                                     <div class="row" style="margin-left: 2%">
-                                        <div class="col-1">
-                                            <button class="round-button-comentario">
-                                                <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-comentario">
-                                            </button>
-                                        </div>
                                         <div class="col-10">
                                             <div class="card-comentario mb-3">
                                                 <div class="card-body">
-                                                    <h6 class="card-title">
-                                                        @if($comentario->user)
-                                                            {{ $comentario->user->name }}
-                                                        @else
-                                                            Usuario no disponible
-                                                        @endif
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        @php
+                                                            $fotoComentario = $comentario->user && $comentario->user->fotoperfil
+                                                                ? asset('storage/' . $comentario->user->fotoperfil)
+                                                                : asset('images/fotodeperfil.webp');
+                                                        @endphp
 
-                                                    </h6>
-                                                    <h10><p class="card-text"><small class="text-body-secondary">{{$comentario->updated_at->diffForHumans()}}</small></p></h10>
-                                                    <h7><p class="card-text">{{ $comentario->contenido }}</p></h7>
+                                                        <div class="foto-perfil" style="width: 30px; height: 30px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoComentario }}'); margin-right: 10px;"></div>
+
+                                                        <h6 class="card-title mb-0">
+                                                            {{ $comentario->user ? $comentario->user->name : 'Usuario no disponible' }}
+                                                        </h6>
+                                                    </div>
+
+                                                    <p class="card-text"><small class="text-body-secondary">{{ $comentario->updated_at->diffForHumans() }}</small></p>
+                                                    <p class="card-text">{{ $comentario->contenido }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <br>
                                 @endforeach
+
                             </div>
 
                         </div>

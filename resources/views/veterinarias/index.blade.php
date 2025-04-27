@@ -34,10 +34,10 @@
     </h1>
 
     @if($veterinarias->isEmpty())
-        <div class="card shadow-sm border p-5">
-            <div class="text-center">
-                <p class="text-muted mb-3">No hay veterinarias registradas</p>
-                <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" class="mx-auto d-block" style="width: 200px; opacity: 0.7;">
+        <div class="card h-100 shadow-sm border p-5">
+            <div class="text-center p-4 p-md-5">
+                <p class="text-muted mb-3 fs-5">No hay veterinarias registradas</p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" class="mx-auto d-block img-fluid" style="width: 150px; max-width: 200px; opacity: 0.7;">
             </div>
         </div>
     @else
@@ -63,26 +63,27 @@
 
                 <div class="card-body">
                     <h4 class="card-title">{{ $veterinaria->nombre }}</h4>
-                    <p class="card-text">
-                    <div class="mt-1"><b>Horario:</b> {{ $veterinaria->horario_apertura }} - {{ $veterinaria->horario_cierre }}</div>
-                    <div class="mt-1"><b>Teléfono:</b> {{ $veterinaria->telefono }}</div>
-                    <div class="mt-1"><b>Dirección</b>{{ $veterinaria->ubicacion->direccion }}</div>
-                    <span class="badge bg-success me-2">{{ number_format($veterinaria->calificacion_promedio, 1) }}</span>                    </p>
-                    <div class="mt-auto d-flex gap-2">
-                        @if($veterinaria->whatsapp)
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $veterinaria->whatsapp) }}"
-                            target="_blank"
-                            class="btn btn-success d-flex align-items-center gap-2">
-                            <i class="fab fa-whatsapp"></i>
-                            Contactar
-                        </a>
-                        @endif
-                        <a href="{{ route('veterinarias.show', $veterinaria->id) }}"
-                            class="btn btn-primary d-flex align-items-center gap-2">
-                            <i class="fas fa-info-circle"></i>
-                            Ver más
-                        </a>
+                    <div class="card-text">
+                        <div class="mt-1"><b>Horario:</b> {{ $veterinaria->horario_apertura }} - {{ $veterinaria->horario_cierre }}</div>
+                        <div class="mt-1"><b>Teléfono:</b> {{ $veterinaria->telefono }}</div>
+                        <div class="mt-1"><b>Dirección: </b>{{ $veterinaria->ubicacion->direccion }}</div>
+                        <span class="badge bg-success me-2">{{ number_format($veterinaria->calificacion_promedio, 1) }}</span> 
                     </div>
+                        <div class="mt-1 d-flex gap-2">
+                            @if($veterinaria->whatsapp)
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $veterinaria->whatsapp) }}"
+                                target="_blank"
+                                class="btn btn-success d-flex align-items-center gap-2">
+                                <i class="fab fa-whatsapp"></i>
+                                Contactar
+                            </a>
+                            @endif
+                            <a href="{{ route('veterinarias.show', $veterinaria->id) }}"
+                                class="btn btn-primary d-flex align-items-center gap-2">
+                                <i class="fas fa-info-circle"></i>
+                                Ver más
+                            </a>
+                        </div>
                 </div>
             </div>
         </div>

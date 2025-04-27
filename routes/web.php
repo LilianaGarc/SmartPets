@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
     Route::get('/publicaciones/{id}/verDetalles', [PublicacionController::class, 'detalles'])->name('publicaciones.detalles')->whereNumber('id');
+    Route::get('publicaciones/{id}/comentarios', [ComentarioController::class, 'comentarios'])->name('publicaciones.comentarios');
 
     Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
@@ -133,8 +134,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
 
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
-
 });
+
 
 Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
@@ -276,8 +277,7 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 
 
 //Rutas para Publicaciones
-Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
-Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
+
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');

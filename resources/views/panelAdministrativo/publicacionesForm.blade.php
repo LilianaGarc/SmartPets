@@ -1,4 +1,4 @@
-@extends('panelAdministrativo.administrativePanel')
+@extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
     <form method="post"

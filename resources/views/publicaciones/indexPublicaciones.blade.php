@@ -1,3 +1,4 @@
+@include('MenuPrincipal.Navbar')
 @extends('layout.plantilla')
 @section('titulo','Publicaciones')
 @section('contenido')
@@ -35,23 +36,26 @@
             </div>
         </div>
         <div class="col">
-            <div class="container-md" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
-                <a href="{{ route('publicaciones.create') }}" class="btn-user" role="button"><h7><i class="fas fa-plus"></i> Crear una publicacion<img src="{{ asset('images/perritoPublicacion.webp') }}" alt="Imagen" class="button-img"></h7></a>
-            </div>
+
             <hr>
             <div class="row">
                 @foreach($publicaciones as $publicacion)
                     <div class="card-publicacion mb-3">
                         <div class="card-body">
                             <h3 class="card-title">
-                                <button class="round-button-2">
-                                    <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-2">
-                                </button>
-                                @if($publicacion->user)
-                                    {{ $publicacion->user->name }}
-                                @else
-                                    Usuario no disponible
-                                @endif</h3>
+                                @php
+                                    $foto = $publicacion->user && $publicacion->user->fotoperfil
+                                        ? asset('storage/' . $publicacion->user->fotoperfil)
+                                        : asset('images/fotodeperfil.webp');
+                                @endphp
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $foto }}'); margin-right: 10px;"></div>
+                                    <h5 class="mb-0">
+                                        {{ $publicacion->user ? $publicacion->user->name : 'Usuario no disponible' }}
+                                    </h5>
+                                </div>
+                            </h3>
                             <p class="card-text">{{ $publicacion->contenido }}</p>
                             <p class="card-text"><small class="text-body-secondary">{{$publicacion->updated_at->diffForHumans()}}</small></p>
 
