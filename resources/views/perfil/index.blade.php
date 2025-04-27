@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
 </head>
 <body>
 @if(session('success'))
@@ -57,9 +56,8 @@
         </div>
     </div>
 
-
     <div class="tabs">
-        <button class="tab" onclick="cambiarTab('adopciones')" title="Adopciones">
+        <button class="tab activo" onclick="cambiarTab('adopciones')" title="Adopciones">
             <i class="fas fa-paw"></i>
             <span class="tab-text">Mascotas en adopción</span>
         </button>
@@ -67,7 +65,7 @@
             <i class="fas fa-paper-plane"></i>
             <span class="tab-text">Solicitudes enviadas</span>
         </button>
-        <button class="tab activo" onclick="cambiarTab('publicaciones')" title="Publicaciones">
+        <button class="tab" onclick="cambiarTab('publicaciones')" title="Publicaciones">
             <i class="fas fa-clone"></i>
             <span class="tab-text">Publicaciones</span>
         </button>
@@ -85,11 +83,9 @@
         </button>
     </div>
 
-
     <div class="contenido">
 
-
-        <div id="adopciones" class="grid">
+        <div id="adopciones" class="grid activo">
             @if($adopciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
                     <p class="no-hay-message" style="font-size: 18px;">¡No has publicado adopciones aún! 😿</p>
@@ -137,10 +133,7 @@
             @endif
         </div>
 
-        <div id="publicaciones" class="grid activo">
-        </div>
-
-
+        <div id="publicaciones" class="grid"></div>
         <div id="veterinarias" class="grid"></div>
         <div id="eventos" class="grid"></div>
         <div id="petshop" class="grid"></div>
@@ -159,6 +152,10 @@
             }
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        cambiarTab('adopciones');
+    });
 
     lucide.createIcons();
 </script>
