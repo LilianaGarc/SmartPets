@@ -59,10 +59,6 @@
 
 
     <div class="tabs">
-        <button class="tab activo" onclick="cambiarTab('publicaciones')" title="Publicaciones">
-            <i class="fas fa-clone"></i>
-            <span class="tab-text">Publicaciones</span>
-        </button>
         <button class="tab" onclick="cambiarTab('adopciones')" title="Adopciones">
             <i class="fas fa-paw"></i>
             <span class="tab-text">Mascotas en adopción</span>
@@ -70,6 +66,10 @@
         <button class="tab" onclick="cambiarTab('solicitudes')" title="Solicitudes">
             <i class="fas fa-paper-plane"></i>
             <span class="tab-text">Solicitudes enviadas</span>
+        </button>
+        <button class="tab activo" onclick="cambiarTab('publicaciones')" title="Publicaciones">
+            <i class="fas fa-clone"></i>
+            <span class="tab-text">Publicaciones</span>
         </button>
         <button class="tab" onclick="cambiarTab('veterinarias')" title="Veterinarias">
             <i class="fas fa-clinic-medical"></i>
@@ -87,9 +87,7 @@
 
 
     <div class="contenido">
-        <div id="publicaciones" class="grid activo">
-            <div class="card"></div>
-        </div>
+
 
         <div id="adopciones" class="grid">
             @if($adopciones->isEmpty())
@@ -139,7 +137,8 @@
             @endif
         </div>
 
-
+        <div id="publicaciones" class="grid activo">
+        </div>
 
 
         <div id="veterinarias" class="grid"></div>

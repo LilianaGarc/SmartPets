@@ -44,18 +44,18 @@ class ComentarioController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $id)
+    public function store(Request $request, $id)
     {
         $publicacion = Publicacion::findOrFail($id);
         $comentario = new Comentario();
         $comentario->contenido = $request->input('comentario');
-        $comentario->id_user = 1;
+        $comentario->id_user = auth()->id();
         $comentario->id_publicacion = $publicacion->id;
 
-        if ($comentario->save()){
-            return redirect()->route('publicaciones.show',['id'=>$id])->with('exito', 'El comentario se envio correctamente.');
-        }else{
-            return redirect()->route('publicaciones.show',['id'=>$id])->with('fracaso', 'El comentario no se puedo enviar.');
+        if ($comentario->save()) {
+            return redirect()->route('publicaciones.comentarios', ['id' => $id])->with('exito', 'El comentario se envió correctamente.');
+        } else {
+            return redirect()->route('publicaciones.comentarios', ['id' => $id])->with('fracaso', 'El comentario no se pudo enviar.');
         }
     }
 
@@ -103,4 +103,13 @@ class ComentarioController
         }
 
     }
+    public function comentarios($id)
+    {
+        $publicacion = Publicacion::with('user')->findOrFail($id);
+        $comentarios = Comentario::with('user')->where('id_publicacion', $id)->get();
+
+        return view('publicaciones.comentarios', compact('publicacion', 'comentarios'));
+    }
+
+
 }

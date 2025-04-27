@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
     Route::get('/publicaciones/{id}/verDetalles', [PublicacionController::class, 'detalles'])->name('publicaciones.detalles')->whereNumber('id');
+    Route::get('publicaciones/{id}/comentarios', [ComentarioController::class, 'comentarios'])->name('publicaciones.comentarios');
 
     Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
