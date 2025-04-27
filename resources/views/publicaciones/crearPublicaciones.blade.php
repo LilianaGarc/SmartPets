@@ -52,12 +52,17 @@
                     <div class="card-body">
                         <h5>{{ isset($publicacion) ? 'Editar publicación' : 'Crear publicación' }}</h5>
                         <hr>
-                        <h5 class="card-title">
-                            <button class="round-button-2">
-                                <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-2">
-                            </button>
-                            {{ auth()->user()->name }}
-                        </h5>
+                        @php
+                            $fotoPerfil = auth()->user()->fotoperfil
+                                ? asset('storage/' . auth()->user()->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
+
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoPerfil }}'); margin-right: 10px;"></div>
+                            <h5 class="mb-0">{{ auth()->user()->name }}</h5>
+                        </div>
+
 
                         <div class="col">
                             <select class="form-select" name="visibilidad" style="width: 20%; margin: 1.5%;">
@@ -74,8 +79,8 @@
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%;">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Publicar</button>
-                        <button type="reset" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-light">Publicar</button>
+                        <button type="reset" class="btn btn-light">Cancelar</button>
                     </div>
                 </form>
             </div>
