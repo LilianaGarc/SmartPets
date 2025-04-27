@@ -1,4 +1,5 @@
-@extends('productos.productos-layout') , @extends('MenuPrincipal.Navbar')
+@extends('productos.productos-layout')
+@extends('MenuPrincipal.Navbar')
 @section('titulo','Detalles del producto')
 
 <style>
@@ -231,8 +232,10 @@
         border-radius: 0.25rem;
         margin-bottom: 1rem;
         width: 100%;
-        transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
-        overflow: hidden;
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 1000px;
+        transition: all 0.3s ease;
     }
 
     .review-hidden {
@@ -240,14 +243,17 @@
         transform: translateY(-20px);
         max-height: 0;
         margin: 0;
+        padding: 0;
         border: none;
         pointer-events: none;
+        visibility: hidden;
     }
 
     .review-visible {
         opacity: 1;
         transform: translateY(0);
-        max-height: 1000px; /* Arbitrary large value */
+        max-height: 1000px;
+        visibility: visible;
         pointer-events: auto;
     }
 
@@ -528,10 +534,8 @@
 
                 <h1 class="mb-4">Reseñas</h1>
                 <!-- ACORDEON -->
+                @auth
                 <div class="">
-
-                    @auth
-
                         <div class="review-system">
                             <!-- Circular Toggle Button -->
                             <button id="review-toggle-btn" class="review-toggle-btn">
@@ -555,7 +559,8 @@
                                         <div class="review-form-group">
                                             <label for="review-title" class="review-label">Título</label>
                                             <input type="text" class="review-input" id="review-title" name="titulo"
-                                                   value="{{ old('titulo', $resenia->titulo ?? '') }}" placeholder="Escribe un título para tu reseña">
+                                                   value="{{ old('titulo', $resenia->titulo ?? '') }}"
+                                                   placeholder="Escribe un título para tu reseña">
                                         </div>
                                         <div class="review-form-group">
                                             <label for="review-content" class="review-label">Contenido</label>
@@ -651,97 +656,60 @@
                 </div>
             </div>
         </div>
-        <script>
-            function toggleDeleteButton(id) {
-                let checkbox = document.getElementById(`confirm-checkbox-${id}`);
-                let button = document.getElementById(`delete-button-${id}`);
-                button.disabled = !checkbox.checked;
-            }
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Botones y contenedor del formulario de reseña
+                    const toggleBtn = document.getElementById('review-toggle-btn');
+                    const reviewContainer = document.getElementById('review-container');
+                    const cancelBtn = document.querySelector('.review-button-cancel');
 
-            // Toggle form visibility
-            const toggleBtn = document.getElementById('review-toggle-btn');
-            const reviewContainer = document.getElementById('review-container');
-            const cancelBtn = document.querySelector('.review-button-cancel');
-
-            toggleBtn.addEventListener('click', function () {
-                toggleForm();
-            });
-
-            cancelBtn.addEventListener('click', function () {
-                toggleForm(false);
-            });
-
-            function toggleForm(show) {
-                if (show === undefined) {
-                    // Toggle based on current state
-                    toggleBtn.classList.toggle('active');
-                    reviewContainer.classList.toggle('review-hidden');
-                    reviewContainer.classList.toggle('review-visible');
-                } else if (show === false) {
-                    // Force hide
-                    toggleBtn.classList.remove('active');
-                    reviewContainer.classList.add('review-hidden');
-                    reviewContainer.classList.remove('review-visible');
-                } else {
-                    // Force show
-                    toggleBtn.classList.add('active');
-                    reviewContainer.classList.remove('review-hidden');
-                    reviewContainer.classList.add('review-visible');
-                }
-            }
-
-            <!-- Codigo agregado 08-04 martes -->
-            // Seleccionamos la imagen principal y todas las miniaturas dentro de la galería existente
-            const mainImage = document.querySelector('.main-image img'); // Imagen principal
-            const thumbnails = document.querySelectorAll('.thumbnail-image'); // Miniaturas
-
-            // Recorremos todas las miniaturas y les añadimos un evento de clic
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', () => {
-                    // Guardamos temporalmente el src de la imagen principal
-                    const tempSrc = mainImage.src;
-
-                    // Intercambiamos el src de la imagen principal con el de la miniatura
-                    mainImage.src = thumbnail.src;
-
-                    // Asignamos el src temporal a la miniatura
-                    thumbnail.src = tempSrc;
-                });
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const toggleBtn = document.getElementById('review-toggle-btn');
-                const reviewContainer = document.getElementById('review-container');
-                const cancelBtn = document.querySelector('.review-button-cancel');
-
-                // Función para mostrar/ocultar el formulario
-                function toggleForm(show) {
-                    if (show === undefined) {
-                        reviewContainer.classList.toggle('review-hidden');
-                        reviewContainer.classList.toggle('review-visible');
-                        toggleBtn.classList.toggle('active');
-                    } else {
-                        reviewContainer.classList.remove(show ? 'review-hidden' : 'review-visible');
-                        reviewContainer.classList.add(show ? 'review-visible' : 'review-hidden');
-                        toggleBtn.classList.toggle('active', show);
+                    // Función para mostrar/ocultar el formulario de reseñas
+                    function toggleForm(show) {
+                        if (show === undefined) {
+                            reviewContainer.classList.toggle('review-hidden');
+                            reviewContainer.classList.toggle('review-visible');
+                            toggleBtn.classList.toggle('active');
+                        } else {
+                            reviewContainer.classList.remove(show ? 'review-hidden' : 'review-visible');
+                            reviewContainer.classList.add(show ? 'review-visible' : 'review-hidden');
+                            toggleBtn.classList.toggle('active', show);
+                        }
                     }
-                }
 
-                // Mostrar el formulario automáticamente si estamos en modo edición
-                if (@json(isset($mostrarFormulario) && $mostrarFormulario)) {
-                    toggleForm(true);
-                }
+                    // Mostrar el formulario automáticamente si estamos en modo edición
+                    if (@json(isset($mostrarFormulario) && $mostrarFormulario)) {
+                        toggleForm(true);
+                    }
 
-                // Event listeners
-                toggleBtn.addEventListener('click', () => toggleForm());
+                    // Eventos de clic
+                    toggleBtn.addEventListener('click', () => toggleForm());
 
-                cancelBtn.addEventListener('click', () => {
-                    toggleForm(false);
-                    // Redirigir solo si estamos en modo edición
-                    if (window.location.href.includes('/editar')) {
-                        window.location.href = '{{ route("productos.show", $producto->id) }}';
+                    cancelBtn.addEventListener('click', () => {
+                        toggleForm(false);
+                        // Redirigir solo si estamos editando
+                        if (window.location.href.includes('/editar')) {
+                            window.location.href = '{{ route("productos.show", $producto->id) }}';
+                        }
+                    });
+
+                    // Código para cambiar las imágenes miniaturas
+                    const mainImage = document.querySelector('.main-image img');
+                    const thumbnails = document.querySelectorAll('.thumbnail-image');
+
+                    thumbnails.forEach(thumbnail => {
+                        thumbnail.addEventListener('click', () => {
+                            const tempSrc = mainImage.src;
+                            mainImage.src = thumbnail.src;
+                            thumbnail.src = tempSrc;
+                        });
+                    });
+
+                    // Función para habilitar/deshabilitar botón de eliminar con checkbox (si usas esa función)
+                    window.toggleDeleteButton = function(id) {
+                        let checkbox = document.getElementById(`confirm-checkbox-${id}`);
+                        let button = document.getElementById(`delete-button-${id}`);
+                        button.disabled = !checkbox.checked;
                     }
                 });
-            });
-        </script>
+            </script>
 @endsection
