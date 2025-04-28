@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,20 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class Publicacion extends Model
 {
     use HasFactory;
+
     protected $table = 'publicaciones';
 
-    public function comentarios(){
-        //Una publicacion puede tener muchos comentarios (1)
+    protected $fillable = [
+        'id_user',
+        'visibilidad',
+        'contenido',
+        'imagen',
+    ];
+
+
+    public function comentarios()
+    {
         return $this->hasMany(Comentario::class);
     }
 
-    public function reacciones(){
-        //Una publicacion puede tener muchas reacciones (1)
+    public function reacciones()
+    {
         return $this->hasMany(Reaccion::class);
     }
 
-    public function user(){
-        //Varias publicaciones pertenecen un usuario (N)
+    public function user()
+    {
         return $this->belongsTo(User::class, 'id_user');
     }
+
 }
