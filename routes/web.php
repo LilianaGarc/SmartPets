@@ -137,6 +137,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware('auth', 'admin')->group(function () {
+    
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
     Route::get('/panel/buscar/adopciones', [AdopcionController::class, 'search'])->name('adopciones.search');
     Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');

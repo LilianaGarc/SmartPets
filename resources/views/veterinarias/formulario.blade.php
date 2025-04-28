@@ -1,4 +1,4 @@
-@extends('layout.plantillaSaid')
+@extends('panelAdministrativo.plantillaPanel')
 
 @section('titulo', 'Creación de Veterinaria')
 
@@ -14,7 +14,7 @@
                     Crear Veterinaria
                     @endif
                 </h1>
-                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+                <a href="{{ route('veterinarias.panel') }}" class="btn btn-success" role="button" style="font-size: 150%;">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
             </div>
@@ -158,7 +158,7 @@
                         <h5 class="form-label">Imágenes de la Veterinaria</h5>
                         <hr>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="addImageButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="addImageButton" data-bs-toggle="dropdown" aria-expanded="false" onchange="previewImage()">
                                 <i class="fa-solid fa-plus me-2"></i> Agregar Imagen
                             </button>
                             <div class="dropdown-menu p-3 w-100" aria-labelledby="addImageButton">
@@ -167,24 +167,17 @@
                         </div>
 
                         <!-- Vista previa de las imágenes -->
-                        <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-3" style="min-height: 250px;">
+                        <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-3" style="min-height: 250px; display: none;">
                             @if(isset($veterinaria) && !$veterinaria->imagenes->isEmpty())
-                            @foreach ($veterinaria->imagenes->take(5) as $imagen)
-                                <div class="image-preview-item">
-                                    <img src="{{ asset('storage/' . $imagen->path) }}" alt="Imagen de la veterinaria" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
-                                    <button type="button" class="remove-btn" onclick="removeImage(this)">X</button>
-
-                                </div>
+                            @foreach ($veterinaria->imagenes as $imagen)
+                            <div class="image-preview-item" data-image-id="{{ $imagen->id }}">
+                                <img src="{{ asset('storage/' . $imagen->path) }}" alt="Imagen de la veterinaria" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
+                                <button type="button" class="remove-btn" onclick="removeImage(this)" data-id="{{ $imagen->id }}">X</button>
+                            </div>
                             @endforeach
-                            @if ($veterinaria->imagenes->count() > 5)
-                                <div class="image-preview-item">
-                                    <img src="{{ asset('storage/' . $veterinaria->imagenes[4]->path) }}" alt="Imagen de la veterinaria" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
-                                    <button type="button" class="remove-btn" onclick="removeImage(this)">X</button>
-                                    <div class="extra-images-counter">+{{ $veterinaria->imagenes->count() - 5 }}</div>
-                                </div>
-                                @endif
                             @endif
                         </div>
+
                     </div>
 
                     <div class="col-md-6">
@@ -209,22 +202,25 @@
                             </div>
                         </div>
 
-                        <div id="socialLinks" class="mt-3"></div>
-                        @if(isset($veterinaria) && !$veterinaria->redes->isEmpty())
-                        @foreach ($veterinaria->redes as $red)
-                        <div class="social-link-item">
-                            <span>{{ $red->tipo_red_social ?? 'Sin tipo de red' }}: {{ $red->nombre_usuario ?? 'Sin usuario' }}</span>
-                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="this.parentElement.remove()">Eliminar</button>
-                            <input type="hidden" name="redes[{{ $loop->index }}][tipo_red_social]" value="{{ $red->tipo_red_social }}">
-                            <input class= "mt-1" type="hidden" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
+                        <div id="socialLinks" class="mt-3">
+                            @if(isset($veterinaria) && !$veterinaria->redes->isEmpty())
+                               @foreach ($veterinaria->redes as $red)
+                                <div class="social-link-item" data-red-id="{{ $red->id }}">
+                                    <span>{{ $red->tipo_red_social ?? 'Sin tipo de red' }}: {{ $red->nombre_usuario ?? 'Sin usuario' }}</span>
+                                    <input type="hidden" name="redes[{{ $loop->index }}][tipo_red_social]" value="{{ $red->tipo_red_social }}">
+                                    <input class="mt-1" type="hidden" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
+                                    <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="removeRed(this)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                                @endforeach
+                            @endif
                         </div>
-                        @endforeach
-                        @endif
                     </div>
-
-                    <br>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                    <input class="btn btn-danger" type="reset" value="Limpiar">
+                    <button type="submit" class="btn btn-primary mt-1">Guardar</button>
+                    <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
+                        Limpiar
+                    </button>
             </form>
         </div>
     </div>
@@ -247,6 +243,29 @@
     </div>
 
     <style>
+        .btn-primary,
+        .btn-primary:hover,
+        .btn-outline-danger,
+        .btn-outline-danger:hover .btn-danger,
+        .btn-danger:hover {
+            transition: none !important;
+            transform: none !important;
+            animation: none !important;
+        }
+
+        .btn-danger {
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+            color: #fff !important;
+        }
+
+        .btn-danger:hover,
+        .btn-danger:focus {
+            background-color: #b52a37 !important;
+            border-color: #b52a37 !important;
+            color: #fff !important;
+        }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -258,7 +277,7 @@
         }
 
         .dropdown-menu {
-            background-color:rgba(244, 245, 250, 0.85);
+            background-color: rgba(244, 245, 250, 0.85);
             color: #fff;
             border: 1px solid #444;
         }
@@ -347,6 +366,42 @@
         }
     </style>
 
+    <script>
+        document.querySelector('form#formularioVeterinaria').addEventListener('reset', function() {
+            // Limpiar redes sociales agregadas dinámicamente
+            document.getElementById('socialLinks').innerHTML = '';
+
+            // Limpiar imágenes agregadas dinámicamente
+            const imagePreview = document.getElementById('imagePreview');
+            if (imagePreview) {
+                imagePreview.innerHTML = '';
+                imagePreview.style.display = 'none';
+            }
+
+            // Limpiar arrays JS si los usas
+            if (typeof imageFiles !== 'undefined') imageFiles = [];
+            if (typeof deletedImages !== 'undefined') deletedImages = [];
+            if (typeof deletedRedes !== 'undefined') deletedRedes = [];
+            if (typeof socialCount !== 'undefined') socialCount = 0;
+
+            // Limpiar inputs hidden de eliminados
+            const deletedImagesInput = document.getElementById('deleted_images');
+            if (deletedImagesInput) deletedImagesInput.value = '';
+            const deletedRedesInput = document.getElementById('deleted_redes');
+            if (deletedRedesInput) deletedRedesInput.value = '';
+
+            setTimeout(() => {
+                this.querySelectorAll('input:not([type=hidden]):not([type=submit]):not([type=reset]):not([type=button]), select, textarea').forEach(el => {
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        el.checked = false;
+                    } else {
+                        el.value = '';
+                    }
+                });
+            }, 1);
+        });
+    </script>
+
     <!-- Vista previa de imágenes -->
     <script>
         let imageFiles = []; // Array para almacenar los archivos de imagen
@@ -356,12 +411,10 @@
             const preview = document.getElementById('imagePreview');
             const files = Array.from(input.files);
 
-            preview.style.display = files.length > 0 ? 'flex' : 'none'; // Mostrar/ocultar el contenedor de vista previa
             imageFiles = imageFiles.concat(files); // Agregar nuevos archivos al array
             preview.innerHTML = ''; // Limpiar el contenedor de vista previa
 
-            const imageToShow = files.length > 5 ? 4 : Math.min(5, imageFiles.length); // Limitar a 5 imágenes
-            imageFiles.slice(0, 5).forEach((file, index) => {
+            files.forEach((file, index) => {
                 if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
                     const reader = new FileReader();
                     reader.onload = function(e) {
@@ -377,35 +430,42 @@
                 }
             });
 
-            if (imageFiles.length > 5) {
-                const lasPreview = preview.children[4];
-                const overlay = document.createElement('div');
-                overlay.classList.add('extra-images-counter');
-                overlay.innerText = `+${imageFiles.length - 5}`;
-                lasPreview.appendChild(overlay);
-            }
-
             // Actualizar el input de archivos con los archivos actuales
             updateFileInput();
         }
 
-        function removeImage(button, index) {
-            // Eliminar el archivo del array
-            imageFiles.splice(index, 1);
+        let deletedImages = [];
+        let deletedRedes = [];
 
-            // Eliminar la imagen del DOM
-            button.parentElement.remove();
+        function removeImage(button) {
+            const imageContainer = button.parentElement;
+            const imageId = imageContainer.getAttribute('data-image-id');
 
-            // Actualizar el input de archivos
-            updateFileInput();
+            if (imageId) {
+                deletedImages.push(imageId); // Agregar el ID de la imagen eliminada al array
+
+                let deletedImagesInput = document.getElementById('deleted_images');
+                if (!deletedImagesInput) {
+                    deletedImagesInput = document.createElement('input');
+                    deletedImagesInput.type = 'hidden';
+                    deletedImagesInput.name = 'deleted_images';
+                    deletedImagesInput.id = 'deleted_images';
+                    document.getElementById('formularioVeterinaria').appendChild(deletedImagesInput);
+                }
+
+
+                deletedImagesInput.value = deletedImages.join(',');
+            }
+
+            // Eliminar la vista previa
+            imageContainer.remove();
+
+            // Actualizar el input de archivos si es necesario
+            if (!imageId) {
+                updateFileInput();
+            }
         }
 
-        function updateFileInput() {
-            const input = document.getElementById('imagenes');
-            const dataTransfer = new DataTransfer();
-            imageFiles.forEach(file => dataTransfer.items.add(file));
-            input.files = dataTransfer.files;
-        }
 
 
         function addSocialLink() {
@@ -425,9 +485,11 @@
             const icon = network === 'Facebook' ? 'fab fa-facebook' : 'fab fa-instagram';
             div.innerHTML = `
             <span>${network || 'ninguna'}: ${username || 'ninguno'}</span>
+
             <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="this.parentElement.remove()">
                 <i class="fa-solid fa-trash"></i>
             </button>
+            
             <input type="hidden" name="redes[${socialCount}][tipo_red_social]" value="${network}">
             <input type="hidden" name="redes[${socialCount}][nombre_usuario]" value="${username}">`;
 
@@ -440,6 +502,27 @@
 
             // Cerrar el dropdown
             document.getElementById('addSocialButton').click();
+        }
+
+        function removeRed(button) {
+            const redContainer = button.parentElement;
+            const redId = redContainer.getAttribute('data-red-id');
+
+            if (redId) {
+                deletedRedes.push(redId);
+
+                let deletedRedesInput = document.getElementById('deleted_redes');
+                if (!deletedRedesInput) {
+                    deletedRedesInput = document.createElement('input');
+                    deletedRedesInput.type = 'hidden';
+                    deletedRedesInput.name = 'deleted_redes';
+                    deletedRedesInput.id = 'deleted_redes';
+                    document.getElementById('formularioVeterinaria').appendChild(deletedRedesInput);
+                }
+                deletedRedesInput.value = deletedRedes.join(',');
+            }
+
+            redContainer.remove();
         }
     </script>
     @endsection

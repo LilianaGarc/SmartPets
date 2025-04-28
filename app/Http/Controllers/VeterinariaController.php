@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Veterinaria;
 use App\Models\Ubicacion;
-use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 
 class VeterinariaController extends Controller
@@ -37,8 +36,7 @@ class VeterinariaController extends Controller
     // Método que muestra el formulario para crear una veterinaria
     public function create()
     {
-        $veterinarias = Veterinaria::all();
-        return view('veterinarias.formulario')->with('veterinarias', $veterinarias);
+        return view('veterinarias.formulario');
     }
 
     // Método que almacena una veterinaria
@@ -107,10 +105,10 @@ class VeterinariaController extends Controller
         // Proceso de guardado
         if ($veterinaria->save()) {
             // mensaje de que todo salio bien
-            return redirect()->route('veterinarias.index')->with('exito', 'La veterinaria se registrada exitosamente');
+            return redirect()->route('veterinarias.panel')->with('exito', 'La veterinaria se registrada exitosamente');
         } else {
             // mensaje de que no se logró guardar
-            return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo registrar');
+            return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo registrar');
         }
     }
 
@@ -178,29 +176,35 @@ class VeterinariaController extends Controller
         ]);
 
         // Actualizar la imagen si se elimina una anterior o si se ingresa una nueva al sistema
-        if ($request->has('existing_imagenes')) {
-            $imageneAEliminar = $veterinaria->imagenes()->whereNotIn('id', $request->input('existing_imagenes'))->get();
-            foreach ($imageneAEliminar as $imagen) {
-                if ($imagen && \Storage::disk('public')->exists($imagen->path)) {
-                    $imagen->update(['path' => $imagen->path]);
+        // Manejo de imágenes eliminadas
+        if ($request->has('deleted_images')) {
+            $deletedImageIds = explode(',', $request->deleted_images);
+            foreach ($deletedImageIds as $imageId) {
+                $imagen = $veterinaria->imagenes()->find($imageId);
+                if ($imagen) {
+                    // Eliminar el archivo físico
+                    if (\Storage::disk('public')->exists($imagen->path)) {
+                        \Storage::disk('public')->delete($imagen->path);
+                    }
+                    // Eliminar el registro de la base de datos
+                    $imagen->delete();
                 }
-                $imagen->delete();
             }
         }
 
-        // Se sube la imagen
+        // Manejo de imágenes nuevas
         if ($request->hasFile('imagenes')) {
             foreach ($request->file('imagenes') as $imagen) {
                 $path = $imagen->store('veterinarias', 'public');
                 $veterinaria->imagenes()->create(['path' => $path]);
             }
         }
-        // Manejo de redes sociales en la actualización.
-        if ($request->has('redes')) {
-            $veterinaria->redes()->delete();
 
-            // Guardar nuevas redes sociales
-            foreach ($request->input('redes') as $red) {
+        $veterinaria->redes()->delete();
+
+        $redes = $request->input('redes');
+        if (is_array($redes)) {
+            foreach ($redes as $red) {
                 $veterinaria->redes()->create([
                     'tipo_red_social' => $red['tipo_red_social'] ?? null,
                     'nombre_usuario' => $red['nombre_usuario'] ?? null,
@@ -209,27 +213,12 @@ class VeterinariaController extends Controller
         }
 
         // Guardar la veterinaria
-        if ($veterinaria->save()) {
-            // mensaje de que todo salio bien
-            return redirect()->route('veterinarias.index')->with('exito', 'La veterinaria se módifico exitosamente');
-        } else {
-            // mensaje de que no se logró guardar
-            return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo modificar');
-        }
+        return redirect()->route('veterinarias.panel')->with('exito', 'La veterinaria se modificó exitosamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $eliminados = Veterinaria::destroy($id);
-        if ($eliminados > 0) {
-            return redirect()->route('veterinarias.index')->with('exito', 'La veterinaria se eliminó exitosamente');
-        } else {
-            return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo eliminar');
-        }
-    }
 
     public function paneldestroy(string $id)
     {

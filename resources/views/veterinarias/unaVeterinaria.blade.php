@@ -2,6 +2,20 @@
 @section('titulo', 'Detalles de Veterinaria')
 @section('contenido')
 
+@if (session('exito'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('exito') }}
+        <button type="button" class="btn-close" data-bs-sdismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <div class="card shadow-sm p-4 mb-4">
     <!-- Datos de la Veterinaria -->
     <div class="card-body">
@@ -32,8 +46,7 @@
                         </a>
                         </div>
                     @endif
-                    <div class="mt-1"><b>Dirección:</b> {{ $veterinaria->ubicacion->departamento }}, {{ $veterinaria->ubicacion->municipio }}, {{ $veterinaria->ubicacion->ciudad }}</div>
-                    <div class="mt-1">{{ $veterinaria->ubicacion->direccion }}</div>
+                    <div class="mt-1"><b>Dirección:</b> {{ $veterinaria->ubicacion->departamento }}, {{ $veterinaria->ubicacion->municipio }}, {{ $veterinaria->ubicacion->ciudad }}, {{ $veterinaria->ubicacion->direccion }}</div>
                     <div class="mt-1 d-flex align-items-start"><b>Redes Sociales: </b> 
                     @if($veterinaria->redes->isNotEmpty())
                     <div class="d-flex flex-wrap gap-2">
@@ -88,7 +101,7 @@
                 </div>
             </div>
 
-                <div class="col-md-6 mt-1">
+                <div class="col-md-6 mt-1 text-center">
                     @if ($veterinaria->ubicacion && $veterinaria->ubicacion->latitud && $veterinaria->ubicacion->longitud)
                         <div id="map"  style="height: 300px; width: 100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"></div>
                     @else
@@ -161,6 +174,15 @@
 
     <!-- Formulario para calificar y opinar -->
     <div class="card shadow-sm p-4 mb-4">
+    @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-unstyled">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+    @endif
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Calificar y Opinar</h3>
             @auth
@@ -180,7 +202,12 @@
 
                 <div class="mb-3">
                     <label for="opinion" class="form-label fw-bold">Opinión</label>
-                    <textarea class="form-control" id="opinion" name="opinion" rows="3" placeholder="Escribe tu opinión aquí..."></textarea>
+                    <textarea class="form-control" id="opinion" name="opinion" rows="3" 
+                    maxlength="255" placeholder="Escribe tu opinión aquí..." 
+                    oninput="actualizarContador(this)"></textarea>
+                    <div class="text-end">
+                        <small id="caracteresRestantes" class="text-muted">0/255</small>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Enviar</button>
@@ -277,8 +304,14 @@
                                         <textarea class="form-control" 
                                             id="opinion{{ $calificacion->id }}" 
                                             name="opinion" 
-                                            rows="3">{{ trim($calificacion->opinion) }}
-                                        </textarea>
+                                            rows="3"
+                                            maxlength="500"
+                                            oninput="actualizarContador(this, 'contador{{ $calificacion->id }}')"
+                                            >{{ trim($calificacion->opinion) }}</textarea>
+
+                                            <div class="text-end">
+                                                <small id="contador{{ $calificacion->id }}" class="text-muted">0/500</small>
+                                            </div>
                                 </div>
                         </div>
                             <div class="modal-footer">
@@ -338,6 +371,17 @@
             color: #ffc107;
         }
     </style>
+
+    <script>
+        function actualizarContador(textarea) {
+            const maxLength = textarea.getAttribute('maxlength');
+            const currentLength = textarea.value.length;
+            const contador = document.getElementById('contadorId');
+            if (contador) {
+                contador.textContent = `${currentLength}/${maxLength}`;
+            }        
+        }
+    </script>
 
     <script>
         // Actualizar el contador de imágenes en el carousel
