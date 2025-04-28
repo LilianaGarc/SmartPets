@@ -339,6 +339,29 @@
                 }
             }
 
+            .alert-error {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #ff4d4d;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                z-index: 1000;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .alert-error ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .alert-error li {
+                margin: 5px 0;
+            }
+
         </style>
     </head>
     <body>

@@ -122,6 +122,21 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'email' => [
+            'required' => 'El campo de correo electrónico es obligatorio.',
+        ],
+        'password' => [
+            'required' => 'Por favor, ingresa tu contraseña.',
+            'min' => 'La contraseña debe tener al menos :min caracteres.',
+        ],
+        'password_confirmation' => [
+            'required' => 'Debes confirmar tu contraseña.',
+            'same' => 'La confirmación de la contraseña no coincide.',
+            'confirmed' => 'La confirmación de la contraseña no coincide.', // esta es la más común en Laravel
+        ],
+        'name' => [
+            'required' => 'El nombre es obligatorio.',
+        ],
     ],
 
     /*
@@ -135,5 +150,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'nombre',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña',
+        'password_confirmation' => 'confirmación de contraseña',
+    ],
 ];

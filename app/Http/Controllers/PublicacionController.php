@@ -62,8 +62,8 @@ class PublicacionController
     {
         $request->validate([
             'visibilidad' => 'required',
-            'contenido' => 'required|string|max:255',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
         ]);
 
         $rutaImagen = null;
@@ -76,12 +76,11 @@ class PublicacionController
             'visibilidad' => $request->visibilidad,
             'contenido' => $request->contenido,
             'imagen' => $rutaImagen,
+
         ]);
 
-        return redirect()->route('publicaciones.index')->with('exito', 'Publicación creada con éxito.');
+        return redirect()->route('publicaciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
-
-
 
     /**
      * Display the specified resource.
