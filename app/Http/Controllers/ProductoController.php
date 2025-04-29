@@ -250,20 +250,21 @@ class ProductoController extends Controller
     }
     public function agregarResenia(Request $request, $producto_id)
     {
-     $request->validate([
-         'titulo' => 'required|string|min:5|max:255',
-         'contenido' => 'required|string|min:5',
-     ]);
-     $producto = Producto::findOrFail($producto_id);
+        $request->validate([
+            'titulo' => 'required|string|min:5|max:255',
+            'contenido' => 'required|string|min:5',
+        ]);
 
-     $random = User::inRandomOrder()->first();
+        $producto = Producto::findOrFail($producto_id);
 
-     $producto->resenias()->create([
-         'titulo' => $request->titulo,
-         'contenido' => $request->contenido,
-         'user_id' => auth()->id(),
-     ]);
-     return redirect()->back()->with('success', 'Reseña agregada correctamente');
+        // Crear la reseña asociada al producto
+        $producto->resenias()->create([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido,
+            'user_id' => auth()->id(), // Asignar el ID del usuario autenticado
+        ]);
+
+        return redirect()->back()->with('success', 'Reseña agregada correctamente');
     }
 
     public function eliminarResenia($producto_id, $resenia_id)

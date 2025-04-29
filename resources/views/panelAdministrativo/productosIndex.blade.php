@@ -48,15 +48,14 @@
                     <td style="text-align: center;">
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Actions
+                                Acciones
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Detalles</a></li>
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('productos.show', $producto->id) }}">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('productos.edit', $producto->id)}}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$producto->id}}">Eliminar</a></li>
                             </ul>
                         </div>
-
 
                         <!-- Modal -->
                         <div class="modal fade" id="modalEliminar{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -70,7 +69,7 @@
                                         Esta seguro de eliminar el producto?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         <form method="post" action="{{ route('productos.paneldestroy' , ['id'=>$producto->id]) }}">
                                             @csrf
                                             @method('delete')
