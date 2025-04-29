@@ -584,10 +584,17 @@
                                             data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
                                             aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
                                             aria-controls="collapse{{ $index }}">
-                <span class="accordion-title">
-                    <span class="username">{{ $resenia->user->name }}</span>
-                </span>
+                                        <div class="user-info">
+                                            @php
+                                                $foto = $resenia->user->fotoperfil
+                                                        ? asset('storage/' . $resenia->user->fotoperfil)
+                                                        : asset('images/fotodeperfil.webp');
+                                            @endphp
+                                            <img src="{{ $foto }}" alt="Foto de perfil" class="profile-image">
+                                            <span class="username">{{ $resenia->user->name }}</span>
+                                        </div>
                                     </button>
+
                                 </h2>
                                 <div id="collapse{{ $index }}"
                                      aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
