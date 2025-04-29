@@ -56,7 +56,7 @@ class AdopcionController extends Controller
             'id_usuario' => Auth::id(),
         ]);
 
-        return redirect()->route('adopciones.panel')->with('success', 'La publicación de adopción se ha creado con éxito. Podrás ver tu publicación en tu perfil. ☺️');
+        return redirect()->route('adopciones.panel')->with('exito', 'La publicación de adopción se ha creado con éxito.');
 
     }
     public function paneledit(string $id)
@@ -100,7 +100,7 @@ class AdopcionController extends Controller
 
         $adopcion->save();
 
-        return redirect()->route('adopciones.panel')->with('success', 'Publicación de adopción actualizada con éxito. Podrás ver tu publicación en tu perfil. ☺️');
+        return redirect()->route('adopciones.panel')->with('exito', 'Publicación de adopción actualizada con éxito.');
 
     }
 

@@ -4,7 +4,7 @@
     <form method="post"
           enctype="multipart/form-data"
           @if (isset($publicacion))
-              action="{{ route('publicaciones.update', ['id'=>$publicacion->id]) }}"
+              action="{{ route('publicaciones.panelupdate', ['id'=>$publicacion->id]) }}"
           @else
               action="{{ route('publicaciones.panelstore') }}"
         @endif>

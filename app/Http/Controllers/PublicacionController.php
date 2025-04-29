@@ -7,6 +7,8 @@ use App\Models\Publicacion;
 use App\Models\Reaccion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class PublicacionController
 {
@@ -68,18 +70,25 @@ class PublicacionController
 
         $publicacion = Publicacion::findOrFail($id);
 
-        $rutaImagen = null;
         if ($request->hasFile('imagen')) {
+            // Eliminar la imagen anterior si existe
+            if ($publicacion->imagen) {
+                Storage::disk('public')->delete($publicacion->imagen);
+            }
+
             $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
+            $publicacion->imagen = $rutaImagen;
         }
 
         $publicacion->id_user = auth()->id();
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
-        $publicacion->imagen = $rutaImagen;
+
+        $publicacion->save();
 
         return redirect()->route('publicaciones.panel')->with('exito', 'Publicación modificada con éxito.');
     }
+
 
     public function search(Request $request)
     {

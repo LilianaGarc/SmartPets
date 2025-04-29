@@ -3,12 +3,13 @@
 
     <form method="post"
           @if (isset($user))
-              action="{{ route('users.update', ['id'=>$user->id]) }}"
+              action="{{ route('users.update', ['id' => $user->id]) }}"
           @else
               action="{{ route('users.store') }}"
         @endif>
+        @csrf
         @isset($user)
-            @method('put')
+            @method('PUT')
         @endisset
         @csrf
         <div class="card-body">

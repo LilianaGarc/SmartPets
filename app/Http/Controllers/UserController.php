@@ -110,24 +110,27 @@ class UserController
             'usertype' => 'required',
             'password' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
         ]);
+
         $type = $request->input('usertype');
         if ($type == "Administrador") {
             $type = "admin";
-        } else { $type = "user"; }
+        } else {
+            $type = "user";
+        }
 
-        $user = User::findorfail($id);
+        $user = User::findOrFail($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->password);
         $user->usertype = $type;
 
-        // Guardar   Save()
-        if ($user->save()){
-            return redirect()->route('users.panel')->with('exito', 'El usuario se edito correctamente.');
-        }else{
+        if ($user->save()) {
+            return redirect()->route('users.panel')->with('exito', 'El usuario se editó correctamente.');
+        } else {
             return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo editar.');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
