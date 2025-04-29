@@ -21,16 +21,7 @@ class DatabaseSeeder extends Seeder
             RespuestasTableSeeder::class,
 
             UsersTableSeeder::class,
-            PublicacionesTableSeeder::class,
-            ComentariosTableSeeder::class,
-            ReaccionesTableSeeder::class,
-
             CategoriasTableSeeder::class,
-
-            AdopcionesTableSeeder::class,
-            //VeterinariasTableSeeder::class,
-            //SolicitudesTableSeeder::class,
-            //ProductosTableSeeder::class
         ]);
     }
 }

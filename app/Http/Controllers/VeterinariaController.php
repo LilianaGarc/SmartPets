@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Veterinaria;
 use App\Models\Ubicacion;
 use Illuminate\Http\Request;
@@ -34,19 +35,39 @@ class VeterinariaController extends Controller
     // Método que muestra todas las veterinarias
     public function index()
     {
-        $veterinarias = Veterinaria::paginate(6);
-        return view('veterinarias.index')->with('veterinarias', $veterinarias);
+        
+        if (auth()->check() && auth()->user()->es_admin) {
+            $veterinarias = Veterinaria::all();
+            return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
+        } else {
+            $veterinarias = Veterinaria::Paginate(6);
+            return view('veterinarias.index')->with('veterinarias', $veterinarias);
+        }
+
     }
 
     // Método que muestra el formulario para crear una veterinaria
     public function create()
     {
-        return view('veterinarias.formulario');
+        if (auth()->user()->es_admin) {
+            $usuarios = User::all();
+            return view('veterinarias.formulario')->with('usuarios', $usuarios);
+        } else {
+            return view('veterinarias.formulario');
+        }
     }
 
     // Método que almacena una veterinaria
     public function store(Request $request)
     {
+        if (auth()->user()->es_admin) {
+            $idUsuario = $request->input('id_user');
+            if (!$idUsuario) {
+                return back()->with('fracaso', 'Debes seleccionar un usuario dueño.');
+            }
+        } else {
+            $idUsuario = auth()->id();
+        }
         // Validación de la información
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -75,9 +96,9 @@ class VeterinariaController extends Controller
             'latitud' => $request->input('latitud'),
             'longitud' => $request->input('longitud'),
         ]);
-
         // Crear la veterinaria
         $veterinaria = Veterinaria::create([
+            'id_user' => $idUsuario,
             'nombre' => $request->input('nombre'),
             'nombre_veterinario' => $request->input('nombre_veterinario'),
             'horario_apertura' => $request->input('horario_apertura'),
@@ -107,21 +128,33 @@ class VeterinariaController extends Controller
             }
         }
 
-        // Proceso de guardado
         if ($veterinaria->save()) {
-            // mensaje de que todo salio bien
-            return redirect()->route('veterinarias.panel')->with('exito', 'La veterinaria se registrada exitosamente');
+            // Se guardó correctamente
+            if (auth()->user()->es_admin) {
+                return redirect()->route('veterinarias.panel')->with('exito', 'Veterinaria registrada exitosamente');
+            } else {
+                return redirect()->route('veterinarias.index')->with('exito', 'Veterinaria registrada exitosamente');
+            }
         } else {
-            // mensaje de que no se logró guardar
-            return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo registrar');
+            // No se pudo guardar
+            if (auth()->user()->es_admin) {
+                return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo registrar');
+            } else {
+                return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo registrar');
+            }
         }
     }
 
     // Método que muestra una veterinaria
     public function show(string $id)
     {
-        $veterinaria = Veterinaria::with(['ubicacion', 'calificaciones.user'])->findOrFail($id);
-        return view('veterinarias.unaVeterinaria')->with('veterinaria', $veterinaria);
+        if (auth()->user()->es_admin) {
+            $veterinaria = Veterinaria::with(['ubicacion', ])->findOrFail($id);
+        return view('veterinarias.otra')->with('veterinaria', $veterinaria);  // crea la ruta y lavista ponle
+        } else {
+            $veterinaria = Veterinaria::with(['ubicacion', 'calificaciones.user'])->findOrFail($id);
+            return view('veterinarias.unaVeterinaria')->with('veterinaria', $veterinaria);
+        }
     }
 
     /**
@@ -130,7 +163,13 @@ class VeterinariaController extends Controller
     public function edit(string $id)
     {
         $veterinaria = Veterinaria::with('ubicacion', 'imagenes')->findOrFail($id);
-        return view('veterinarias.formulario')->with('veterinaria', $veterinaria);
+
+        if (auth()->user()->es_admin) {
+            $usuarios = User::all();
+            return view('veterinarias.formulario', compact('veterinaria', 'usuarios'));
+        } else {
+            return view('veterinarias.formulario')->with('veterinaria' , $veterinaria);
+        }
     }
 
     /**
@@ -138,6 +177,13 @@ class VeterinariaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (auth()->user()->es_admin) {
+            // Lógica para admin: puede asignar cualquier usuario
+            $idUsuario = $request->input('id_user');
+        } else {
+            // Lógica para usuario normal: solo puede asignarse a sí mismo
+            $idUsuario = auth()->id();
+        }
         // Validación de los información al actualizar.
         $request->validate([
             'nombre' => 'required|string|max:255',
@@ -172,6 +218,7 @@ class VeterinariaController extends Controller
 
         // Actualizar la veterinaria
         $veterinaria->update([
+            'id_user' => $idUsuario,
             'nombre' => $request->input('nombre'),
             'nombre_veterinario' => $request->input('nombre_veterinario'),
             'horario_apertura' => $request->input('horario_apertura'),
@@ -218,7 +265,12 @@ class VeterinariaController extends Controller
         }
 
         // Guardar la veterinaria
-        return redirect()->route('veterinarias.panel')->with('exito', 'La veterinaria se modificó exitosamente');
+
+        if (auth()->user()->es_admin) {
+            return redirect()->route('veterinarias.panel')->with('exito', 'Veterinaria actualizada exitosamente');
+        } else {
+            return redirect()->route('veterinarias.index')->with('exito', 'Veterinaria actualizada exitosamente');
+        }
     }
 
     /**
