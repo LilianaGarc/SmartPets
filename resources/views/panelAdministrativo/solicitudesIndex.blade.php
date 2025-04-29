@@ -14,7 +14,7 @@
     <h3>  |   Solicitudes </h3>
 
     <hr>
-    <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
+    <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="align-content: flex-end;">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
@@ -22,6 +22,10 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <div class="col">
+                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nueva adopcion</h7></a>
             </div>
         </div>
         </div>

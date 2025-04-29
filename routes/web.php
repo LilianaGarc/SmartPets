@@ -106,29 +106,22 @@ Route::middleware('auth')->group(function () {
 
     //Rutas para Reacciones
     Route::get('/reacciones/crear', [ReaccionController::class, 'create'])->name('reacciones.create');
-    Route::post('/reacciones/crear', [ReaccionController::class, 'store'])->name('reacciones.store');
-
     Route::get('/reacciones/{id}/editar', [ReaccionController::class, 'edit'])->name('reacciones.edit')->whereNumber('id');
     Route::put('/reacciones/{id}/editar', [ReaccionController::class, 'update'])->name('reacciones.update')->whereNumber('id');
 
     Route::get('/reacciones/{id}/ver', [ReaccionController::class, 'show'])->name('reacciones.show')->whereNumber('id');
 
-    Route::delete('/reacciones/{id}/eliminar', [ReaccionController::class, 'destroy'])->name('reacciones.destroy')->whereNumber('id');
+    Route::post('/reacciones', [ReaccionController::class, 'store'])->name('reacciones.store');
+    Route::delete('/reacciones/{publicacion}', [ReaccionController::class, 'destroy'])->name('reacciones.destroy')->whereNumber('publicacion');
 
 
     //Rutas para Eventos
     Route::get('eventos/create', [EventoController::class, 'create'])->name('eventos.create');
-
     Route::post('eventos', [EventoController::class, 'store'])->name('eventos.store');
-
     Route::get('eventos/{id}', [EventoController::class, 'show'])->name('eventos.show');
-
     Route::get('eventos/{id}/edit', [EventoController::class, 'edit'])->name('eventos.edit');
-
     Route::put('eventos/{id}', [EventoController::class, 'update'])->name('eventos.update');
-
     Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
-
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
 });
 
@@ -137,6 +130,13 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
     Route::get('/panel/buscar/adopciones', [AdopcionController::class, 'search'])->name('adopciones.search');
+    Route::get('/panel/adopciones/create', [AdopcionController::class, 'panelcreate'])->name('adopciones.panelcreate');
+    Route::post('/panel/adopciones/crear', [AdopcionController::class, 'panelstore'])->name('adopciones.panelstore');
+    Route::get('/panel/adopciones/{id}/editar', [AdopcionController::class, 'paneledit'])->name('adopciones.paneledit')->whereNumber('id');
+    Route::put('/panel/adopciones/{id}/editar', [AdopcionController::class, 'panelupdate'])->name('adopciones.panelupdate')->whereNumber('id');
+    Route::get('/panel/adopciones/{id}/show', [AdopcionController::class, 'panelshow'])->name('adopciones.panelshow')->whereNumber('id');
+
+
     Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
 
     Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
@@ -150,6 +150,10 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
     Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
     Route::get('/panel/publicaciones/create', [PublicacionController::class, 'panelcreate'])->name('publicaciones.panelcreate');
+    Route::post('/panel/publicaciones/crear', [PublicacionController::class, 'panelstore'])->name('publicaciones.panelstore');
+    Route::get('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'paneledit'])->name('publicaciones.paneledit')->whereNumber('id');
+    Route::put('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'panelupdate'])->name('publicaciones.panelupdate')->whereNumber('id');
+
     Route::delete('/panel/publicaciones/{id}', [PublicacionController::class, 'paneldestroy'])->name('publicaciones.paneldestroy');
 
     Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
@@ -191,6 +195,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/users/{id}/editar', [UserController::class, 'paneledit'])->name('users.paneledit')->whereNumber('id');
     Route::put('/panel/users/{id}/editar', [UserController::class, 'update'])->name('users.update')->whereNumber('id');
     Route::get('/panel/buscar/users', [UserController::class, 'search'])->name('users.search');
+    Route::get('/panel/users/{id}/show', [UserController::class, 'show'])->name('users.show')->whereNumber('id');
     Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');
 });
 
@@ -276,11 +281,8 @@ Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'des
 //Rutas para Publicaciones
 
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
-
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
-
 Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
-
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 
 

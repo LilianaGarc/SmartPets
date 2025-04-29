@@ -13,7 +13,7 @@
     @endif
     <h3>  |   Usuarios </h3>
     <hr>
-    <form action="{{ route('users.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+    <form action="{{ route('users.search') }}"  class="" role="search" style="align-content: flex-end;">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
@@ -21,6 +21,10 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <div class="col">
+                <a href="{{ route('users.panelcreate') }}" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nuevo usuario</h7></a>
             </div>
         </div>
         </div>
@@ -47,7 +51,7 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('users.show' , ['id'=>$user->id]) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('users.paneledit' , ['id'=>$user->id]) }}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$user->id}}">Eliminar</a></li>
                             </ul>

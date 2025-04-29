@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController
 {
@@ -55,38 +57,38 @@ class UserController
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
-            'email' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'name' => 'required|string|max:300',
+            'email' => 'required|email|max:300|unique:users,email',
             'usertype' => 'required',
-            'password' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'password' => 'required|string|min:8|max:300',
         ]);
+
         $type = $request->input('usertype');
-        if ($type == "Administrador") {
-            $type = "admin";
-        } else { $type = "user"; }
+        if (!in_array($type, ['admin', 'user'])) {
+            return redirect()->back()->withErrors(['usertype' => 'Tipo de usuario inválido.']);
+        }
 
         $user = new User();
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->password);
         $user->usertype = $type;
 
-
-
-        // Guardar   Save()
-        if ($user->save()){
-            return redirect()->route('users.panel')->with('exito', 'El usuario se creo correctamente.');
-        }else{
+        if ($user->save()) {
+            return redirect()->route('users.panel')->with('exito', 'El usuario se creó correctamente.');
+        } else {
             return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo crear.');
         }
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('panelAdministrativo.usersDetalles', compact('user'));
     }
 
     /**
@@ -113,13 +115,11 @@ class UserController
             $type = "admin";
         } else { $type = "user"; }
 
-        $user = new User();
+        $user = User::findorfail($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = $request->input('password');
+        $user->password = Hash::make($request->password);
         $user->usertype = $type;
-
-
 
         // Guardar   Save()
         if ($user->save()){

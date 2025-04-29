@@ -25,7 +25,12 @@ class Publicacion extends Model
 
     public function reacciones()
     {
-        return $this->hasMany(Reaccion::class);
+        return $this->hasMany(Reaccion::class, 'publicacion_id');
+    }
+
+    public function reaccionesUsuarioActual()
+    {
+        return $this->hasOne(Reaccion::class, 'publicacion_id')->where('id_user', auth()->id());
     }
 
     public function user()

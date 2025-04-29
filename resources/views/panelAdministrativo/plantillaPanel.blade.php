@@ -33,6 +33,8 @@
             font-family: Arial, sans-serif;
             width: 100%;
             height: 100vh;
+            align-items: center;
+            justify-content: center;
         }
         header{
             z-index: 200;
@@ -293,14 +295,14 @@
         }
 
         .round-button-2 {
-            width: 7vh;
-            height: 7vh;
+            width: 9vh;
+            height: 9vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
             justify-content: center;
             align-items: center;
-            border: 2px solid black;
+            border: 4px solid #18478b;
             border-radius: 50%;
         }
 
@@ -478,6 +480,15 @@
             background-color: #ffffff;
             color: #ff7c40;
         }
+
+
+         .imagen-ajustada {
+             width: 200px;
+             height: 200px;
+             object-fit: cover;
+             border-radius: 10px;
+             display: block;
+         }
 
 
 

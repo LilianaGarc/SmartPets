@@ -2,10 +2,11 @@
 @section('contenido')
 
     <form method="post"
+          enctype="multipart/form-data"
           @if (isset($publicacion))
               action="{{ route('publicaciones.update', ['id'=>$publicacion->id]) }}"
           @else
-              action="{{ route('publicaciones.store') }}"
+              action="{{ route('publicaciones.panelstore') }}"
         @endif>
         @isset($publicacion)
             @method('put')
@@ -13,43 +14,62 @@
         @csrf
         <div class="card-body">
             @if(isset($publicacion))
-                <h5>Editar publicacion</h5>
+                <h4><a href="{{ route('publicaciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar la publicación</strong></h4>
+
             @else
-                <h5>Crear publicacion</h5>
+                <h4><a href="{{ route('publicaciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear una nueva publicación</strong></h4>
             @endif
             <hr>
-            <h5 class="card-title">
-                <button class="round-button-2">
-                    <img src="{{ asset('images/huella.webp') }}" alt="Imagen" class="button-img-2">
-                </button>
-                User name</h5>
-            <div class="col">
-                <select class="form-select" id="visibilidad" aria-label="visibilidad" name="visibilidad" style="width: 11%; height: 8%; margin: 1.5%; font-size: 80%;">
+                <div class="row">
+                    <div class="col-8">
+                        @php
+                            $fotoPerfil = auth()->user()->fotoperfil
+                                ? asset('storage/' . auth()->user()->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
 
-                    @if(isset($publicacion))
-                        {{ $publicacion->visibilidad ? "selected" : "" }}>
-                    @else
-                        <option selected><i class="fa-solid fa-earth-americas"></i> publico</option>
-                    @endif
-                    <option>privado</option>
-                </select>
-            </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoPerfil }}'); margin-right: 10px;"></div>
+                            <h5 class="mb-0">{{ auth()->user()->name }}</h5>
+                        </div>
 
-            <div class="col">
-                <div class="form-floating">
-                    <div class="col-10">
-                        <textarea class="form-control" placeholder="¿Que quieres compartir?" name="contenido" id="contenido" style="width: 116%; margin: 1.5%; height: 200px !important;" value="{{ isset($publicacion) ? $publicacion->contenido : old('contenido') }}"></textarea>
+
+                        <div class="col">
+                            <select class="form-select" name="visibilidad" style="width: 20%; margin: 1%;">
+                                <option value="publico" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'publico' ? 'selected' : '' }}>Público</option>
+                                <option value="privado" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'privado' ? 'selected' : '' }}>Privado</option>
+                            </select>
+                        </div>
+
+                        <div class="col-11">
+                            <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="margin: 1%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                        </div>
+
+                        <div class="mb-3 col-11">
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1%;">
+                        </div>
                     </div>
+
+                    @if (isset($publicacion))
+                        @if($publicacion->imagen)
+                            <div class="col">
+                                <div class="form-group image-preview-container"
+                                     style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                                    <img id="image-preview" src="{{ asset('storage/'.$publicacion->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 15vw; height: auto;">
+                                    <div class="image-caption" style="width: 200px; margin-top: 1vw; text-align: center;">
+                                        <strong>Vista Previa</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <input type="file" class="form-control" id="imagen" name="imagen"  accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="width: 96%; margin: 1.5%">
-            </div>
 
-            <br>
-            <button type="submit" class="btn">Publicar</button>
-            <button type="reset" class="btn">Cancelar</button>
+                <button type="submit" class="btn btn-light">Publicar</button>
+                <button type="reset" class="btn btn-light">Cancelar</button>
+
         </div>
     </form>
 

@@ -13,6 +13,6 @@ class AdopcionesTableSeeder extends Seeder
      */
     public function run(): void
     {
-
+        Adopcion::factory(10)->create();
     }
 }
