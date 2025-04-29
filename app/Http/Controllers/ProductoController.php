@@ -16,6 +16,14 @@ class ProductoController extends Controller
         $productos = Producto::all();
         return view('panelAdministrativo.productosIndex')->with('productos', $productos);
     }
+    public function panelshow(string $id)
+    {
+        $producto = Producto::findOrFail($id);
+        $categorias = Categoria::all();
+        $resenias = $producto->resenias()->with('user')->get();
+        return view('panelAdministrativo.productosForm', compact('producto','resenias','categorias'));
+    }
+
 
     public function search( Request $request)
     {
