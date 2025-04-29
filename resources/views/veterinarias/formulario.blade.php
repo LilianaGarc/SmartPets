@@ -4,7 +4,7 @@
 
 @section('contenido')
 <div class="container mt-2">
-    <div class="card">
+    <div class="card fade-in">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                 <h1 class="mb-0 card-title fw-bold">
@@ -384,6 +384,41 @@
             cursor: pointer;
             font-size: 12px;
         }
+
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-primary,
+        .btn-danger {
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover,
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-success {
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-success:hover {
+            background: #1e4183;
+            transform: scale(1.08) rotate(-3deg);
+        }
     </style>
 
     <script>
@@ -439,7 +474,7 @@
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         const div = document.createElement('div');
-                        div.classList.add('image-preview-item');
+                        div.classList.add('image-preview-item', 'fade-in');
                         div.innerHTML = `
                         <img src="${e.target.result}" alt="Preview">
                         <button type="button" class="remove-btn" onclick="removeImage(this, ${index})">X</button>
