@@ -22,6 +22,10 @@
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
             </div>
+            <div class="col">
+                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nuevo producto</h7></a>
+            </div>
         </div>
         </div>
     </form>

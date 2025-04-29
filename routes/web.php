@@ -16,7 +16,6 @@ use App\Http\Controllers\VeterinariaController;
 use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\AdopcionController;
-//Faltan rutas de categoria y ubicacion
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\UbicacionController;
 

@@ -25,7 +25,7 @@
             </div>
             <div class="col">
                 <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
-                        Nueva adopcion</h7></a>
+                        Nueva solicitud</h7></a>
             </div>
         </div>
         </div>

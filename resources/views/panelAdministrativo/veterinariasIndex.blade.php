@@ -45,7 +45,6 @@
         <tbody>
             @foreach($veterinarias as $veterinaria)
             <tr>
-                <td>{{ $veterinaria->id }}</td>
                 <td>{{ $veterinaria->nombre}}</td>
                 <td>{{ $veterinaria->nombre_veterinario}}</td>
                 <td>{{ $veterinaria->telefono}}</td>

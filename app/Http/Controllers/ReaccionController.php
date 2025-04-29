@@ -7,41 +7,36 @@ use Illuminate\Http\Request;
 
 class ReaccionController
 {
+    /**
+     * Mostrar todas las reacciones en el panel administrativo.
+     */
     public function panel()
     {
-        $reacciones = Reaccion::with('user')->get();
-        return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
+        $reacciones = Reaccion::with('user', 'publicacion')->get();
+        return view('panelAdministrativo.reaccionesIndex', compact('reacciones'));
     }
 
-    public function search( Request $request)
+    /**
+     * Buscar reacciones en el panel administrativo.
+     */
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
-        $reacciones = Reaccion::with('user')
+        $reacciones = Reaccion::with('user', 'publicacion')
             ->whereHas('user', function ($query) use ($nombre) {
                 $query->where('name', 'LIKE', "%$nombre%");
             })
-            ->where('id_publicacion', 'LIKE', "%$nombre%")
-            ->orWhere('tipo', 'LIKE', "%$nombre%")->get();
-        return view('panelAdministrativo.reaccionesIndex')->with('reacciones', $reacciones);
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+            ->orWhereHas('publicacion', function ($query) use ($nombre) {
+                $query->where('contenido', 'LIKE', "%$nombre%");
+            })
+            ->orWhere('tipo', 'LIKE', "%$nombre%")
+            ->get();
+
+        return view('panelAdministrativo.reaccionesIndex', compact('reacciones'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Crear o actualizar una reacción para una publicación.
      */
     public function store(Request $request)
     {
@@ -57,7 +52,7 @@ class ReaccionController
         $reaccion = Reaccion::updateOrCreate(
             [
                 'id_user' => auth()->id(),
-                'publicacion_id' => $request->publicacion_id
+                'publicacion_id' => $request->publicacion_id,
             ],
             ['tipo' => $request->tipo]
         );
@@ -65,43 +60,21 @@ class ReaccionController
         return response()->json(['status' => 'success', 'reaccion' => $reaccion]);
     }
 
-
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Eliminar una reacción.
      */
     public function destroy(string $publicacion_id)
     {
+
         if (!auth()->check()) {
             return response()->json(['status' => 'unauthorized'], 401);
         }
 
+
         $reaccion = Reaccion::where('publicacion_id', $publicacion_id)
             ->where('id_user', auth()->id())
             ->first();
+
 
         if ($reaccion) {
             $reaccion->delete();
@@ -111,17 +84,17 @@ class ReaccionController
         return response()->json(['status' => 'not_found'], 404);
     }
 
-
+    /**
+     * Eliminar una reacción desde el panel administrativo.
+     */
     public function paneldestroy(string $id)
     {
         $eliminados = Reaccion::destroy($id);
 
-        if ($eliminados < 0){
-            return redirect()->route('reacciones.panel')->with('fracaso', 'La reaccion no se pudo borrar.');
-        }else {
-            return redirect()->route('reacciones.panel')->with('exito', 'La reaccion se elimino correctamente.');
+        if ($eliminados < 1) {
+            return redirect()->route('reacciones.panel')->with('fracaso', 'La reacción no se pudo borrar.');
+        } else {
+            return redirect()->route('reacciones.panel')->with('exito', 'Reacción eliminada correctamente.');
         }
     }
-
-
 }
