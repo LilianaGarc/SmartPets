@@ -143,6 +143,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
     Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
 
+    Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
+    Route::get('/panel/productos/{id}/show', [ProductoController::class, 'panelshow'])->name('productos.panelshow')->whereNumber('id');
+
     Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
     Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
     Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
@@ -233,7 +236,6 @@ Route::middleware(['auth'])->group(function() {
 });
 
 //Rutas para Productos
-Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
 Route::resource('productos', ProductoController::class);
 
