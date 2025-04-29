@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('horario_cierre');
             $table->string('telefono');
             $table->string('whatsapp')->nullable();
+            $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('id_ubicacion')->constrained('ubicaciones')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

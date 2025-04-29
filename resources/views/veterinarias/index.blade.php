@@ -28,9 +28,11 @@
     @endif
 
     <h1 class="d-flex justify-content-between align-items-center mb-2 text-center"><b>Veterinarias</b>
+        @if (auth()->check())
         <a class="btn btn-primary py-1 px-2 d-flex align-items-center" href="{{ route('veterinarias.create') }}" style="font-size: 45%;">
             <img src="images/Crear_Veterinaria.svg" alt="Crear Veterinaria" width="28px" height="28px" class="me-1">Nuevo
         </a>
+        @endif
     </h1>
 
     @if($veterinarias->isEmpty())

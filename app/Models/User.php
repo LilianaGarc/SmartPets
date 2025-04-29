@@ -12,22 +12,32 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    public function publicaciones(){
+    public function veterinarias()
+    {
+        //Un usuario puede tener muchas veterinarias (1)
+        return $this->hasMany(Veterinaria::class, 'id_user');
+    }
+
+    public function publicaciones()
+    {
         //Un usuario puede tener muchas publicaciones (1)
         return $this->hasMany(Publicacion::class);
     }
 
-    public function comentarios(){
+    public function comentarios()
+    {
         //Un usuario puede tener muchos comentarios (1)
         return $this->hasMany(Comentario::class);
     }
 
-    public function reacciones(){
+    public function reacciones()
+    {
         //Un usuario puede tener muchas reacciones (1)
         return $this->hasMany(Reaccion::class);
     }
 
-    public function calificaciones(){
+    public function calificaciones()
+    {
         //Un usuario puede tener muchas calificaciones (1)
         return $this->hasMany(Calificacion::class, 'id_user');
     }
@@ -38,10 +48,9 @@ class User extends Authenticatable
         $this->hasMany(Resenia::class);
     }
 
-
     public function adopciones()
     {
-        return $this->hasMany(Adopcion::class, 'id_usuario');{
+        return $this->hasMany(Adopcion::class, 'id_usuario'); {
             //Un usuario puede tener muchas adopciones (1)
         }
     }
@@ -50,7 +59,6 @@ class User extends Authenticatable
     {
         //Un usuario puede tener muchos productos (1)
         return $this->hasMany(Producto::class);
-
     }
 
     /**
@@ -62,6 +70,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'usertype',
     ];
 
     /**
@@ -85,5 +94,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getEsAdminAttribute()
+    {
+        return $this->usertype === 'admin';
     }
 }

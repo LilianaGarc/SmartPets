@@ -9,6 +9,7 @@ class Veterinaria extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id_user',
         'nombre',
         'nombre_veterinario',
         'horario_apertura',
@@ -17,6 +18,10 @@ class Veterinaria extends Model
         'whatsapp',
         'id_ubicacion',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 
     public function ubicacion(){
         //Una veterinaria tiene una ubicacion (1)

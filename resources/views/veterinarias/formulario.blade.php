@@ -1,4 +1,4 @@
-@extends('panelAdministrativo.plantillaPanel')
+@extends(auth()->user()->es_admin ? 'panelAdministrativo.plantillaPanel' : 'layout.plantillaSaid')
 
 @section('titulo', 'Creación de Veterinaria')
 
@@ -14,9 +14,11 @@
                     Crear Veterinaria
                     @endif
                 </h1>
-                <a href="{{ route('veterinarias.panel') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+
+                <a href="{{ auth()->user()->es_admin ? route('veterinarias.panel') : route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
+
             </div>
             <hr>
 
@@ -44,6 +46,24 @@
                 @csrf
 
                 <div class="row g-3">
+
+                    @if(auth()->user()->es_admin)
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_user" name="id_user" required>
+                                <option value="">Seleccione un usuario</option>
+                                @foreach($usuarios as $usuario)
+                                <option value="{{ $usuario->id }}"
+                                    {{ (isset($veterinaria) && $veterinaria->id_user == $usuario->id) ? 'selected' : '' }}>
+                                    {{ $usuario->name }} ({{ $usuario->email }})
+                                </option>
+                                @endforeach
+                            </select>
+                            <label for="id_user">Usuario dueño</label>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="col-12">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
@@ -204,16 +224,16 @@
 
                         <div id="socialLinks" class="mt-3">
                             @if(isset($veterinaria) && !$veterinaria->redes->isEmpty())
-                               @foreach ($veterinaria->redes as $red)
-                                <div class="social-link-item" data-red-id="{{ $red->id }}">
-                                    <span>{{ $red->tipo_red_social ?? 'Sin tipo de red' }}: {{ $red->nombre_usuario ?? 'Sin usuario' }}</span>
-                                    <input type="hidden" name="redes[{{ $loop->index }}][tipo_red_social]" value="{{ $red->tipo_red_social }}">
-                                    <input class="mt-1" type="hidden" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
-                                    <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="removeRed(this)">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                                @endforeach
+                            @foreach ($veterinaria->redes as $red)
+                            <div class="social-link-item" data-red-id="{{ $red->id }}">
+                                <span>{{ $red->tipo_red_social ?? 'Sin tipo de red' }}: {{ $red->nombre_usuario ?? 'Sin usuario' }}</span>
+                                <input type="hidden" name="redes[{{ $loop->index }}][tipo_red_social]" value="{{ $red->tipo_red_social }}">
+                                <input class="mt-1" type="hidden" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
+                                <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="removeRed(this)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            @endforeach
                             @endif
                         </div>
                     </div>
