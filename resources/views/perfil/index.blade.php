@@ -98,6 +98,13 @@
                             <a href="{{ route('adopciones.show', $adopcion->id) }}">
                                 <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
                             </a>
+                            <div class="overlay-info">
+                                <p><strong>Tipo:</strong> {{ $adopcion->tipo_mascota }}</p>
+                                <p><strong>Nombre:</strong> {{ $adopcion->nombre_mascota }}</p>
+                                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
+                                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
+                                <p><strong>Nacimiento:</strong> {{ \Carbon\Carbon::parse($adopcion->fecha_nacimiento)->format('d/m/Y') }}</p>
+                            </div>
                             <p class="contador-visitas">
                                 <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
                             </p>

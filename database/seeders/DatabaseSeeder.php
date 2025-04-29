@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TiposMascotaTableSeeder::class,
             PreguntasTableSeeder::class,
             RespuestasTableSeeder::class,
+
             UsersTableSeeder::class,
             CategoriasTableSeeder::class,
         ]);

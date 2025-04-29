@@ -17,13 +17,17 @@
     <h3>| Publicaciones</h3>
     <hr>
     <form action="{{ route('publicaciones.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
-        <div class="row">
+        <div class="row" style="justify-content: space-between;">
             <div class="col">
                 <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
             </div>
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <div class="col">
+                <a href="{{ route('publicaciones.panelcreate') }}" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nueva publicación</h7></a>
             </div>
         </div>
         </div>
@@ -58,7 +62,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('publicaciones.detalles', ['id'=> $publicacion->id]) }}">Detalles</a></li>
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('publicaciones.paneledit', ['id'=> $publicacion->id]) }}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}">Eliminar</a></li>
                             </ul>
                         </div>

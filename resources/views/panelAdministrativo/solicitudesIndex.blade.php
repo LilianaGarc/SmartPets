@@ -13,20 +13,24 @@
 @endif
 <h3> | Solicitudes </h3>
 
-<hr>
-<form action="{{ route('solicitudes.search') }}" class="" role="search" style="width: 100%; align-content: flex-end;">
-    <div class="row">
-        <div class="col">
-            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+    <hr>
+    <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="align-content: flex-end;">
+        <div class="row">
+            <div class="col">
+                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
+                <span class="glyphicon glyphicon-search"></span>
+            </div>
+            <div class="col">
+                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nueva adopcion</h7></a>
+            </div>
         </div>
-        <div class="col">
-            <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
-            <span class="glyphicon glyphicon-search"></span>
         </div>
-    </div>
-    </div>
-</form>
-<hr>
+    </form>
+    <hr>
 
 <div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
     <table class="table table-striped table-bordered">

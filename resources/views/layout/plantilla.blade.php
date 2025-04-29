@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('titulo')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -14,11 +15,20 @@
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
+            align-items: center;
             background-color: #f7f7f7;
             flex-direction: column;
         }
 
-        .btnl {
+        .row-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+        }
+
+        .btn {
             text-decoration: none;
             color: #ffffff;
             background-color: #ff7f50;
@@ -27,29 +37,45 @@
             border: none;
         }
 
-        .btnl:hover {
+        .btn:hover {
             color: #ffffff;
             transform: scale(1.1);
             background-color: #18478b;
         }
 
         .card-publicacion{
-            width: 96%;
-            height: 100%;
-            padding: 2%;
-            margin: 2%;
+            width: 50vw;
+            height: auto;
+            padding: 2vw;
+            margin: 0;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             box-sizing: border-box ;
             transition: all .5s ease ;
             overflow-x: auto;
             border: 1px solid #c0c0c0;
-            border-radius: 5px;
+            border-radius: 20px;
             z-index: 5;
+            background-color: white;
+        }
+
+        .card-footer{
+            max-width: 50vw;
+            height: 40vh;
+            overflow: hidden;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .footer-img {
+            max-width: 50vw;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
         }
 
         .imagen-publicacion-reaccion{
-            width: 6%;
-            height: 6%;
+            width: 4vw;
+            height: 7vh;
             margin: 0.4%;
         }
 
@@ -154,20 +180,21 @@
             font-size: 150% !important;
         }
 
-        .card-nuevo-comentario{
-            width: 68.6%;
-            height: 10.1%;
-            margin-top: 41.7%;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            box-sizing: border-box ;
-            transition: all .5s ease ;
+        .card-nuevo-comentario {
             position: fixed;
-            overflow-x: auto;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             border: 1px solid #c0c0c0;
-            border-radius: 5px;
-            z-index: 10;
+            border-radius: 8px 8px 0 0;
+            z-index: 1000;
             background-color: white;
+            padding: 10px;
         }
+
 
         .alert {
             opacity: 1;
@@ -184,6 +211,7 @@
             align-items: center;
             gap: 20px;
             margin-bottom: 2.5vh;
+            margin-top: 1vh;
         }
 
         .breadcrumb {
@@ -248,6 +276,12 @@
             background-color: #1e4183;
             color: #FFF;
         }
+
+        .imagen-publicacion-reaccion.reaccion-activa {
+            transform: scale(1.3);
+            transition: transform 0.2s ease;
+        }
+
     </style>
 
 
@@ -259,6 +293,18 @@
 <div class="container">
     @yield('contenido')
 </div>
+
+<script>
+    window.onload = function() {
+        var alert = document.querySelector('.alert');
+
+        if (alert) {
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 2000);
+        }
+    };
+</script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

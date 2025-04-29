@@ -13,9 +13,9 @@
         @csrf
         <div class="card-body">
             @if(isset($user))
-                <h5>Editar informacion de usuario</h5>
+                <h4><a href="{{ route('users.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar información de usuario</strong></h4>
             @else
-                <h5>Crear usuario</h5>
+                <h4><a href="{{ route('users.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear un nuevo usuario</strong></h4>
             @endif
             <hr>
 
@@ -29,17 +29,16 @@
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" value="{{ isset($user) ? $user->password : old('password') }}">
+                    <input type="password" class="form-control" id="password" name="password" >
                 </div>
-
-                <select class="form-select form-select-sm" aria-label="Small select example" name="usertype" id="usetype">
-                    <option selected>Selecciona el tipo de usuario</option>
-                    <option value="1">Administrador</option>
-                    <option value="2">Usuario</option>
-                    @if(isset($user))
-                        <option selected>{{ $user->usertype }}</option>
-                    @endif
-                </select>
+                <div class="mb-3">
+                    <label for="usertype" class="form-label">Tipo de usuario</label>
+                    <select class="form-select" name="usertype" id="usertype">
+                        <option disabled {{ !isset($user) ? 'selected' : '' }}>Selecciona el tipo de usuario</option>
+                        <option value="admin" {{ (isset($user) && $user->usertype == 'admin') ? 'selected' : '' }}>Administrador</option>
+                        <option value="user" {{ (isset($user) && $user->usertype == 'user') ? 'selected' : '' }}>Usuario</option>
+                    </select>
+                </div>
 
             <br>
             <button type="submit" class="btn">Guardar</button>

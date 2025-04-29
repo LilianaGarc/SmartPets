@@ -12,10 +12,8 @@ class PublicacionController
 {
     public function panel()
     {
-        $publicaciones = Publicacion::with('user')->get();
+        $publicaciones = Publicacion::with('user')->orderBy('created_at', 'desc')->get();
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones',$publicaciones);
-        //return view('panelAdministrativo.plantillaPanel');
-
     }
 
     public function panelcreate()
@@ -23,17 +21,84 @@ class PublicacionController
         return view('panelAdministrativo.publicacionesForm');
     }
 
-    public function search( Request $request)
+    public function panelshow()
+    {
+
+        return view('panelAdministrativo.adopcioneDetalles');
+    }
+
+    public function panelstore(Request $request)
+    {
+        $request->validate([
+            'visibilidad' => 'required',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
+        ]);
+
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
+        }
+
+        Publicacion::create([
+            'id_user' => auth()->id(),
+            'visibilidad' => $request->visibilidad,
+            'contenido' => $request->contenido,
+            'imagen' => $rutaImagen,
+        ]);
+
+        return redirect()->route('publicaciones.panel')->with('exito', 'Publicación creada con éxito.');
+    }
+    public function paneledit(string $id)
+    {
+        $publicacion = Publicacion::findOrfail($id);
+        return view('panelAdministrativo.publicacionesForm')->with('publicacion', $publicacion);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function panelupdate(Request $request, string $id)
+    {
+        $request->validate([
+            'visibilidad' => 'required',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
+        ]);
+
+        $publicacion = Publicacion::findOrFail($id);
+
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
+        }
+
+        $publicacion->id_user = auth()->id();
+        $publicacion->visibilidad = $request->visibilidad;
+        $publicacion->contenido = $request->contenido;
+        $publicacion->imagen = $rutaImagen;
+
+        return redirect()->route('publicaciones.panel')->with('exito', 'Publicación modificada con éxito.');
+    }
+
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
+
         $publicaciones = Publicacion::with('user')
-            ->whereHas('user', function ($query) use ($nombre) {
-                $query->where('name', 'LIKE', "%$nombre%");
+            ->where(function ($query) use ($nombre) {
+                $query->whereHas('user', function ($q) use ($nombre) {
+                    $q->where('name', 'LIKE', "%$nombre%")
+                        ->orWhere('email', 'LIKE', "%$nombre%");
+                })
+                    ->orWhere('contenido', 'LIKE', "%$nombre%")
+                    ->orWhere('visibilidad', 'LIKE', "%$nombre%");
             })
-            ->where('contenido', 'LIKE', "%$nombre%")
-            ->orWhere('visibilidad', 'LIKE', "%$nombre%")->get();
+            ->get();
+
         return view('panelAdministrativo.publicacionesIndex')->with('publicaciones', $publicaciones);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -62,8 +127,8 @@ class PublicacionController
     {
         $request->validate([
             'visibilidad' => 'required',
-            'contenido' => 'required|string|max:255',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
         ]);
 
         $rutaImagen = null;
@@ -76,12 +141,11 @@ class PublicacionController
             'visibilidad' => $request->visibilidad,
             'contenido' => $request->contenido,
             'imagen' => $rutaImagen,
+
         ]);
 
-        return redirect()->route('publicaciones.index')->with('exito', 'Publicación creada con éxito.');
+        return redirect()->route('publicaciones.index')->with('success', 'Publicación de adopción creada con éxito.');
     }
-
-
 
     /**
      * Display the specified resource.
@@ -115,7 +179,8 @@ class PublicacionController
      */
     public function edit(string $id)
     {
-        //
+        $publicacion = Publicacion::findOrfail($id);
+        return view('publicaciones.crearPublicaciones')->with('publicacion', $publicacion);
     }
 
     /**
@@ -123,7 +188,29 @@ class PublicacionController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'visibilidad' => 'required',
+            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $publicacion = Publicacion::findOrFail($id);
+
+        if ($publicacion->id_user !== auth()->id()) {
+            abort(403, 'No tienes permiso para modificar esta publicación.');
+        }
+
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
+            $publicacion->imagen = $rutaImagen;
+        }
+
+        $publicacion->visibilidad = $request->visibilidad;
+        $publicacion->contenido = $request->contenido;
+        $publicacion->save();
+
+        return redirect()->route('publicaciones.index')->with('exito', 'Publicación modificada con éxito.');
+
     }
 
     /**

@@ -33,6 +33,8 @@
             font-family: Arial, sans-serif;
             width: 100%;
             height: 100vh;
+            align-items: center;
+            justify-content: center;
         }
         header{
             z-index: 200;
@@ -293,14 +295,14 @@
         }
 
         .round-button-2 {
-            width: 7vh;
-            height: 7vh;
+            width: 9vh;
+            height: 9vh;
             border-radius: 50%;
             border: none;
             background-color: #ffffff;
             justify-content: center;
             align-items: center;
-            border: 2px solid black;
+            border: 4px solid #18478b;
             border-radius: 50%;
         }
 
@@ -414,6 +416,80 @@
             text-align: left !important;
             display: block !important;
         }
+        .rigth .username {
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            right: 6vw;
+            z-index: 110;
+            font-size: 1.2rem;
+            color: #1e1e1e;
+            font-weight: 600;
+            gap: 8px;
+        }
+
+
+        .rigth .username span {
+            display: inline-block;
+            padding-left: 5px;
+        }
+
+        .rigth .username a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            top: 3.5rem;
+            right: 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0.5rem;
+            min-width: 180px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .dropdown-menu-custom.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu-custom button {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            color: #18478b;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dropdown-menu-custom button:hover {
+            background-color: #ffffff;
+            color: #ff7c40;
+        }
+
+
+         .imagen-ajustada {
+             width: 200px;
+             height: 200px;
+             object-fit: cover;
+             border-radius: 10px;
+             display: block;
+         }
+
 
 
     </style>
@@ -436,9 +512,28 @@
 
     </div>
     <div class="rigth">
-        <a class="icons-header"><img src="{{ asset('images/home.svg') }}" alt="Smart Pets"></a>
-        <a class="icons-header"><img src="{{ asset('images/notificacion.svg') }}" alt="Smart Pets"></a>
-        <a class="icons-header"><img src="{{ asset('images/perritoPublicacion.webp') }}" alt="Smart Pets" class="user"></a>
+
+        @auth
+            <div class="username" id="userDropdown">
+                <a href="javascript:void(0);">
+                    <img
+                        src="{{ Auth::user()->fotoperfil ? asset('storage/' . Auth::user()->fotoperfil) : asset('images/fotodeperfil.webp') }}"
+                        alt="Foto de perfil"
+                        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    <span class="hide-profile-name">{{ Auth::user()->name }}</span>
+                </a>
+
+                <div id="dropdownMenu" class="dropdown-menu-custom hidden">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">
+                            <i class="fas fa-sign-out-alt me-2"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        @endauth
     </div>
 </header>
 
@@ -510,6 +605,19 @@
         menu.classList.toggle('menu-toggle');
         main.classList.toggle('menu-toggle');
     });
+
+        const userDropdown = document.getElementById('userDropdown');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        userDropdown.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita que se cierre inmediatamente
+        dropdownMenu.classList.toggle('show');
+    });
+
+        document.addEventListener('click', () => {
+        dropdownMenu.classList.remove('show');
+    });
+
 
 
 </script>

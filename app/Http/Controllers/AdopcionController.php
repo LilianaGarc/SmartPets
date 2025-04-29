@@ -11,19 +11,117 @@ class AdopcionController extends Controller
 {
     public function panel()
     {
-        $adopciones = Adopcion::all();
+        $adopciones = Adopcion::with('usuario')->get();
         return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
     }
 
-    public function search( Request $request)
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.adopcionesForm');
+    }
+
+    public function panelshow(string $id)
+    {
+        $adopcion = Adopcion::with(['usuario', 'solicitudAceptada'])->findOrFail($id);
+        return view('panelAdministrativo.adopcionesDetalles', compact('adopcion'));
+    }
+
+    public function panelstore(Request $request)
+    {
+        $request->validate([
+            'contenido' => 'required|string|max:255',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'tipo_mascota' => 'required|string|max:100',
+            'nombre_mascota' => 'required|string|max:100',
+            'fecha_nacimiento' => 'required|date|before_or_equal:today',
+            'raza_mascota' => 'required|string|max:100',
+            'ubicacion_mascota' => 'required|string|max:100',
+        ]);
+
+        if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+            $rutaImagen = $request->file('imagen')->store('adopciones', 'public');
+        } else {
+            return redirect()->route('adopciones.create')->with('error', 'Por favor sube una imagen válida.');
+        }
+
+        Adopcion::create([
+            'contenido' => $request->contenido,
+            'imagen' => $rutaImagen,
+            'visibilidad' => 0,
+            'tipo_mascota' => $request->tipo_mascota,
+            'nombre_mascota' => $request->nombre_mascota,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
+            'raza_mascota' => $request->raza_mascota,
+            'ubicacion_mascota' => $request->ubicacion_mascota,
+            'id_usuario' => Auth::id(),
+        ]);
+
+        return redirect()->route('adopciones.panel')->with('success', 'La publicación de adopción se ha creado con éxito. Podrás ver tu publicación en tu perfil. ☺️');
+
+    }
+    public function paneledit(string $id)
+    {
+        $adopcion = Adopcion::findOrfail($id);
+        return view('panelAdministrativo.adopcionesForm')->with('adopcion', $adopcion);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function panelupdate(Request $request, string $id)
+    {
+        $request->validate([
+            'contenido' => 'required|string|max:255',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'tipo_mascota' => 'required|string|max:100',
+            'nombre_mascota' => 'required|string|max:100',
+            'fecha_nacimiento' => 'required|date|before_or_equal:today',
+            'raza_mascota' => 'required|string|max:100',
+            'ubicacion_mascota' => 'required|string|max:255',
+        ]);
+
+        $adopcion = Adopcion::findOrFail($id);
+
+        if ($request->hasFile('imagen')) {
+            if ($adopcion->imagen) {
+                Storage::disk('public')->delete($adopcion->imagen);
+            }
+
+            $rutaImagen = $request->file('imagen')->store('adopciones', 'public');
+            $adopcion->imagen = $rutaImagen;
+        }
+
+        $adopcion->contenido = $request->contenido;
+        $adopcion->tipo_mascota = $request->tipo_mascota;
+        $adopcion->nombre_mascota = $request->nombre_mascota;
+        $adopcion->fecha_nacimiento = $request->fecha_nacimiento;
+        $adopcion->raza_mascota = $request->raza_mascota;
+        $adopcion->ubicacion_mascota = $request->ubicacion_mascota;
+
+        $adopcion->save();
+
+        return redirect()->route('adopciones.panel')->with('success', 'Publicación de adopción actualizada con éxito. Podrás ver tu publicación en tu perfil. ☺️');
+
+    }
+
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
-        $adopciones = Adopcion::orderby('created_at', 'desc')
-            ->where('id_usuario', 'LIKE', "%$nombre%")
-            ->where('contenido', 'LIKE', "%$nombre%")
-            ->orWhere('visibilidad', 'LIKE', "%$nombre%")->get();
+
+        $adopciones = Adopcion::with('usuario') // Asegúrate que tengas esta relación
+        ->where(function ($query) use ($nombre) {
+            $query->whereHas('usuario', function ($q) use ($nombre) {
+                $q->where('name', 'LIKE', "%$nombre%");
+            })
+                ->orWhere('nombre_mascota', 'LIKE', "%$nombre%")
+                ->orWhere('tipo_mascota', 'LIKE', "%$nombre%")
+                ->orWhere('contenido', 'LIKE', "%$nombre%");
+        })
+            ->orderBy('created_at', 'desc')->get();
+
         return view('panelAdministrativo.adopcionesIndex')->with('adopciones', $adopciones);
     }
+
 
     public function index(Request $request)
     {

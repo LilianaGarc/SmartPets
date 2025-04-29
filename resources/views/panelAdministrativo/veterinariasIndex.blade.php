@@ -37,7 +37,6 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Nombre de la Veterinaria</th>
                 <th scope="col">Nombre del Veterinario</th>
                 <th scope="col">Telefono</th>

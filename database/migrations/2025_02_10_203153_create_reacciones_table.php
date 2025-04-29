@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('reacciones', function (Blueprint $table) {
             $table->id();
             $table->string('tipo');
-            $table->integer('id_user');
-            $table->integer('publicacion_id');
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('publicacion_id');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('publicacion_id')->references('id')->on('publicaciones')->onDelete('cascade');
+            $table->unique(['id_user', 'publicacion_id']);
+
             $table->timestamps();
         });
     }

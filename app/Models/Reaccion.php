@@ -11,7 +11,6 @@ class Reaccion extends Model
     protected $table = 'reacciones';
 
     public function publicacion(){
-        //Varias reacciones pertenecen una publicacion (N)
         return $this->belongsTo(Publicacion::class, 'publicacion_id');
     }
 

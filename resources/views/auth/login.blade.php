@@ -3,7 +3,15 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+    @if ($errors->any())
+        <div class="alert-error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="container">
         <div class="container-form">
@@ -74,6 +82,13 @@
         btnSignUp.addEventListener("click",()=>{
             container.classList.add("toggle");
         });
+
+        setTimeout(() => {
+            const alert = document.querySelector('.alert-error');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 5000); // 5 segundos
 
 
     </script>
