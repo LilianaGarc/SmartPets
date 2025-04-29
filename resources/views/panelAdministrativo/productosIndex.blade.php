@@ -51,7 +51,7 @@
                                 Acciones
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('productos.show', $producto->id) }}">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('productos.panelshow', $producto->id) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('productos.edit', $producto->id)}}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$producto->id}}">Eliminar</a></li>
                             </ul>
