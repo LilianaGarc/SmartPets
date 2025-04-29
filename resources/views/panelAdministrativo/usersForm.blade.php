@@ -1,12 +1,17 @@
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
-    <form method="post"
-          @if (isset($user))
-              action="{{ route('users.update', ['id' => $user->id]) }}"
-          @else
-              action="{{ route('users.store') }}"
-        @endif>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ isset($user) ? route('users.update', ['id' => $user->id]) : route('users.store') }}">
         @csrf
         @isset($user)
             @method('PUT')
@@ -30,8 +35,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" >
+                    <input type="password" class="form-control" id="password" name="password">
                 </div>
+                @if (isset($user))
+                    <input type="hidden" name="current_password_hashed" value="{{ $user->password }}">
+                @endif
                 <div class="mb-3">
                     <label for="usertype" class="form-label">Tipo de usuario</label>
                     <select class="form-select" name="usertype" id="usertype">

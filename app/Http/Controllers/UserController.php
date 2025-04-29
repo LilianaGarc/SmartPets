@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 
 class UserController
@@ -96,7 +97,8 @@ class UserController
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('panelAdministrativo.usersForm')->with('user', $user);
     }
 
     /**
@@ -106,23 +108,20 @@ class UserController
     {
         $request->validate([
             'name' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
-            'email' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/|unique:users,email,'.$id,
-            'usertype' => 'required',
-            'password' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'email' => 'required|email|max:300|unique:users,email,' . $id,
+            'usertype' => 'required|in:admin,user',
+            'password' => 'nullable|min:8|max:300|regex:/[a-zA-Z0-9 ]+/',
         ]);
-
-        $type = $request->input('usertype');
-        if ($type == "Administrador") {
-            $type = "admin";
-        } else {
-            $type = "user";
-        }
 
         $user = User::findOrFail($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = Hash::make($request->password);
-        $user->usertype = $type;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->usertype = $request->input('usertype');
 
         if ($user->save()) {
             return redirect()->route('users.panel')->with('exito', 'El usuario se editó correctamente.');
@@ -130,6 +129,8 @@ class UserController
             return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo editar.');
         }
     }
+
+
 
 
     /**
