@@ -288,4 +288,3 @@ Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 
 
 
-
