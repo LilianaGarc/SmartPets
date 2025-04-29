@@ -20,9 +20,6 @@ class DatabaseSeeder extends Seeder
             PreguntasTableSeeder::class,
             RespuestasTableSeeder::class,
             UsersTableSeeder::class,
-            PublicacionesTableSeeder::class,
-            ComentariosTableSeeder::class,
-            ReaccionesTableSeeder::class,
             CategoriasTableSeeder::class,
         ]);
     }
