@@ -145,10 +145,10 @@ class VeterinariaController extends Controller
         }
     }
 
-    // Método que muestra una veterinaria
+    // Método que muestra una veterin aria
     public function show(string $id)
     {
-        if (auth()->user()->es_admin) {
+        if (auth()->check() && auth()->user()->es_admin) {
             $veterinaria = Veterinaria::with(['ubicacion', ])->findOrFail($id);
         return view('veterinarias.otra')->with('veterinaria', $veterinaria);  // crea la ruta y lavista ponle
         } else {
