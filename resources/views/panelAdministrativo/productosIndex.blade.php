@@ -22,6 +22,10 @@
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
             </div>
+            <div class="col">
+                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
+                        Nuevo producto</h7></a>
+            </div>
         </div>
         </div>
     </form>
@@ -51,7 +55,7 @@
                                 Acciones
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('productos.show', $producto->id) }}">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('productos.panelshow', $producto->id) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('productos.edit', $producto->id)}}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$producto->id}}">Eliminar</a></li>
                             </ul>

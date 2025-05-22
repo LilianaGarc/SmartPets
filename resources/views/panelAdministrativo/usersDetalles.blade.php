@@ -25,7 +25,7 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" name="password" value="{{ isset($user) ? $user->password : old('password') }}" disabled>
+                <input type="password" class="form-control" id="password" name="password" disabled>
             </div>
             <div class="mb-3">
                 <label for="usertype" class="form-label">Tipo de usuario</label>
