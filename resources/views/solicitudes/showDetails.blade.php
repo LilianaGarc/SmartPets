@@ -11,6 +11,9 @@
 @include('MenuPrincipal.Navbar')
 
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Solicitudes</h1>
+    </div>
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -84,7 +87,7 @@
         <div class="card-content">
 
             <div class="photo" onclick="function openImageModal() { } openImageModal()">
-            @if(auth()->user()->id === $solicitud->id_usuario)
+                @if(auth()->user()->id === $solicitud->id_usuario)
                     <h2 style="color: #1e4183;">{{ $adopcion->nombre_mascota }}</h2>
                     @php
                         $fotoMascota = $adopcion->imagen
@@ -152,21 +155,21 @@
 
 
 
-            @if(auth()->user()->id === $solicitud->id_usuario)
+                @if(auth()->user()->id === $solicitud->id_usuario)
                     <div class="boton-container">
-                    <form action="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" method="GET">
-                        <button type="submit" class="btn-editard">
-                            Editar
-                        </button>
-                    </form>
+                        <form action="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" method="GET">
+                            <button type="submit" class="btn-editard">
+                                Editar
+                            </button>
+                        </form>
 
-                    <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn-eliminard" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
-                            Eliminar
-                        </button>
-                    </form>
+                        <form action="{{ route('solicitudes.destroy', [$adopcion->id, $solicitud->id]) }}" method="POST" id="delete-form-{{$solicitud->id}}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn-eliminard" onclick="confirmDeleteSolicitud({{$adopcion->id}}, {{$solicitud->id}})">
+                                Eliminar
+                            </button>
+                        </form>
                     </div>
                 @endif
             </div>

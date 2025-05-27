@@ -11,6 +11,9 @@
 @include('MenuPrincipal.Navbar')
 
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Mascotas en Adopción</h1>
+    </div>
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -50,23 +53,41 @@
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                             Eliminar
+                            Eliminar
                         </button>
                     </form>
                 </div>
             </div>
         @endif
 
-
-
         <div class="card-content">
-            <div class="photo" onclick="function openImageModal() { } openImageModal()">
+            <div class="photos">
                 @if($adopcion->imagen)
-                    <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
+                    <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
+                @endif
+
+                @if ($adopcion->imagenes_secundarias)
+                    @php
+                        $imagenesSecundarias = json_decode($adopcion->imagenes_secundarias, true);
+                    @endphp
+
+                    <div class="imagenes-secundaria-container">
+                        @if($adopcion->imagen)
+                            <div class="imagen-secundaria-container">
+                                <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="imagen-secundaria" onclick="changeMainImage(this)">
+                            </div>
+                        @endif
+                        @foreach ($imagenesSecundarias as $imagen)
+                            <div class="imagen-secundaria-container">
+                                <img src="{{ asset('storage/'.$imagen) }}" alt="Imagen Secundaria" class="imagen-secundaria" onclick="changeMainImage(this)">
+                            </div>
+                        @endforeach
+                    </div>
+
                 @endif
             </div>
 
-            <div class="description">
+            <div class="descriptions">
                 <h1>{{ $adopcion->nombre_mascota }}</h1>
                 <h2>{{ $adopcion->tipo_mascota }}</h2>
                 <p>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
@@ -130,10 +151,72 @@
                         @endif
                     </div>
                 @endauth
-
             </div>
         </div>
     </div>
+</div>
+<section class="sugerencias-adopcion">
+    <h2 class="titulo-sugerencias">
+        Adopciones similares que podrían interesarte 🐶❤️‍🩹
+    </h2>
+    <p class="descripcion-sugerencias">
+        ¿Te gustó lo que viste? Estas otras mascotas también podrían robarte el corazón.
+    </p>
+</section>
+
+
+<div class="containersimi">
+    <div class="adopciones-container">
+        @foreach ($adopcionesRelacionadas as $adopcionRelacionada)
+            <div class="adopcion-card">
+                <div class="perfil-usuario">
+                    @php
+                        $foto = $adopcionRelacionada->usuario->fotoperfil
+                                ? asset('storage/' . $adopcionRelacionada->usuario->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                    @endphp
+
+                    <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
+                    <div class="informacion-perfil">
+                        <p class="nombre-usuario">{{ $adopcionRelacionada->usuario->name }}</p>
+                        <p class="fecha-publicacion">
+                            {{ \Carbon\Carbon::parse($adopcionRelacionada->created_at)->diffForHumans() }}
+                        </p>
+                        <p class="contador-visitas">
+                            <i class="fas fa-eye"></i> {{ $adopcionRelacionada->visibilidad }}
+                        </p>
+                    </div>
+                </div>
+                @php
+                    $emojis = [
+                        'Perro' => '🐶',
+                        'Gato' => '😺',
+                        'Conejo' => '🐰',
+                        'Tortuga' => '🐢',
+                        'Peces' => '🐟',
+                        'Otro' => '🐾',
+                    ];
+                    $emoji = $emojis[$adopcion->tipo_mascota] ?? '🐾';
+                @endphp
+
+                <p>
+                    <span style="font-size: 1.2em;">{{ $emoji }}</span>
+                    <strong>{{ $adopcionRelacionada->nombre_mascota }}</strong>
+                </p>
+                <p>{{ $adopcionRelacionada->contenido }}</p>
+                @if($adopcionRelacionada->imagen)
+                    <a href="{{ route('adopciones.show', $adopcionRelacionada->id) }}">
+                        <img src="{{ asset('storage/' . $adopcionRelacionada->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
+                    </a>
+                @endif
+            </div>
+        @endforeach
+    </div>
+</div>
+<div class="ver-todas-container">
+    <a href="{{ route('adopciones.index') }}" class="btn-ver-todas">
+        Ver todas
+    </a>
 </div>
 
 <div id="imageModal" class="modal">
@@ -141,7 +224,9 @@
     <img class="modal-content" id="modalImage">
 </div>
 
+<script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/Modalscripts.js') }}"></script>
+<script src="{{ asset('js/variasimagenes.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 </body>

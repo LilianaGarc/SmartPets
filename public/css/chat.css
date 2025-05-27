@@ -1,0 +1,336 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #ECEFF1;
+}
+
+.chat-container {
+    display: flex;
+    height: calc(100vh - 100px);
+    width: 100%;
+    margin-top: 100px;
+}
+
+.chat-list {
+    width: 35%;
+    background-color: #fff;
+    padding: 20px 0;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.search-box {
+    padding: 20px 24px;
+}
+
+.search-box input {
+    width: 90%;
+    padding: 16px 20px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #1E4183;
+    outline: none;
+}
+
+.chat-user {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.25s ease;
+    cursor: pointer;
+}
+
+.chat-user:hover {
+    background-color: #f5f5f5;
+}
+
+.chat-user img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+.chat-user div {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-user strong {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.chat-user small {
+    color: #888;
+    font-size: 15px;
+}
+
+.chat-messages {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    background-color: #F9FAFB;
+    position: relative;
+}
+
+.chat-header {
+    padding: 25px;
+    background-color: #ffffff;
+    color: #1e4183;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.chat-header img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+.messages-box {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.message-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 100%;
+}
+
+.sent-message-wrapper {
+    justify-content: flex-end;
+}
+
+.received-message-wrapper {
+    justify-content: flex-start;
+}
+
+.message-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+}
+
+.sent-message,
+.received-message {
+    padding: 12px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+    position: relative;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.sent-message {
+    background-color: #E3F2FD;
+    color: #313131;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.received-message {
+    background-color: #ffffff;
+    color: #263238;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    align-items: flex-start;
+    text-align: left;
+}
+
+.message-small {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+
+
+.chat-input {
+    padding: 20px 25px;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chat-input input[type="text"] {
+    flex-grow: 1;
+    padding: 16px 20px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.chat-input input[type="text"]:focus {
+    border-color: #1E4183;
+    outline: none;
+}
+
+.chat-input button {
+    width: 50px;
+    height: 50px;
+    background-color: #1E4183;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+    background-color: #16376b;
+}
+
+#emoji-picker {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 8px;
+    max-width: 220px;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+}
+
+#emoji-picker .emoji {
+    font-size: 24px;
+    padding: 6px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#emoji-picker .emoji:hover {
+    background-color: #f5f5f5;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.empty-chat-message {
+    text-align: center;
+    padding: 40px;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    position: fixed;
+    top: 50%;
+    left: 70%; /* Centrado horizontal */
+    transform: translate(-50%, -50%); /* Ajuste perfecto para centrar ambos ejes */
+    opacity: 0; /* Inicialmente invisible */
+    animation: fadeIn 0.6s ease-out forwards; /* Animación de opacidad */
+}
+
+
+.emoji-placeholder {
+    font-size: 48px;
+    color: #1e4183;
+    margin-bottom: 20px;
+}
+
+.empty-chat-title {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.empty-chat-description {
+    font-size: 16px;
+    color: #777;
+    margin-top: 0;
+}
+
+/* Animación de fade-in sin mover el bloque */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.chat-user {
+    position: relative;
+    justify-content: flex-start;
+}
+
+.chat-user .user-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.unread-badge {
+    position: absolute;
+    right: 20px;
+    top: 28px;
+    background-color: #1E4183;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 12px;
+    min-width: 24px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.ultimo-mensaje-no-leido {
+    font-weight: bold;
+    color: #1E4183;
+}
+
+
+

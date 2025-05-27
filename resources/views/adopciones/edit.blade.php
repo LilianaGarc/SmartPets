@@ -11,6 +11,9 @@
 @include('MenuPrincipal.Navbar')
 
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Mascotas en Adopción</h1>
+    </div>
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -90,10 +93,10 @@
         </div>
 
         <div class="form-group">
-            <label for="imagen">Imagen</label>
+            <label for="imagen_principal">Imagen Principal</label>
             <div class="input-file-wrapper">
-                <input type="file" name="imagen" id="imagen" accept="image/*" onchange="previewImage()">
-                <label for="imagen">Seleccionar Imagen</label>
+                <input type="file" name="imagen_principal" id="imagen_principal" accept="image/*" onchange="previewImage()">
+                <label for="imagen_principal">Seleccionar Imagen</label>
             </div>
 
             <div class="file-info">
@@ -107,6 +110,7 @@
                 <div class="image-caption">Vista Previa</div>
             </div>
         @endif
+
 
         <button type="submit" class="btn btn-success">Actualizar Adopción</button>
     </form>
