@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,13 @@
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
+
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Mascotas en Adopción</h1>
+    </div>
+
+
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -28,72 +34,146 @@
                 </a>
             </li>
         </ul>
-
-        <div class="filter-container">
-            <form action="{{ route('adopciones.index') }}" method="GET" class="d-flex">
-                <div class="select-wrapper">
-                    <select name="tipo_mascota" onchange="this.form.submit()" class="select-dropdown">
-                        <option value="">Seleccionar tipo de mascota</option>
-                        <option value="Perro" {{ request('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
-                        <option value="Gato" {{ request('tipo_mascota') == 'Gato' ? 'selected' : '' }}>Gato</option>
-                        <option value="Conejo" {{ request('tipo_mascota') == 'Conejo' ? 'selected' : '' }}>Conejo</option>
-                        <option value="Tortuga" {{ request('tipo_mascota') == 'Tortuga' ? 'selected' : '' }}>Tortuga</option>
-                        <option value="Peces" {{ request('tipo_mascota') == 'Peces' ? 'selected' : '' }}>Peces</option>
-                        <option value="Otro" {{ request('tipo_mascota') == 'Otro' ? 'selected' : '' }}>Otro</option>
-                        <option value="" {{ request('tipo_mascota') == '' ? 'selected' : '' }}>Todos</option>
-                    </select>
-                </div>
-
-                <div class="select-wrapper">
-                    <select name="orden" onchange="this.form.submit()" class="select-dropdown">
-                        <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por fecha: Más reciente</option>
-                        <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por fecha: Más antigua</option>
-                        <option value="most_visited" {{ request('orden') == 'most_visited' ? 'selected' : '' }}>Ordenar por vistas: Más vistas</option>
-                        <option value="least_visited" {{ request('orden') == 'least_visited' ? 'selected' : '' }}>Ordenar por vistas: Menos vistas</option>
-                        <option value="accepted_requests" {{ request('orden') == 'accepted_requests' ? 'selected' : '' }}>Ordenar por solicitudes aceptadas</option>
-                    </select>
-                </div>
-            </form>
-        </div>
     </div>
-</div>
 
+    <div class="modern-filters-row">
+        <h3 class="filtro-titulo solo-escritorio">Filtrar por tipo de mascota</h3>
+        <p class="filtro-descripcion solo-escritorio">🔍 Elige una categoría para ver solo las publicaciones de ese tipo de mascota.</p>
 
+        <form method="GET" action="{{ route('adopciones.index') }}" class="filters-form">
+            <input type="hidden" name="orden" value="{{ request('orden') }}">
+            <div class="category-buttons">
+                <button type="submit" name="tipo_mascota" value=""
+                        class="category-btn {{ request('tipo_mascota') == '' ? 'active' : '' }}">
+                    <i class="fas fa-list-ul fa-2x"></i>
+                    <span>Todos</span>
+                </button>
+                @php
+                    $tipos = [
+                        'Perro' => 'perro.webp',
+                        'Gato' => 'gato.webp',
+                        'Conejo' => 'conejo.webp',
+                        'Tortuga' => 'tortuga.webp',
+                        'Peces' => 'peces.webp',
+                        'Otro' => 'otro.webp'
+                    ];
+                @endphp
 
-@if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                draggable: true,
-                confirmButtonColor: '#ff7f50',
+                @foreach ($tipos as $tipo => $imagen)
+                    <button type="submit" name="tipo_mascota" value="{{ $tipo }}"
+                            class="category-btn {{ request('tipo_mascota') == $tipo ? 'active' : '' }}">
+                        @if($tipo !== 'Otro')
+                            <img src="{{ asset('images/' . $imagen) }}" alt="{{ $tipo }}" class="category-icon">
+                        @else
+                            <i class="fas fa-paw fa-3x"></i>
+                        @endif
+                        <span>{{ $tipo }}</span>
+                    </button>
+                @endforeach
+            </div>
+        </form>
+        <h3 class="orden-titulo solo-escritorio">Ordenar publicaciones</h3>
+        <p class="orden-descripcion solo-escritorio">📋Organiza las publicaciones según tu preferencia: más recientes, más vistas, o solicitudes enviadas.</p>
+        <form method="GET" action="{{ route('adopciones.index') }}" class="order-form">
+            <input type="hidden" name="tipo_mascota" value="{{ request('tipo_mascota') }}">
+            <div class="order-pills">
+
+                @php
+                    $ordenes = [
+                        'desc' => ['icon' => 'fa-clock', 'label' => 'Reciente'],
+                        'asc' => ['icon' => 'fa-history', 'label' => 'Antigua'],
+                        'most_visited' => ['icon' => 'fa-eye', 'label' => 'Más vistas'],
+                        'least_visited' => ['icon' => 'fa-eye-slash', 'label' => 'Menos vistas'],
+                        'accepted_requests' => ['icon' => 'fa-check-circle', 'label' => 'Solicitudes Enviadas']
+                    ];
+                @endphp
+
+                @foreach ($ordenes as $key => $data)
+                    <button type="submit" name="orden" value="{{ $key }}"
+                            class="pill-btn {{ request('orden') == $key || (request('orden') == '' && $key == 'desc') ? 'active' : '' }}"
+                            title="{{ $data['label'] }}">
+                        <i class="fas {{ $data['icon'] }}"></i>
+                        <span class="pill-text">{{ $data['label'] }}</span>
+                    </button>
+                @endforeach
+            </div>
+        </form>
+    </div>
+
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    draggable: true,
+                    confirmButtonColor: '#ff7f50',
+                });
             });
-        });
-    </script>
-@endif
-
-@if(session('fracaso'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '{{ session('fracaso') }}',
-                confirmButtonColor: '#ff7f50',
-            });
-        });
-    </script>
-@endif
-
-<div class="adopciones-container">
-    @if($adopciones->isEmpty())
-        <div class="no-hay">
-            <p class="no-hay-message">¡No hay adopciones disponibles por el momento! 😿</p>
-            <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
-        </div>
+        </script>
     @endif
+
+    @if(session('fracaso'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('fracaso') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+
+    <div class="adopciones-container">
+        @if($adopciones->isEmpty() && request('orden') === 'accepted_requests')
+            <div class="no-hay">
+                @php
+                    $tipoSeleccionado = request('tipo_mascota');
+                    $mensajes = [
+                        'Perro' => 'No has enviado solicitudes de adopción para perros. 😞',
+                        'Gato' => 'No has enviado solicitudes de adopción para gatos. 😞',
+                        'Conejo' => 'No has enviado solicitudes de adopción para conejos. 😞',
+                        'Tortuga' => 'No has enviado solicitudes de adopción para tortugas. 😞',
+                        'Peces' => 'No has enviado solicitudes de adopción para peces. 😞',
+                        'Otro' => 'No has enviado solicitudes en esta categoría por el momento. 😞',
+                        '' => 'No has enviado solicitudes de adopción aún. 😞',
+                        null => 'No has enviado solicitudes de adopción aún. 😞',
+                    ];
+                @endphp
+
+                <p class="no-hay-message">
+                    {{ $mensajes[$tipoSeleccionado] ?? $mensajes[''] }}
+                </p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay solicitudes enviadas"
+                     class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+            </div>
+        @elseif($adopciones->isEmpty())
+            <div class="no-hay">
+                @php
+                    $tipoSeleccionado = request('tipo_mascota');
+                    $mensajes = [
+                        'Perro' => '¡No hay adopciones disponibles de perros por el momento! 🐶',
+                        'Gato' => '¡No hay adopciones disponibles de gatos por el momento! 🐱',
+                        'Conejo' => '¡No hay adopciones disponibles de conejos por el momento! 🐰',
+                        'Tortuga' => '¡No hay adopciones disponibles de tortugas por el momento! 🐢',
+                        'Peces' => '¡No hay adopciones disponibles de peces por el momento! 🐟',
+                        'Otro' => '¡No hay adopciones disponibles en esta categoría por el momento! 🐾',
+                        '' => '¡No hay adopciones disponibles por el momento! 😿',
+                        null => '¡No hay adopciones disponibles por el momento! 😿',
+                    ];
+                @endphp
+
+                <p class="no-hay-message">
+                    {{ $mensajes[$tipoSeleccionado] ?? $mensajes[''] }}
+                </p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones"
+                     class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+            </div>
+        @endif
+
         @foreach($adopciones as $adopcion)
             <div class="adopcion-card">
                 <div class="perfil-usuario">
@@ -106,12 +186,8 @@
                     <div class="foto-perfil" style="width: 70px; background-image: url('{{ $foto }}');"></div>
                     <div class="informacion-perfil">
                         <p class="nombre-usuario">{{ $adopcion->usuario->name }}</p>
-                        <p class="fecha-publicacion">
-                            Fecha: {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}
-                        </p>
-                        <p class="contador-visitas">
-                            <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
-                        </p>
+                        <p class="fecha-publicacion">{{ \Carbon\Carbon::parse($adopcion->created_at)->diffForHumans() }}</p>
+                        <p class="contador-visitas"><i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}</p>
 
                         @if ($adopcion->solicitudAceptada && $adopcion->solicitudAceptada->id_usuario === Auth::id())
                             <p class="estado-adopcion" style="font-size: 0.9rem;">
@@ -124,9 +200,38 @@
                             </p>
                         @endif
 
+                        @if($adopcion->solicitudes->isNotEmpty())
+                            @php
+                                $solicitud = $adopcion->solicitudes->firstWhere('id_usuario', Auth::id());
+                            @endphp
+
+                            @if($solicitud && $solicitud->estado == 'pendiente')
+                                <p class="estado-adopcion" style="font-size: 0.9rem;">
+                                    Solicitud:
+                                    <a href="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $solicitud->id]) }}" style="font-weight: bold; color: orange; text-decoration: none;">
+                                        {{ ucfirst($solicitud->estado) }}
+                                    </a>
+                                </p>
+                            @endif
+                        @endif
+
 
                     </div>
                 </div>
+
+                @php
+                    $emojis = [
+                        'Perro' => '🐶',
+                        'Gato' => '😺',
+                        'Conejo' => '🐰',
+                        'Tortuga' => '🐢',
+                        'Peces' => '🐟',
+                        'Otro' => '🐾',
+                    ];
+                    $emoji = $emojis[$adopcion->tipo_mascota] ?? '🐾';
+                @endphp
+
+                <p><span style="font-size: 1.1em;">{{ $emoji }}</span> <strong>{{ $adopcion->nombre_mascota }}</strong></p>
                 <p>{{ $adopcion->contenido }}</p>
 
                 @if($adopcion->imagen)
@@ -136,7 +241,10 @@
                 @endif
             </div>
         @endforeach
-
+    </div>
+</div>
+<div class="paginacion-mascotas">
+    {{ $adopciones->links('vendor.pagination.mascotas') }}
 </div>
 
 <script src="{{ asset('js/Ascripts.js') }}"></script>

@@ -134,6 +134,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
 
+    //Rutas para chats
+    Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+    Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+    Route::post('/chats/{chat}/mensajes', [MensajeController::class, 'store'])->name('mensajes.store');
+    Route::get('/chats/iniciar/{userId}', [ChatController::class, 'iniciarChat'])->name('chats.iniciar');
+
 });
 
 Route::middleware('auth', 'admin')->group(function () {

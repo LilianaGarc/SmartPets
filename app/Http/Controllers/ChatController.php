@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\User;
+use App\Models\Mensaje;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController
 {
@@ -24,10 +27,73 @@ class ChatController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $usuarioActual = Auth::user();
+        $usuarios = User::where('id', '!=', $usuarioActual->id)->get();
+
+        $usuariosConMensajes = $usuarios->map(function ($usuario) use ($usuarioActual) {
+            $chat = Chat::where(function ($query) use ($usuario, $usuarioActual) {
+                $query->where('id_usuario_1', $usuarioActual->id)->where('id_usuario_2', $usuario->id);
+            })->orWhere(function ($query) use ($usuario, $usuarioActual) {
+                $query->where('id_usuario_1', $usuario->id)->where('id_usuario_2', $usuarioActual->id);
+            })->first();
+
+            $ultimoMensaje = null;
+            $fechaOrden = now()->subYears(100);
+            $mensajesNoLeidos = 0;
+
+            if ($chat) {
+                $ultimoMensaje = $chat->mensajes()->latest()->first();
+                if ($ultimoMensaje) {
+                    $fechaOrden = $ultimoMensaje->created_at;
+                }
+
+                // Contar mensajes no leídos para el usuario actual (mensajes enviados por el otro usuario)
+                $mensajesNoLeidos = $chat->mensajes()
+                    ->where('user_id', '!=', $usuarioActual->id)
+                    ->where('estado', false)
+                    ->count();
+            }
+
+            return [
+                'usuario' => $usuario,
+                'chat' => $chat,
+                'ultimo_mensaje' => $ultimoMensaje,
+                'fechaOrden' => $fechaOrden,
+                'mensajes_no_leidos' => $mensajesNoLeidos,
+            ];
+        })->sortByDesc('fechaOrden');
+
+
+        // Chat activo (si lo hay)
+        $chatActivo = null;
+        $mensajes = [];
+
+        if ($request->has('chat_id')) {
+            $chatActivo = Chat::with(['usuario1', 'usuario2', 'mensajes.usuario'])->find($request->chat_id);
+            if ($chatActivo) {
+                // Marcar como leídos los mensajes no leídos que no sean del usuario actual
+                Mensaje::where('id_chat', $chatActivo->id)
+                    ->where('user_id', '!=', $usuarioActual->id)
+                    ->where('estado', false)
+                    ->update(['estado' => true]);
+
+                $mensajes = $chatActivo->mensajes()->orderBy('created_at')->get();
+            }
+        }
+
+        return view('chats.index', [
+            'usuariosConMensajes' => $usuariosConMensajes,
+            'chatActivo' => $chatActivo,
+            'mensajes' => $mensajes
+        ]);
     }
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,9 +114,17 @@ class ChatController
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Chat $chat)
     {
-        //
+        // Verificar que el usuario pertenece al chat
+        $user = Auth::user();
+        if ($chat->id_usuario_1 !== $user->id && $chat->id_usuario_2 !== $user->id) {
+            abort(403);
+        }
+
+        $mensajes = $chat->mensajes()->with('usuario')->orderBy('created_at')->get();
+
+        return view('chats.show', compact('chat', 'mensajes', 'user'));
     }
 
     /**
@@ -77,6 +151,30 @@ class ChatController
         //
     }
 
+    public function iniciarChat($userId)
+    {
+        $authId = auth()->id();
+
+        // Ver si ya existe el chat
+        $chat = Chat::where(function ($query) use ($authId, $userId) {
+            $query->where('id_usuario_1', $authId)->where('id_usuario_2', $userId);
+        })->orWhere(function ($query) use ($authId, $userId) {
+            $query->where('id_usuario_1', $userId)->where('id_usuario_2', $authId);
+        })->first();
+
+        // Si no existe, crearlo
+        if (!$chat) {
+            $chat = Chat::create([
+                'id_usuario_1' => $authId,
+                'id_usuario_2' => $userId,
+            ]);
+        }
+
+        return redirect()->route('chats.index', ['chat_id' => $chat->id]);
+    }
+
+
+
     public function paneldestroy(string $id)
     {
         $eliminados = Chat::destroy($id);
@@ -87,4 +185,5 @@ class ChatController
             return redirect()->route('chats.panel')->with('exito', 'El chat se elimino correctamente.');
         }
     }
+
 }
