@@ -67,7 +67,25 @@ class MensajeController
             'mensaje' => $mensaje->load('usuario')
         ]);
     }
+    public function getNuevosMensajes(Request $request, Chat $chat)
+    {
+        $usuarioActual = Auth::user();
 
+        $ultimoTimestamp = $request->query('ultimo_timestamp');
+        if (!$ultimoTimestamp) {
+            return response()->json(['mensajes' => []]);
+        }
+
+        $mensajesNuevos = $chat->mensajes()
+            ->where('created_at', '>', $ultimoTimestamp)
+            ->with('usuario')
+            ->orderBy('created_at')
+            ->get();
+
+        return response()->json([
+            'mensajes' => $mensajesNuevos
+        ]);
+    }
 
 
 

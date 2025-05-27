@@ -49,7 +49,6 @@ class ChatController
                     $fechaOrden = $ultimoMensaje->created_at;
                 }
 
-                // Contar mensajes no leídos para el usuario actual (mensajes enviados por el otro usuario)
                 $mensajesNoLeidos = $chat->mensajes()
                     ->where('user_id', '!=', $usuarioActual->id)
                     ->where('estado', false)
@@ -73,7 +72,6 @@ class ChatController
         if ($request->has('chat_id')) {
             $chatActivo = Chat::with(['usuario1', 'usuario2', 'mensajes.usuario'])->find($request->chat_id);
             if ($chatActivo) {
-                // Marcar como leídos los mensajes no leídos que no sean del usuario actual
                 Mensaje::where('id_chat', $chatActivo->id)
                     ->where('user_id', '!=', $usuarioActual->id)
                     ->where('estado', false)
@@ -89,6 +87,47 @@ class ChatController
             'mensajes' => $mensajes
         ]);
     }
+
+    public function usuariosConMensajes()
+    {
+        $usuarioActual = Auth::user();
+        $usuarios = User::where('id', '!=', $usuarioActual->id)->get();
+
+        $usuariosConMensajes = $usuarios->map(function ($usuario) use ($usuarioActual) {
+            $chat = Chat::where(function ($query) use ($usuario, $usuarioActual) {
+                $query->where('id_usuario_1', $usuarioActual->id)->where('id_usuario_2', $usuario->id);
+            })->orWhere(function ($query) use ($usuario, $usuarioActual) {
+                $query->where('id_usuario_1', $usuario->id)->where('id_usuario_2', $usuarioActual->id);
+            })->first();
+
+            $ultimoMensaje = null;
+            $fechaOrden = now()->subYears(100);
+            $mensajesNoLeidos = 0;
+
+            if ($chat) {
+                $ultimoMensaje = $chat->mensajes()->latest()->first();
+                if ($ultimoMensaje) {
+                    $fechaOrden = $ultimoMensaje->created_at;
+                }
+
+                $mensajesNoLeidos = $chat->mensajes()
+                    ->where('user_id', '!=', $usuarioActual->id)
+                    ->where('estado', false)
+                    ->count();
+            }
+
+            return [
+                'usuario' => $usuario,
+                'chat' => $chat,
+                'ultimo_mensaje' => $ultimoMensaje,
+                'fechaOrden' => $fechaOrden,
+                'mensajes_no_leidos' => $mensajesNoLeidos,
+            ];
+        })->sortByDesc('fechaOrden')->values();
+
+        return response()->json(['usuariosConMensajes' => $usuariosConMensajes]);
+    }
+
 
 
 
