@@ -62,31 +62,43 @@ class ChatController
                 'fechaOrden' => $fechaOrden,
                 'mensajes_no_leidos' => $mensajesNoLeidos,
             ];
-        })->sortByDesc('fechaOrden');
+        })->sortByDesc('fechaOrden')->values();
 
-
-        // Chat activo (si lo hay)
         $chatActivo = null;
-        $mensajes = [];
+        $mensajes = collect();
 
         if ($request->has('chat_id')) {
             $chatActivo = Chat::with(['usuario1', 'usuario2', 'mensajes.usuario'])->find($request->chat_id);
-            if ($chatActivo) {
-                Mensaje::where('id_chat', $chatActivo->id)
-                    ->where('user_id', '!=', $usuarioActual->id)
-                    ->where('estado', false)
-                    ->update(['estado' => true]);
+        } else {
+            $ultimoChat = $usuariosConMensajes->first(function ($c) {
+                return $c['chat'] !== null && $c['ultimo_mensaje'] !== null;
+            });
 
-                $mensajes = $chatActivo->mensajes()->orderBy('created_at')->get();
+            if ($ultimoChat && $ultimoChat['chat']) {
+                $chatActivo = Chat::with(['usuario1', 'usuario2', 'mensajes.usuario'])->find($ultimoChat['chat']->id);
             }
         }
+
+        if ($chatActivo) {
+            Mensaje::where('id_chat', $chatActivo->id)
+                ->where('user_id', '!=', $usuarioActual->id)
+                ->where('estado', false)
+                ->update(['estado' => true]);
+
+            $mensajes = $chatActivo->mensajes()->orderBy('created_at')->get();
+        }
+
+        $mensajePredefinido = $request->query('mensaje', '');
 
         return view('chats.index', [
             'usuariosConMensajes' => $usuariosConMensajes,
             'chatActivo' => $chatActivo,
-            'mensajes' => $mensajes
+            'mensajes' => $mensajes,
+            'mensajePredefinido' => $mensajePredefinido,
         ]);
     }
+
+
 
     public function usuariosConMensajes()
     {
@@ -194,14 +206,12 @@ class ChatController
     {
         $authId = auth()->id();
 
-        // Ver si ya existe el chat
         $chat = Chat::where(function ($query) use ($authId, $userId) {
             $query->where('id_usuario_1', $authId)->where('id_usuario_2', $userId);
         })->orWhere(function ($query) use ($authId, $userId) {
             $query->where('id_usuario_1', $userId)->where('id_usuario_2', $authId);
         })->first();
 
-        // Si no existe, crearlo
         if (!$chat) {
             $chat = Chat::create([
                 'id_usuario_1' => $authId,
@@ -209,8 +219,12 @@ class ChatController
             ]);
         }
 
-        return redirect()->route('chats.index', ['chat_id' => $chat->id]);
+        $mensajePredefinido = request()->query('mensaje', '');
+
+        return redirect()->route('chats.index', ['chat_id' => $chat->id, 'mensaje' => $mensajePredefinido]);
     }
+
+
 
 
 

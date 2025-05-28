@@ -3289,6 +3289,29 @@ button, .btn-view, .btn-editar {
     }
 }
 
+.enlace-mensaje {
+    color: #1e4183;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
 
+.enlace-mensaje:hover {
+    color: #15406c;
+    transform: scale(1.05);
+}
+
+.enlace-mensaje i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.enlace-mensaje:hover i {
+    transform: translateX(3px);
+}
 
 

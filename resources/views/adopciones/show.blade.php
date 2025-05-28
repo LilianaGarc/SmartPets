@@ -127,6 +127,16 @@
                 <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
                 <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
                 @auth
+                    @if(auth()->id() !== $adopcion->id_usuario)
+                        <p>
+                            <a href="{{ route('chats.iniciar', $adopcion->id_usuario) }}?nombre_mascota={{ urlencode($adopcion->nombre_mascota) }}&mensaje={{ urlencode('Hola, estoy interesado en adoptar a ' . $adopcion->nombre_mascota . '. ¿Podrías darme más información? 😸') }}" class="enlace-mensaje">
+                                <i class="fas fa-envelope"></i> Enviar mensaje a: {{ $adopcion->usuario->name }}
+                            </a>
+                        </p>
+                    @endif
+                @endauth
+
+            @auth
                     @php
                         $miSolicitud = \App\Models\Solicitud::where('id_usuario', auth()->id())
                             ->where('id_adopcion', $adopcion->id)
