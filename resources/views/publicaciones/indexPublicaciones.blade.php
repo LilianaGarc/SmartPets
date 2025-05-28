@@ -194,5 +194,5 @@
             });
         });
     </script>
-
+    @include('chats.chat-float')
 @endsection

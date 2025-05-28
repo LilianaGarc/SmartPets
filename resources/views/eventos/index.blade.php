@@ -79,4 +79,5 @@
     <div class="d-flex justify-content-center">
         {{ $eventos->links('pagination::bootstrap-5') }}
     </div>
+    @include('chats.chat-float')
 @endsection

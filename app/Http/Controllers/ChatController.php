@@ -167,7 +167,6 @@ class ChatController
      */
     public function show(Chat $chat)
     {
-        // Verificar que el usuario pertenece al chat
         $user = Auth::user();
         if ($chat->id_usuario_1 !== $user->id && $chat->id_usuario_2 !== $user->id) {
             abort(403);

@@ -95,7 +95,7 @@
                         <div class="mt-1"><b>Teléfono:</b> {{ $veterinaria->telefono }}</div>
                         <div class="mt-1"><b>Dirección: </b>{{ $veterinaria->ubicacion->direccion }}</div>
                     </div>
-                    
+
                     <div class="mt-1 d-flex gap-2 mt-3">
                         @if($veterinaria->whatsapp)
                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $veterinaria->whatsapp) }}"
@@ -195,4 +195,5 @@
         animation: pulse 2s infinite;
     }
 </style>
+@include('chats.chat-float')
 @endsection
