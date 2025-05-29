@@ -46,15 +46,6 @@
                     @endforeach
                 </select>
             </div>
-
-            <div class="select-wrapper">
-                <select name="orden" onchange="this.form.submit()" class="select-dropdown">
-                    <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por: Más reciente
-                    </option>
-                    <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por: Más antiguo
-                    </option>
-                </select>
-            </div>
         </form>
     </div>
 </div>
@@ -108,6 +99,14 @@
                     <p class="fecha-publicacion" style="margin-bottom: 4px">Publicado el
                         {{ $producto->created_at->format('d/m/Y') }}</p>
                 </div>
+            </div>
+            <div class="producto-imagen">
+                <a href="{{ route('productos.show', $producto->id) }}">
+                    <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg') }}"
+                         alt="Imagen del producto"
+                         class="producto-img"
+                         style="width: 100%; height: auto; border-radius: 8px;">
+                </a>
             </div>
         </div>
     @endforeach
