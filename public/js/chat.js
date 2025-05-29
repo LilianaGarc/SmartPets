@@ -177,3 +177,63 @@ setInterval(() => {
     actualizarMensajesNuevos();
     actualizarUsuariosConMensajes();
 }, 1000);
+
+function getTextColor(backgroundColor) {
+    const r = parseInt(backgroundColor.substring(1,3),16) / 255;
+    const g = parseInt(backgroundColor.substring(3,5),16) / 255;
+    const b = parseInt(backgroundColor.substring(5,7),16) / 255;
+    const luminance = 0.299*r + 0.587*g + 0.114*b;
+    return luminance > 0.5 ? '#000000' : '#ffffff';
+}
+
+function aplicarTema(enviado, recibido) {
+    const root = document.documentElement;
+    root.style.setProperty('--bubble-sent-bg', enviado);
+    root.style.setProperty('--bubble-sent-text-color', getTextColor(enviado));
+    root.style.setProperty('--bubble-received-bg', recibido);
+    root.style.setProperty('--bubble-received-text-color', getTextColor(recibido));
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatId = window.chatConfig?.chatActivoId;
+    if (!chatId) return;
+
+    const inputEnviado = document.getElementById('color-enviado');
+    const inputRecibido = document.getElementById('color-recibido');
+    if (!inputEnviado || !inputRecibido) return;
+
+    const storageKey = `chatColorTema_${chatId}`;
+
+    const defaultColors = {
+        enviado: '#4469b6',
+        recibido: '#e5e5ea',
+    };
+
+    const saved = localStorage.getItem(storageKey);
+    let colors;
+
+    try {
+        colors = saved ? JSON.parse(saved) : defaultColors;
+    } catch (e) {
+        console.warn('Error parsing localStorage item, usando colores por defecto.', e);
+        colors = defaultColors;
+    }
+
+    inputEnviado.value = colors.enviado;
+    inputRecibido.value = colors.recibido;
+
+    aplicarTema(colors.enviado, colors.recibido);
+
+    function onChange() {
+        const nuevoTema = {
+            enviado: inputEnviado.value,
+            recibido: inputRecibido.value,
+        };
+        localStorage.setItem(storageKey, JSON.stringify(nuevoTema));
+        aplicarTema(nuevoTema.enviado, nuevoTema.recibido);
+    }
+
+    inputEnviado.addEventListener('input', onChange);
+    inputRecibido.addEventListener('input', onChange);
+});

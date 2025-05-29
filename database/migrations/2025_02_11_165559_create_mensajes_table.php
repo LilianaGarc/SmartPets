@@ -17,6 +17,8 @@ return new class extends Migration
             $table->datetime('fecha');
             $table->boolean('estado');
             $table->integer('id_chat');
+            $table->string('imagen')->nullable();
+            $table->string('tema')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

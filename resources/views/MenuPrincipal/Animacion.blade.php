@@ -313,7 +313,7 @@
     </style>
 </head>
 <body>
-<p class="loading-text">Loading</p>
+<p class="loading-text">Cargando</p>
 <div class="cat">
     <div class="cat__segment"></div>
     <div class="cat__segment"></div>

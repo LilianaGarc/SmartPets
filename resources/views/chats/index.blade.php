@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Petchat</title>
     <link rel="stylesheet" href="{{ asset('css/chat.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
+
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
@@ -56,9 +58,29 @@
                         : asset('images/fotodeperfil.webp');
                 @endphp
 
-                <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
-                <div>{{ $chatActivo->id_usuario_1 === auth()->id() ? $chatActivo->usuario2->name : $chatActivo->usuario1->name }}</div>
+                <div>
+                    <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
+                    <div>{{ $usuarioChat->name }}</div>
+                </div>
+                <div class="theme-wrapper">
+                    <div class="theme-selector" tabindex="0" aria-label="Selector de tema">
+                        Tema
+                        <span class="arrow-down"></span>
+
+                        <div class="theme-dropdown">
+                            <label for="color-recibido">
+                                Recibido
+                                <input type="color" id="color-recibido" title="Color mensaje recibido" />
+                            </label>
+                            <label for="color-enviado">
+                                Enviado
+                                <input type="color" id="color-enviado" title="Color mensaje enviado" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div class="messages-box" id="chat-box">
                 @php
@@ -90,10 +112,11 @@
                             <img src="{{ $foto }}" class="message-photo" alt="Foto perfil" />
                         @endif
 
-                        <div class="{{ $claseMensaje }}">
-                            {{ $mensaje->texto }}
-                            <small class="message-small">{{ $mensaje->created_at->format('H:i') }}</small>
-                        </div>
+                            <div class="{{ $claseMensaje }}">
+                                <span class="message-text">{{ $mensaje->texto }}</span>
+                                <small class="message-small">{{ $mensaje->created_at->format('H:i') }}</small>
+                            </div>
+
                     </div>
                 @endforeach
             </div>
@@ -155,7 +178,6 @@
         }
     });
 </script>
-
 
 </body>
 </html>
