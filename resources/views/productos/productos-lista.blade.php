@@ -22,7 +22,6 @@
         </li>
         <li class="breadcrumb__item breadcrumb__item-active">
 
-            //ARREGLAR RUTA
             <a href="{{ route('productos.index') }}" class="breadcrumb__inner">
                 <span class="breadcrumb__title">Productos</span>
             </a>
@@ -40,7 +39,8 @@
                 <select name="categoria_id" onchange="this.form.submit()" class="select-dropdown">
                     <option value="">Seleccionar categoría</option>
                     @foreach($categorias as $categoria)
-                        <option value="{{ $categoria->id }}" {{ request('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                        <option
+                            value="{{ $categoria->id }}" {{ request('categoria_id') == $categoria->id ? 'selected' : '' }}>
                             {{ $categoria->nombre }}
                         </option>
                     @endforeach
@@ -49,8 +49,10 @@
 
             <div class="select-wrapper">
                 <select name="orden" onchange="this.form.submit()" class="select-dropdown">
-                    <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por: Más reciente</option>
-                    <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por: Más antiguo</option>
+                    <option value="desc" {{ request('orden') == 'desc' ? 'selected' : '' }}>Ordenar por: Más reciente
+                    </option>
+                    <option value="asc" {{ request('orden') == 'asc' ? 'selected' : '' }}>Ordenar por: Más antiguo
+                    </option>
                 </select>
             </div>
         </form>
@@ -60,7 +62,7 @@
 
 @if(session('success'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({
                 title: '¡Éxito!',
                 text: '{{ session('success') }}',
@@ -73,7 +75,7 @@
 
 @if(session('error'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -88,27 +90,25 @@
     @if($productos->isEmpty())
         <div class="no-hay">
             <p class="no-hay-message">¡No hay productos disponibles por el momento! 🛒</p>
-            <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" class="mx-auto d-block mt-2" style="width: 150px; opacity: 0.7;">
+            <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" class="mx-auto d-block mt-2"
+                 style="width: 150px; opacity: 0.7;">
         </div>
     @endif
     @foreach($productos as $producto)
-        <div class="producto-card">
+        <div class="adopcion-card" style="position:relative">
             <div class="perfil-usuario">
-                <div class="foto-perfil" style="width: 70px; background-image: url('{{ asset('images/producto-default.jpg') }}');"></div>
+                @php
+                    $foto = $producto->imagen
+                                   ? asset('storage/' . $producto->imagen) : asset('images/fotodeperfil.webp');
+                @endphp
+                <div class="foto-perfil"
+                     style="background-image: url('{{ $foto }}');background-size: cover;width: 70px;"></div>
                 <div class="informacion-perfil">
-                    <p class="nombre-usuario">{{ $producto->nombre }}</p>
-                    <p class="fecha-publicacion">
-                        Fecha: {{ \Carbon\Carbon::parse($producto->created_at)->format('d M Y, H:i') }}
-                    </p>
+                    <p class="nombre-usuario" style="font-weight: bold;font-size: 1.2rem;">{{$producto->nombre}}</p>
+                    <p class="fecha-publicacion" style="margin-bottom: 4px">Publicado el
+                        {{ $producto->created_at->format('d/m/Y') }}</p>
                 </div>
             </div>
-            <p>{{ $producto->descripcion }}</p>
-
-            @if($producto->imagen)
-                <a href="{{ route('productos.show', $producto->id) }}">
-                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen del producto" class="producto-img">
-                </a>
-            @endif
         </div>
     @endforeach
 </div>
