@@ -1,47 +1,38 @@
 @extends('productos.productos-layout')
-@extends('MenuPrincipal.Navbar')
+
 
 @section('titulo', 'Lista de Productos')
 
 @section('contenido')
 
     @include('MenuPrincipal.Navbar')
+    <style>
+        body{
+            padding-top: 80px;
+        }
+    </style>
 
-    <div class="container">
-        <ul class="breadcrumb">
-            <li class="breadcrumb__item">
-                <a href="{{ route('index') }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Inicio</span>
-                </a>
-            </li>
-            <li class="breadcrumb__item breadcrumb__item-active">
-                <a href="{{ route('productos.index') }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Productos</span>
-                </a>
-            </li>
-            <li class="breadcrumb__item">
-                <a href="{{ route('productos.create') }}" class="breadcrumb__inner">
-                    <span class="breadcrumb__title">Publicar Producto</span>
-                </a>
-            </li>
-        </ul>
-
-        <div class="filter-container">
-            <form action="{{ route('productos.index') }}" method="GET" class="d-flex">
-                <div class="select-wrapper">
-                    <select name="categoria_id" onchange="this.form.submit()" class="select-dropdown">
-                        <option value="">Seleccionar categoría</option>
+    <div class="container d-flex justify-content-center mt-4">
+        <div class="card shadow-sm" style="max-width: 700px; width: 100%; ">
+            <div class="card-body">
+                <form class ="row g-2 align-items-center" action="{{route('productos.index')}}" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Buscar productos..." value="{{ request('search') }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
                         @foreach($categorias as $categoria)
-                            <option value="{{ $categoria->id }}" {{ request('categoria_id') == $categoria->id ? 'selected' : '' }}>
-                                {{ $categoria->nombre }}
-                            </option>
+                            <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('$categoria')==$categoria->id) active @endif"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}">
+                            <i class="{{$categoria->icono??'fas fa-tag'}}"></i>
+                            </button>
+
                         @endforeach
-                    </select>
-                </div>
-            </form>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
     @if(session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
