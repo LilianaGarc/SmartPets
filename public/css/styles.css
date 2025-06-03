@@ -3314,4 +3314,27 @@ button, .btn-view, .btn-editar {
     transform: translateX(3px);
 }
 
+.toggle-orden-dropdown {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.4em;
+    color: #555;
+    transition: color 0.3s ease;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.toggle-orden-dropdown:hover {
+    color: #000;
+}
+
+.orden-icon {
+    transition: transform 0.3s ease;
+}
+
+.orden-icon.rotated {
+    transform: rotate(180deg);
+}
+
+
 

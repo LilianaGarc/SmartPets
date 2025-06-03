@@ -208,7 +208,7 @@
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
                         <li class="footer__nav-item">
-                            <a href="#" class="footer__nav-link">PetChat</a>
+                            <a href="{{ route('chats.index') }}" class="footer__nav-link">PetChat</a>
                         </li>
                         <li class="footer__nav-item">
                             <a href="{{route('eventos.index')}}" class="footer__nav-link">Eventos</a>

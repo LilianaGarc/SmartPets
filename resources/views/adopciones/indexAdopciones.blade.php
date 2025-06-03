@@ -72,10 +72,13 @@
                 @endforeach
             </div>
         </form>
+        <span class="toggle-orden-dropdown" onclick="toggleOrden()" aria-label="Mostrar/Ocultar orden">
+             <i class="fas fa-chevron-down orden-icon {{ request('orden') ? 'rotated' : '' }}" id="orden-icon"></i>
+        </span>
         <h3 class="orden-titulo solo-escritorio">Ordenar publicaciones</h3>
         <p class="orden-descripcion solo-escritorio">📋Organiza las publicaciones según tu preferencia: más recientes, más vistas, o solicitudes enviadas.</p>
-        <form method="GET" action="{{ route('adopciones.index') }}" class="order-form">
-            <input type="hidden" name="tipo_mascota" value="{{ request('tipo_mascota') }}">
+        <form method="GET" action="{{ route('adopciones.index') }}" class="order-form" id="orden-form"
+              style="display: {{ request('orden') ? 'block' : 'none' }};">            <input type="hidden" name="tipo_mascota" value="{{ request('tipo_mascota') }}">
             <div class="order-pills">
 
                 @php

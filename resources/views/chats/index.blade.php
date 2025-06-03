@@ -9,7 +9,28 @@
 
 </head>
 <body>
+
+
 @include('MenuPrincipal.Navbar')
+@php
+    if (!function_exists('esSoloNumeros')) {
+        function esSoloNumeros($texto) {
+            return preg_match('/^\d+$/', $texto);
+        }
+    }
+
+    if (!function_exists('esSoloEmoji')) {
+        function esSoloEmoji($texto) {
+            return preg_match('/^\p{Emoji}+$/u', $texto);
+        }
+    }
+
+    if (!function_exists('esSoloEmojiNoNumeros')) {
+        function esSoloEmojiNoNumeros($texto) {
+            return !esSoloNumeros($texto) && esSoloEmoji($texto);
+        }
+    }
+@endphp
 <div class="chat-container">
     <div class="chat-list">
         <div class="search-box">
@@ -111,11 +132,16 @@
                         @if(!$esMio)
                             <img src="{{ $foto }}" class="message-photo" alt="Foto perfil" />
                         @endif
-
                             <div class="{{ $claseMensaje }}">
-                                <span class="message-text">{{ $mensaje->texto }}</span>
+                                @if (esSoloEmojiNoNumeros($mensaje->texto))
+                                    <span class="emoji-large">{{ $mensaje->texto }}</span>
+                                @else
+                                    <span class="message-text">{{ $mensaje->texto }}</span>
+                                @endif
                                 <small class="message-small">{{ $mensaje->created_at->format('H:i') }}</small>
                             </div>
+
+
 
                     </div>
                 @endforeach

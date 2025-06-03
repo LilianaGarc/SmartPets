@@ -25,3 +25,26 @@ reactionImgs.forEach(img => {
 });
 
 
+function toggleOrden() {
+    const ordenForm = document.getElementById('orden-form');
+    const icon = document.getElementById('orden-icon');
+
+    const style = window.getComputedStyle(ordenForm);
+    const isHidden = style.display === 'none';
+
+    ordenForm.style.display = isHidden ? 'block' : 'none';
+    icon.classList.toggle('rotated', isHidden);
+}
+document.addEventListener('DOMContentLoaded', function () {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const ordenForm = document.getElementById('orden-form');
+    const toggleOrden = document.querySelector('.toggle-orden-dropdown');
+
+    if (isAndroid) {
+        ordenForm.style.display = 'block';
+
+        if (toggleOrden) {
+            toggleOrden.style.display = 'none';
+        }
+    }
+});
