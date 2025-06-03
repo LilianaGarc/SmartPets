@@ -77,6 +77,7 @@
     </script>
 @endif
 
+
 <div class="productos-container">
     @if($productos->isEmpty())
         <div class="no-hay">
@@ -86,21 +87,20 @@
         </div>
     @endif
     @foreach($productos as $producto)
-        <div class="adopcion-card" style="position:relative">
-            <div class="perfil-usuario">
+        <div class="adopcion-card" style="position:relative; margin-left: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <div class="perfil-usuario" style="display: flex; align-items: flex-start;">
                 @php
                     $foto = $producto->imagen
                                    ? asset('storage/' . $producto->imagen) : asset('images/fotodeperfil.webp');
                 @endphp
                 <div class="foto-perfil"
-                     style="background-image: url('{{ $foto }}');background-size: cover;width: 70px;"></div>
-                <div class="informacion-perfil">
-                    <p class="nombre-usuario" style="font-weight: bold;font-size: 1.2rem;">{{$producto->nombre}}</p>
-                    <p class="fecha-publicacion" style="margin-bottom: 4px">Publicado el
-                        {{ $producto->created_at->format('d/m/Y') }}</p>
+                     style="background-image: url('{{ $foto }}'); background-size: cover; width: 70px; height: 70px; border-radius: 50%; margin-right: 10px;"></div>
+                <div class="informacion-perfil" style="flex: 1;">
+                    <p class="nombre-usuario" style="font-weight: bold; font-size: 1.2rem; margin: 0;">{{$producto->nombre}}</p>
+                    <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.9rem; color: #555;">Publicado el {{ $producto->created_at->format('d/m/Y H:i') }}</p>
                 </div>
             </div>
-            <div class="producto-imagen">
+            <div class="producto-imagen" style="margin-top: 10px;">
                 <a href="{{ route('productos.show', $producto->id) }}">
                     <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg') }}"
                          alt="Imagen del producto"
