@@ -1,150 +1,132 @@
-@extends('productos.productos-layout') @extends('MenuPrincipal.Navbar')
+@extends('productos.productos-layout')
+
+
 @section('titulo', 'Lista de Productos')
 
 @section('contenido')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @include('MenuPrincipal.Navbar')
     <style>
-        :root {
-            --orange: #ED8119;
-            --blue: #18478B;
-            --cream: #FFF8F0;
-            --dark: #1F1F1F;
-        }
-        .bg-gradient-hero {
-            background: linear-gradient(135deg, #00BCD4 50%, #FFAB76 50%);
-        }
-        .pet-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid var(--orange);
-            padding: 5px;
-        }
-        .pet-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .btn-shop {
-            background-color: var(--cream);
-            color: var(--dark);
-            border: none;
-            padding: 10px 30px;
-            border-radius: 25px;
-        }
-        .category-pill {
-            border: 2px solid var(--orange);
-            color: var(--dark);
-            background: transparent;
-            border-radius: 25px;
-            padding: 8px 20px;
-        }
-        .category-pill.active {
-            background-color: var(--orange);
-            color: white;
-        }
-        .offer-card {
-            border: 2px solid var(--orange);
-            border-radius: 15px;
-            overflow: hidden;
+        body{
+            padding-top: 80px;
         }
     </style>
 
-</head>
-<body>
-
-    @section('nav') @endsection
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{session('success')}}
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{session('error')}}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <section class="py-1 mt-0">
-        <div class="container">
-
-
-            <!-- BARRA DE BUSQUEDA -->
-            <nav class="navbar bg-body-tertiary">
-                <div class="container-fluid mx-3 px-3 my-2">
-                    <form id="search-form" class="d-flex" role="search" action="{{ route('productos.index') }}" method="GET"
-                    onsubmit="return document.getElementById('search-query').value.trim() !== '';">
-                        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar" name="query" value="{{ old('query',$query ?? '') }}" id="search-query">
-                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
-                    </form>
-                </div>
-            </nav>
-
-            <h2 class="text-center mb-4"></h2>
-            <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
-                <!-- CATEGORIAS -->
-                @forelse($categorias as $categoria)
-                    <form action="{{ route('productos.index') }}" method="GET">
-                        <input type="hidden" name="query" value="{{ request('query') }}">
-                        <input type="hidden" name="categoria_id" value="{{ $categoria->id }}">
-                        <button class="category-pill {{ request('categoria_id') == $categoria->id ? 'active' : '' }}" type="submit">
-                            {{ $categoria->nombre }}
+    <div class="container d-flex justify-content-center mt-4">
+        <div class="card shadow-sm" style="max-width: 700px; width: 100%; ">
+            <div class="card-body">
+                <form class ="row g-2 align-items-center" action="{{route('productos.index')}}" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Buscar productos..." value="{{ request('search') }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
                         </button>
-                    </form>
-                @empty
-                    <p class="text-center">No se han encontrado categorías.</p>
-                @endforelse
-            </div>
-            <h2 class="text-center mb-4"></h2>
-            <button class="btn btn-primary mb-3" onclick="window.location.href='{{ route('productos.create') }} '" >Publicar Producto</button>
-            <div class="row g-4">
-                @forelse($productos as $producto)
-                    <div class="col-6 col-md-3">
-                        <div class="offer-card h-80">
-                            <img src="{{ isset($producto->imagen) ? url('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg')}}" alt="
-                            {{ $producto->nombre }}" class="w-100">
-                            <div class="detalles p-1 mx-2 d-flex justify-content-center">
-                                <button class="category-pill active mx-1" onclick=window.location.href='{{ route('productos.show',$producto->id)}}'>Ver</button>
-                            </div>
-                            <div class="p-3">
-                                <h6>{{$producto->nombre}}</h6>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-12">
-                        <p class="text-center">No se han encontrado productos.</p>
-                    </div>
-                @endforelse
+                        @foreach($categorias as $categoria)
+                            <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('$categoria')==$categoria->id) active @endif"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}">
+                            <i class="{{$categoria->icono??'fas fa-tag'}}"></i>
+                            </button>
 
-                {{$productos->links()}}
-
-                <!-- Repeat for other offers -->
+                        @endforeach
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
 
+    @if(session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#ff7f50',
+                });
+            });
+        </script>
+    @endif
+    @auth
+        <div class="container d-flex justify-content-center mt-4">
+            <a href="{{ route('productos.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Crear Producto
+            </a>
+        </div>
+    @endauth
 
+    <div class="productos-container">
+        @if($productos->isEmpty())
+            <div class="no-hay">
+                <p class="no-hay-message">¡No hay productos disponibles por el momento! 🛒</p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" class="mx-auto d-block mt-2"
+                     style="width: 150px; opacity: 0.7;">
+            </div>
+        @endif
 
+        @foreach($productos as $producto)
+                <div class="adopcion-card" style="position:relative; margin: 20px auto; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 80%; max-width: 400px; margin-top: 50px;">
+                    <div class="perfil-usuario" style="display: flex; align-items: flex-start;">
+                        @php
+                            $foto = $producto->imagen
+                                ? asset('storage/' . $producto->imagen)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-@include('chats.chat-float')
+                        <div class="foto-perfil"
+                             style="background-image: url('{{ $foto }}'); background-size: cover; width: 70px; height: 70px; border-radius: 50%; margin-right: 10px;"></div>
+
+                        <div class="informacion-perfil" style="flex: 1;">
+                            <p class="fecha-publicacion" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
+                            <p class="usuario-nombre" style="margin: 0; font-weight:  bold; font-size: 0.9rem; color: #555;">{{ $producto->user->name }}</p>
+                            <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->format('d/m/Y , H:i') }}</p>
+                        </div>
+
+                        @if(Auth::check() && Auth::id() === $producto->user_id)
+                            <div class="acciones-producto" style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                                <a href="{{ route('productos.show', $producto->id) }}" title="Ver">
+                                    <i class="fas fa-eye text-primary"></i>
+                                </a>
+                                <a href="{{ route('productos.edit', $producto->id) }}" title="Editar">
+                                    <i class="fas fa-edit text-warning"></i>
+                                </a>
+                                <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background: none; border: none; padding: 0;" title="Eliminar">
+                                        <i class="fas fa-trash-alt text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="producto-imagen" style="margin-top: 10px;">
+                        <a href="{{ route('productos.show', $producto->id) }}">
+                            <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg') }}"
+                                 alt="Imagen del producto"
+                                 class="producto-img"
+                                 style="width: 100%; height: auto; border-radius: 8px;">
+                        </a>
+                    </div>
+                </div>
+        @endforeach
+    </div>
+
+    <script src="{{ asset('js/Ascripts.js') }}"></script>
+    <script src="{{ asset('js/alerts.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 @endsection
