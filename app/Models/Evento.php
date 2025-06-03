@@ -13,16 +13,15 @@ class Evento extends Model
 
     protected $fillable = ['titulo', 'descripcion','telefono', 'fecha', 'imagen'];
 
-    public function Evento(){
-
-        return $this->belongsTo(User::class);
-    }
 
     public function User(){
 
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
-
-
+    public function participaciones()
+    {
+        // Un evento puede tener muchas participaciones (N)
+        return $this->hasMany(Participacion::class, 'evento_id');
+    }
 
 }

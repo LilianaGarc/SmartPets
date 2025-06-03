@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('eventos', function (Blueprint $table) {
+        Schema::create('participaciones', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->string('descripcion');
-            $table->string('telefono');
-            $table->date('fecha');
-            $table->string('imagen')->nullable();
-            $table->string('estado')->default('pendiente'); // pendiente, confirmado, cancelado
             $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('evento_id')->constrained('eventos')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['id_user', 'evento_id'], 'unique_participacion'); // Asegura que un usuario no participe en el mismo evento más de una vez
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('eventos');
+        Schema::dropIfExists('participaciones');
     }
 };
