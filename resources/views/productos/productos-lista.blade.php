@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Productos</title>
 </head>
 <body>
@@ -89,15 +90,41 @@
     @foreach($productos as $producto)
         <div class="adopcion-card" style="position:relative; margin-left: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <div class="perfil-usuario" style="display: flex; align-items: flex-start;">
-                @php
-                    $foto = $producto->imagen
+                @php $foto = $producto->imagen
                                    ? asset('storage/' . $producto->imagen) : asset('images/fotodeperfil.webp');
                 @endphp
                 <div class="foto-perfil"
                      style="background-image: url('{{ $foto }}'); background-size: cover; width: 70px; height: 70px; border-radius: 50%; margin-right: 10px;"></div>
                 <div class="informacion-perfil" style="flex: 1;">
-                    <p class="nombre-usuario" style="font-weight: bold; font-size: 1.2rem; margin: 0;">{{$producto->nombre}}</p>
-                    <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.9rem; color: #555;">Publicado el {{ $producto->created_at->format('d/m/Y H:i') }}</p>
+                    <p class="fecha-publicacion" style="font-weight: bold; font-size: 1.2rem; margin: 0;">{{$producto->nombre}}</p>
+                    @if(Auth::check() && Auth::id() === $producto->user_id)
+                        <div class="dropdown">
+                            <i class="fas fa-ellipsis-v menu-3puntos" data-bs-toggle="dropdown"></i>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('productos.show', $producto->id) }}">
+                                        <i class="fas fa-eye" style="margin-right: 5px;"></i> Detalles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('productos.edit', $producto->id) }}">
+                                        <i class="fas fa-edit" style="margin-right: 5px;"></i> Editar
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="dropdown-item text-danger" type="submit">
+                                            <i class="fas fa-trash-alt" style="margin-right: 5px;"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endif
+                    <p class="usuario-nombre" style="margin: 0; font-weight: bold; font-size: 1.1rem;">{{ $producto->user->name }}</p>
+                    <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.9rem; color: #555;">Publicado el {{ $producto->created_at->format('d/m/Y , H:i') }}</p>
                 </div>
             </div>
             <div class="producto-imagen" style="margin-top: 10px;">
@@ -115,6 +142,7 @@
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 @endsection
