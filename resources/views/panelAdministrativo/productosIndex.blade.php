@@ -11,7 +11,12 @@
             {{ session('fracaso') }}
         </div>
     @endif
-    <h3>  |   Productos </h3>
+    <div class="d-flex align-items-center mb-2">
+        <h3 class="mb-0">| Productos</h3>
+        <a href="#" class="btn ms-auto" role="button">
+            <h8>Nuevo producto <i class="fas fa-plus"></i></h8>
+        </a>
+    </div>    
     <hr>
     <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
         <div class="row">
@@ -21,10 +26,6 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
-            </div>
-            <div class="col">
-                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
-                        Nuevo producto</h7></a>
             </div>
         </div>
         </div>

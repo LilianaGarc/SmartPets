@@ -12,9 +12,9 @@
 </div>
 @endif
 <div class="d-flex align-items-center mb-2">
-    <h3 class="mb-0">| Veterinarias</h3>
-    <a href="{{ route('veterinarias.create') }}" class="ms-auto">
-        <i class="fas fa-plus"></i> Crear Veterinaria
+    <h2 class="mb-0">| Veterinarias</h2>
+    <a href="{{ route('veterinarias.create') }}" class="btn ms-auto" role="button">
+        <h7><i class="fas fa-plus"></i> Crear veterinaria</h7>
     </a>
 </div>
 
