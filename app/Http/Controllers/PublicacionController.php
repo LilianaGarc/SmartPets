@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Comentario;
 use App\Models\Publicacion;
 use App\Models\Reaccion;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,10 +22,14 @@ class PublicacionController
         return view('panelAdministrativo.publicacionesForm');
     }
 
-    public function panelshow()
+    public function panelshow($id)
     {
-
-        return view('panelAdministrativo.adopcioneDetalles');
+        $publicacion = Publicacion::findorFail($id);
+        $comentarios = Comentario::with('user')
+            ->where('id_publicacion', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('panelAdministrativo.verPublicacion', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios]);
     }
 
     public function panelstore(Request $request)
@@ -71,7 +74,6 @@ class PublicacionController
         $publicacion = Publicacion::findOrFail($id);
 
         if ($request->hasFile('imagen')) {
-            // Eliminar la imagen anterior si existe
             if ($publicacion->imagen) {
                 Storage::disk('public')->delete($publicacion->imagen);
             }
@@ -170,7 +172,7 @@ class PublicacionController
 
     }
 
-    public function detalles(string $id)
+    public function paneldetalles(string $id)
     {
         $publicacion = Publicacion::findorFail($id);
         $comentarios = Comentario::with('user')

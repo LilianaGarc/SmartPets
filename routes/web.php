@@ -153,11 +153,12 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::post('/panel/publicaciones/crear', [PublicacionController::class, 'panelstore'])->name('publicaciones.panelstore');
     Route::get('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'paneledit'])->name('publicaciones.paneledit')->whereNumber('id');
     Route::put('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'panelupdate'])->name('publicaciones.panelupdate')->whereNumber('id');
-    Route::get('/publicaciones/{id}/verDetalles', [PublicacionController::class, 'detalles'])->name('publicaciones.detalles')->whereNumber('id');
+    Route::get('/panel/publicaciones/{id}/verDetalles', [PublicacionController::class, 'paneldetalles'])->name('publicaciones.paneldetalles')->whereNumber('id');
 
     Route::delete('/panel/publicaciones/{id}', [PublicacionController::class, 'paneldestroy'])->name('publicaciones.paneldestroy');
 
     Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
+    Route::post('/panel/comentarios/crear', [PublicacionController::class, 'panelstore'])->name('comentarios.panelstore');
     Route::get('/panel/buscar/comentarios', [ComentarioController::class, 'search'])->name('comentarios.search');
     Route::delete('/panel/comentarios/{id}', [ComentarioController::class, 'paneldestroy'])->name('comentarios.paneldestroy');
 

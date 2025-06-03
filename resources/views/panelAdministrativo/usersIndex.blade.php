@@ -12,6 +12,9 @@
         </div>
     @endif
     <h3>  |   Usuarios </h3>
+    <a href="{{ route('users.panelcreate') }}" class="btn ms-auto"><h7><i class="fas fa-plus"></i>
+            Nuevo usuario</h7>
+    </a>
     <hr>
     <form action="{{ route('users.search') }}"  class="" role="search" style="align-content: flex-end;">
         <div class="row">
@@ -21,10 +24,6 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
-            </div>
-            <div class="col">
-                <a href="{{ route('users.panelcreate') }}" class="btn" role="button"><h7><i class="fas fa-plus"></i>
-                        Nuevo usuario</h7></a>
             </div>
         </div>
         </div>

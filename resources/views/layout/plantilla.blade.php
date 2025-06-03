@@ -31,7 +31,7 @@
         .btn {
             text-decoration: none;
             color: #ffffff;
-            background-color: #ff7f50;
+            background-color: rgba(237,129,25,0.86);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
             border: none;

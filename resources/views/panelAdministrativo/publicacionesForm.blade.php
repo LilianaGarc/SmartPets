@@ -69,7 +69,6 @@
 
                 <button type="submit" class="btn btn-light">Publicar</button>
                 <button type="reset" class="btn btn-light">Cancelar</button>
-
         </div>
     </form>
 
