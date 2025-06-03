@@ -58,6 +58,13 @@
             });
         </script>
     @endif
+    @auth
+        <div class="container d-flex justify-content-center mt-4">
+            <a href="{{ route('productos.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Crear Producto
+            </a>
+        </div>
+    @endauth
 
     <div class="productos-container">
         @if($productos->isEmpty())
