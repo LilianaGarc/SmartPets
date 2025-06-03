@@ -69,12 +69,12 @@
     <form action="{{ route('solicitudes.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="contenido">Motivo de la Solicitud</label>
+            <label for="contenido">✍️ Motivo de la Solicitud</label>
             <textarea name="contenido" id="contenido" class="form-control" required maxlength="90" placeholder="Explica por qué deseas adoptar a esta mascota">{{ old('contenido') }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="experiencia">¿Tiene experiencia previa con mascotas?</label>
+            <label for="experiencia">🐶 ¿Tiene experiencia previa con mascotas?</label>
             <select name="experiencia" id="experiencia" class="form-control" required>
                 <option value="Sí">Sí</option>
                 <option value="No">No</option>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="form-group">
-            <label for="espacio">¿Tiene suficiente espacio para la mascota?</label>
+            <label for="espacio">🏡 ¿Tiene suficiente espacio para la mascota?</label>
             <select name="espacio" id="espacio" class="form-control" required>
                 <option value="Sí">Sí</option>
                 <option value="No">No</option>
@@ -90,7 +90,7 @@
         </div>
 
         <div class="form-group">
-            <label for="gastos_veterinarios">¿Está dispuesto a cubrir los gastos veterinarios?</label>
+            <label for="gastos_veterinarios">💉 ¿Está dispuesto a cubrir los gastos veterinarios?</label>
             <select name="gastos_veterinarios" id="gastos_veterinarios" class="form-control" required>
                 <option value="Sí">Sí</option>
                 <option value="No">No</option>
@@ -99,7 +99,7 @@
 
         <input type="hidden" name="id_adopcion" value="{{ $adopcion->id }}">
 
-        <button type="submit" class="btn btn-success">Enviar Solicitud</button>
+        <button type="submit" class="btn btn-success"> 🚀 Enviar Solicitud</button>
     </form>
 </div>
 

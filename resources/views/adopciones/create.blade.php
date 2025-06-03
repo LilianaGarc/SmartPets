@@ -68,12 +68,12 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="nombre_mascota">Nombre de la Mascota</label>
+                    <label for="nombre_mascota">🐕 Nombre de la Mascota</label>
                     <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" value="{{ old('nombre_mascota') }}" placeholder="Ingresa el nombre de tu mascota" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="tipo_mascota">Tipo de Mascota</label>
+                    <label for="tipo_mascota">📋 Tipo de Mascota</label>
                     <select name="tipo_mascota" id="tipo_mascota" class="form-control" required>
                         <option value="Perro" {{ old('tipo_mascota') == 'Perro' ? 'selected' : '' }}>Perro</option>
                         <option value="Gato" {{ old('tipo_mascota') == 'Gato' ? 'selected' : '' }}>Gato</option>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
+                    <label for="fecha_nacimiento">📅 Fecha de Nacimiento de la Mascota</label>
                     <input type="date"
                            name="fecha_nacimiento"
                            id="fecha_nacimiento"
@@ -96,22 +96,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="raza_mascota">Raza de la Mascota</label>
+                    <label for="raza_mascota">🔎 Raza de la Mascota</label>
                     <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" value="{{ old('raza_mascota') }}" placeholder="Ingresa la raza de tu mascota" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="ubicacion_mascota">Ubicación de la Mascota</label>
+                    <label for="ubicacion_mascota">📍 Ubicación de la Mascota</label>
                     <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="contenido">Contenido</label>
+                    <label for="contenido">🖊️ Mensaje</label>
                     <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" placeholder="Ingresa una breve descripción de tu mascota">{{ old('contenido') }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="imagen_principal">Imagen Principal</label>
+                    <label for="imagen_principal">🖼️ Imagen Principal</label>
                     <div class="input-file-wrapper">
                         <input type="file" name="imagen_principal" id="imagen_principal" accept="image/*" onchange="previewImage()" required>
                         <label for="imagen_principal">Seleccionar Imagen Principal</label>
@@ -128,7 +128,7 @@
 
 
                 <div class="form-group">
-                    <label for="imagenes_secundarias[]">Imágenes Adicionales (4)</label>
+                    <label for="imagenes_secundarias[]">📸 Imágenes Adicionales (4)</label>
                     <div class="input-file-wrapper">
                         <input type="file" name="imagenes_secundarias[]" id="imagenes_secundarias" accept="image/*" multiple>
                         <label for="imagenes_secundarias">Seleccionar Imágenes adicionales</label>
@@ -140,12 +140,12 @@
 
 
                 <div class="form-group" id="secondary-preview-container" style="display: none;">
-                    <label>Vista previa de imágenes secundarias</label>
+                    <label>Vista previa de imágenes adicionales</label>
                     <div id="secondary-images-preview" class="image-preview-grid"></div>
                 </div>
 
 
-                <button type="submit" class="btn btn-success">Crear Adopción</button>
+                <button type="submit" class="btn btn-success">🚀 Crear Adopción</button>
             </form>
         </div>
 

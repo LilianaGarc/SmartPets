@@ -54,12 +54,12 @@
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="nombre_mascota">Nombre de la Mascota</label>
+            <label for="nombre_mascota">🐕 Nombre de la Mascota</label>
             <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" required value="{{ old('nombre_mascota', $adopcion->nombre_mascota) }}">
         </div>
 
         <div class="form-group">
-            <label for="tipo_mascota">Tipo de Mascota</label>
+            <label for="tipo_mascota">📋 Tipo de Mascota</label>
             <select name="tipo_mascota" id="tipo_mascota" class="form-control" required>
                 <option value="Perro" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Perro' ? 'selected' : '' }}>Perro</option>
                 <option value="Gato" {{ old('tipo_mascota', $adopcion->tipo_mascota) == 'Gato' ? 'selected' : '' }}>Gato</option>
@@ -71,29 +71,30 @@
         </div>
 
         <div class="form-group">
-            <label for="contenido">Contenido</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido', $adopcion->contenido) }}</textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
+            <label for="fecha_nacimiento">📅 Fecha de Nacimiento de la Mascota</label>
             <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
                    value="{{ old('fecha_nacimiento', isset($adopcion) ? \Carbon\Carbon::parse($adopcion->fecha_nacimiento)->format('Y-m-d') : '') }}"
                    required>
         </div>
 
         <div class="form-group">
-            <label for="raza_mascota">Raza de la Mascota</label>
+            <label for="raza_mascota">🔎 Raza de la Mascota</label>
             <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" required value="{{ old('raza_mascota', $adopcion->raza_mascota) }}">
         </div>
 
         <div class="form-group">
-            <label for="ubicacion_mascota">Ubicación de la Mascota</label>
+            <label for="ubicacion_mascota">📍 Ubicación de la Mascota</label>
             <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control" required value="{{ old('ubicacion_mascota', $adopcion->ubicacion_mascota) }}">
         </div>
 
         <div class="form-group">
-            <label for="imagen_principal">Imagen Principal</label>
+            <label for="contenido">🖊️ Mensaje</label>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido', $adopcion->contenido) }}</textarea>
+        </div>
+
+
+        <div class="form-group">
+            <label for="imagen_principal">🖼️ Imagen Principal</label>
             <div class="input-file-wrapper">
                 <input type="file" name="imagen_principal" id="imagen_principal" accept="image/*" onchange="previewImage()">
                 <label for="imagen_principal">Seleccionar Imagen</label>
@@ -112,7 +113,7 @@
         @endif
 
 
-        <button type="submit" class="btn btn-success">Actualizar Adopción</button>
+        <button type="submit" class="btn btn-success">🚀 Actualizar Adopción</button>
     </form>
 </div>
 
