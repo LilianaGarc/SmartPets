@@ -10,6 +10,13 @@
         body{
             padding-top: 80px;
         }
+
+        .producto-img {
+            width: 100% !important;
+            height: 200px !important; /* Altura fija para las imágenes */
+            object-fit: cover !important; /* Ajusta la imagen para que se recorte y se ajuste al contenedor */
+            border-radius: 8px !important;
+        }
     </style>
 
     <div class="container d-flex justify-content-center mt-4">
