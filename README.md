@@ -1,6 +1,7 @@
+
 #
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LilianaGarc/SmartPets/main/public/images/smartpetspng2.webp" width="300" alt="SmartPets Logo">
+  <img src="https://raw.githubusercontent.com/LilianaGarc/SmartPets/main/public/images/smartpetspng2.webp" width="500" alt="SmartPets Logo">
 </p>
 
 <p align="center">
@@ -14,19 +15,19 @@
 
 **SmartPets** es una plataforma digital para personas que aman a los animales. Conecta a usuarios con una comunidad petlover, facilitando:
 
--🏠 Adopción de mascotas
-Encuentra a tu nuevo mejor amigo y dale un hogar lleno de amor.
--📸 Compartir fotos de tus mascotas
-Presume a tu compañero peludo con la comunidad.
--🎉 Asistencia a eventos
-Participa en actividades, ferias y encuentros petlover.
--🛍️ Compra y venta de productos para mascotas
-Todo lo que tu mascota necesita, en un solo lugar.
--🧑‍🤝‍🧑 Conéctate con una comunidad petlover
-Intercambia consejos, experiencias y haz nuevos amigos con quienes comparten tu pasión.
--🏥 Encuentra tus veterinarias favoritas
-Ubica fácilmente clínicas y profesionales de confianza cerca de ti.
-
+- 🏠 **Adopción de mascotas**  
+  Encuentra a tu nuevo mejor amigo y dale un hogar lleno de amor.
+- 📸 **Compartir fotos de tus mascotas**  
+  Presume a tu compañero peludo con la comunidad.
+- 🎉 **Asistencia a eventos**  
+  Participa en actividades, ferias y encuentros petlover.
+- 🛍️ **Compra y venta de productos para mascotas**  
+  Todo lo que tu mascota necesita, en un solo lugar.
+- 🧑‍🤝‍🧑 **Conéctate con una comunidad petlover**  
+  Intercambia consejos, experiencias y haz nuevos amigos con quienes comparten tu pasión.
+- 🏥 **Encuentra tus veterinarias favoritas**  
+  Ubica fácilmente clínicas y profesionales de confianza cerca de ti.
+  
 ## 🔧 Tecnologías
 
 El proyecto **SmartPets** está desarrollado utilizando herramientas modernas del ecosistema web:
