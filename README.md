@@ -14,11 +14,18 @@
 
 **SmartPets** es una plataforma digital para personas que aman a los animales. Conecta a usuarios con una comunidad petlover, facilitando:
 
-- 🏠 Adopción de mascotas
-- 📸 Compartir fotos de tus mascotas
-- 🎉 Asistencia a eventos 
-- 🛍️ Compra y venta de productos para mascotas
-- 🧑‍🤝‍🧑 Conectarte con una comunidad petlover 🧑‍🤝‍🧑
+-🏠 Adopción de mascotas
+Encuentra a tu nuevo mejor amigo y dale un hogar lleno de amor.
+-📸 Compartir fotos de tus mascotas
+Presume a tu compañero peludo con la comunidad.
+-🎉 Asistencia a eventos
+Participa en actividades, ferias y encuentros petlover.
+-🛍️ Compra y venta de productos para mascotas
+Todo lo que tu mascota necesita, en un solo lugar.
+-🧑‍🤝‍🧑 Conéctate con una comunidad petlover
+Intercambia consejos, experiencias y haz nuevos amigos con quienes comparten tu pasión.
+-🏥 Encuentra tus veterinarias favoritas
+Ubica fácilmente clínicas y profesionales de confianza cerca de ti.
 
 ## 🔧 Tecnologías
 
@@ -38,7 +45,7 @@ El proyecto **SmartPets** está desarrollado utilizando herramientas modernas de
 <table>
   <tr>
     <td align="center" valign="top">
-      <img src="https://github.com/lilianagarcia.png" width="100" alt="Liliana García" style="border-radius:50%"><br>
+      <img src="https://github.com/LilianaGarc.png" width="100" alt="Liliana García" style="border-radius:50%"><br>
       <strong>Liliana García</strong>
     </td>
     <td align="center" valign="top">
