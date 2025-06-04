@@ -1,6 +1,6 @@
 #
 <p align="center">
-  <img src="https://raw.githubusercontent.com/LilianaGarc/SmartPets/main/public/images/smartpetspng2.webp" width="250" alt="SmartPets Logo">
+  <img src="https://raw.githubusercontent.com/LilianaGarc/SmartPets/main/public/images/smartpetspng2.webp" width="300" alt="SmartPets Logo">
 </p>
 
 <p align="center">
