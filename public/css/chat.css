@@ -496,7 +496,6 @@ input[type="color"]::-webkit-color-swatch {
         margin: 0;
     }
 
-
     .chat-container {
         flex-direction: column;
         width: 100%;
@@ -506,6 +505,7 @@ input[type="color"]::-webkit-color-swatch {
         margin-top: 60px;
         height: calc(100dvh - 60px);
     }
+
     .chat-header {
         display: flex;
         align-items: center;
@@ -525,7 +525,6 @@ input[type="color"]::-webkit-color-swatch {
         margin-right: 0;
     }
 
-
     .chat-list,
     .chat-messages {
         position: absolute;
@@ -536,16 +535,11 @@ input[type="color"]::-webkit-color-swatch {
         transition: transform 0.3s ease;
     }
 
-    .chat-input button {
-        width: 60px;
-        height: 35px;
-        font-size: 18px;
-    }
-
     .chat-list {
         transform: translateX(0);
         z-index: 2;
         overflow-x: hidden;
+        padding: 0 0 20px 0;
     }
 
     .chat-messages {
@@ -593,5 +587,53 @@ input[type="color"]::-webkit-color-swatch {
         width: 150px;
     }
 
+    .chat-input {
+        padding: 15px 15px 15px 15px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        background-color: #fff;
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .chat-input input[type="text"] {
+        flex-grow: 1;
+        padding: 12px 16px;
+        font-size: 16px;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .chat-input button {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: var(--send-button-bg);
+        color: white;
+        cursor: pointer;
+    }
+
+    .emoji-button {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--send-button-bg);
+    }
 }
 
