@@ -248,3 +248,24 @@ document.addEventListener('DOMContentLoaded', function () {
     inputEnviado.addEventListener('input', onChange);
     inputRecibido.addEventListener('input', onChange);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    if (isMobile) {
+        const chatUsers = document.querySelectorAll('.chat-user');
+        const backButton = document.querySelector('.back-button');
+
+        chatUsers.forEach(user => {
+            user.addEventListener('click', () => {
+                document.body.classList.add('show-chat');
+            });
+        });
+
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                document.body.classList.remove('show-chat');
+            });
+        }
+    }
+});

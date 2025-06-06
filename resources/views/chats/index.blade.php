@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
 
 </head>
-<body>
+<body class="{{ isset($chatActivo) ? 'show-chat' : '' }}">
 
 
 @include('MenuPrincipal.Navbar')
@@ -80,6 +80,11 @@
                 @endphp
 
                 <div>
+                    <span class="back-button" aria-label="Volver" role="button">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1E4183" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </span>
                     <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
                     <div>{{ $usuarioChat->name }}</div>
                 </div>

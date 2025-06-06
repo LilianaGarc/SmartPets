@@ -3314,7 +3314,8 @@ button, .btn-view, .btn-editar {
     transform: translateX(3px);
 }
 
-.toggle-orden-dropdown {
+.toggle-orden-dropdown,
+.toggle-tipo-dropdown {
     cursor: pointer;
     display: inline-block;
     font-size: 1.4em;
@@ -3324,17 +3325,17 @@ button, .btn-view, .btn-editar {
     margin-top: 10px;
 }
 
-.toggle-orden-dropdown:hover {
+.toggle-orden-dropdown:hover,
+.toggle-tipo-dropdown:hover {
     color: #000;
 }
 
-.orden-icon {
+.orden-icon,
+.tipo-icon {
     transition: transform 0.3s ease;
 }
 
-.orden-icon.rotated {
+.orden-icon.rotated,
+.tipo-icon.rotated {
     transform: rotate(180deg);
 }
-
-
-
