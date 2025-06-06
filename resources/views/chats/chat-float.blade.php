@@ -40,7 +40,7 @@
     .tooltip-text {
         visibility: hidden;
         width: 80px;
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: rgb(41, 94, 197);
         color: #fff;
         text-align: center;
         border-radius: 6px;
@@ -63,7 +63,7 @@
         opacity: 1;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 767px), (hover: none) {
         .chat-button {
             width: 70px;
             height: 70px;
@@ -71,6 +71,7 @@
             right: 16px;
             transition: none;
             box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            cursor: default;
         }
         .chat-button img {
             max-width: 80%;
@@ -105,4 +106,19 @@
     } else {
         chatButton.querySelector('img').src = chatButton.dataset.imgDefault;
     }
+
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            chatButton.querySelector('img').src = chatButton.dataset.imgDefault;
+            chatButton.removeEventListener('mouseover', null);
+            chatButton.removeEventListener('mouseout', null);
+        } else {
+            chatButton.addEventListener('mouseover', () => {
+                chatButton.querySelector('img').src = chatButton.dataset.imgHover;
+            });
+            chatButton.addEventListener('mouseout', () => {
+                chatButton.querySelector('img').src = chatButton.dataset.imgDefault;
+            });
+        }
+    });
 </script>
