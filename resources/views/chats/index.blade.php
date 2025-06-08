@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Petchat</title>
     <link rel="stylesheet" href="{{ asset('css/chat.css') }}" />
@@ -49,16 +50,28 @@
                     <div class="user-details">
                         <strong>{{ $usuario->name }}</strong>
                         <small>
-                            @if($ultimoMensaje)
-                                <span class="{{ $item['mensajes_no_leidos'] > 0 ? 'ultimo-mensaje-no-leido' : '' }}">
-                                     {{ Str::limit($ultimoMensaje->texto, 30) }}
-                                </span><br>
-                            @else
-                                Empieza una conversación
-                            @endif
+                            @php
+                                $mostrarTexto = 'Empieza una conversación';
+
+                                if ($ultimoMensaje) {
+                                    $hayTexto = !is_null($ultimoMensaje->texto) && trim($ultimoMensaje->texto) !== '';
+                                    $hayImagen = !is_null($ultimoMensaje->imagen);
+
+                                    if ($hayTexto && $hayImagen) {
+                                        $mostrarTexto = 'Foto y texto: ' . Str::limit($ultimoMensaje->texto, 20);
+                                    } elseif ($hayImagen && !$hayTexto) {
+                                        $mostrarTexto = 'Foto';
+                                    } elseif ($hayTexto) {
+                                        $mostrarTexto = Str::limit($ultimoMensaje->texto, 30);
+                                    }
+                                }
+                            @endphp
+
+                            <span class="{{ $item['mensajes_no_leidos'] > 0 ? 'ultimo-mensaje-no-leido' : '' }}">
+                                {{ $mostrarTexto }}
+                            </span><br>
                         </small>
                     </div>
-
                     @if($item['mensajes_no_leidos'] > 0)
                         <span class="unread-badge">{{ $item['mensajes_no_leidos'] }}</span>
                     @endif
@@ -137,24 +150,36 @@
                         @if(!$esMio)
                             <img src="{{ $foto }}" class="message-photo" alt="Foto perfil" />
                         @endif
-                            <div class="{{ $claseMensaje }}">
+                            <div class="{{ $claseMensaje }} message-content-wrapper" data-id="{{ $mensaje->id }}">
+                                @if ($mensaje->imagen)
+                                    <img src="{{ asset('storage/' . $mensaje->imagen) }}" alt="Imagen enviada" style="max-width: 200px; max-height: 200px; border-radius: 10px;" />
+                                @endif
+
                                 @if (esSoloEmojiNoNumeros($mensaje->texto))
                                     <span class="emoji-large">{{ $mensaje->texto }}</span>
                                 @else
                                     <span class="message-text">{{ $mensaje->texto }}</span>
                                 @endif
                                 <small class="message-small">{{ $mensaje->created_at->format('H:i') }}</small>
-                            </div>
 
+                                @if($esMio)
+                                    <div class="message-dropdown" style="display: none;">
+                                        <button class="editar-mensaje" data-id="{{ $mensaje->id }}">✏️ Editar</button>
+                                        <button class="eliminar-mensaje" data-id="{{ $mensaje->id }}">🗑️ Eliminar</button>
+                                    </div>
+                                @endif
+                            </div>
 
 
                     </div>
                 @endforeach
             </div>
 
-            <form id="mensaje-form" method="POST" action="{{ route('mensajes.store', $chatActivo->id) }}">
+            <form id="mensaje-form" method="POST" action="{{ route('mensajes.store', $chatActivo->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="chat-input">
+                    <div id="preview-container" style="text-align: center; margin-bottom: 8px; max-height: 120px; overflow: hidden;">
+                    </div>
                     <div class="input-group">
                         <input
                             type="text"
@@ -163,8 +188,17 @@
                             class="form-control"
                             placeholder="Escribe tu mensaje..."
                             value="{{ old('texto', $mensajePredefinido ?? '') }}"
-                            required
+                            autocomplete="off"
                         />
+
+                        <label for="imagen" class="btn" title="Adjuntar imagen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <circle cx="8.5" cy="8.5" r="1.5" />
+                                <path d="M21 15l-5-5L5 21" />
+                            </svg>
+                        </label>
+                        <input type="file" name="imagen" id="imagen" accept="image/*" style="display: none;" />
                         <button type="button" id="emoji-button" class="btn">😊</button>
                         <button class="btn" type="submit">➤</button>
                     </div>
@@ -177,6 +211,7 @@
                     </div>
                 </div>
             </form>
+
         @else
             <div class="d-flex align-items-center justify-content-center flex-grow-1 text-muted">
                 <div class="empty-chat-message">
@@ -207,8 +242,35 @@
             inputMensaje.focus();
             inputMensaje.selectionStart = inputMensaje.selectionEnd = inputMensaje.value.length;
         }
+
+        const chatBox = document.getElementById('chat-box');
+        if (!chatBox) return;
+
+        const images = chatBox.querySelectorAll('img');
+        if (images.length === 0) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return;
+        }
+
+        let loaded = 0;
+        const tryScroll = () => {
+            loaded++;
+            if (loaded === images.length) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        };
+
+        images.forEach(img => {
+            if (img.complete) {
+                tryScroll();
+            } else {
+                img.addEventListener('load', tryScroll);
+                img.addEventListener('error', tryScroll);
+            }
+        });
     });
 </script>
+
 
 </body>
 </html>

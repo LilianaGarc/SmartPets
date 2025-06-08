@@ -44,8 +44,7 @@
                 </button>
                 <div class="dropdown-content">
                     <form action="{{ route('adopciones.edit', $adopcion->id) }}" method="GET">
-                        <button type="submit" class="btn-editar-dropdown">
-                            Editar
+                        <button type="submit" class="btn-editar-dropdown">✏️ Editar
                         </button>
                     </form>
 
@@ -53,7 +52,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn-eliminard" onclick="confirmDeleteAdopcion({{$adopcion->id}})">
-                            Eliminar
+                            🗑️ Eliminar
                         </button>
                     </form>
                 </div>

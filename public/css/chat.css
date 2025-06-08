@@ -61,7 +61,7 @@ body {
 .search-box input {
     width: 90%;
     padding: 16px 20px;
-    border-radius: 30px;
+    border-radius: 20px;
     border: 1px solid #ccc;
     font-size: 16px;
     transition: all 0.3s ease;
@@ -156,6 +156,20 @@ body {
     gap: 16px;
 }
 
+
+.message-content-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: start;
+    gap: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.message-content-wrapper img {
+    align-self: end;
+}
+
 .message-wrapper {
     display: flex;
     align-items: flex-end;
@@ -233,7 +247,7 @@ body {
 .chat-input input[type="text"] {
     flex-grow: 1;
     padding: 16px 20px;
-    border-radius: 30px;
+    border-radius: 20px;
     border: 1px solid #ccc;
     font-size: 16px;
     transition: border-color 0.3s;
@@ -316,6 +330,12 @@ body {
     animation: fadeIn 0.6s ease-out forwards;
 }
 
+.sent-message img,
+.received-message img {
+    max-width: 350px !important;
+    max-height: 350px !important;
+    border-radius: 10px;
+}
 
 .emoji-placeholder {
     font-size: 48px;
@@ -635,5 +655,159 @@ input[type="color"]::-webkit-color-swatch {
         cursor: pointer;
         color: var(--send-button-bg);
     }
+
+    label.btn{
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        border: none;
+        cursor: pointer;
+        color: var(--send-button-bg);
+    }
+
+
+    #preview-container {
+        display: none;
+    }
+
+    #preview-container img {
+        display: none;
+    }
+
+
+    .sent-message img,
+    .received-message img {
+        max-width: 100px !important;
+        max-height: 100px !important;
+        border-radius: 10px;
+    }
+
 }
+
+.message-options-wrapper {
+    position: absolute;
+    left: -32px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.message-options-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #8da1c0;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color 0.3s, background 0.3s;
+}
+
+.message-options-button:hover {
+    color: #1e4183;
+    background-color: rgba(30, 65, 131, 0.1);
+}
+
+.message-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: -25px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    min-width: 140px;
+    animation: fadeIn 0.25s ease-out;
+    overflow: hidden;
+}
+
+.message-dropdown button {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 10px 18px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.message-dropdown button:hover {
+    background-color: #4469b6;
+    color: #ffffff;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.btn {
+    width: 50px;
+    height: 50px;
+    background-color: var(--send-button-bg);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+
+#preview-container img {
+    max-height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#preview-container img:hover {
+    transform: scale(1.05);
+}
+
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #e0e0e0;
+    border-radius: 12px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #e7e7e7, rgb(183, 183, 183));
+    border-radius: 12px;
+    box-shadow:
+        inset 0 0 6px rgba(255, 255, 255, 0.7),
+        0 0 6px rgb(85, 147, 255);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #1e4183, #5593ff);
+    box-shadow:
+        inset 0 0 8px rgba(255, 255, 255, 0.82),
+        0 0 12px rgb(85, 147, 255);
+}
+
+
 
