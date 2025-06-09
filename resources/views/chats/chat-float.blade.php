@@ -4,6 +4,8 @@
    data-img-hover="{{ asset('images/perritohi.webp') }}">
     <img src="{{ asset('images/perritomens.webp') }}" alt="Chat" />
     <span class="tooltip-text">Petchat</span>
+    <span id="chat-notification-badge" class="notification-badge" style="display: none;">0</span>
+    <audio id="chat-notification-sound" src="{{ asset('images/pika.mp3') }}" preload="auto"></audio>
 </a>
 
 <style>
@@ -58,10 +60,47 @@
         z-index: 1001;
     }
 
-    .chat-button:hover .tooltip-text {
+    .chat-button:hover .tooltip-text  {
         visibility: visible;
         opacity: 1;
     }
+
+    .chat-button:hover .notification-badge  {
+        background-color: #ff7c40;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: #1e4183;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 22px;
+        box-shadow: 0 0 0 2px white;
+        z-index: 1002;
+    }
+
+    @keyframes chat-button-bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .chat-button.bounce {
+        animation: chat-button-bounce 0.6s ease;
+    }
+
 
     @media (max-width: 767px), (hover: none) {
         .chat-button {
@@ -122,3 +161,44 @@
         }
     });
 </script>
+<script>
+    let notificacionesAnteriores = 0;
+
+    function actualizarContadorMensajesNoLeidos() {
+        fetch('/usuarios-con-mensajes')
+            .then(res => res.json())
+            .then(data => {
+                let totalNoLeidos = 0;
+                data.usuariosConMensajes.forEach(item => {
+                    totalNoLeidos += item.mensajes_no_leidos;
+                });
+
+                const badge = document.getElementById('chat-notification-badge');
+                const sonido = document.getElementById('chat-notification-sound');
+                const boton = document.querySelector('.chat-button');
+
+                if (totalNoLeidos > 0) {
+                    badge.textContent = totalNoLeidos > 99 ? '99+' : totalNoLeidos;
+                    badge.style.display = 'flex';
+
+                    if (totalNoLeidos > notificacionesAnteriores) {
+                        sonido.currentTime = 0;
+                        sonido.play().catch(() => {});
+
+                        boton.classList.add('bounce');
+                        setTimeout(() => boton.classList.remove('bounce'), 600);
+                    }
+                } else {
+                    badge.style.display = 'none';
+                }
+
+                notificacionesAnteriores = totalNoLeidos;
+            })
+            .catch(console.error);
+    }
+
+    actualizarContadorMensajesNoLeidos();
+    setInterval(actualizarContadorMensajesNoLeidos, 5000);
+</script>
+
+
