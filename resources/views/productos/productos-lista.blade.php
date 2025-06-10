@@ -28,6 +28,7 @@
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
+
                         @foreach($categorias as $categoria)
                             <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('$categoria')==$categoria->id) active @endif"
                             data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}">
@@ -35,6 +36,7 @@
                             </button>
 
                         @endforeach
+
                     </div>
                 </form>
             </div>
