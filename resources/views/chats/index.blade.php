@@ -63,12 +63,13 @@
                                         $mostrarTexto = 'Foto';
                                     } elseif ($hayTexto) {
                                         $mostrarTexto = Str::limit($ultimoMensaje->texto, 30);
+
                                     }
                                 }
                             @endphp
 
                             <span class="{{ $item['mensajes_no_leidos'] > 0 ? 'ultimo-mensaje-no-leido' : '' }}">
-                                {{ $mostrarTexto }}
+                                {!! $mostrarTexto !!}
                             </span><br>
                         </small>
                     </div>
@@ -158,16 +159,11 @@
                                 @if (esSoloEmojiNoNumeros($mensaje->texto))
                                     <span class="emoji-large">{{ $mensaje->texto }}</span>
                                 @else
-                                    <span class="message-text">{{ $mensaje->texto }}</span>
+                                        <span class="message-text">{!! $mensaje->texto !!}</span>
                                 @endif
                                 <small class="message-small">{{ $mensaje->created_at->format('H:i') }}</small>
 
-                                @if($esMio)
-                                    <div class="message-dropdown" style="display: none;">
-                                        <button class="editar-mensaje" data-id="{{ $mensaje->id }}">✏️ Editar</button>
-                                        <button class="eliminar-mensaje" data-id="{{ $mensaje->id }}">🗑️ Eliminar</button>
-                                    </div>
-                                @endif
+
                             </div>
 
 
@@ -226,6 +222,7 @@
     </div>
 </div>
 
+
 <script>
     window.chatConfig = {
         chatActivoId: {{ $chatActivo ? $chatActivo->id : 'null' }},
@@ -271,6 +268,6 @@
     });
 </script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

@@ -130,7 +130,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/chats/{chat}/mensajes/nuevos', [MensajeController::class, 'getNuevosMensajes'])->name('mensajes.nuevos');
     Route::get('/usuarios-con-mensajes', [ChatController::class, 'usuariosConMensajes'])->name('usuarios.con.mensajes');
     Route::put('/mensajes/{mensaje}', [MensajeController::class, 'update'])->name('mensajes.update');
-    Route::delete('/mensajes/{mensaje}', [MensajeController::class, 'destroy'])->name('mensajes.destroy');
 });
 
 
