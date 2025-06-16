@@ -6,6 +6,7 @@ use App\Models\Chat;
 use Illuminate\Http\Request;
 use App\Models\Mensaje;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MensajeController
 {
@@ -138,10 +139,8 @@ class MensajeController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+
+
 
     public function paneldestroy(string $id)
     {

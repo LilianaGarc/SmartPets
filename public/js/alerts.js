@@ -3,7 +3,7 @@ function showErrorAlert(message) {
         title: "¡Error!",
         text: "No puedes subir más de 4 imágenes.",
         icon: "error",
-        confirmButtonColor: "#ff7f50",
+        confirmButtonColor: "#e3e3e3",
         locale: 'es'
     });
 }
@@ -29,7 +29,7 @@ function confirmDeleteAdopcion(adopcionId) {
         imageWidth: 120,
         imageHeight: 120,
         showCancelButton: true,
-        confirmButtonColor: "#1e4183",
+        confirmButtonColor: "#e3e3e3",
         cancelButtonColor: "rgb(255,127,80)",
         confirmButtonText: "Sí, eliminarlo!"
     }).then((result) => {
@@ -47,7 +47,7 @@ function confirmDeleteSolicitud(adopcionId, solicitudId) {
         imageWidth: 120,
         imageHeight: 120,
         showCancelButton: true,
-        confirmButtonColor: "#1e4183",
+        confirmButtonColor: "#e3e3e3",
         cancelButtonColor: "rgb(255,127,80)",
         confirmButtonText: "Sí, eliminarlo!"
     }).then((result) => {
@@ -71,6 +71,8 @@ function confirmarAceptarSolicitud(adopcionId, solicitudId) {
         imageUrl: "/images/pensando.webp",
         showCancelButton: true,
         confirmButtonText: 'Sí, aceptar',
+        confirmButtonColor: "#e3e3e3",
+        cancelButtonColor: "rgb(255,127,80)",
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
@@ -87,6 +89,8 @@ function confirmarCancelarSolicitud(adopcionId, solicitudId) {
         imageWidth: 100,
         imageHeight: 100,
         showCancelButton: true,
+        confirmButtonColor: "#e3e3e3",
+        cancelButtonColor: "rgb(255,127,80)",
         confirmButtonText: "Sí, cancelar",
         cancelButtonText: "No"
     }).then((result) => {

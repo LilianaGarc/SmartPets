@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
+use App\Models\Chat;
+use App\Models\Mensaje;
 use Illuminate\Http\Request;
 use App\Models\Solicitud;
 use App\Notifications\SolicitudAceptada;
@@ -228,10 +230,46 @@ class SolicitudController
         $solicitud->save();
 
         $solicitud->usuario->notify(new SolicitudAceptada($solicitud));
+
+        $usuarioQueAcepta = auth()->user();
+        $usuarioSolicitante = $solicitud->usuario;
+
+        $chat = Chat::where(function ($query) use ($usuarioQueAcepta, $usuarioSolicitante) {
+            $query->where('id_usuario_1', $usuarioQueAcepta->id)
+                ->where('id_usuario_2', $usuarioSolicitante->id);
+        })->orWhere(function ($query) use ($usuarioQueAcepta, $usuarioSolicitante) {
+            $query->where('id_usuario_1', $usuarioSolicitante->id)
+                ->where('id_usuario_2', $usuarioQueAcepta->id);
+        })->first();
+
+        if (!$chat) {
+            $chat = Chat::create([
+                'id_usuario_1' => $usuarioQueAcepta->id,
+                'id_usuario_2' => $usuarioSolicitante->id,
+            ]);
+        }
+
+        $mensajeTexto = "🎉 ¡Felicidades, {$usuarioSolicitante->name}! 🎉<br>
+Tu solicitud para adoptar a {$adopcion->nombre_mascota} ha sido aceptada por {$usuarioQueAcepta->name}.<br>
+Nos alegra que formes parte de esta gran familia. Por favor, mantente en contacto para coordinar los próximos pasos.<br>
+¡Gracias por tu interés y compromiso! ";
+
+
+        Mensaje::create([
+            'texto' => $mensajeTexto,
+            'fecha' => now(),
+            'estado' => false,
+            'id_chat' => $chat->id,
+            'user_id' => $usuarioQueAcepta->id,
+            'tema' => 'Notificación',
+            'imagen' => null,
+        ]);
+
         return redirect()->route('solicitudes.show', $id_adopcion)->with('success', '¡Solicitud aceptada con éxito!');
     }
 
-    public function cancelarAceptacion($id_adopcion, $id_solicitud)
+
+    public function cancelarAceptacion(Request $request, $id_adopcion, $id_solicitud)
     {
         $adopcion = Adopcion::find($id_adopcion);
         $solicitud = Solicitud::find($id_solicitud);
@@ -251,8 +289,43 @@ class SolicitudController
         $solicitud->estado = 'pendiente';
         $solicitud->save();
 
+        $usuarioQueCancela = auth()->user();
+        $usuarioSolicitante = $solicitud->usuario;
+        $motivo = $request->input('motivo_cancelacion');
+
+        $chat = Chat::where(function ($query) use ($usuarioQueCancela, $usuarioSolicitante) {
+            $query->where('id_usuario_1', $usuarioQueCancela->id)
+                ->where('id_usuario_2', $usuarioSolicitante->id);
+        })->orWhere(function ($query) use ($usuarioQueCancela, $usuarioSolicitante) {
+            $query->where('id_usuario_1', $usuarioSolicitante->id)
+                ->where('id_usuario_2', $usuarioQueCancela->id);
+        })->first();
+
+        if (!$chat) {
+            $chat = Chat::create([
+                'id_usuario_1' => $usuarioQueCancela->id,
+                'id_usuario_2' => $usuarioSolicitante->id,
+            ]);
+        }
+
+        $mensajeTexto = "📢 Hola {$usuarioSolicitante->name}, "
+            . "La solicitud de adopción para {$adopcion->nombre_mascota} que había sido aceptada fue cancelada por {$usuarioQueCancela->name}.<br>"
+            . "Motivo: {$motivo}<br>"
+            . "Gracias por tu interés. Te animamos a seguir buscando a tu compañero ideal.";
+
+        Mensaje::create([
+            'texto' => $mensajeTexto,
+            'fecha' => now(),
+            'estado' => false,
+            'id_chat' => $chat->id,
+            'user_id' => $usuarioQueCancela->id,
+            'tema' => 'Cancelación de Aceptación',
+            'imagen' => null,
+        ]);
+
         return redirect()->route('solicitudes.show', $id_adopcion)->with('success', 'La solicitud aceptada fue cancelada con éxito.');
     }
+
 
 
 }

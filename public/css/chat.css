@@ -197,12 +197,9 @@ body {
 .received-message {
     padding: 14px 24px;
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 2;
     position: relative;
     max-width: 65%;
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: background-color 0.3s ease, transform 0.2s ease;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -210,13 +207,25 @@ body {
     word-break: break-word;
 }
 
+
+.sent-message {
+    display: inline-flex;
+    align-items: start;
+}
+
+.received-message {
+    display: inline-flex;
+    align-items: end;
+}
+
+
 .sent-message > .message-text,
 .received-message > .message-text {
     flex-grow: 1;
 }
 
 .sent-message > .message-small {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--bubble-sent-text-color);
     white-space: nowrap;
     flex-shrink: 0;
@@ -224,7 +233,7 @@ body {
 }
 
 .received-message > .message-small {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--bubble-received-text-color);
     white-space: nowrap;
     flex-shrink: 0;
@@ -683,73 +692,8 @@ input[type="color"]::-webkit-color-swatch {
         border-radius: 10px;
     }
 
-}
-
-.message-options-wrapper {
-    position: absolute;
-    left: -32px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1000;
-}
-
-.message-options-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #8da1c0;
-    padding: 4px;
-    border-radius: 50%;
-    transition: color 0.3s, background 0.3s;
-}
-
-.message-options-button:hover {
-    color: #1e4183;
-    background-color: rgba(30, 65, 131, 0.1);
-}
-
-.message-dropdown {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: -25px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    z-index: 999;
-    min-width: 140px;
-    animation: fadeIn 0.25s ease-out;
-    overflow: hidden;
-}
-
-.message-dropdown button {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 10px 18px;
-    text-align: left;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-}
-
-.message-dropdown button:hover {
-    background-color: #4469b6;
-    color: #ffffff;
-}
 
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 
