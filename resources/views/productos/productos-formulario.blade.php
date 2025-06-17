@@ -134,9 +134,11 @@
                     <div class="image-preview" id="drop-area">
                         <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
                         <p class="mb-2">Selecciona las imágenes</p>
-                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif" max="5" multiple>
+                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif"  multiple>
                         <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
                     </div>
+                </div>
+                <div id="image-preview-container" class="d-flex flex-wrap mt-3"></div>
                     <div class="mt-3">
                         @if(isset($producto) && $producto->imagenes)
                             @foreach($producto->imagenes as $imagen)
@@ -186,12 +188,33 @@
         });
 
 
-        // Opcional: mostrar una vista previa de las imágenes seleccionadas
         document.getElementById('image-input').addEventListener('change', function() {
             const files = this.files;
-            if (files.length > 0) {
-                console.log("Imágenes seleccionadas:", files); // Para depuración
+            const previewContainer = document.getElementById('image-preview-container');
+
+            // Limpiar la vista previa anterior
+            previewContainer.innerHTML = '';
+
+            // Validar cantidad de imágenes
+            if (files.length > 5) {
+                alert('No se pueden subir más de 5 imágenes.');
+                this.value = ''; // Limpiar el input
+                return;
             }
+
+            // Mostrar vista previa de las imágenes seleccionadas
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('img-thumbnail');
+                    img.style.width = '100px';
+                    img.style.margin = '5px';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
         });
 
         // Manejar arrastrar y soltar
