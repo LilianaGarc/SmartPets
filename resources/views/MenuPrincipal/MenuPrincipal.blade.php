@@ -96,7 +96,7 @@
     <div class="compartir-text">
         <h2>Usa el Petchat, chatea y comparte</h2>
         <p>Conéctate con otros amantes de los animales, comparte consejos, historias y crea una red de apoyo para ti y tus mascotas.</p>
-        <button class="ver-mas-btn2" onclick="window.location.href=''">Ver más</button>
+        <button class="ver-mas-btn2" onclick="window.location.href='{{ route('chats.index') }}'">Ver más</button>
     </div>
 
     <div class="phone-animation">
@@ -131,9 +131,9 @@
 
 <section class="petshop-section">
     <div class="petshop_texto">
-    <h2>Explora nuestra PetShop</h2>
-    <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
-    <button class="ver-mas-btn_tienda" onclick="window.location.href='{{ route('productos.index') }}'">Ver más</button>
+        <h2>Explora nuestra PetShop</h2>
+        <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
+        <button class="ver-mas-btn_tienda" onclick="window.location.href='{{ route('productos.index') }}'">Ver más</button>
     </div>
     <div class="petshop-container">
         <div class="petshop-item petshop-item-top-left">
@@ -208,7 +208,7 @@
                 <nav class="footer__nav">
                     <ul class="footer__nav-list">
                         <li class="footer__nav-item">
-                            <a href="#" class="footer__nav-link">PetChat</a>
+                            <a href="{{ route('chats.index') }}" class="footer__nav-link">PetChat</a>
                         </li>
                         <li class="footer__nav-item">
                             <a href="{{route('eventos.index')}}" class="footer__nav-link">Eventos</a>
@@ -244,6 +244,8 @@
         window.location.href = "{{ route('juego.index') }}";
     });
 </script>
+@include('chats.chat-float')
+
 
 </body>
 </html>

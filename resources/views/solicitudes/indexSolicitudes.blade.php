@@ -11,6 +11,9 @@
 @include('MenuPrincipal.Navbar')
 
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Solicitudes</h1>
+    </div>
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">

@@ -68,21 +68,20 @@ class PublicacionController
         $request->validate([
             'visibilidad' => 'required',
             'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $publicacion = Publicacion::findOrFail($id);
 
-        if ($request->hasFile('imagen')) {
-            if ($publicacion->imagen) {
-                Storage::disk('public')->delete($publicacion->imagen);
-            }
+        if (auth()->user()->usertype !== 'admin' && $publicacion->id_user !== auth()->id()) {
+            abort(403, 'No tienes permiso para modificar esta publicación.');
+        }
 
+        if ($request->hasFile('imagen')) {
             $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
             $publicacion->imagen = $rutaImagen;
         }
 
-        $publicacion->id_user = auth()->id();
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
 
@@ -207,7 +206,7 @@ class PublicacionController
 
         $publicacion = Publicacion::findOrFail($id);
 
-        if ($publicacion->id_user !== auth()->id()) {
+        if (auth()->user()->usertype !== 'admin' && $publicacion->id_user !== auth()->id()) {
             abort(403, 'No tienes permiso para modificar esta publicación.');
         }
 
@@ -218,11 +217,13 @@ class PublicacionController
 
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
+
         $publicacion->save();
 
         return redirect()->route('publicaciones.index')->with('exito', 'Publicación modificada con éxito.');
-
     }
+
+
 
     /**
      * Remove the specified resource from storage.

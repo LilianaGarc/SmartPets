@@ -10,6 +10,9 @@
 <body>
 @include('MenuPrincipal.Navbar')
 <div class="container">
+    <div class="page-title">
+        <h1 class="page-title__text">Solicitudes</h1>
+    </div>
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -47,12 +50,12 @@
         @method('PUT')
 
         <div class="form-group">
-            <label for="contenido">Motivo de la Solicitud</label>
+            <label for="contenido">✍️ Motivo de la Solicitud</label>
             <textarea name="contenido" id="contenido" class="form-control" required maxlength="90">{{ old('contenido', $solicitud->contenido) }}</textarea>
         </div>
 
         <div class="form-group">
-            <label for="experiencia">¿Tiene experiencia previa con mascotas?</label>
+            <label for="experiencia">🐶 ¿Tiene experiencia previa con mascotas?</label>
             <select name="experiencia" id="experiencia" class="form-control" required>
                 <option value="Sí" {{ $solicitud->experiencia == 'Sí' ? 'selected' : '' }}>Sí</option>
                 <option value="No" {{ $solicitud->experiencia == 'No' ? 'selected' : '' }}>No</option>
@@ -60,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            <label for="espacio">¿Tiene suficiente espacio para la mascota?</label>
+            <label for="espacio">🏡 ¿Tiene suficiente espacio para la mascota?</label>
             <select name="espacio" id="espacio" class="form-control" required>
                 <option value="Sí" {{ $solicitud->espacio == 'Sí' ? 'selected' : '' }}>Sí</option>
                 <option value="No" {{ $solicitud->espacio == 'No' ? 'selected' : '' }}>No</option>
@@ -68,7 +71,7 @@
         </div>
 
         <div class="form-group">
-            <label for="gastos_veterinarios">¿Está dispuesto a cubrir los gastos veterinarios?</label>
+            <label for="gastos_veterinarios">💉 ¿Está dispuesto a cubrir los gastos veterinarios?</label>
             <select name="gastos_veterinarios" id="gastos_veterinarios" class="form-control" required>
                 <option value="Sí" {{ $solicitud->gastos_veterinarios == 'Sí' ? 'selected' : '' }}>Sí</option>
                 <option value="No" {{ $solicitud->gastos_veterinarios == 'No' ? 'selected' : '' }}>No</option>

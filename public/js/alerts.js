@@ -1,11 +1,25 @@
 function showErrorAlert(message) {
     Swal.fire({
         title: "¡Error!",
-        text: "Primero debes subir una imagen.",
+        text: "No puedes subir más de 4 imágenes.",
         icon: "error",
         confirmButtonColor: "#ff7f50",
+        locale: 'es'
     });
 }
+
+function validateImages() {
+    let imagenesSecundarias = document.getElementById('imagenes_secundarias').files;
+
+    if (imagenesSecundarias.length > 4) {
+        showErrorAlert("No puedes subir más de 4 imágenes.");
+        return false;
+    }
+
+    return true;
+}
+
+
 
 function confirmDeleteAdopcion(adopcionId) {
     Swal.fire({

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('contenido');
             $table->string('imagen')->nullable();
+            $table->text('imagenes_secundarias')->nullable();
             $table->unsignedInteger('visibilidad')->default(0);
             $table->unsignedBigInteger('id_usuario');
             $table->string('tipo_mascota');

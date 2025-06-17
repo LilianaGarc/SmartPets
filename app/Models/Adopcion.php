@@ -13,6 +13,7 @@ class Adopcion extends Model
     protected $fillable = [
         'contenido',
         'imagen',
+        'imagenes_secundarias',
         'visibilidad',
         'tipo_mascota',
         'nombre_mascota',

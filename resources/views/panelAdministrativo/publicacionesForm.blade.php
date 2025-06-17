@@ -14,10 +14,9 @@
         @csrf
         <div class="card-body">
             @if(isset($publicacion))
-                <h4><a href="{{ route('publicaciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar la publicación</strong></h4>
-
+                <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar la publicación</strong></h4>
             @else
-                <h4><a href="{{ route('publicaciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear una nueva publicación</strong></h4>
+                <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear una nueva publicación</strong></h4>
             @endif
             <hr>
                 <div class="row">

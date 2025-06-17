@@ -525,6 +525,102 @@
             padding: 10px;
         }
 
+        .no-transition {
+            transition: none !important;
+        }
+
+
+
+
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .custom-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-card img {
+            max-height: 150px;
+            width: auto;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .custom-card h5 {
+            font-weight: bold;
+            color: #18478b;
+            margin-bottom: 10px;
+        }
+
+        .custom-card p {
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        /* Estilo base para el enlace */
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Tarjeta personalizada */
+        .custom-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Imagen dentro de la tarjeta */
+        .custom-card img {
+            max-height: 150px;
+            width: auto;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        /* Título y texto */
+        .custom-card h5 {
+            font-weight: bold;
+            color: #18478b;
+            margin-bottom: 10px;
+        }
+
+        .custom-card p {
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .row:hover .custom-card {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        .row .custom-card:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -574,7 +670,7 @@
     <nav>
         <ul>
             <li>
-                <a href="#">
+                <a href="{{ route('users.dashboard') }}">
                     <img src="{{ asset('images/principal.svg') }}" alt="Smart Pets">
                     <span>Página principal</span>
                 </a>
@@ -634,8 +730,8 @@
 
     function cargarEstadoSidebar() {
         const sidebarActivo = localStorage.getItem('sidebarActivo');
-        if (sidebarActivo === 'true') {
 
+        if (sidebarActivo === 'true') {
             sidebar.classList.add('no-transition');
             menu.classList.add('no-transition');
             main.classList.add('no-transition');
@@ -648,13 +744,14 @@
                 sidebar.classList.remove('no-transition');
                 menu.classList.remove('no-transition');
                 main.classList.remove('no-transition');
-            }, 10);
+            }, 100);
         } else {
             sidebar.classList.remove('menu-toggle');
             menu.classList.remove('menu-toggle');
             main.classList.remove('menu-toggle');
         }
     }
+
 
     menu.addEventListener('click', () => {
         sidebar.classList.toggle('menu-toggle');

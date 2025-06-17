@@ -31,11 +31,103 @@ class VeterinariaController extends Controller
         return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
     }
 
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.veterinariasForm');
+    }
+
+    public function panelstore(Request $request)
+    {
+        if (auth()->user()->es_admin) {
+            $idUsuario = $request->input('id_user');
+            if (!$idUsuario) {
+                return back()->with('fracaso', 'Debes seleccionar un usuario dueño.');
+            }
+        } else {
+            $idUsuario = auth()->id();
+        }
+        // Validación de la información
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'nombre_veterinario' => 'required|string|max:255',
+            'horario_apertura' => 'required',
+            'horario_cierre' => 'required|after:horario_apertura',
+            'departamento' => 'required',
+            'ciudad' => 'required|string|max:100',
+            'municipio' => 'required|string|max:100',
+            'direccion' => 'required|string|max:255',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
+            'telefono' => 'required|regex:/^[2389]\d{7}$/',
+            'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'redes.*.tipo_red_social' => 'nullable|string|max:255',
+            'redes.*.nombre_usuario' => 'nullable|string|max:255',
+        ]);
+
+        // Crear la ubicación
+        $ubicacion = Ubicacion::create([
+            'departamento' => $request->input('departamento'),
+            'municipio' => $request->input('municipio'),
+            'ciudad' => $request->input('ciudad'),
+            'direccion' => $request->input('direccion'),
+            'latitud' => $request->input('latitud'),
+            'longitud' => $request->input('longitud'),
+        ]);
+        // Crear la veterinaria
+        $veterinaria = Veterinaria::create([
+            'id_user' => $idUsuario,
+            'nombre' => $request->input('nombre'),
+            'nombre_veterinario' => $request->input('nombre_veterinario'),
+            'horario_apertura' => $request->input('horario_apertura'),
+            'horario_cierre' => $request->input('horario_cierre'),
+            'telefono' => $request->input('telefono'),
+            'whatsapp' => $request->input('whatsapp'),
+            'evaluacion' => $request->input('evaluacion', 0),
+            'id_ubicacion' => $ubicacion->id,
+        ]);
+
+        // Guardar las imágenes
+        if ($request->hasFile('imagenes')) {
+            foreach ($request->file('imagenes') as $imagen) {
+                $path = $imagen->store('veterinarias', 'public');
+                $veterinaria->imagenes()->create(['path' => $path, 'id_veterinaria' => $veterinaria->id]);
+            }
+        }
+
+        // Guardar la red
+        if ($request->has('redes')) {
+            foreach ($request->input('redes') as $red) {
+                $veterinaria->redes()->create([
+                    'tipo_red_social' => $red['tipo_red_social'] ?? null,
+                    'nombre_usuario' => $red['nombre_usuario'] ?? null,
+                    'id_veterinaria' => $veterinaria->id,
+                ]);
+            }
+        }
+
+        if ($veterinaria->save()) {
+            // Se guardó correctamente
+            if (auth()->user()->es_admin) {
+                return redirect()->route('veterinarias.panel')->with('exito', 'Veterinaria registrada exitosamente');
+            } else {
+                return redirect()->route('veterinarias.index')->with('exito', 'Veterinaria registrada exitosamente');
+            }
+        } else {
+            // No se pudo guardar
+            if (auth()->user()->es_admin) {
+                return redirect()->route('veterinarias.panel')->with('fracaso', 'La veterinaria no se pudo registrar');
+            } else {
+                return redirect()->route('veterinarias.index')->with('fracaso', 'La veterinaria no se pudo registrar');
+            }
+        }
+    }
+
 
     // Método que muestra todas las veterinarias
     public function index()
     {
-        
+
         if (auth()->check() && auth()->user()->es_admin) {
             $veterinarias = Veterinaria::all();
             return view('panelAdministrativo.veterinariasIndex')->with('veterinarias', $veterinarias);
@@ -145,10 +237,10 @@ class VeterinariaController extends Controller
         }
     }
 
-    // Método que muestra una veterinaria
+    // Método que muestra una veterin aria
     public function show(string $id)
     {
-        if (auth()->user()->es_admin) {
+        if (auth()->check() && auth()->user()->es_admin) {
             $veterinaria = Veterinaria::with(['ubicacion', ])->findOrFail($id);
         return view('veterinarias.otra')->with('veterinaria', $veterinaria);  // crea la ruta y lavista ponle
         } else {

@@ -53,6 +53,12 @@
                 </form>
                 <i data-lucide="settings" class="icono"></i>
             </div>
+            <div class="contador-general">
+                <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>
+                <p><strong>Solicitudes enviadas:</strong> <span class="contador-numero" data-numero="{{ $adopcionesSolicitadas->count() }}">0</span></p>
+
+            </div>
+
         </div>
     </div>
 
@@ -99,11 +105,7 @@
                                 <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
                             </a>
                             <div class="overlay-info">
-                                <p><strong>Tipo:</strong> {{ $adopcion->tipo_mascota }}</p>
-                                <p><strong>Nombre:</strong> {{ $adopcion->nombre_mascota }}</p>
-                                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
-                                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
-                                <p><strong>Nacimiento:</strong> {{ \Carbon\Carbon::parse($adopcion->fecha_nacimiento)->format('d/m/Y') }}</p>
+                                <p><i class="fas fa-file-alt"></i> Solicitudes recibidas: <strong>{{ $adopcion->solicitudes->count() }}</strong></p>
                             </div>
                             <p class="contador-visitas">
                                 <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
@@ -113,6 +115,7 @@
                 @endforeach
             @endif
         </div>
+
 
         <div id="solicitudes" class="grid">
             @if($adopcionesSolicitadas->isEmpty())
@@ -127,13 +130,29 @@
                         $solicitud = $item['solicitud'];
                     @endphp
                     @if($adopcion && $adopcion->imagen)
+                        @php
+                            $foto = $adopcion->usuario->fotoperfil
+                                ? asset('storage/' . $adopcion->usuario->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
+
                         <div class="card">
                             <a href="{{ route('solicitudes.showDetails', ['id_adopcion' => $adopcion->id, 'id' => $solicitud->id]) }}">
                                 <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
                             </a>
-                            <p style="text-align:center; font-size: 14px;">
-                                Estado: <strong>{{ ucfirst($solicitud->estado ?? 'pendiente') }}</strong>
-                            </p>
+
+                            <div class="overlay-info">
+                                <div class="perfil-info">
+                                    <div class="foto-perfil-mini" style="background-image: url('{{ $foto }}');"></div>
+                                    <div class="perfil-texto">
+                                        <p><strong>{{ $adopcion->usuario->name }}</strong></p>
+                                        <p class="fecha-publicacion">{{ \Carbon\Carbon::parse($adopcion->created_at)->diffForHumans() }}</p>
+                                    </div>
+                                </div>
+                                <p><strong> {{ $adopcion->tipo_mascota }}</strong></p>
+                                <p><strong>Nombre:</strong> {{ $adopcion->nombre_mascota }}</p>
+                                <p style="color: #ffffff;">Estado de la solicitud: <strong>{{ ucfirst($solicitud->estado) }}</strong></p>
+                            </div>
                         </div>
                     @endif
                 @endforeach
@@ -146,25 +165,10 @@
         <div id="petshop" class="grid"></div>
     </div>
 </div>
+<script src="{{ asset('js/perfil.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function cambiarTab(tabId) {
-        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('activo'));
-        document.querySelectorAll('.grid').forEach(grid => grid.classList.remove('activo'));
-        document.getElementById(tabId).classList.add('activo');
-        const botones = document.querySelectorAll('.tab');
-        botones.forEach(btn => {
-            if (btn.getAttribute('onclick').includes(tabId)) {
-                btn.classList.add('activo');
-            }
-        });
-    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        cambiarTab('adopciones');
-    });
 
-    lucide.createIcons();
-</script>
+
 </body>
 </html>

@@ -1,8 +1,5 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <!-- Validation Errors -->
     @if ($errors->any())
         <div class="alert-error">
             <ul>
@@ -71,15 +68,17 @@
         </div>
     </div>
 
+    <div id="animated-gif" class="floating-gif"></div>
+
     <script>
         const container = document.querySelector(".container");
         const btnSignIn = document.getElementById("btn-sign-in");
         const btnSignUp = document.getElementById("btn-sign-up");
 
-        btnSignIn.addEventListener("click",()=>{
+        btnSignIn.addEventListener("click", () => {
             container.classList.remove("toggle");
         });
-        btnSignUp.addEventListener("click",()=>{
+        btnSignUp.addEventListener("click", () => {
             container.classList.add("toggle");
         });
 
@@ -88,10 +87,55 @@
             if (alert) {
                 alert.style.display = 'none';
             }
-        }, 5000); // 5 segundos
-
-
+        }, 5000);
     </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const gifElement = document.getElementById('animated-gif');
+
+                const gifPaths = [
+                    '{{ asset('images/gato1.gif') }}',
+                    '{{ asset('images/gato2.gif') }}',
+                    '{{ asset('images/gato3.gif') }}'
+                ];
+
+                let currentIndex = 0;
+                gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
+
+                function getRandomPosition() {
+                    const padding = 50;
+                    const winWidth = window.innerWidth;
+                    const winHeight = window.innerHeight;
+                    let left, top;
+
+                    do {
+                        left = Math.floor(Math.random() * (winWidth - 120));
+                        top = Math.floor(Math.random() * (winHeight - 120));
+                    } while (
+                        left > window.innerWidth / 4 && left < (window.innerWidth * 3) / 4 &&
+                        top > window.innerHeight / 4 && top < (window.innerHeight * 3) / 4
+                        );
+
+                    return { left, top };
+                }
+
+                function moveGifRandomly() {
+                    const { left, top } = getRandomPosition();
+                    gifElement.style.left = `${left}px`;
+                    gifElement.style.top = `${top}px`;
+                }
+
+                gifElement.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % gifPaths.length;
+                    gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
+                });
+
+                setInterval(moveGifRandomly, 10000);
+
+                moveGifRandomly();
+            });
+        </script>
 
 
 

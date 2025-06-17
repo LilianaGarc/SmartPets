@@ -120,10 +120,21 @@ Route::middleware('auth')->group(function () {
     Route::put('eventos/{id}', [EventoController::class, 'update'])->name('eventos.update');
     Route::delete('eventos/{id}', [EventoController::class, 'destroy'])->name('eventos.destroy');
     Route::get('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
+
+
+    //Rutas para chats
+    Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+    Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+    Route::post('/chats/{chat}/mensajes', [MensajeController::class, 'store'])->name('mensajes.store');
+    Route::get('/chats/iniciar/{userId}', [ChatController::class, 'iniciarChat'])->name('chats.iniciar');
+    Route::get('/chats/{chat}/mensajes/nuevos', [MensajeController::class, 'getNuevosMensajes'])->name('mensajes.nuevos');
+    Route::get('/usuarios-con-mensajes', [ChatController::class, 'usuariosConMensajes'])->name('usuarios.con.mensajes');
+
 });
 
 
 Route::middleware('auth', 'admin')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'paginaPrincipal'])->name('users.dashboard');
 
     Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
     Route::get('/panel/buscar/adopciones', [AdopcionController::class, 'search'])->name('adopciones.search');
@@ -144,6 +155,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/panel/productos/{id}/show', [ProductoController::class, 'panelshow'])->name('productos.panelshow')->whereNumber('id');
 
     Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
+    Route::get('/panel/veterinarias/create', [VeterinariaController::class, 'panelcreate'])->name('veterinarias.panelcreate');
     Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
     Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
 

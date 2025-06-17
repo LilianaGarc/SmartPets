@@ -1,39 +1,43 @@
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
-    @if(session('exito'))
-        <div class="alert alert-success" role="alert">
-            {{ session('exito') }}
-        </div>
-    @endif
-    @if(session('fracaso'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('fracaso') }}
-        </div>
-    @endif
-    <h3>  |   Usuarios </h3>
-    <a href="{{ route('users.panelcreate') }}" class="btn ms-auto"><h7><i class="fas fa-plus"></i>
-            Nuevo usuario</h7>
+@if(session('exito'))
+<div class="alert alert-success" role="alert">
+    {{ session('exito') }}
+</div>
+@endif
+@if(session('fracaso'))
+<div class="alert alert-danger" role="alert">
+    {{ session('fracaso') }}
+</div>
+@endif
+
+<div class="d-flex align-items-center mb-2">
+    <h3 class="mb-0">| Usuarios</h3>
+    <a href="{{ route('users.panelcreate') }}" class="btn ms-auto" role="button">
+        <h7>Nuevo usuario <i class="fas fa-plus"></i></h7>
     </a>
-    <hr>
-    <form action="{{ route('users.search') }}"  class="" role="search" style="align-content: flex-end;">
-        <div class="row">
-            <div class="col">
-                <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
-            </div>
-            <div class="col">
-                <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
-                <span class="glyphicon glyphicon-search"></span>
-            </div>
+</div>
+<hr>
+
+<form action="{{ route('users.search') }}" class="" role="search" style="align-content: flex-end;">
+    <div class="row">
+        <div class="col">
+            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
         </div>
+        <div class="col">
+            <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
+            <span class="glyphicon glyphicon-search"></span>
         </div>
-    </form>
-    <hr>
+    </div>
+    </div>
+</form>
+<hr>
 
 
-    <div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
-        <table class="table table-striped table-bordered">
-            <thead>
+<div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Correo Electrónico</th>

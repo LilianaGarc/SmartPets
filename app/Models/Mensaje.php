@@ -9,8 +9,15 @@ class Mensaje extends Model
 {
     use HasFactory;
 
-    public function chat(){
-        //Varios mensajes pertenecen un chat (N)
-        return $this->belongsTo(Chat::class);
+    protected $fillable = ['texto', 'fecha', 'estado', 'id_chat', 'user_id', 'tema', 'imagen'];
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class, 'id_chat');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

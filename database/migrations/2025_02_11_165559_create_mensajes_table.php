@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('mensajes', function (Blueprint $table) {
             $table->id();
-            $table->string('texto');
+            $table->text('texto');
             $table->datetime('fecha');
             $table->boolean('estado');
             $table->integer('id_chat');
+            $table->string('imagen')->nullable();
+            $table->string('tema')->nullable();
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

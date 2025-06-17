@@ -12,7 +12,7 @@
         @endisset
         @csrf
         <div class="card-body">
-            <h4><a href="{{ route('adopciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Detalles de la adopción</strong></h4>
+            <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Detalles de la adopción</strong></h4>
             <hr>
 
             <div class="row">

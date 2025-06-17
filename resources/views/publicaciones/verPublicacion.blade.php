@@ -12,7 +12,7 @@
         @endisset
         @csrf
         <div class="card-body">
-            <h4><a href="{{ route('publicaciones.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Detalles de la publicación</strong></h4>
+            <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Detalles de la publicación</strong></h4>
             <hr>
             <div class="row">
                 <div class="col-8">
