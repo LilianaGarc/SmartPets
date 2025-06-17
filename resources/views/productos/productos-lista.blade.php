@@ -30,9 +30,10 @@
                         </button>
 
                         @foreach($categorias as $categoria)
-                            <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('$categoria')==$categoria->id) active @endif"
+                            <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('categoria')==$categoria->id) active @endif"
                             data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}">
-                            <i class="{{$categoria->icono??'fas fa-tag'}}"></i>
+                            <img src="{{ asset('images/icono' . $categoria->nombre . '.png') }}"
+                            alt="{{ $categoria->nombre }}" style="width: 30px; height: 30px; object-fit: contain;">
                             </button>
 
                         @endforeach
@@ -78,7 +79,7 @@
     <div class="productos-container d-flex flex-wrap justify-content-center">
         @if($productos->isEmpty())
             <div class="no-hay">
-                <p class="no-hay-message">¡No hay productos disponibles por el momento! 🛒</p>
+                <p class="no-hay-message justify-center">¡No hay productos disponibles por el momento! 🛒</p>
                 <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" class="mx-auto d-block mt-2"
                      style="width: 150px; opacity: 0.7;">
             </div>
@@ -88,9 +89,8 @@
             <div class="adopcion-card" style="margin: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 300px;">
                 <div class="perfil-usuario" style="display: flex; align-items: flex-start;">
                     @php
-                        $foto = $producto->imagen
-                            ? asset('storage/' . $producto->imagen)
-                            : asset('images/fotodeperfil.webp');
+                        $foto = (!empty($producto->user->foto_perfil) && file_exists(public_path('public/storage/fotoperfiles/' . $producto->user->foto_perfil)))
+                        ? asset('public/storage/fotoperfiles/' . $producto->user->foto_perfil) : asset('images/fotodeperfil.webp');
                     @endphp
 
                     <div class="foto-perfil"
@@ -131,6 +131,9 @@
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        {{ $productos->links('pagination::bootstrap-5') }}
     </div>
 
     <script src="{{ asset('js/Ascripts.js') }}"></script>

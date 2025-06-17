@@ -30,8 +30,8 @@ class CategoriasTableSeeder extends Seeder
         ]);
 
         Categoria::create([
-            'nombre' => 'Aves',
-            'descripcion' => 'Productos para Aves'
+            'nombre' => 'Peces',
+            'descripcion' => 'Productos para Peces'
         ]);
 
     }
