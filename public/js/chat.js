@@ -1,3 +1,5 @@
+const mensajesMostrados = new Set();
+
 document.getElementById('buscador').addEventListener('input', function () {
     const query = this.value.toLowerCase();
     document.querySelectorAll('.chat-user').forEach(function (el) {
@@ -20,23 +22,33 @@ document.querySelectorAll('.emoji').forEach(function (emojiButton) {
 });
 
 function enviarMensaje(texto) {
-    let token = document.querySelector('input[name="_token"]').value;
-    let action = document.getElementById('mensaje-form').getAttribute('action');
+    const form = document.getElementById('mensaje-form');
+    const inputImagen = document.getElementById('imagen');
+    const token = document.querySelector('input[name="_token"]').value;
+    const action = form.getAttribute('action');
+
+    let formData = new FormData();
+    formData.append('texto', texto);
+    if (inputImagen.files.length > 0) {
+        formData.append('imagen', inputImagen.files[0]);
+    }
 
     fetch(action, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': token
         },
-        body: JSON.stringify({ texto: texto })
+        body: formData
     })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 agregarMensajeAlChat(data.mensaje);
                 document.getElementById('texto').value = '';
+                inputImagen.value = '';
                 document.getElementById('texto').focus();
+            } else {
+                console.error('Error al enviar mensaje:', data.message);
             }
         })
         .catch(error => {
@@ -65,6 +77,9 @@ function esSoloEmojiNoNumeros(texto) {
 }
 
 function agregarMensajeAlChat(mensaje) {
+    if (mensajesMostrados.has(mensaje.id)) return;
+    mensajesMostrados.add(mensaje.id);
+
     const chatBox = document.getElementById('chat-box');
     const esMio = mensaje.usuario.id === authId;
     const claseWrapper = esMio ? 'sent-message-wrapper' : 'received-message-wrapper';
@@ -82,12 +97,31 @@ function agregarMensajeAlChat(mensaje) {
     }
 
     const divMensaje = document.createElement('div');
-    divMensaje.className = claseMensaje;
+    divMensaje.className = claseMensaje + ' message-content-wrapper';
+    divMensaje.setAttribute('data-id', mensaje.id);
 
-    if (esSoloEmojiNoNumeros(mensaje.texto)) {
-        divMensaje.innerHTML = `<span class="emoji-large">${mensaje.texto}</span>`;
-    } else {
-        divMensaje.textContent = mensaje.texto;
+    if (mensaje.imagen) {
+        const imagenMensaje = document.createElement('img');
+        imagenMensaje.src = `/storage/${mensaje.imagen}`;
+        imagenMensaje.alt = 'Imagen enviada';
+        imagenMensaje.style.maxWidth = '200px';
+        imagenMensaje.style.display = 'block';
+        imagenMensaje.style.marginBottom = '6px';
+        divMensaje.appendChild(imagenMensaje);
+    }
+
+    if (mensaje.texto) {
+        if (esSoloEmojiNoNumeros(mensaje.texto)) {
+            const spanEmoji = document.createElement('span');
+            spanEmoji.className = 'emoji-large';
+            spanEmoji.textContent = mensaje.texto;
+            divMensaje.appendChild(spanEmoji);
+        } else {
+            const spanTexto = document.createElement('span');
+            spanTexto.className = 'message-text';
+            spanTexto.textContent = mensaje.texto;
+            divMensaje.appendChild(spanTexto);
+        }
     }
 
     const small = document.createElement('small');
@@ -97,6 +131,27 @@ function agregarMensajeAlChat(mensaje) {
     small.textContent = hora;
 
     divMensaje.appendChild(small);
+
+    if (esMio) {
+        const dropdown = document.createElement('div');
+        dropdown.className = 'message-dropdown';
+        dropdown.style.display = 'none';
+
+        const btnEditar = document.createElement('button');
+        btnEditar.className = 'editar-mensaje';
+        btnEditar.textContent = '✏️ Editar';
+        btnEditar.dataset.id = mensaje.id;
+
+        const btnEliminar = document.createElement('button');
+        btnEliminar.className = 'eliminar-mensaje';
+        btnEliminar.textContent = '🗑️ Eliminar';
+        btnEliminar.dataset.id = mensaje.id;
+
+        dropdown.appendChild(btnEditar);
+        dropdown.appendChild(btnEliminar);
+        divMensaje.appendChild(dropdown);
+    }
+
     divWrapper.appendChild(divMensaje);
     chatBox.appendChild(divWrapper);
 
@@ -111,6 +166,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mensajes = chatBox.querySelectorAll('.sent-message, .received-message');
         mensajes.forEach(divMensaje => {
+            const idMensaje = divMensaje.getAttribute('data-id');
+            if (idMensaje) mensajesMostrados.add(parseInt(idMensaje));
+
             let texto = divMensaje.textContent.trim();
             texto = texto.replace(/\s+/g, '');
             if (texto.length > 0 && esSoloEmojiNoNumeros(texto)) {
@@ -162,17 +220,23 @@ function actualizarUsuariosConMensajes() {
                     if (!usuario.name.toLowerCase().includes(filtro)) return;
 
                     html += `
-                    <a href="/chats/iniciar/${usuario.id}" class="chat-user">
-                    <img src="${usuario.fotoperfil ? '/storage/' + usuario.fotoperfil : '/images/fotodeperfil.webp'}" alt="Foto" />
-                        <div class="user-details">
-                            <strong>${usuario.name}</strong>
-                            <small>
-                                ${ultimoMensaje ? `<span class="${mensajesNoLeidos > 0 ? 'ultimo-mensaje-no-leido' : ''}">${ultimoMensaje.texto.length > 30 ? ultimoMensaje.texto.substring(0, 30) + '...' : ultimoMensaje.texto}</span><br>` : 'Empieza una conversación'}
+                        <a href="/chats/iniciar/${usuario.id}" class="chat-user">
+                        <img src="${usuario.fotoperfil ? '/storage/' + usuario.fotoperfil : '/images/fotodeperfil.webp'}" alt="Foto" />
+                            <div class="user-details">
+                                <strong>${usuario.name}</strong>
+                                <small>
+                            ${ultimoMensaje
+                        ? `<span class="${mensajesNoLeidos > 0 ? 'ultimo-mensaje-no-leido' : ''}">
+                                  ${ultimoMensaje.imagen && (!ultimoMensaje.texto || ultimoMensaje.texto.trim() === '')
+                            ? 'Foto'
+                            : (ultimoMensaje.texto.length > 30 ? ultimoMensaje.texto.substring(0, 30) + '...' : ultimoMensaje.texto)}
+                            </span><br>`
+                        : 'Empieza una conversación'}
                             </small>
-                        </div>
-                        ${mensajesNoLeidos > 0 ? `<span class="unread-badge">${mensajesNoLeidos}</span>` : ''}
-                    </a>
-                    `;
+                            </div>
+                            ${mensajesNoLeidos > 0 ? `<span class="unread-badge">${mensajesNoLeidos}</span>` : ''}
+                        </a>
+                        `;
                 });
             }
 
@@ -187,7 +251,7 @@ function actualizarUsuariosConMensajes() {
 setInterval(() => {
     actualizarMensajesNuevos();
     actualizarUsuariosConMensajes();
-}, 1000);
+}, 3000);
 
 function getTextColor(backgroundColor) {
     const r = parseInt(backgroundColor.substring(1, 3), 16) / 255;
@@ -248,3 +312,83 @@ document.addEventListener('DOMContentLoaded', function () {
     inputEnviado.addEventListener('input', onChange);
     inputRecibido.addEventListener('input', onChange);
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    if (isMobile) {
+        const chatUsers = document.querySelectorAll('.chat-user');
+        const backButton = document.querySelector('.back-button');
+
+        chatUsers.forEach(user => {
+            user.addEventListener('click', () => {
+                document.body.classList.add('show-chat');
+            });
+        });
+
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                document.body.classList.remove('show-chat');
+            });
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.message-content-wrapper').forEach(function (wrapper) {
+        wrapper.addEventListener('click', function (e) {
+            document.querySelectorAll('.message-dropdown').forEach(menu => menu.style.display = 'none');
+
+            const dropdown = wrapper.querySelector('.message-dropdown');
+            if (dropdown) {
+                dropdown.style.display = 'block';
+                e.stopPropagation();
+            }
+        });
+    });
+
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.message-dropdown').forEach(menu => menu.style.display = 'none');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const inputImagen = document.getElementById('imagen');
+    const previewContainer = document.getElementById('preview-container');
+    const formMensaje = document.getElementById('mensaje-form');
+
+    if (inputImagen && previewContainer) {
+        inputImagen.addEventListener('change', function () {
+            previewContainer.innerHTML = '';
+
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Vista previa de imagen';
+                    img.title = 'Click para eliminar';
+
+                    img.addEventListener('click', () => {
+                        previewContainer.innerHTML = '';
+                        inputImagen.value = '';
+                    });
+
+                    previewContainer.appendChild(img);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    if (formMensaje && previewContainer && inputImagen) {
+        formMensaje.addEventListener('submit', function () {
+            previewContainer.innerHTML = '';
+            inputImagen.value = '';
+        });
+    }
+});
+

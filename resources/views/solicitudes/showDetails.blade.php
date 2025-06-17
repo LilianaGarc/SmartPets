@@ -55,7 +55,6 @@
     </div>
 </div>
 
-
 <div class="card2-container">
     @if(session('success'))
         <script>
@@ -131,7 +130,7 @@
                     const yaHayAceptada = {{ $hayAceptada ? 'true' : 'false' }};
                 </script>
 
-                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado !== 'aceptada')
+                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado !== 'aceptada' && !$hayAceptada)
                     <button type="button" class="action-btn accept-btn" onclick="confirmarAceptarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
                         <i class="fas fa-check-circle"></i> Aceptar Solicitud
                     </button>
@@ -139,23 +138,52 @@
                     <form id="form-aceptar-{{ $solicitud->id }}" action="{{ route('solicitudes.aceptar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
                         @csrf
                     </form>
+
+                @elseif(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado !== 'aceptada' && $hayAceptada)
+                    @php
+                        // Obtener la solicitud aceptada de esta adopción
+                        $solicitudAceptada = $adopcion->solicitudes()->where('estado', 'aceptada')->first();
+                    @endphp
+
+                    <div class="solicitud-aceptada-box" style="background-color: rgba(255,248,229,0.6); border-left: 5px solid #f0ad4e; padding: 15px 20px; margin-top: 20px; border-radius: 8px;">
+                        <p style="color: #d58512; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
+                            <i class="fas fa-exclamation-triangle" style="color: #d58512;"></i> Ya has aceptado una solicitud
+                        </p>
+                        <p style="margin: 0 0 10px; color: #333;">
+                            Ya has aceptado una solicitud de adopción. Si deseas aceptar una nueva, primero debes cancelar la solicitud que ya fue aceptada. Por respeto al solicitante y para mantener la transparencia del proceso, es importante que indiques de forma clara el motivo de la cancelación.
+                        </p>
+
+                        @if($solicitudAceptada)
+                            <p style="margin: 10px 0 0;">
+                                <a href="{{ route('solicitudes.showDetails', [$adopcion->id, $solicitudAceptada->id]) }}"
+                                   style="color: #d58512; font-weight: 600; font-size: 16px; text-decoration: none;">
+                                    Ver solicitud actualmente aceptada <i class="fas fa-hand-pointer" style="margin-left: 6px;"></i>
+                                </a>
+                            </p>
+                        @endif
+                    </div>
                 @endif
 
-                @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado === 'aceptada')
-                    <button type="button" class="action-btn cancel-btn" onclick="confirmarCancelarSolicitud({{ $adopcion->id }}, {{ $solicitud->id }})">
+
+
+
+            @if(auth()->user()->id === $adopcion->id_usuario && $solicitud->estado === 'aceptada')
+                    <button type="button" class="action-btn cancel-btn" onclick="pedirMotivoCancelar({{ $adopcion->id }}, {{ $solicitud->id }})">
                         <i class="fas fa-times-circle"></i> Cancelar Aceptación
                     </button>
+
+                    <form id="form-cancelar-{{ $solicitud->id }}" action="{{ route('solicitudes.cancelar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
+                        @csrf
+                        <input type="hidden" name="motivo_cancelacion" id="motivo-cancelacion-{{ $solicitud->id }}">
+                    </form>
+
 
                     <form id="form-cancelar-{{ $solicitud->id }}" action="{{ route('solicitudes.cancelar', [$adopcion->id, $solicitud->id]) }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 @endif
 
-
-
-
-
-                @if(auth()->user()->id === $solicitud->id_usuario)
+                @if(auth()->user()->id === $solicitud->id_usuario && $solicitud->estado !== 'aceptada')
                     <div class="boton-container">
                         <form action="{{ route('solicitudes.edit', [$adopcion->id, $solicitud->id]) }}" method="GET">
                             <button type="submit" class="btn-editard">
@@ -171,6 +199,28 @@
                             </button>
                         </form>
                     </div>
+                @elseif(auth()->user()->id === $solicitud->id_usuario && $solicitud->estado === 'aceptada')
+                    <div class="solicitud-aceptada-box" style="background-color: rgba(30,65,131,0.06); border-left: 5px solid #1e4183; padding: 15px 20px; margin-top: 20px; border-radius: 8px;">
+                        <p style="color: #1e4183; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
+                            <i class="fas fa-check-circle" style="color: #28a745;"></i> Tu solicitud ha sido aceptada
+                        </p>
+                        <p style="margin: 0 0 10px; color: #333;">
+                            Si por alguna razón deseas cancelarla, deberás ponerte en contacto directamente con el responsable de la publicación de adopción para solicitar la eliminación de tu solicitud.
+                        </p>
+
+                        @auth
+                            @if(auth()->id() !== $adopcion->id_usuario)
+                                <p style="margin: 0;">
+                                    <a href="{{ route('chats.iniciar', $adopcion->id_usuario) }}?nombre_mascota={{ urlencode($adopcion->nombre_mascota) }}&mensaje={{ urlencode('Hola ' . $adopcion->usuario->name . ', espero que estés bien. Me gustaría solicitar la cancelación de mi solicitud de adopción para ' . $adopcion->nombre_mascota . '. Agradezco mucho tu tiempo y comprensión.') }}"
+                                       class="btn-mensaje-contacto"
+                                       style="display: inline-block; background-color: #1e4183; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                                        <i class="fas fa-envelope"></i> Contactar a {{ $adopcion->usuario->name }}
+                                    </a>
+                                </p>
+                            @endif
+                        @endauth
+                    </div>
+
                 @endif
             </div>
         </div>
@@ -181,6 +231,8 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
 </div>
+
+
 
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="{{ asset('js/Modalscripts.js') }}"></script>

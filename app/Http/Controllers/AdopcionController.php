@@ -132,8 +132,6 @@ class AdopcionController extends Controller
     }
 
 
-
-
     public function index(Request $request)
     {
         $tipo_mascota = $request->get('tipo_mascota');
@@ -366,10 +364,6 @@ class AdopcionController extends Controller
     }
 
 
-
-
-
-
     public function destroy($id)
     {
         $adopcion = Adopcion::findOrFail($id);
@@ -392,9 +386,9 @@ class AdopcionController extends Controller
         $eliminados = Adopcion::destroy($id);
 
         if ($eliminados < 0){
-            return redirect()->route('adopciones.panel')->with('fracaso', 'La adopcion no se pudo borrar.');
+            return redirect()->route('adopciones.panel')->with('fracaso', 'La adopción no se pudo borrar.');
         }else {
-            return redirect()->route('adopciones.panel')->with('exito', 'La adopcion se elimino correctamente.');
+            return redirect()->route('adopciones.panel')->with('exito', 'La adopción se eliminó correctamente.');
         }
     }
 

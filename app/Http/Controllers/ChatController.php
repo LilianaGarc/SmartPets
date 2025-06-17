@@ -89,12 +89,14 @@ class ChatController
         }
 
         $mensajePredefinido = $request->query('mensaje', '');
+        $imagenMascota = $request->query('imagen_mascota', '');
 
         return view('chats.index', [
             'usuariosConMensajes' => $usuariosConMensajes,
             'chatActivo' => $chatActivo,
             'mensajes' => $mensajes,
             'mensajePredefinido' => $mensajePredefinido,
+            'imagenMascota' => $imagenMascota,
         ]);
     }
 
@@ -219,9 +221,15 @@ class ChatController
         }
 
         $mensajePredefinido = request()->query('mensaje', '');
+        $imagenMascota = request()->query('imagen_mascota', '');
 
-        return redirect()->route('chats.index', ['chat_id' => $chat->id, 'mensaje' => $mensajePredefinido]);
+        return redirect()->route('chats.index', [
+            'chat_id' => $chat->id,
+            'mensaje' => $mensajePredefinido,
+            'imagen_mascota' => $imagenMascota,
+        ]);
     }
+
 
 
 
