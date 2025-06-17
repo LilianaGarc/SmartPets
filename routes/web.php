@@ -193,6 +193,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestroy'])->name('reacciones.paneldestroy');
 
     // Panel de eventos
+    Route::get('/panel/eventos/create', [EventoController::class, 'panelcreate'])->name('eventos.panelcreate');
+    Route::post('/panel/eventos/crear', [EventoController::class, 'panelstore'])->name('eventos.panelstore');
+    Route::get('/panel/eventos/{id}/editar', [EventoController::class, 'paneledit'])->name('eventos.paneledit')->whereNumber('id');
+    Route::put('/panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
+    Route::get('/panel/eventos/{id}/show', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
     Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
     Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
     Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');
