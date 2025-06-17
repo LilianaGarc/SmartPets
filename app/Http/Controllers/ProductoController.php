@@ -40,8 +40,8 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->input('query');
-        $categoriaId = $request->input('categoria_id');
+        $query = $request->input('search');
+        $categoriaId = $request->input('categoria');
         $productos = Producto::query();
         if ($query){
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
