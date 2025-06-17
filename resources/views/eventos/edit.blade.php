@@ -3,6 +3,9 @@
 @section('titulo', 'Editar Evento')
 
 @section('contenido')
+
+    
+
     <div class="container mt-4">
         <h2>Editar Evento</h2>
 

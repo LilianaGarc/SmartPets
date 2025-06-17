@@ -3,7 +3,7 @@
 
     <form method="post"
           enctype="multipart/form-data"
-         >
+          action="{{ isset($producto) ? route('productos.panelupdate', $producto->id) : route('productos.panelstore') }}">
         @isset($producto)
             @method('put')
         @endisset
@@ -17,8 +17,9 @@
             <hr>
             <div class="row">
                 <div class="col-8">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre del producto</label>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="{{ old('nombre', $producto->nombre ?? '') }}" required>
+                        <label for="nombre">Nombre del producto</label>
                     </div>
 
                     <div class="mb-3">
@@ -26,16 +27,17 @@
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ old('descripcion', $producto->descripcion ?? '') }}</textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="precio" class="form-label">Precio</label>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" value="{{ old('precio', $producto->precio ?? '') }}" required>
+                        <label for="precio">Precio</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock" value="{{ old('stock', $producto->stock ?? '') }}" required>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="{{ old('stock', $producto->stock ?? '') }}" required>
+                        <label for="stock">Stock</label>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="form-floating mb-3">
                         <select class="form-select" id="categoria_id" name="categoria_id" required>
                             @foreach($categorias as $categoria)
                                 <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id ?? '') == $categoria->id ? 'selected' : '' }}>
@@ -43,6 +45,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        <label for="categoria_id">Categoría</label>
                     </div>
 
                     <div class="mb-3">
