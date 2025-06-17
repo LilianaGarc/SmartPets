@@ -89,8 +89,9 @@
             <div class="adopcion-card" style="margin: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 300px;">
                 <div class="perfil-usuario" style="display: flex; align-items: flex-start;">
                     @php
-                        $foto = (!empty($producto->user->foto_perfil) && file_exists(public_path('public/storage/fotoperfiles/' . $producto->user->foto_perfil)))
-                        ? asset('public/storage/fotoperfiles/' . $producto->user->foto_perfil) : asset('images/fotodeperfil.webp');
+                        $foto = $producto->user->fotoperfil
+                            ? asset('storage/' . $producto->user->fotoperfil)
+                            : asset('images/fotodeperfil.webp');
                     @endphp
 
                     <div class="foto-perfil"
