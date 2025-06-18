@@ -9,8 +9,13 @@ return new class extends Migration {
     {
         Schema::create('prod_favoritos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('producto_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 
