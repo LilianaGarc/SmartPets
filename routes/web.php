@@ -1,13 +1,26 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    AdopcionController, CategoriaController, CalificacionController, ChatController, ChatbotController,
-    ComentarioController, EventoController, JuegoController, MensajeController, PerfilController,
-    ProductoController, PublicacionController, ReaccionController, SolicitudController, UserController, VeterinariaController,
+use App\Http\Controllers\{AdopcionController,
+    CategoriaController,
+    CalificacionController,
+    ChatController,
+    ChatbotController,
+    ComentarioController,
+    EventoController,
+    JuegoController,
+    MensajeController,
+    NotificationController,
+    PerfilController,
+    ProductoController,
+    PublicacionController,
+    ReaccionController,
+    SolicitudController,
+    UserController,
+    VeterinariaController,
     ImagenController,
-    UbicacionController, ProfileController, NotificationController
-};
+    UbicacionController,
+    ProfileController};
 
 // Rutas públicas generales
 Route::get('/', fn() => redirect()->route('animacion'));
@@ -36,7 +49,9 @@ Route::get('/productos/{producto}/resenias/{resenia}/editar', [ProductoControlle
 
 // Rutas públicas de veterinarias
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+
 Route::get('/veterinarias/{id}', [VeterinariaController::class, 'show'])->name('veterinarias.show')->whereNumber('id');
+
 
 // Rutas públicas de calificaciones
 Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
@@ -111,26 +126,123 @@ Route::middleware('auth')->group(function () {
     // Chats y mensajes
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
     Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
-    Route::post('/chats/{chat}/messages', [MensajeController::class, 'store'])->name('messages.store');
+    Route::post('/chats/{chat}/mensajes', [MensajeController::class, 'store'])->name('mensajes.store');
+    Route::get('/chats/iniciar/{userId}', [ChatController::class, 'iniciarChat'])->name('chats.iniciar');
+    Route::get('/chats/{chat}/mensajes/nuevos', [MensajeController::class, 'getNuevosMensajes'])->name('mensajes.nuevos');
+    Route::get('/usuarios-con-mensajes', [ChatController::class, 'usuariosConMensajes'])->name('usuarios.con.mensajes');
 
     // Notificaciones
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::delete('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
+    Route::post('/notificaciones/marcar-como-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarComoVista');
 
-    // Veterinarias protegidas
+
+    // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
+
     Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
+
     Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])->name('veterinarias.edit')->whereNumber('id');
     Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
-    Route::delete('/veterinarias/{id}', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
+    Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
+});
 
-    // Otras rutas protegidas
-    Route::post('/productos/{producto}/favoritos', [ProductoController::class, 'agregarFavorito'])->name('productos.agregarFavorito');
-    Route::delete('/productos/{producto}/favoritos', [ProductoController::class, 'quitarFavorito'])->name('productos.quitarFavorito');
+// Rutas administrativas (solo admin)
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Panel de adopciones
+    Route::get('/panel/adopciones', [AdopcionController::class, 'panel'])->name('adopciones.panel');
+    Route::get('/panel/buscar/adopciones', [AdopcionController::class, 'search'])->name('adopciones.search');
+    Route::get('/panel/adopciones/create', [AdopcionController::class, 'panelcreate'])->name('adopciones.panelcreate');
+    Route::post('/panel/adopciones/crear', [AdopcionController::class, 'panelstore'])->name('adopciones.panelstore');
+    Route::get('/panel/adopciones/{id}/editar', [AdopcionController::class, 'paneledit'])->name('adopciones.paneledit')->whereNumber('id');
+    Route::put('/panel/adopciones/{id}/editar', [AdopcionController::class, 'panelupdate'])->name('adopciones.panelupdate')->whereNumber('id');
+    Route::get('/panel/adopciones/{id}/show', [AdopcionController::class, 'panelshow'])->name('adopciones.panelshow')->whereNumber('id');
+    Route::delete('/panel/adopciones/{id}', [AdopcionController::class, 'paneldestroy'])->name('adopciones.paneldestroy');
 
-    Route::post('/productos/{producto}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.storeProducto');
-    Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
+    // Panel de productos
+    Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
 
+    Route::get('/panel/productos/create', [ProductoController::class, 'panelcreate'])->name('productos.panelcreate');
+    Route::post('/panel/productos/crear', [ProductoController::class, 'panelstore'])->name('productos.panelstore');
+
+    Route::get('/panel/productos/{id}/editar', [ProductoController::class, 'paneledit'])->name('productos.paneledit')->whereNumber('id');
+    Route::put('/panel/productos/{id}/editar', [ProductoController::class, 'panelupdate'])->name('productos.panelupdate')->whereNumber('id');
+
+    Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
+
+    Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
+
+    Route::get('/panel/productos/{id}/show', [ProductoController::class, 'panelshow'])->name('productos.panelshow')->whereNumber('id');
+
+    // Panel de veterinarias
+    Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
+
+    Route::get('/panel/veterinarias/create', [VeterinariaController::class, 'panelcreate'])->name('veterinarias.panelcreate');
+    Route::post('/panel/veterinarias/crear', [VeterinariaController::class, 'panelstore'])->name('veterinarias.panelstore');
+
+    Route::get('/panel/veterinarias/{id}/editar', [VeterinariaController::class, 'paneledit'])->name('veterinarias.paneledit')->whereNumber('id');
+
+    Route::put('/panel/veterinarias/{id}/editar', [VeterinariaController::class, 'panelupdate'])->name('veterinarias.panelupdate')->whereNumber('id');
+
+    Route::get('/panel/veterinarias/{id}/show', [VeterinariaController::class, 'panelshow'])->name('veterinarias.panelshow')->whereNumber('id');
+
+    Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
+
+    Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
+
+    // Panel de publicaciones
+    Route::get('/panel/publicaciones', [PublicacionController::class, 'panel'])->name('publicaciones.panel');
+    Route::get('/panel/buscar/publicaciones', [PublicacionController::class, 'search'])->name('publicaciones.search');
+    Route::get('/panel/publicaciones/create', [PublicacionController::class, 'panelcreate'])->name('publicaciones.panelcreate');
+    Route::post('/panel/publicaciones/crear', [PublicacionController::class, 'panelstore'])->name('publicaciones.panelstore');
+    Route::get('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'paneledit'])->name('publicaciones.paneledit')->whereNumber('id');
+    Route::put('/panel/publicaciones/{id}/editar', [PublicacionController::class, 'panelupdate'])->name('publicaciones.panelupdate')->whereNumber('id');
+    Route::get('/publicaciones/{id}/verDetalles', [PublicacionController::class, 'detalles'])->name('publicaciones.detalles')->whereNumber('id');
+    Route::delete('/panel/publicaciones/{id}', [PublicacionController::class, 'paneldestroy'])->name('publicaciones.paneldestroy');
+
+    // Panel de comentarios
+    Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
+    Route::get('/panel/buscar/comentarios', [ComentarioController::class, 'search'])->name('comentarios.search');
+    Route::delete('/panel/comentarios/{id}', [ComentarioController::class, 'paneldestroy'])->name('comentarios.paneldestroy');
+
+    // Panel de reacciones
+    Route::get('/panel/reacciones', [ReaccionController::class, 'panel'])->name('reacciones.panel');
+    Route::get('/panel/buscar/reacciones', [ReaccionController::class, 'search'])->name('reacciones.search');
+    Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestroy'])->name('reacciones.paneldestroy');
+
+    // Panel de eventos
+    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
+    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
+    Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');
+
+    // Panel de mensajes
+    Route::get('/panel/mensajes', [MensajeController::class, 'panel'])->name('mensajes.panel');
+    Route::get('/panel/buscar/mensajes', [MensajeController::class, 'search'])->name('mensajes.search');
+    Route::delete('/panel/mensajes/{id}', [MensajeController::class, 'paneldestroy'])->name('mensajes.paneldestroy');
+
+    // Panel de chats
+    Route::get('/panel/chats', [ChatController::class, 'panel'])->name('chats.panel');
+    Route::get('/panel/buscar/chats', [ChatController::class, 'search'])->name('chats.search');
+    Route::delete('/panel/chats/{id}', [ChatController::class, 'paneldestroy'])->name('chats.paneldestroy');
+
+    // Panel de solicitudes
+    Route::get('/panel/solicitudes', [SolicitudController::class, 'panel'])->name('solicitudes.panel');
+    Route::get('/panel/buscar/solicitudes', [SolicitudController::class, 'search'])->name('solicitudes.search');
+    Route::delete('/panel/solicitudes/{id}', [SolicitudController::class, 'paneldestroy'])->name('solicitudes.paneldestroy');
+
+    // Panel de ubicaciones
+    Route::get('/panel/ubicaciones', [UbicacionController::class, 'panel'])->name('ubicaciones.panel');
+    Route::get('/panel/buscar/ubicaciones', [UbicacionController::class, 'search'])->name('ubicaciones.search');
+    Route::delete('/panel/ubicaciones/{id}', [UbicacionController::class, 'paneldestroy'])->name('ubicaciones.paneldestroy');
+
+    // Panel de usuarios
+    Route::get('/panel/users', [UserController::class, 'panel'])->name('users.panel');
+    Route::get('/panel/users/crear', [UserController::class, 'panelcreate'])->name('users.panelcreate');
+    Route::post('/panel/users/crear', [UserController::class, 'store'])->name('users.store');
+    Route::get('/panel/users/{id}/editar', [UserController::class, 'paneledit'])->name('users.paneledit')->whereNumber('id');
+    Route::put('/panel/users/{id}/editar', [UserController::class, 'update'])->name('users.update')->whereNumber('id');
+    Route::get('/panel/buscar/users', [UserController::class, 'search'])->name('users.search');
+    Route::get('/panel/users/{id}/show', [UserController::class, 'show'])->name('users.show')->whereNumber('id');
+    Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');
 });
 
 require __DIR__.'/auth.php';
