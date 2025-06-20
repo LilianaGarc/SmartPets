@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\JuegoController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -130,6 +131,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/chats/{chat}/mensajes/nuevos', [MensajeController::class, 'getNuevosMensajes'])->name('mensajes.nuevos');
     Route::get('/usuarios-con-mensajes', [ChatController::class, 'usuariosConMensajes'])->name('usuarios.con.mensajes');
     Route::put('/mensajes/{mensaje}', [MensajeController::class, 'update'])->name('mensajes.update');
+
+    //Rutas para Notificaciones
+    Route::post('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
+    Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
+
 });
 
 
