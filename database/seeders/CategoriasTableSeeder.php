@@ -34,9 +34,5 @@ class CategoriasTableSeeder extends Seeder
             'descripcion' => 'Productos para Peces'
         ]);
 
-        Categoria::create([
-            'nombre' => 'Otro',
-            'descripcion' => 'Otros productos'
-        ]);
     }
 }

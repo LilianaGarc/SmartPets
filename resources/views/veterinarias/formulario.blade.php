@@ -1,24 +1,49 @@
-@extends(auth()->user()->es_admin ? 'panelAdministrativo.plantillaPanel' : 'layout.plantillaSaid')
+@extends('layout.plantillaSaid')
 
-@section('titulo', 'Creación de Veterinaria')
+@section('titulo', isset($veterinaria) ? 'Editar Veterinaria' : 'Creación de Veterinaria')
 
 @section('contenido')
-<div class="container mt-2">
+
+<div class="breadcrumb-container">
+    <ul class="breadcrumb">
+        <li class="breadcrumb__item">s
+            <a href="{{ route('index') }}" class="breadcrumb__inner">
+                <span class="breadcrumb__title">Inicio</span>
+            </a>
+        </li>
+        <li class="breadcrumb__item">
+            <a href="{{ route('veterinarias.index') }}" class="breadcrumb__inner">
+                <span class="breadcrumb__title">Veterinarias</span>
+            </a>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item-active">
+            <a href="{{ route('veterinarias.create') }}" class="breadcrumb__inner">
+                <span class="breadcrumb__title">
+                    @if (isset($veterinaria))
+                        Editar Veterinaria
+                    @else
+                        Crear Veterinaria
+                    @endif
+                </span>
+            </a>
+        </li>
+    </ul>
+</div> 
+
+<div class="container mt-4">
     <div class="card fade-in">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                 <h1 class="mb-0 card-title fw-bold">
                     @if(isset($veterinaria))
-                    Editar Veterinaria
+                        Editar Veterinaria
                     @else
-                    Crear Veterinaria
+                        Crear Veterinaria
                     @endif
                 </h1>
-
-                <a href="{{ auth()->user()->es_admin ? route('veterinarias.panel') : route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
-
             </div>
             <hr>
 
@@ -33,36 +58,18 @@
             @endif
 
             <!-- Formulario para crear o editar una veterinaria -->
-            <!-- Información de Veterinaria -->
             <form method="post" enctype="multipart/form-data" id="formularioVeterinaria"
                 @if (isset($veterinaria))
-                action="{{ route('veterinarias.update', ['id'=>$veterinaria->id]) }}"
+                    action="{{ route('veterinarias.update', ['id'=>$veterinaria->id]) }}"
                 @else
-                action="{{ route('veterinarias.store') }}"
+                    action="{{ route('veterinarias.store') }}"
                 @endif>
                 @isset($veterinaria)
-                @method('put')
+                    @method('put')
                 @endisset
                 @csrf
 
                 <div class="row g-3">
-
-                    @if(auth()->user()->es_admin)
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <select class="form-select" id="id_user" name="id_user" required>
-                                <option value="">Seleccione un usuario</option>
-                                @foreach($usuarios as $usuario)
-                                <option value="{{ $usuario->id }}"
-                                    {{ (isset($veterinaria) && $veterinaria->id_user == $usuario->id) ? 'selected' : '' }}>
-                                    {{ $usuario->name }} ({{ $usuario->email }})
-                                </option>
-                                @endforeach
-                            </select>
-                            <label for="id_user">Usuario dueño</label>
-                        </div>
-                    </div>
-                    @endif
 
                     <div class="col-12">
                         <div class="form-floating">
@@ -237,7 +244,8 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-1">Guardar</button>
+                    <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }} mt-1">
+                        {{ isset($evento) ? 'Actualizar' : 'Crear' }}</button>
                     <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
                         Limpiar
                     </button>
@@ -263,6 +271,139 @@
     </div>
 
     <style>
+        .breadcrumb-container {
+            display: flex;
+            align-items: start;
+            gap: 20px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .breadcrumb {
+            display: flex;
+            border-radius: 10px;
+            text-align: center;
+            height: 40px;
+            z-index: 1;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .breadcrumb__item {
+            height: 100%;
+            background-color: white;
+            color: #252525;
+            font-family: 'Oswald', sans-serif;
+            border-radius: 7px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            transform: skew(-21deg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+            margin: 5px;
+            padding: 0 40px;
+        }
+
+        .breadcrumb__item:hover {
+            background: #1e4183;
+            color: #FFF;
+        }
+
+        .breadcrumb__inner {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            z-index: 2;
+            transform: skew(21deg);
+        }
+
+        .breadcrumb__title {
+            font-size: 16px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .breadcrumb__item a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .breadcrumb__item-active {
+            background-color: #1e4183;
+            color: #FFF;
+        }
+
+        /* Responsive para breadcrumb */
+        @media (max-width: 768px) {
+            .breadcrumb-container {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+
+            .breadcrumb {
+                display: flex;
+                flex-direction: row;
+                align-items: start;
+                flex-wrap: wrap;
+            }
+
+            .breadcrumb__item {
+                width: 5px;
+                flex-shrink: 0;
+            }
+
+            .breadcrumb__item .breadcrumb__title {
+                font-size: 9px;
+                white-space: normal;
+                word-wrap: break-word;
+                max-width: 100px;
+                line-height: 1.2;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .breadcrumb-container {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+
+            .breadcrumb {
+                display: flex;
+                flex-direction: row;
+                align-items: start;
+                flex-wrap: wrap;
+            }
+
+            .breadcrumb__item {
+                width: 80px;
+                flex-shrink: 0;
+            }
+
+            .breadcrumb__item .breadcrumb__title {
+                font-size: 11px;
+                white-space: normal;
+                word-wrap: break-word;
+                max-width: 100px;
+                line-height: 1.2;
+            }
+        }
+
+
         .btn-primary,
         .btn-primary:hover,
         .btn-outline-danger,
@@ -422,15 +563,15 @@
     </style>
 
     <script>
+        // Limpieza de campos al resetear el formulario
         document.querySelector('form#formularioVeterinaria').addEventListener('reset', function() {
-            // Limpiar redes sociales agregadas dinámicamente
             document.getElementById('socialLinks').innerHTML = '';
-
-            // Limpiar imágenes agregadas dinámicamente
             const imagePreview = document.getElementById('imagePreview');
             if (imagePreview) {
                 imagePreview.innerHTML = '';
                 imagePreview.style.display = 'none';
+            }
+            if (typeof imageFiles !== 'undefined') imageFiles = [];
             }
 
             // Limpiar arrays JS si los usas

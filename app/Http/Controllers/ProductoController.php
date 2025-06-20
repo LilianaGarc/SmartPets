@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductoController extends Controller
 {
+    // Mostrar listado de productos en el panel (con categoría)
     public function panel()
     {
-        $productos = Producto::all();
+        $productos = Producto::with('categoria')->get();
         return view('panelAdministrativo.productosIndex')->with('productos', $productos);
     }
+
     public function panelshow(string $id)
     {
         $producto = Producto::findOrFail($id);
         $categorias = Categoria::all();
         $resenias = $producto->resenias()->with('user')->get();
-        return view('panelAdministrativo.productosForm', compact('producto','resenias','categorias'));
+        return view('panelAdministrativo.productosDetalles', compact('producto','resenias','categorias'));
     }
 
 
@@ -40,8 +42,8 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $query = $request->input('query');
-        $categoriaId = $request->input('categoria_id');
+        $query = $request->input('search');
+        $categoriaId = $request->input('categoria');
         $productos = Producto::query();
         if ($query){
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
@@ -236,14 +238,132 @@ class ProductoController extends Controller
         }
     }
 
-    public function paneldestroy(string $id)
+    // Formulario de creación de producto en el panel
+    public function panelcreate()
+    {
+        $categorias = Categoria::all();
+        return view('panelAdministrativo.productosForm', compact('categorias'));
+    }
+
+    // Guardar nuevo producto desde el panel
+    public function panelstore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+        'nombre' => 'required|string|max:255',
+        'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
+        'descripcion' => 'nullable|string',
+        'categoria_id' => 'required|integer|exists:categorias,id',
+        'stock' => 'required|integer|min:0',
+        'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+    ]);
+
+    if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
+        return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
+    }
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    $categoria = Categoria::findOrFail($request->categoria_id);
+
+    $imagenesGuardadas = [];
+    if ($request->hasFile('imagenes')) {
+        $imagenes = $request->file('imagenes');
+        foreach ($imagenes as $imagen) {
+            $rutaImagen = $imagen->store('public/productos');
+            $imagenesGuardadas[] = $rutaImagen;
+        }
+    }
+
+    $producto = new Producto();
+    $producto->nombre = $request->input('nombre');
+    $producto->precio = $request->input('precio');
+    $producto->descripcion = $request->input('descripcion');
+    $producto->categoria_id = $categoria->id;
+    $producto->stock = $request->input('stock');
+    $producto->user_id = auth()->id();
+    $producto->imagen = $imagenesGuardadas[0] ?? null;
+    $producto->imagen2 = $imagenesGuardadas[1] ?? null;
+    $producto->imagen3 = $imagenesGuardadas[2] ?? null;
+    $producto->imagen4 = $imagenesGuardadas[3] ?? null;
+    $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+
+    if ($producto->save()) {
+        return redirect()->route('productos.panel')->with('exito', 'Producto creado correctamente');
+    } else {
+        return redirect()->back()->with('fracaso', 'Error al crear producto');
+    }
+
+    }
+
+    // Formulario de edición de producto en el panel
+    public function paneledit($id)
+    {
+        $producto = Producto::with('categoria')->findOrFail($id);
+        $categorias = Categoria::all();
+        return view('panelAdministrativo.productosForm', compact('producto', 'categorias'));
+    }
+
+    // Actualizar producto desde el panel
+    public function panelupdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+        'nombre' => 'required|string|max:255',
+        'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
+        'descripcion' => 'nullable|string',
+        'categoria_id' => 'required|integer|exists:categorias,id',
+        'stock' => 'required|integer|min:0',
+        'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+    ]);
+
+    if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
+        return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
+    }
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    $categoria = Categoria::findOrFail($request->categoria_id);
+
+    $imagenesGuardadas = [];
+    if ($request->hasFile('imagenes')) {
+        $imagenes = $request->file('imagenes');
+        foreach ($imagenes as $imagen) {
+            $rutaImagen = $imagen->store('public/productos');
+            $imagenesGuardadas[] = $rutaImagen;
+        }
+    }
+
+    $producto = Producto::findOrFail($id);
+    $producto->nombre = $request->input('nombre');
+    $producto->precio = $request->input('precio');
+    $producto->descripcion = $request->input('descripcion');
+    $producto->categoria_id = $categoria->id;
+    $producto->stock = $request->input('stock');
+    $producto->imagen = $imagenesGuardadas[0] ?? $producto->imagen;
+    $producto->imagen2 = $imagenesGuardadas[1] ?? $producto->imagen2;
+    $producto->imagen3 = $imagenesGuardadas[2] ?? $producto->imagen3;
+    $producto->imagen4 = $imagenesGuardadas[3] ?? $producto->imagen4;
+    $producto->imagen5 = $imagenesGuardadas[4] ?? $producto->imagen5;
+
+    if ($producto->save()) {
+        return redirect()->route('productos.panel')->with('exito', 'Producto actualizado correctamente');
+    } else {
+        return redirect()->back()->with('fracaso', 'Error al actualizar producto');
+    }
+    }
+
+    // Eliminar producto desde el panel
+    public function paneldestroy($id)
     {
         $eliminados = Producto::destroy($id);
 
-        if ($eliminados < 0){
+        if ($eliminados > 0) {
+            return redirect()->route('productos.panel')->with('exito', 'El producto se eliminó correctamente.');
+        } else {
             return redirect()->route('productos.panel')->with('fracaso', 'El producto no se pudo borrar.');
-        }else {
-            return redirect()->route('productos.panel')->with('exito', 'El producto se elimino correctamente.');
         }
     }
 

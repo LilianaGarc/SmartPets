@@ -59,6 +59,21 @@ class ComentarioController
         }
     }
 
+    public function panelstore(Request $request, $id)
+    {
+        $publicacion = Publicacion::findOrFail($id);
+        $comentario = new Comentario();
+        $comentario->contenido = $request->input('comentario');
+        $comentario->id_user = auth()->id();
+        $comentario->id_publicacion = $publicacion->id;
+
+        if ($comentario->save()) {
+            return redirect()->route('publicaciones.paneldetalles', ['id' => $id])->with('exito', 'El comentario se envió correctamente.');
+        } else {
+            return redirect()->route('publicaciones.paneldetalles', ['id' => $id])->with('fracaso', 'El comentario no se pudo enviar.');
+        }
+    }
+
     /**
      * Display the specified resource.
      */

@@ -11,7 +11,12 @@
     {{ session('fracaso') }}
 </div>
 @endif
-<h3> | Solicitudes </h3>
+<div class="d-flex align-items-center mb-2">
+    <h3 class="mb-0">| Solicitudes</h3>
+    <a href="#" class="btn ms-auto" role="button">
+        <h8>Nueva solicitud <i class="fas fa-plus"></i></h8>
+    </a>
+</div>
 
     <hr>
     <form action="{{ route('solicitudes.search') }}"  class="" role="search" style="align-content: flex-end;">
@@ -22,10 +27,6 @@
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
                 <span class="glyphicon glyphicon-search"></span>
-            </div>
-            <div class="col">
-                <a href="#" class="btn" role="button"><h7><i class="fas fa-plus"></i>
-                        Nueva solicitud</h7></a>
             </div>
         </div>
         </div>

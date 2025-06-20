@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Comentario;
 use App\Models\Publicacion;
 use App\Models\Reaccion;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,10 +22,14 @@ class PublicacionController
         return view('panelAdministrativo.publicacionesForm');
     }
 
-    public function panelshow()
+    public function panelshow($id)
     {
-
-        return view('panelAdministrativo.adopcioneDetalles');
+        $publicacion = Publicacion::findorFail($id);
+        $comentarios = Comentario::with('user')
+            ->where('id_publicacion', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('panelAdministrativo.verPublicacion', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios]);
     }
 
     public function panelstore(Request $request)
@@ -65,22 +68,20 @@ class PublicacionController
         $request->validate([
             'visibilidad' => 'required',
             'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         $publicacion = Publicacion::findOrFail($id);
 
-        if ($request->hasFile('imagen')) {
-            // Eliminar la imagen anterior si existe
-            if ($publicacion->imagen) {
-                Storage::disk('public')->delete($publicacion->imagen);
-            }
+        if (auth()->user()->usertype !== 'admin' && $publicacion->id_user !== auth()->id()) {
+            abort(403, 'No tienes permiso para modificar esta publicación.');
+        }
 
+        if ($request->hasFile('imagen')) {
             $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
             $publicacion->imagen = $rutaImagen;
         }
 
-        $publicacion->id_user = auth()->id();
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
 
@@ -170,7 +171,7 @@ class PublicacionController
 
     }
 
-    public function detalles(string $id)
+    public function paneldetalles(string $id)
     {
         $publicacion = Publicacion::findorFail($id);
         $comentarios = Comentario::with('user')
@@ -205,7 +206,7 @@ class PublicacionController
 
         $publicacion = Publicacion::findOrFail($id);
 
-        if ($publicacion->id_user !== auth()->id()) {
+        if (auth()->user()->usertype !== 'admin' && $publicacion->id_user !== auth()->id()) {
             abort(403, 'No tienes permiso para modificar esta publicación.');
         }
 
@@ -216,11 +217,13 @@ class PublicacionController
 
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
+
         $publicacion->save();
 
         return redirect()->route('publicaciones.index')->with('exito', 'Publicación modificada con éxito.');
-
     }
+
+
 
     /**
      * Remove the specified resource from storage.

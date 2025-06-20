@@ -4,15 +4,27 @@
     <form method="post"
           @if (isset($adopcion))
               enctype="multipart/form-data"
-          action="{{ route('adopciones.panelupdate', ['id'=>$adopcion->id]) }}"
+              action="{{ route('adopciones.panelupdate', ['id'=>$adopcion->id]) }}"
           @else
               enctype="multipart/form-data"
-          action="{{ route('adopciones.panelstore') }}"
-        @endif>
+              action="{{ route('adopciones.panelstore') }}"
+          @endif>
         @isset($adopcion)
             @method('put')
         @endisset
         @csrf
+
+        {{-- Validación de errores --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-unstyled mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="card-body">
             @if(isset($adopcion))
                 <h4><a href="{{ route('adopciones.panel') }}" class="btn" role="button"><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar la adopción</strong></h4>
@@ -22,18 +34,17 @@
             <hr>
             <div class="row">
                 <div class="col-8">
-                    <div class="mb-3">
-                        <label for="nombre_mascota">Nombre de la Mascota</label>
+                    <div class="form-floating mb-3">
                         <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control"
                                value="{{ old('nombre_mascota', isset($adopcion) ? $adopcion->nombre_mascota : '') }}">
+                        <label for="nombre_mascota">Nombre de la Mascota</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="tipo_mascota">Tipo de Mascota</label>
-                        <select name="tipo_mascota" id="tipo_mascota" class="form-control" required>
-                            @php
-                                $tipo = old('tipo_mascota', isset($adopcion) ? $adopcion->tipo_mascota : '');
-                            @endphp
+                    <div class="form-floating mb-3">
+                        @php
+                            $tipo = old('tipo_mascota', isset($adopcion) ? $adopcion->tipo_mascota : '');
+                        @endphp
+                        <select name="tipo_mascota" id="tipo_mascota" class="form-select" required>
                             <option value="Perro" {{ $tipo == 'Perro' ? 'selected' : '' }}>Perro</option>
                             <option value="Gato" {{ $tipo == 'Gato' ? 'selected' : '' }}>Gato</option>
                             <option value="Conejo" {{ $tipo == 'Conejo' ? 'selected' : '' }}>Conejo</option>
@@ -41,10 +52,10 @@
                             <option value="Peces" {{ $tipo == 'Peces' ? 'selected' : '' }}>Peces</option>
                             <option value="Otro" {{ $tipo == 'Otro' ? 'selected' : '' }}>Otro</option>
                         </select>
+                        <label for="tipo_mascota">Tipo de Mascota</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
+                    <div class="form-floating mb-3">
                         @php
                             $fecha = old('fecha_nacimiento', isset($adopcion) ? \Carbon\Carbon::parse($adopcion->fecha_nacimiento)->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d'));
                         @endphp
@@ -55,18 +66,19 @@
                                value="{{ $fecha }}"
                                required
                                max="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                        <label for="fecha_nacimiento">Fecha de Nacimiento de la Mascota</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="raza_mascota">Raza de la Mascota</label>
+                    <div class="form-floating mb-3">
                         <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control"
                                value="{{ old('raza_mascota', isset($adopcion) ? $adopcion->raza_mascota : '') }}">
+                        <label for="raza_mascota">Raza de la Mascota</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="ubicacion_mascota">Ubicación de la Mascota</label>
+                    <div class="form-floating mb-3">
                         <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control"
                                value="{{ old('ubicacion_mascota', isset($adopcion) ? $adopcion->ubicacion_mascota : '') }}">
+                        <label for="ubicacion_mascota">Ubicación de la Mascota</label>
                     </div>
 
                     <div class="mb-3">
