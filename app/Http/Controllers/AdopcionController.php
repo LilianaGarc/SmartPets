@@ -29,7 +29,7 @@ class AdopcionController extends Controller
     {
         $nombre = $request->get('nombre');
 
-        $adopciones = Adopcion::with('usuario') // Asegúrate que tengas esta relación
+        $adopciones = Adopcion::with('usuario')
         ->where(function ($query) use ($nombre) {
             $query->whereHas('usuario', function ($q) use ($nombre) {
                 $q->where('name', 'LIKE', "%$nombre%");

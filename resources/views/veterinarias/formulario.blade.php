@@ -28,7 +28,7 @@
             </a>
         </li>
     </ul>
-</div> 
+</div>
 
 <div class="container mt-4">
     <div class="card fade-in">
@@ -269,7 +269,8 @@
             </div>
         </div>
     </div>
-
+    @section('footer')
+    @endsection
     <style>
         .breadcrumb-container {
             display: flex;
@@ -685,7 +686,7 @@
             <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="this.parentElement.remove()">
                 <i class="fa-solid fa-trash"></i>
             </button>
-            
+
             <input type="hidden" name="redes[${socialCount}][tipo_red_social]" value="${network}">
             <input type="hidden" name="redes[${socialCount}][nombre_usuario]" value="${username}">`;
 
@@ -721,4 +722,5 @@
             redContainer.remove();
         }
     </script>
+
     @endsection

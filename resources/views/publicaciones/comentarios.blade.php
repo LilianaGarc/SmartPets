@@ -124,7 +124,8 @@
 
         </div>
         <div class="col-11">
-
+            @section('footer')
+            @endsection
             <script>
                 window.onload = function() {
                     var alert = document.querySelector('.alert');

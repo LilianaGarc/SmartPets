@@ -716,4 +716,5 @@
                     }
                 });
             </script>
+
 @endsection

@@ -9,5 +9,6 @@
 <body>
   @yield('contenido')
 </body>
+@yield('footer', View::make('MenuPrincipal.footer'))
 <script src="{{asset('js/bootstrap.js')}}"></script>
 </html>

@@ -422,6 +422,7 @@
 <div class="container">
     @yield('contenido')
 </div>
+@yield('footer', View::make('MenuPrincipal.footer2'))
 
 <script>
     window.onload = function() {

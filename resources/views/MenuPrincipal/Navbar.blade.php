@@ -78,7 +78,11 @@
                                 </li>
 
                             @empty
-                                <li><a href="#" style="padding: 10px; display: block;">No hay notificaciones nuevas</a></li>
+                                <li style="padding: 10px; text-align: center; color: #555;">
+                                    <p>No hay notificaciones nuevas</p>
+                                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones"
+                                         class="mx-auto d-block mt-2" style="width: 80px; opacity: 0.7;">
+                                </li>
                             @endforelse
                                 @if($notificaciones->count() > 0)
                                     <li class="clear-all-notifications" style="text-align: center; padding: 20px;">

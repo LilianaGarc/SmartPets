@@ -48,8 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        list.innerHTML = `<li><a href="#" style="padding: 10px; display: block;">No hay notificaciones nuevas</a></li>`;
+                        list.innerHTML = `
+            <li style="padding: 10px; text-align: center; color: #555;">
+                <p>No hay notificaciones nuevas</p>
+                <img src="/images/vacio.svg" alt="No hay adopciones"
+                     class="mx-auto d-block mt-2" style="width: 80px; opacity: 0.7;">
+            </li>
+        `;
                         if (countBadge) countBadge.remove();
+                        clearBtn.remove();
                     }
                 })
                 .catch(err => {
