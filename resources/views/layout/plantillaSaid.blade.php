@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
-            padding-top: 8vh;
+            padding-top: 120px;
         }
 
         @media (max-width: 768px) {
