@@ -6,7 +6,9 @@ class ProdFavoritoController extends Controller
 {
     public function index()
     {
-
+        return view('productos.productos-guardados', [
+            'prod_favoritos' => \App\Models\Prod_favorito::all(),
+        ]);
     }
 
     public function create()
