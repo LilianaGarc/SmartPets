@@ -6,7 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class prod_favorito extends Model
+class Prod_favorito extends Model
 {
     use SoftDeletes, HasFactory;
+
+    public function user()
+    {
+        $this->belongsTo(User::class);
+    }
+    public function producto()
+    {
+        $this->belongsTo(Producto::class);
+    }
+
 }

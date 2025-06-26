@@ -3,18 +3,20 @@
 namespace Database\Factories;
 
 use App\Models\prod_favorito;
+use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class prod_favoritoFactory extends Factory
+class Prod_favoritoFactory extends Factory
 {
     protected $model = prod_favorito::class;
 
-    public function definition(): array
+    public function definition()
     {
         return [
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'user_id' => User::factory(),
+            'producto_id' => Producto::factory(),
         ];
     }
 }

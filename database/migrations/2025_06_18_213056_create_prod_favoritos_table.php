@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('prod_favoritos', function (Blueprint $table) {
             $table->id();
+            $table->FechaFavorito();
             $table->unsignedBigInteger('producto_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
