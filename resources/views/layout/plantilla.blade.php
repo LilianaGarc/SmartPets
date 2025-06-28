@@ -31,7 +31,7 @@
         .btn {
             text-decoration: none;
             color: #ffffff;
-            background-color: #ff7f50;
+            background-color: rgba(237,129,25,0.86);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
             border: none;
@@ -282,6 +282,135 @@
             transition: transform 0.2s ease;
         }
 
+        /*Responsive*/
+        @media (max-width: 500px) {
+            body{
+                margin-top: 10% !important;
+            }
+            .btn {
+                text-size: small;
+            }
+            .card-publicacion{
+                width: 85%;
+                height: auto;
+                padding: 2vw;
+                margin: 1px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+                box-sizing: border-box ;
+                transition: all .5s ease ;
+                overflow-x: auto;
+                border: 1px solid #c0c0c0;
+                border-radius: 20px;
+                z-index: 5;
+                background-color: white;
+            }
+            .card-footer{
+                height: 40%;
+                overflow: hidden;
+                border-radius: 5px;
+                margin-top: 10px;
+            }
+
+            .footer-img {
+                max-width: 100%;
+                height: 100%;
+                border-radius: 5px;
+                margin-top: 10px;
+            }
+
+            .imagen-publicacion-reaccion{
+                width: 6vw;
+                height: 5vh;
+                margin: 0.4%;
+            }
+
+            .imagen-publicacion-reaccion:hover{
+                transform: scale(1.4);
+            }
+            .btn{
+                font-size: small !important;
+                text-align: center;
+
+            }
+
+            .breadcrumb-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 2.5vh;
+                margin-top: 1vh;
+            }
+
+            .breadcrumb {
+                display: flex;
+                border-radius: 10px;
+                text-align: center;
+                height: 40px;
+                z-index: 1;
+                justify-content: flex-start;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .breadcrumb__item {
+                width: auto;
+                height: 100%;
+                background-color: white;
+                color: #252525;
+                font-family: 'Oswald', sans-serif;
+                border-radius: 7px;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                position: relative;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 16px;
+                transform: skew(-21deg);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+                margin: 1px;
+                padding: 0 40px;
+            }
+
+            .breadcrumb__item:hover {
+                background: #1e4183;
+                color: #FFF;
+            }
+
+            .breadcrumb__inner {
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+                z-index: 2;
+                transform: skew(21deg);
+            }
+
+            .breadcrumb__title {
+                font-size: 60%;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .breadcrumb__item a {
+                color: inherit;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .breadcrumb__item-active {
+                background-color: #1e4183;
+                color: #FFF;
+            }
+            hr{
+                display: none;
+            }
+
+
+        }
+
     </style>
 
 
@@ -293,6 +422,7 @@
 <div class="container">
     @yield('contenido')
 </div>
+@yield('footer', View::make('MenuPrincipal.footer2'))
 
 <script>
     window.onload = function() {

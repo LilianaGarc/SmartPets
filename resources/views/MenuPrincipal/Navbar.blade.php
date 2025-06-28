@@ -9,6 +9,18 @@
 </head>
 
 <body>
+@php
+    use Carbon\Carbon;
+@endphp
+
+@php
+    $notificaciones = \App\Models\Notificacion::where('user_id', \Illuminate\Support\Facades\Auth::id())
+        ->where('visto', false)
+        ->latest()
+        ->take(99)
+        ->get();
+@endphp
+
     @yield('nav')
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -17,8 +29,74 @@
                     <img src="{{ asset('images/smartpetspng2.webp') }}" alt="Smart Pets">
                 </a>
             </div>
+            <div class="nav-right">
 
             @auth
+                <div class="notification-panel">
+                    <div class="notification-icon" id="notificationToggle" aria-haspopup="true" aria-expanded="false" aria-label="Toggle notifications">
+                        <i class="fas fa-bell"></i>
+                        @if($notificaciones->count() > 0)
+                            <span class="notification-count" id="notificationCount">{{ $notificaciones->count() }}</span>
+                        @endif
+                    </div>
+
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <ul id="notificationList">
+                            @forelse($notificaciones as $notificacion)
+                                @php
+                                    $data = json_decode($notificacion->data, true) ?? [];
+                                    $fecha = isset($data['fecha']) ? Carbon::parse($data['fecha'])->diffForHumans() : $notificacion->created_at->diffForHumans();
+                                @endphp
+                                <li class="notification-item" data-notification-id="{{ $notificacion->id }}">
+                                    <a href="{{ $data['url_adopcion'] ?? '#' }}"
+                                       style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+
+                                        <div class="notification-profile-pic" style="flex-shrink: 0;">
+                                            @if(isset($data['foto_perfil']) && $data['foto_perfil'])
+                                                <img src="{{ asset('storage/' . $data['foto_perfil']) }}" alt="Perfil"
+                                                     style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                                            @else
+                                                <img src="{{ asset('images/fotodeperfil.webp') }}" alt="Perfil"
+                                                     style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                                            @endif
+                                        </div>
+
+                                        <div class="notification-content" style="flex-grow: 1;">
+                                            <p style="margin: 4px 0; font-size: 0.9rem; color: #555;">{{ $notificacion->mensaje }}</p>
+                                            <small style="color: #999; font-size: 0.75rem;">{{ $fecha }}</small>
+                                        </div>
+
+                                        @if(isset($data['imagen_adopcion']) && $data['imagen_adopcion'])
+                                            <div class="notification-image-preview" style="flex-shrink: 0;">
+                                                <img src="{{ asset('storage/' . $data['imagen_adopcion']) }}" alt="Adopción"
+                                                     style="width:50px; height:50px; border-radius:6px; object-fit:cover;">
+                                            </div>
+                                        @endif
+
+
+                                    </a>
+                                </li>
+
+                            @empty
+                                <li style="padding: 10px; text-align: center; color: #555;">
+                                    <p>No hay notificaciones nuevas</p>
+                                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones"
+                                         class="mx-auto d-block mt-2" style="width: 80px; opacity: 0.7;">
+                                </li>
+                            @endforelse
+                                @if($notificaciones->count() > 0)
+                                    <li class="clear-all-notifications" style="text-align: center; padding: 20px;">
+                                        <button id="clearNotificationsBtn" class="btn-clear-notifications" style="display: inline-block; text-align: center;">
+                                            Marcar todas como leídas
+                                        </button>
+                                    </li>
+                                @endif
+                        </ul>
+                    </div>
+                </div>
+
+
+
                 <div class="username flex items-center gap-2">
                     <a href="{{ route('perfil.index', ['id' => Auth::id()]) }}" class="flex items-center gap-2 hover:text-blue-500 transition">
                         <img
@@ -31,12 +109,13 @@
             @endauth
 
 
+
             <div class="hamburger-lines" id="hamburger">
                 <span class="line line1"></span>
                 <span class="line line2"></span>
                 <span class="line line3"></span>
             </div>
-
+            </div>
             <div class="menu-items" id="menu">
                 <ul>
                     @guest
@@ -70,7 +149,16 @@
         </div>
     </nav>
 
-    <script src="{{ asset('js/navbar.js') }}"></script>
+<script>
+    window.Laravel = {
+        csrfToken: '{{ csrf_token() }}',
+        borrarNotificacionesUrl: '{{ route('notificaciones.borrarTodas') }}'
+    };
+</script>
+
+<script src="{{ asset('js/navbar.js') }}"></script>
+
+
 </body>
 
 </html>

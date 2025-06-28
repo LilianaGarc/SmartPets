@@ -10,6 +10,11 @@ use App\Http\Controllers\Controller;
 
 class UserController
 {
+    public function paginaPrincipal()
+    {
+        return view('panelAdministrativo.principalPanel');
+    }
+
     public function panel()
     {
         $users = User::all();

@@ -77,8 +77,29 @@ class SolicitudController
 
         $solicitud->save();
 
+        $adopcion = \App\Models\Adopcion::find($validated['id_adopcion']);
+        $usuarioReceptor = \App\Models\User::find($adopcion->id_usuario);
+        $usuarioSolicitante = auth()->user();
+
+        if ($usuarioReceptor && $usuarioReceptor->id !== $usuarioSolicitante->id) {
+            \App\Models\Notificacion::create([
+                'user_id' => $usuarioReceptor->id,
+                'mensaje' => $usuarioSolicitante->name . ' ha enviado una solicitud de adopción para tu mascota.',
+                'visto' => false,
+                'data' => json_encode([
+                    'nombre' => $usuarioSolicitante->name,
+                    'foto_perfil' => $usuarioSolicitante->fotoperfil ?? 'images/fotodeperfil.webp',
+                    'mensaje_detalle' => 'Envió una solicitud de adopción',
+                    'fecha' => \Carbon\Carbon::now()->toDateTimeString(),
+                    'imagen_adopcion' => $adopcion->imagen ?? null,
+                    'url_adopcion' => route('adopciones.show', ['id' => $adopcion->id]),
+                ]),
+            ]);
+        }
+
         return redirect()->route('adopciones.index')->with('success', 'Solicitud enviada con éxito');
     }
+
 
     /**
      * Display the specified resource.

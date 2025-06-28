@@ -1,3 +1,4 @@
+
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
@@ -45,27 +46,27 @@
         </thead>
         <tbody>
             @foreach($publicaciones as $publicacion)
-            <tr>
-                <td>
-                    @if($publicacion->user)
-                    {{ $publicacion->user->name }}
-                    @else
-                    Usuario no disponible
-                    @endif
-                </td>
-                <td>{{ $publicacion->contenido  }}</td>
-                <td>{{ $publicacion->visibilidad  }}</td>
-                <td style="text-align: center;">
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('publicaciones.detalles', ['id'=> $publicacion->id]) }}">Detalles</a></li>
-                            <li><a class="dropdown-item" href="{{ route('publicaciones.paneledit', ['id'=> $publicacion->id]) }}">Editar</a></li>
-                            <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}">Eliminar</a></li>
-                        </ul>
-                    </div>
+                <tr>
+                    <td>
+                        @if($publicacion->user)
+                            {{ $publicacion->user->name }}
+                        @else
+                            Usuario no disponible
+                        @endif
+                    </td>
+                    <td>{{  $publicacion->contenido  }}</td>
+                    <td>{{  $publicacion->visibilidad  }}</td>
+                    <td style="text-align: center;">
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('publicaciones.paneldetalles', ['id'=> $publicacion->id]) }}">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('publicaciones.paneledit', ['id'=> $publicacion->id]) }}">Editar</a></li>
+                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}">Eliminar</a></li>
+                            </ul>
+                        </div>
 
 
                     <!-- Modal -->
@@ -93,11 +94,11 @@
 
                 </td>
 
-            </tr>
+                </tr>
             @endforeach
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
 
 
 

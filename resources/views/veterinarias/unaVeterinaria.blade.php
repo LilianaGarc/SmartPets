@@ -20,7 +20,7 @@
             </a>
         </li>
     </ul>
-</div> 
+</div>
 
     <div class="card shadow-sm p-4 mb-4 mt-4">
         <!-- Datos de la Veterinaria -->
@@ -371,7 +371,7 @@
     @endforeach
 
 </div>
-</div> 
+</div>
 
 
 

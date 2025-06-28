@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
             TiposMascotaTableSeeder::class,
             PreguntasTableSeeder::class,
             RespuestasTableSeeder::class,
-
-            UsersTableSeeder::class,
+            //UsersTableSeeder::class,
             CategoriasTableSeeder::class,
+            //PublicacionesTableSeeder::class,
         ]);
     }
 }

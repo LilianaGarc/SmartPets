@@ -27,16 +27,17 @@
                         <h5 class="mb-0">{{ auth()->user()->name }}</h5>
                     </div>
 
-
-                    <div class="col">
-                        <select class="form-select" name="visibilidad" style="width: 20%; margin: 1%;" disabled>
+                    <div class="form-floating mb-3" style="width: 50%;">
+                        <select class="form-select" name="visibilidad" id="visibilidad" disabled>
                             <option value="publico" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'publico' ? 'selected' : '' }}>Público</option>
                             <option value="privado" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'privado' ? 'selected' : '' }}>Privado</option>
                         </select>
+                        <label for="visibilidad">Visibilidad</label>
                     </div>
 
-                    <div class="col-11">
-                        <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="margin: 1%; height: 200px;" disabled>{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                    <div class="form-floating mb-3 col-11">
+                        <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="height: 200px;" disabled>{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                        <label for="contenido">Contenido</label>
                     </div>
 
                     <div class="mb-3 col-11">
@@ -44,24 +45,22 @@
                     </div>
                 </div>
 
-                @if (isset($publicacion))
-                    @if($publicacion->imagen)
-                        <div class="col">
-                            <div class="form-group image-preview-container"
-                                 style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                                <img id="image-preview" src="{{ asset('storage/'.$publicacion->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 15vw; height: auto;">
-                                <div class="image-caption" style="width: 200px; margin-top: 1vw; text-align: center;">
-                                    <strong>Vista Previa</strong>
-                                </div>
+                @if (isset($publicacion) && $publicacion->imagen)
+                    <div class="col">
+                        <div class="form-group image-preview-container"
+                             style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <img id="image-preview" src="{{ asset('storage/'.$publicacion->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 15vw; height: auto;">
+                            <div class="image-caption" style="width: 200px; margin-top: 1vw; text-align: center;">
+                                <strong>Vista Previa</strong>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 @endif
             </div>
         </div>
     </form>
     <a href="{{ route('publicaciones.paneledit', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin-left: 2vw;"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
-    <a href="# " class="btn" role="button" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}"><i class="fa-solid fa-trash"></i> Eliminar</a>
+    <a href="#" class="btn" role="button" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}"><i class="fa-solid fa-trash"></i> Eliminar</a>
 
     <!-- Modal -->
     <div class="modal fade" id="modalEliminar{{$publicacion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,7 +84,6 @@
             </div>
         </div>
     </div>
-
-
-
+    @section('footer')
+    @endsection
 @endsection

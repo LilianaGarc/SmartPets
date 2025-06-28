@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root{
             --background-color: #f7f7f7;
@@ -32,7 +31,7 @@
         body{
             font-family: Arial, sans-serif;
             width: 100%;
-            height: 100vh;
+            height: 100%;
             align-items: center;
             justify-content: center;
         }
@@ -121,7 +120,7 @@
         .rigth .user{
             width: 2.1rem;
             border-radius: 50%;
-            background-color:  #ff7f50;;
+            background-color: rgba(237,129,25,0.86);
 
         }
         /*Sidebar elementos*/
@@ -207,6 +206,12 @@
                 width: 100%;
                 transform: rotate(45deg) translate(-0.2rem, -0.3rem);
             }
+            .hide-profile-name{
+                display: none !important;
+            }
+            .name{
+                font-size: small !important;
+            }
 
         }
 
@@ -218,7 +223,7 @@
         .btn {
             text-decoration: none;
             color: #ffffff;
-            background-color: #ff7f50;
+            background-color: rgba(237,129,25,0.86);
             transition: color 0.3s ease, transform 0.3s ease;
             border-radius: 20px;
         }
@@ -378,7 +383,7 @@
         .btn {
             text-decoration: none;
             color: #ffffff;
-            background-color: #ff7f50;
+            background-color: rgba(237,129,25,0.86);
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
@@ -401,7 +406,7 @@
 
 
         .table a:hover {
-            color: #ff7f50;
+            color: rgba(237,129,25,0.86);
             transform: scale(1.1);
             background-color: #ffffff;
         }
@@ -462,6 +467,8 @@
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
+            position: absolute !important;
+            z-index: 1050;
         }
 
         .dropdown-menu-custom button {
@@ -478,7 +485,15 @@
 
         .dropdown-menu-custom button:hover {
             background-color: #ffffff;
-            color: #ff7c40;
+            color: rgba(237,129,25,0.86);
+        }
+
+        .dropdown-menu-custom.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            position: absolute !important;
+            z-index: 1050;
         }
 
 
@@ -489,6 +504,120 @@
              border-radius: 10px;
              display: block;
          }
+
+        .card {
+            overflow: visible !important;
+            position: relative !important;
+        }
+
+        .card-nuevo-comentario {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #c0c0c0;
+            border-radius: 8px 8px 0 0;
+            z-index: 1000;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .no-transition {
+            transition: none !important;
+        }
+
+
+
+
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .custom-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-card img {
+            max-height: 150px;
+            width: auto;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .custom-card h5 {
+            font-weight: bold;
+            color: #18478b;
+            margin-bottom: 10px;
+        }
+
+        .custom-card p {
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        /* Estilo base para el enlace */
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Tarjeta personalizada */
+        .custom-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Imagen dentro de la tarjeta */
+        .custom-card img {
+            max-height: 150px;
+            width: auto;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        /* Título y texto */
+        .custom-card h5 {
+            font-weight: bold;
+            color: #18478b;
+            margin-bottom: 10px;
+        }
+
+        .custom-card p {
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .row:hover .custom-card {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+
+        .row .custom-card:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            z-index: 1;
+        }
 
 
 
@@ -541,7 +670,7 @@
     <nav>
         <ul>
             <li>
-                <a href="#" class="selected">
+                <a href="{{ route('users.dashboard') }}">
                     <img src="{{ asset('images/principal.svg') }}" alt="Smart Pets">
                     <span>Página principal</span>
                 </a>
@@ -599,28 +728,81 @@
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('main');
 
+    function cargarEstadoSidebar() {
+        const sidebarActivo = localStorage.getItem('sidebarActivo');
 
-    menu.addEventListener('click',()=>{
+        if (sidebarActivo === 'true') {
+            sidebar.classList.add('no-transition');
+            menu.classList.add('no-transition');
+            main.classList.add('no-transition');
+
+            sidebar.classList.add('menu-toggle');
+            menu.classList.add('menu-toggle');
+            main.classList.add('menu-toggle');
+
+            setTimeout(() => {
+                sidebar.classList.remove('no-transition');
+                menu.classList.remove('no-transition');
+                main.classList.remove('no-transition');
+            }, 100);
+        } else {
+            sidebar.classList.remove('menu-toggle');
+            menu.classList.remove('menu-toggle');
+            main.classList.remove('menu-toggle');
+        }
+    }
+
+
+    menu.addEventListener('click', () => {
         sidebar.classList.toggle('menu-toggle');
         menu.classList.toggle('menu-toggle');
         main.classList.toggle('menu-toggle');
+
+        const activo = sidebar.classList.contains('menu-toggle');
+        localStorage.setItem('sidebarActivo', activo);
     });
 
-        const userDropdown = document.getElementById('userDropdown');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+    const userDropdown = document.getElementById('userDropdown');
+    const dropdownMenu = document.getElementById('dropdownMenu');
 
-        userDropdown.addEventListener('click', (e) => {
-        e.stopPropagation(); // Evita que se cierre inmediatamente
+    userDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
         dropdownMenu.classList.toggle('show');
     });
 
-        document.addEventListener('click', () => {
+    document.addEventListener('click', () => {
         dropdownMenu.classList.remove('show');
     });
 
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
 
+    function cargarEstadoEnlace() {
+        const selectedLink = localStorage.getItem('selectedLink');
+        if (selectedLink) {
+            sidebarLinks.forEach(link => {
+                if (link.getAttribute('href') === selectedLink) {
+                    link.classList.add('selected');
+                } else {
+                    link.classList.remove('selected');
+                }
+            });
+        }
+    }
 
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            sidebarLinks.forEach(l => l.classList.remove('selected'));
+            this.classList.add('selected');
+            localStorage.setItem('selectedLink', this.getAttribute('href'));
+        });
+    });
+
+    window.addEventListener('load', () => {
+        cargarEstadoSidebar();
+        cargarEstadoEnlace();
+    });
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

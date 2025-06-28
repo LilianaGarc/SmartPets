@@ -253,5 +253,6 @@
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@include('MenuPrincipal.footer')
 </body>
 </html>

@@ -1,12 +1,12 @@
-@extends(auth()->user()->es_admin ? 'panelAdministrativo.plantillaPanel' : 'layout.plantillaSaid')
+@extends('layout.plantillaSaid')
 
-@section('titulo', 'Creación de Veterinaria')
+@section('titulo', isset($veterinaria) ? 'Editar Veterinaria' : 'Creación de Veterinaria')
 
 @section('contenido')
 
 <div class="breadcrumb-container">
     <ul class="breadcrumb">
-        <li class="breadcrumb__item">
+        <li class="breadcrumb__item">s
             <a href="{{ route('index') }}" class="breadcrumb__inner">
                 <span class="breadcrumb__title">Inicio</span>
             </a>
@@ -20,17 +20,15 @@
             <a href="{{ route('veterinarias.create') }}" class="breadcrumb__inner">
                 <span class="breadcrumb__title">
                     @if (isset($veterinaria))
-                    Editar Veterinaria
+                        Editar Veterinaria
                     @else
-                    Crear Veterinaria
+                        Crear Veterinaria
                     @endif
                 </span>
             </a>
         </li>
     </ul>
-</div> 
-
-
+</div>
 
 <div class="container mt-4">
     <div class="card fade-in">
@@ -38,16 +36,14 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                 <h1 class="mb-0 card-title fw-bold">
                     @if(isset($veterinaria))
-                    Editar Veterinaria
+                        Editar Veterinaria
                     @else
-                    Crear Veterinaria
+                        Crear Veterinaria
                     @endif
                 </h1>
-
-                <a href="{{ auth()->user()->es_admin ? route('veterinarias.panel') : route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
-
             </div>
             <hr>
 
@@ -62,36 +58,18 @@
             @endif
 
             <!-- Formulario para crear o editar una veterinaria -->
-            <!-- Información de Veterinaria -->
             <form method="post" enctype="multipart/form-data" id="formularioVeterinaria"
                 @if (isset($veterinaria))
-                action="{{ route('veterinarias.update', ['id'=>$veterinaria->id]) }}"
+                    action="{{ route('veterinarias.update', ['id'=>$veterinaria->id]) }}"
                 @else
-                action="{{ route('veterinarias.store') }}"
+                    action="{{ route('veterinarias.store') }}"
                 @endif>
                 @isset($veterinaria)
-                @method('put')
+                    @method('put')
                 @endisset
                 @csrf
 
                 <div class="row g-3">
-
-                    @if(auth()->user()->es_admin)
-                    <div class="col-12">
-                        <div class="form-floating">
-                            <select class="form-select" id="id_user" name="id_user" required>
-                                <option value="">Seleccione un usuario</option>
-                                @foreach($usuarios as $usuario)
-                                <option value="{{ $usuario->id }}"
-                                    {{ (isset($veterinaria) && $veterinaria->id_user == $usuario->id) ? 'selected' : '' }}>
-                                    {{ $usuario->name }} ({{ $usuario->email }})
-                                </option>
-                                @endforeach
-                            </select>
-                            <label for="id_user">Usuario dueño</label>
-                        </div>
-                    </div>
-                    @endif
 
                     <div class="col-12">
                         <div class="form-floating">
@@ -266,7 +244,8 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-1">Guardar</button>
+                    <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }} mt-1">
+                        {{ isset($evento) ? 'Actualizar' : 'Crear' }}</button>
                     <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
                         Limpiar
                     </button>
@@ -290,7 +269,8 @@
             </div>
         </div>
     </div>
-
+    @section('footer')
+    @endsection
     <style>
         .breadcrumb-container {
             display: flex;
@@ -584,15 +564,15 @@
     </style>
 
     <script>
+        // Limpieza de campos al resetear el formulario
         document.querySelector('form#formularioVeterinaria').addEventListener('reset', function() {
-            // Limpiar redes sociales agregadas dinámicamente
             document.getElementById('socialLinks').innerHTML = '';
-
-            // Limpiar imágenes agregadas dinámicamente
             const imagePreview = document.getElementById('imagePreview');
             if (imagePreview) {
                 imagePreview.innerHTML = '';
                 imagePreview.style.display = 'none';
+            }
+            if (typeof imageFiles !== 'undefined') imageFiles = [];
             }
 
             // Limpiar arrays JS si los usas
@@ -706,7 +686,7 @@
             <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="this.parentElement.remove()">
                 <i class="fa-solid fa-trash"></i>
             </button>
-            
+
             <input type="hidden" name="redes[${socialCount}][tipo_red_social]" value="${network}">
             <input type="hidden" name="redes[${socialCount}][nombre_usuario]" value="${username}">`;
 
@@ -742,4 +722,5 @@
             redContainer.remove();
         }
     </script>
+
     @endsection

@@ -51,7 +51,10 @@
                     <label for="fotoInput" class="btn-actualizar-foto">Actualizar foto de perfil</label>
                     <input type="file" name="fotoperfil" id="fotoInput" accept="image/*" onchange="this.form.submit()" hidden>
                 </form>
-                <i data-lucide="settings" class="icono"></i>
+                <a href="{{ route('profile.edit') }}" title="Editar perfil">
+                    <i data-lucide="settings" class="icono"></i>
+                </a>
+
             </div>
             <div class="contador-general">
                 <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>

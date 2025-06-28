@@ -50,11 +50,35 @@
     </div>
     @endif
 
-    <form method="GET" action="{{ route('eventos.index') }}" class="mb-4{{ session('exito') || session('fracaso') ? '' : ' mt-4' }}">
-        <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Buscar eventos..." value="{{ request('q') }}">
-            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+    <form method="GET" action="{{ route('eventos.index') }}" class="row g-2 mb-4{{ session('exito') || session('fracaso') ? '' : ' mt-4' }}">
+        <div class="col-md-4 d-flex">
+            <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar eventos..." value="{{ request('q') }}">
+            <button type="submit" class="btn btn-outline-primary btn-sm ms-2">
+                <i class="fas fa-search"></i> Buscar
+            </button>
         </div>
+        @if(auth()->check())
+        <div class="col-md-3 d-flex">
+            <select name="tipo" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="">Todos los eventos</option>
+                <option value="mios" {{ request('tipo') == 'mios' ? 'selected' : '' }}>Mis eventos</option>
+                <option value="participando" {{ request('tipo') == 'participando' ? 'selected' : '' }}>Eventos en los que participo</option>
+            </select>
+        </div>
+        @if(request('tipo') == 'mios' || request('tipo') == 'participando')
+        <div class="col-md-3 d-flex">
+            <select name="estado" class="form-select form-select-sm">
+                <option value="">Todos los estados</option>
+                <option value="aceptado" {{ request('estado') == 'aceptado' ? 'selected' : '' }}>Aceptados</option>
+                <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendientes</option>
+                <option value="rechazado" {{ request('estado') == 'rechazado' ? 'selected' : '' }}>Rechazados</option>
+            </select>
+            <button type="submit" class="btn btn-outline-secondary btn-sm ms-2">
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+        </div>
+        @endif
+        @endif
     </form>
 
     @if($eventos->isEmpty())
@@ -69,7 +93,7 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach ($eventos as $evento)
         <div class="col mb-4">
-            <div class="card h-100 shadow-sm border vet-anim">
+            <div class="card h-100 shadow-sm border vet-anim position-relative">
                 @if ($evento->imagen)
                 <img src="{{ asset('storage/' . $evento->imagen) }}"
                     alt="Imagen del evento"
@@ -91,39 +115,66 @@
                     <span class="badge bg-{{ ($evento->estado ?? 'pendiente') == 'aceptado' ? 'success' : (($evento->estado ?? 'pendiente') == 'pendiente' ? 'warning' : 'danger') }}">
                         {{ ucfirst($evento->estado ?? 'pendiente') }}
                     </span>
-                    <div class="card-text">
-                        <div class="mt-1"><b>Descripción:</b> {{ Str::limit($evento->descripcion, 100) }}</div>
-                        <div class="mt-1"><b>Teléfono:</b> {{ $evento->telefono }}</div>
-                    </div>
-                    <div class="mt-1 d-flex gap-2 mt-3">
-                        <a href="{{ route('eventos.show', $evento->id) }}"
-                            class="btn btn-primary d-flex align-items-center gap-2">
-                            <i class="fas fa-info-circle"></i>
-                            Ver más
-                        </a>
-                        @if(auth()->check() && auth()->id() === $evento->id_user)
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-cog"></i> Acciones
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                </li>
-                                <li>
-                                    <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este evento?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-trash"></i> Borrar
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
+                    <div class="card-text mt-2">
+                        <div class="mb-1">
+                            <i class="fas fa-align-left text-primary"></i>
+                            <span class="ms-1"><b>Descripción:</b> {{ Str::limit($evento->descripcion, 100) }}</span>
                         </div>
-                        @endif
+                        <div class="mb-1">
+                            <i class="fas fa-phone-alt text-success"></i>
+                            <span class="ms-1"><b>Teléfono:</b> {{ $evento->telefono }}</span>
+                        </div>
+                        <div class="mb-1">
+                            <i class="fas fa-calendar-alt text-warning"></i>
+                            <span class="ms-1"><b>Fecha:</b> {{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
+                    <div class="mt-1 d-flex gap-2 mt-3 flex-wrap">
+                        <a href="{{ route('eventos.show', $evento->id) }}"
+                            class="btn btn-outline-primary d-flex align-items-center gap-2"
+                            aria-label="Ver detalles del evento {{ $evento->titulo }}">
+                            <i class="fas fa-eye"></i>
+                            Detalles
+                        </a>
+                        @auth
+                            @if(auth()->id() !== $evento->id_user && !($evento->participantes ?? collect())->contains(auth()->id()))
+                                <form action="{{ route('eventos.participar', $evento->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success d-flex align-items-center gap-2">
+                                        <i class="fas fa-user-plus"></i>
+                                        Participar
+                                    </button>
+                                </form>
+                            @elseif(($evento->participantes ?? collect())->contains(auth()->id()))
+                                <span class="badge bg-info d-flex align-items-center gap-2">
+                                    <i class="fas fa-check-circle"></i> Ya participas
+                                </span>
+                            @endif
+                        @endauth
+                    </div>
+                </div>
+                <div class="position-absolute top-0 end-0 m-2">
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                            </li>
+                            <li>
+                                <button type="button"
+                                    class="dropdown-item text-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminarEvento"
+                                    data-evento-id="{{ $evento->id }}"
+                                    data-evento-nombre="{{ $evento->titulo }}">
+                                    <i class="fas fa-trash"></i> Borrar
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -137,7 +188,164 @@
     @endif
 </div>
 
+<!-- Modal de confirmación para eliminar evento -->
+<div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEliminarEventoLabel">Confirmar Eliminación de {{ $evento->titulo }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <span>¿Desea eliminar este evento?</span>
+                <p class="text-secondary mt-1">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formEliminarEvento" method="POST" action="">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
+    
+    .breadcrumb-container {
+        display: flex;
+        align-items: start;
+        gap: 20px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .breadcrumb {
+        display: flex;
+        border-radius: 10px;
+        text-align: center;
+        height: 40px;
+        z-index: 1;
+        justify-content: flex-start;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .breadcrumb__item {
+        height: 100%;
+        background-color: white;
+        color: #252525;
+        font-family: 'Oswald', sans-serif;
+        border-radius: 7px;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        transform: skew(-21deg);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+        margin: 5px;
+        padding: 0 40px;
+    }
+
+    .breadcrumb__item:hover {
+        background: #1e4183;
+        color: #FFF;
+    }
+
+    .breadcrumb__inner {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        z-index: 2;
+        transform: skew(21deg);
+    }
+
+    .breadcrumb__title {
+        font-size: 16px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .breadcrumb__item a {
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .breadcrumb__item-active {
+        background-color: #1e4183;
+        color: #FFF;
+    }
+
+    /* Responsive para breadcrumb */
+    @media (max-width: 768px) {
+        .breadcrumb-container {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb__item {
+            width: 5px;
+            flex-shrink: 0;
+        }
+
+        .breadcrumb__item .breadcrumb__title {
+            font-size: 9px;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 100px;
+            line-height: 1.2;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .breadcrumb-container {
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb__item {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .breadcrumb__item .breadcrumb__title {
+            font-size: 11px;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 100px;
+            line-height: 1.2;
+        }
+    }
+
     @keyframes fadeInUp {
         from {
             opacity: 0;
