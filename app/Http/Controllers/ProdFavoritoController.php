@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Prod_favorito;
+
 class ProdFavoritoController extends Controller
 {
     public function index()
     {
         return view('productos.productos-guardados', [
-            'prod_favoritos' => \App\Models\Prod_favorito::all(),
+            'prod_favoritos' => Prod_favorito::all(),
         ]);
     }
 

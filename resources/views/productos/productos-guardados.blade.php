@@ -14,7 +14,6 @@
             </p>
         </div>
 
-        <!-- Empty State -->
         <div id="empty-state" class="text-center py-5 d-none">
             <i class="fas fa-heart fa-4x text-muted mb-4"></i>
             <h2 class="h4 fw-semibold mb-3 text-dark">No tienes productos guardados</h2>
@@ -22,7 +21,6 @@
             <a href="/productos" class="btn btn-primary">Explorar productos</a>
         </div>
 
-        <!-- Products List -->
         <div id="products-container" class="row g-4">
             <!-- Los productos se cargarán aquí dinámicamente -->
         </div>
@@ -40,7 +38,6 @@
             </nav>
         </div>
 
-        <!-- Continue Shopping -->
         <div id="continue-shopping" class="text-center mt-5">
             <a href="/productos" class="btn btn-outline-primary">Continuar comprando</a>
         </div>
