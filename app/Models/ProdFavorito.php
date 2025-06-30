@@ -6,17 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Prod_favorito extends Model
+class ProdFavorito extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory;
+    protected $fillable = [
+        'fecha_favorito',
+        'producto_id',
+        'user_id',
+    ];
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
     public function producto()
     {
-        $this->belongsTo(Producto::class);
+        return $this->belongsTo(Producto::class);
     }
 
 }

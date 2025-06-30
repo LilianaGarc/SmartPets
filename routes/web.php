@@ -12,6 +12,7 @@ use App\Http\Controllers\{AdopcionController,
     MensajeController,
     NotificationController,
     PerfilController,
+    ProdFavoritoController,
     ProductoController,
     PublicacionController,
     ReaccionController,
@@ -46,6 +47,12 @@ Route::post('/productos/{producto}/resenias', [ProductoController::class, 'agreg
 Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'eliminarResenia'])->name('productos.eliminarResenia');
 Route::put('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'editarResenia'])->name('productos.editarResenia');
 Route::get('/productos/{producto}/resenias/{resenia}/editar', [ProductoController::class, 'mostrarFormularioEdicion'])->name('productos.mostrarFormularioEdicion');
+
+// Rutas para Productos Guardados
+Route::middleware(['auth'])->group(function () {
+    Route::post('/producto-guardado', [ProdFavoritoController::class, 'store'])->name('productos.guardar');
+    Route::post('/producto-guardado/destroy/{id}', [ProdFavoritoController::class, 'destroy'])->name('productos.eliminarGuardado');
+});
 
 // Rutas públicas de veterinarias
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
