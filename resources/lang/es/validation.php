@@ -1,5 +1,5 @@
 <?php
-// filepath: /c:/Users/Fernando/SmartPets-1/resources/lang/es/validation.php
+
 return [
     'accepted' => 'El campo :attribute debe ser aceptado.',
     'active_url' => 'El campo :attribute no es una URL válida.',
@@ -136,6 +136,9 @@ return [
         ],
         'name' => [
             'required' => 'El nombre es obligatorio.',
+        ],
+        'fecha' => [
+            'after_or_equal' => 'La fecha del evento no puede ser menor que hoy.',
         ],
     ],
 

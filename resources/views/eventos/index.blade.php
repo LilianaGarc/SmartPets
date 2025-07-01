@@ -16,13 +16,11 @@
                     <span class="breadcrumb__title">Eventos</span>
                 </a>
             </li>
-            @if (auth()->check())
             <li class="breadcrumb__item">
                 <a href="{{ route('eventos.create') }}" class="breadcrumb__inner">
                     <span class="breadcrumb__title">Crear Evento</span>
                 </a>
             </li>
-            @endif
         </ul>
     </div>
 </div>
@@ -94,27 +92,49 @@
         @foreach ($eventos as $evento)
         <div class="col mb-4">
             <div class="card h-100 shadow-sm border vet-anim position-relative">
+                {{-- Imagen --}}
                 @if ($evento->imagen)
-                <img src="{{ asset('storage/' . $evento->imagen) }}"
-                    alt="Imagen del evento"
-                    class="card-img-top"
-                    style="max-height: 300px ; object-fit: cover;">
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
+                        <img src="{{ asset('storage/' . $evento->imagen) }}"
+                            alt="Imagen del evento"
+                            style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.3s;">
+                    </div>
                 @else
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
-                    <p class="text-muted m-0">No hay imágenes disponibles</p>
-                </div>
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px; border-radius: 0.5rem 0.5rem 0 0;">
+                        <p class="text-muted m-0">No hay imágenes disponibles</p>
+                    </div>
                 @endif
 
                 <div class="card-body">
+                    @php
+                        $yaParticipa = auth()->check() ? $evento->participaciones->contains('id_user', auth()->id()) : false;
+                        $esCreador = auth()->check() && auth()->id() == $evento->id_user;
+                        $eventoFinalizado = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin)->isPast();
+                    @endphp
+
                     <h4 class="card-title d-flex align-items-center justify-content-between">
                         <span>{{ $evento->titulo }}</span>
                         <span class="badge bg-success ms-2" style="font-size: 1rem;">
-                            {{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}
+                            <span class="badge text-dark" title="Participantes" style="font-size: 1em;">
+                                <i class="fas fa-users"></i> {{ $evento->participaciones->count() }}
+                            </span>
                         </span>
                     </h4>
-                    <span class="badge bg-{{ ($evento->estado ?? 'pendiente') == 'aceptado' ? 'success' : (($evento->estado ?? 'pendiente') == 'pendiente' ? 'warning' : 'danger') }}">
-                        {{ ucfirst($evento->estado ?? 'pendiente') }}
-                    </span>
+
+                    {{-- Badge de evento finalizado centrado --}}
+                    @if($eventoFinalizado)
+                        <div class="d-flex justify-content-center my-2">
+                            <span class="badge bg-secondary fs-5 px-4 py-2">Evento finalizado</span>
+                        </div>
+                    @endif
+
+                    {{-- Estado solo para el creador --}}
+                    @if($esCreador)
+                        <span class="badge bg-{{ ($evento->estado ?? 'pendiente') == 'aceptado' ? 'success' : (($evento->estado ?? 'pendiente') == 'pendiente' ? 'warning' : 'danger') }}">
+                            {{ ucfirst($evento->estado ?? 'pendiente') }}
+                        </span>
+                    @endif
+
                     <div class="card-text mt-2">
                         <div class="mb-1">
                             <i class="fas fa-align-left text-primary"></i>
@@ -129,53 +149,67 @@
                             <span class="ms-1"><b>Fecha:</b> {{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}</span>
                         </div>
                     </div>
-                    <div class="mt-1 d-flex gap-2 mt-3 flex-wrap">
+                </div>
+                <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
+                    @if($esCreador)
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm shadow-sm btn-action-anim" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('eventos.show', $evento->id) }}">
+                                        <i class="fas fa-eye"></i> Detalles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                </li>
+                                <li>
+                                    <button type="button"
+                                        class="dropdown-item text-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminarEvento"
+                                        data-evento-id="{{ $evento->id }}"
+                                        data-evento-nombre="{{ $evento->titulo }}">
+                                        <i class="fas fa-trash"></i> Borrar
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    @else
                         <a href="{{ route('eventos.show', $evento->id) }}"
-                            class="btn btn-outline-primary d-flex align-items-center gap-2"
-                            aria-label="Ver detalles del evento {{ $evento->titulo }}">
+
+                            class="btn btn-outline-primary btn-sm shadow-sm btn-action-anim"
+                            aria-label="Ver detalles del evento {{ $evento->titulo }}"
+                            title="Ver detalles">
                             <i class="fas fa-eye"></i>
-                            Detalles
                         </a>
-                        @auth
-                            @if(auth()->id() !== $evento->id_user && !($evento->participantes ?? collect())->contains(auth()->id()))
-                                <form action="{{ route('eventos.participar', $evento->id) }}" method="POST" class="d-inline">
+                    @endif
+                </div>
+
+                <div class="card-footer bg-white border-0 d-flex justify-content-end">
+                    @auth
+                        @if(!$esCreador && !$eventoFinalizado)
+                            @if($yaParticipa)
+                                <form action="{{ route('eventos.dejarParticipar', $evento->id) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="btn btn-success d-flex align-items-center gap-2">
-                                        <i class="fas fa-user-plus"></i>
-                                        Participar
+                                    <button type="submit" class="btn btn-danger btn-sm btn-action-anim" title="Dejar de participar">
+                                        <i class="fas fa-user-minus"></i> Dejar de participar
                                     </button>
                                 </form>
-                            @elseif(($evento->participantes ?? collect())->contains(auth()->id()))
-                                <span class="badge bg-info d-flex align-items-center gap-2">
-                                    <i class="fas fa-check-circle"></i> Ya participas
-                                </span>
+                            @else
+                                <form action="{{ route('eventos.participar', $evento->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm btn-action-anim" title="Participar">
+                                        <i class="fas fa-user-plus"></i> Participar
+                                    </button>
+                                </form>
                             @endif
-                        @endauth
-                    </div>
-                </div>
-                <div class="position-absolute top-0 end-0 m-2">
-                    <div class="dropdown">
-                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
-                                    <i class="fas fa-edit"></i> Editar
-                                </a>
-                            </li>
-                            <li>
-                                <button type="button"
-                                    class="dropdown-item text-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#modalEliminarEvento"
-                                    data-evento-id="{{ $evento->id }}"
-                                    data-evento-nombre="{{ $evento->titulo }}">
-                                    <i class="fas fa-trash"></i> Borrar
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>
@@ -188,12 +222,12 @@
     @endif
 </div>
 
-<!-- Modal de confirmación para eliminar evento -->
+{{-- Modal de confirmación para eliminar evento --}}
 <div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEliminarEventoLabel">Confirmar Eliminación de {{ $evento->titulo }}</h5>
+                <h5 class="modal-title" id="modalEliminarEventoLabel">Confirmar Eliminación </h5> 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
@@ -375,20 +409,24 @@
         transform: rotate(90deg);
     }
 
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
-        }
-        70% {
-            box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-        }
+    .btn-action-anim {
+        transition: transform 0.15s, box-shadow 0.15s;
     }
-
+    .btn-action-anim:hover, .btn-action-anim:focus {
+        transform: scale(1.12) rotate(-3deg);
+        box-shadow: 0 4px 16px rgba(30,65,131,0.12);
+        z-index: 3;
+    }
+    .card-img-top img:hover {
+        transform: scale(1.04);
+    }
     .badge.bg-success {
         animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);}
+        70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);}
+        100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);}
     }
 </style>
 @include('chats.chat-float')

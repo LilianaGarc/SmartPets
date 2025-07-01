@@ -29,12 +29,14 @@ Route::get('/index', fn() => view('MenuPrincipal.MenuPrincipal'))->name('index')
 Route::get('animacion', fn() => view('MenuPrincipal.Animacion'))->name('animacion');
 
 // Rutas públicas de recursos principales
-Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index');
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
+Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+
 
 // Rutas para productos y categorías (públicas)
 Route::resource('productos', ProductoController::class);
@@ -57,8 +59,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Rutas públicas de veterinarias
-Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
-
 Route::get('/veterinarias/{id}', [VeterinariaController::class, 'show'])->name('veterinarias.show')->whereNumber('id');
 
 
@@ -83,6 +83,9 @@ Route::get('/reacciones/{id}/editar', [ReaccionController::class, 'edit'])->name
 Route::put('/reacciones/{id}/editar', [ReaccionController::class, 'update'])->name('reacciones.update')->whereNumber('id');
 Route::get('/reacciones/{id}/ver', [ReaccionController::class, 'show'])->name('reacciones.show')->whereNumber('id');
 Route::delete('/reacciones/{publicacion}', [ReaccionController::class, 'destroy'])->name('reacciones.destroy')->whereNumber('publicacion');
+
+// Rutas publicas de eventos
+Route::get('/eventos/{id}', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
 
 // Rutas públicas de chatbot y mascota ideal
 Route::middleware(['auth'])->group(function() {
@@ -123,8 +126,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/solicitudes/{adopcion}/{solicitud}/aceptar', [SolicitudController::class, 'aceptar'])->name('solicitudes.aceptar');
     Route::post('/adopciones/{id_adopcion}/solicitudes/{id_solicitud}/cancelar', [SolicitudController::class, 'cancelarAceptacion'])->name('solicitudes.cancelar');
 
-    // Participar en eventos
+    // Eventos
+    Route::get('/eventos/crear', [EventoController::class, 'create'])->name('eventos.create');
+    Route::post('/eventos',[EventoController::class, 'store'])->name('eventos.store');
+    Route::get('/eventos/{id}/editar', [EventoController::class, 'edit'])->name('eventos.edit')->whereNumber('id');
+    Route::put('/eventos/{id}/editar', [EventoController::class, 'update'])->name('eventos.update')->whereNumber('id');
+    Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
+    Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
+
     Route::post('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
+    Route::post('eventos/{id}/dejar-participar', [EventoController::class, 'dejarParticipar'])->name('eventos.dejarParticipar');
 
     // Comentarios
     Route::post('/comentarios/{id}', [ComentarioController::class, 'store'])->name('comentarios.store');
