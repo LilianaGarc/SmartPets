@@ -14,8 +14,6 @@
     <div class="page-title">
         <h1 class="page-title__text">Mascotas en Adopción</h1>
     </div>
-
-
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">

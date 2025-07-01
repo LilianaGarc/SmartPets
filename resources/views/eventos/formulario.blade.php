@@ -48,16 +48,6 @@
             </div>
             <hr>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="list-unstyled mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ isset($evento) ? route('eventos.update', $evento->id) : route('eventos.store') }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
@@ -65,42 +55,123 @@
                     @method('PUT')
                 @endif
 
-                <div class="row g-3">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
+                                   placeholder="Título" inputmode="text" autocomplete="off"
+                                   value="{{ old('titulo', $evento->titulo ?? '') }}" required aria-label="Título">
+                            <label for="titulo">Título <span style="color:red">*</span></label>
+                            @error('titulo')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="date" class="form-control @error('fecha') is-invalid @enderror" id="fecha" name="fecha"
+                                   placeholder="Fecha"
+                                   value="{{ old('fecha', $evento->fecha ?? '') }}"
+                                   min="{{ date('Y-m-d') }}"
+                                   required aria-label="Fecha">
+                            <label for="fecha">Fecha <span style="color:red">*</span></label>
+                            @error('fecha')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
+                                   placeholder="Teléfono" inputmode="tel" autocomplete="tel"
+                                   value="{{ old('telefono', $evento->telefono ?? '') }}" required aria-label="Teléfono">
+                            <label for="telefono">Teléfono <span style="color:red">*</span></label>
+                            @error('telefono')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" id="hora_inicio" name="hora_inicio"
+                                   placeholder="Hora de inicio" value="{{ old('hora_inicio', $evento->hora_inicio ?? '') }}" required aria-label="Hora de inicio">
+                            <label for="hora_inicio">Hora inicio <span style="color:red">*</span></label>
+                            @error('hora_inicio')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <input type="time" class="form-control @error('hora_fin') is-invalid @enderror" id="hora_fin" name="hora_fin"
+                                   placeholder="Hora de fin" value="{{ old('hora_fin', $evento->hora_fin ?? '') }}" required aria-label="Hora de fin">
+                            <label for="hora_fin">Hora fin <span style="color:red">*</span></label>
+                            @error('hora_fin')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="modalidad_evento" name="modalidad_evento" required aria-label="Acceso al evento" onchange="mostrarCampoPrecio()">
+                                <option value="gratis" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'gratis' ? 'selected' : '' }}>Gratuito</option>
+                                <option value="pago" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'pago' ? 'selected' : '' }}>De pago</option>
+                            </select>
+                            <label for="modalidad_evento">¿El evento es gratuito o de pago? <span style="color:red">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-3" id="campo_precio" style="display: none;">
+                        <div class="form-floating">
+                            <input type="number" min="0" step="0.01" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio"
+                                   placeholder="Precio del evento" value="{{ old('precio', $evento->precio ?? '') }}" aria-label="Precio del evento">
+                            <label for="precio">Precio</label>
+                            @error('precio')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="row g-3 mb-3">
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="titulo" name="titulo"
-                                   placeholder="Título" value="{{ old('titulo', $evento->titulo ?? '') }}" required>
-                            <label for="titulo">Título</label>
+                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion"
+                                   placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" required aria-label="Ubicación">
+                            <label for="ubicacion">Ubicación <span style="color:red">*</span></label>
+                            @error('ubicacion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
-
+                </div>
+                
+                <div class="row g-3 mb-3">
                     <div class="col-12">
                         <div class="form-floating">
-                            <textarea class="form-control" id="descripcion" name="descripcion" placeholder="Descripción" style="height: 100px" required>{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
-                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
+                                placeholder="Descripción" style="height: 100px" required aria-label="Descripción"
+                                maxlength="250"
+                                oninput="actualizarContadorDescripcion()"
+                            >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
+                            <label for="descripcion">Descripción <span style="color:red">*</span></label>
+                            @error('descripcion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div id="contadorDescripcion" class="form-text text-end" style="margin-top: 2px; margin-bottom: 10px;">
+                            0/250
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-12 col-md-6">
-                        <div class="form-floating">
-                            <input type="date" class="form-control" id="fecha" name="fecha"
-                                   placeholder="Fecha" value="{{ old('fecha', $evento->fecha ?? '') }}" required>
-                            <label for="fecha">Fecha</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="telefono" name="telefono"
-                                   placeholder="Teléfono" value="{{ old('telefono', $evento->telefono ?? '') }}" required>
-                            <label for="telefono">Teléfono</label>
-                        </div>
-                    </div>
-
+                <div class="row g-3 mb-3">
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ isset($evento) ? '' : 'required' }}>
                             @if(isset($evento) && $evento->imagen)
                                 <span class="input-group-text bg-white">
                                     <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Imagen actual" style="max-width: 60px; max-height: 60px; object-fit: cover;">
@@ -110,22 +181,27 @@
                         @if(isset($evento) && $evento->imagen)
                             <div class="form-text">Si no seleccionas una nueva imagen, se mantendrá la actual.</div>
                         @endif
+                        <div id="preview-container" class="preview-container" style="margin-top: 10px;"></div>
+                        @error('imagen')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 <br>
-                <button type="submit" class="btn btn-{{ isset($evento) ? 'warning' : 'success' }}">
-                    {{ isset($evento) ? 'Actualizar Evento' : 'Crear Evento' }}
-                </button>
-                <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
-                    Limpiar
-                </button>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-{{ isset($evento) ? 'warning' : 'success' }}">
+                        {{ isset($evento) ? 'Actualizar Evento' : 'Crear Evento' }}
+                    </button>
+                    <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
+                        Limpiar
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <style>
-        /* Estilos para el breadcrumb */
         .breadcrumb-container {
             display: flex;
             align-items: start;
@@ -197,7 +273,7 @@
             color: #FFF;
         }
 
-        /* Responsive para breadcrumb */
+        
         @media (max-width: 768px) {
             .breadcrumb-container {
                 flex-direction: row;
@@ -257,5 +333,123 @@
                 line-height: 1.2;
             }
         }
+
+        .preview-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            margin-top: 10px;
+            min-height: 70px;
+        }
+        .preview-img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(30,65,131,0.08);
+            background: #fff;
+            display: block;
+        }
+        .btn-cancel-preview {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255,255,255,0.85);
+            border: 1.5px solid #dc3545;
+            color: #dc3545;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(30,65,131,0.08);
+        }
+        .btn-cancel-preview:hover, .btn-cancel-preview:focus {
+            background: #dc3545;
+            color: #fff;
+            outline: 2px solid #18478b;
+        }
+        .btn-cancel-preview:active {
+            background: #b52a37;
+            color: #fff;
+        }
 </style>
+<script>
+function mostrarCampoPrecio() {
+    const modalidad = document.getElementById('modalidad_evento').value;
+    const campoPrecio = document.getElementById('campo_precio');
+    const inputPrecio = document.getElementById('precio');
+    if (modalidad === 'pago') {
+        campoPrecio.style.display = 'block';
+        inputPrecio.required = true;
+    } else {
+        campoPrecio.style.display = 'none';
+        inputPrecio.required = false;
+        inputPrecio.value = '';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    mostrarCampoPrecio();
+    document.getElementById('modalidad_evento').addEventListener('change', mostrarCampoPrecio);
+});
+
+document.getElementById('imagen').addEventListener('change', function(e) {
+    const preview = document.getElementById('preview-container');
+    preview.innerHTML = '';
+    if (this.files && this.files[0]) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(this.files[0]);
+        img.className = 'preview-img';
+        img.alt = 'Vista previa de la imagen seleccionada';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen seleccionada');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            document.getElementById('imagen').value = '';
+            preview.innerHTML = '';
+            document.getElementById('imagen').focus();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+    }
+});
+
+function actualizarContadorDescripcion() {
+    const textarea = document.getElementById('descripcion');
+    const contador = document.getElementById('contadorDescripcion');
+    const max = textarea.getAttribute('maxlength') ? parseInt(textarea.getAttribute('maxlength')) : 255;
+    if (textarea.value.length > max) {
+        textarea.value = textarea.value.substring(0, max);
+    }
+    contador.textContent = `${textarea.value.length}/${max}`;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    mostrarCampoPrecio();
+    const textarea = document.getElementById('descripcion');
+    if (textarea) {
+        textarea.addEventListener('input', actualizarContadorDescripcion);
+    }
+});
+</script>
 @endsection

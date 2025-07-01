@@ -16,15 +16,11 @@
                 <span class="breadcrumb__title">Veterinarias</span>
             </a>
         </li>
-        @if (auth()->check())
         <li class="breadcrumb__item">
-            @if (auth()->check())
             <a href="{{ route('veterinarias.create') }}" class="breadcrumb__inner">
                 <span class="breadcrumb__title">Crear Veterinaria</span>
             </a>
-            @endif
         </li>
-        @endif
     </ul>
 </div>
 
@@ -72,12 +68,13 @@
         <div class="col mb-4">
             <div class="card h-100 shadow-sm border vet-anim">
                 @if ($imagen)
-                <img src="{{ asset('storage/' . $imagen->path) }}"
-                    alt="Veterinaria {{ $veterinaria->nombre }}"
-                    class="card-img-top"
-                    style="max-height: 300px ; object-fit: cover;">
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 300px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
+                    <img src="{{ asset('storage/' . $imagen->path) }}"
+                        alt="Veterinaria {{ $veterinaria->nombre }}"
+                        style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                </div>
                 @else
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px; border-radius: 0.5rem 0.5rem 0 0;">
                     <p class="text-muted m-0">No hay imágenes disponibles</p>
                 </div>
                 @endif
@@ -147,7 +144,8 @@
 </div>
 
 <style>
-        .breadcrumb-container {
+
+    .breadcrumb-container {
         display: flex;
         align-items: start;
         gap: 20px;

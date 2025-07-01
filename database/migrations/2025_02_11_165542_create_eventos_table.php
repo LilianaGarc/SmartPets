@@ -19,6 +19,11 @@ return new class extends Migration
             $table->date('fecha');
             $table->string('imagen')->nullable();
             $table->string('estado')->default('pendiente'); // pendiente, confirmado, cancelado
+            $table->string('modalidad_evento')->default('gratis'); 
+            $table->decimal('precio', 8, 2)->nullable(); 
+            $table->time('hora_inicio');
+            $table->time('hora_fin');
+            $table->string('ubicacion');
             $table->foreignId('id_user')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
