@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/producto-guardado', [ProdFavoritoController::class, 'store'])->name('productos.guardar');
     Route::post('/producto-guardado/destroy/{id}', [ProdFavoritoController::class, 'destroy'])->name('productos.eliminarGuardado');
     Route::get('/mis-productos', function () {$productos = Auth::user()->productos()->get();return response()->json($productos);})->middleware('auth');
+    Route::get('/productos-guardados', [ProdFavoritoController::class, 'index'])->name('productos.guardados');
 });
 
 // Rutas públicas de veterinarias

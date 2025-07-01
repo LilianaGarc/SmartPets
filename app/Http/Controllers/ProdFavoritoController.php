@@ -11,8 +11,15 @@ class ProdFavoritoController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
+        $prod_favoritos = ProdFavorito::where('user_id', $user->id)
+            ->with('producto')
+            ->get();
+
+
         return view('productos.productos-guardados', [
-            'prod_favoritos' => ProdFavorito::all(),
+            'prod_favoritos' => $prod_favoritos,
         ]);
     }
 
