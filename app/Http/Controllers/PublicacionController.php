@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comentario;
 use App\Models\Publicacion;
 use App\Models\Reaccion;
+use App\Models\Historia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -119,7 +120,9 @@ class PublicacionController
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('publicaciones.indexPublicaciones')->with('publicaciones',$publicaciones);
+        $historias = Historia::with('user')->orderByDesc('created_at')->get();
+
+        return view('publicaciones.indexPublicaciones', ['publicaciones'=>$publicaciones, 'historias'=>$historias]);
     }
 
     /**

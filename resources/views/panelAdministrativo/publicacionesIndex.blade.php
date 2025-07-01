@@ -62,7 +62,7 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('publicaciones.paneldetalles', ['id'=> $publicacion->id]) }}">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('publicaciones.detalles', ['id'=> $publicacion->id]) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('publicaciones.paneledit', ['id'=> $publicacion->id]) }}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}">Eliminar</a></li>
                             </ul>

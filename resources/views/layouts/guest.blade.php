@@ -35,16 +35,13 @@
         }
 
         body {
-            background-image: url("{{ asset('images/fondohuellas.png') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
+            background-color: #ffffff;
             width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f4f3;
+            overflow: hidden;
         }
 
         .container {
@@ -55,7 +52,31 @@
             background-color: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.03);
+        }
+
+
+        .image-esquina {
+            position: fixed;
+            z-index: 1;
+            width: 30vw;
+            height: auto;
+        }
+
+        .image-superior-derecha {
+            top: 0;
+            right: 0;
+        }
+
+        .image-inferior-izquierda {
+            bottom: 0;
+            left: 0;
         }
 
         .container-form {
@@ -362,6 +383,8 @@
 
         .floating-gif {
             position: fixed;
+            bottom: 0;
+            left: 50%;
             width: 120px;
             height: 120px;
             background-size: contain;
@@ -369,13 +392,12 @@
             background-position: center;
             pointer-events: auto;
             cursor: pointer;
-            transition: left 1s ease-in-out, top 1s ease-in-out;
+            transition: left 1s ease-in-out;
             z-index: 9999;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             background-image: url('{{ asset('images/gato1.gif') }}');
         }
+
 
 
         .alert-error {
@@ -393,6 +415,10 @@
 
 </head>
 <body>
+
+<img src="{{ asset('images/esquinasuperior.png') }}" alt="Esquina superior" class="image-esquina image-superior-derecha">
+<img src="{{ asset('images/esquinainferior.png') }}" alt="Esquina inferior" class="image-esquina image-inferior-izquierda">
+
 
 {{ $slot }}
 

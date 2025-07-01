@@ -670,7 +670,7 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ route('users.dashboard') }}">
+                <a href="{{ route('panel.dashboard') }}">
                     <img src="{{ asset('images/principal.svg') }}" alt="Smart Pets">
                     <span>Página principal</span>
                 </a>

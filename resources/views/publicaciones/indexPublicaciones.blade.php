@@ -13,6 +13,32 @@
         </div>
     @endif
 
+    <div class="swiper mySwiper px-4">
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+                <a href="{{ route('historias.create') }}" class="story-card create-story">
+                    <div class="story-create">+</div>
+                    <span class="story-username">Tu historia</span>
+                </a>
+            </div>
+
+            @foreach ($historias->groupBy('user_id') as $userHistorias)
+                @php $story = $userHistorias->first(); @endphp
+                <div class="swiper-slide">
+                    <div class="story-card"
+                        data-historias='@json($userHistorias)'
+                        onclick="handleStoryClick(this)">
+                        <img src="{{ asset('storage/' . $story->image_path) }}" alt="story" class="story-avatar">
+                        <span class="story-username">{{ $story->user->name }}</span>
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
+    </div>
+
+
     <div class="row">
         <div class="container">
             <div class="breadcrumb-container">
@@ -73,10 +99,10 @@
                                             $reaccionUsuario = $publicacion->reaccionesUsuarioActual;
                                         @endphp
 
-                                        @foreach(['amor', 'risa', 'triste', 'enojado'] as $tipo)
+                                        @foreach(['triste', 'feliz', 'enojado', 'wow'] as $tipo)
                                             @php
-                                                $src = asset("images/{$tipo}perrito.webp");
-                                                $hover = asset("images/perrito{$tipo}2.webp");
+                                                $src = asset("images/{$tipo}perrito.png");
+                                                $hover = asset("images/perrito{$tipo}.gif");
                                                 $active = $reaccionUsuario && $reaccionUsuario->tipo === $tipo;
                                             @endphp
                                             <img src="{{ $src }}"
@@ -105,7 +131,6 @@
                         </div>
                     </div>
 
-                    <!-- Modal fuera de la card, se colocó fuera del ciclo foreach -->
                     @if (auth()->check() && auth()->id() === $publicacion->id_user)
                         <div class="modal fade" id="modalEliminar{{$publicacion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -136,63 +161,82 @@
     </div>
 
     <script>
-        document.querySelectorAll('.imagen-publicacion-reaccion').forEach(img => {
-            const originalSrc = img.src;
+    let storyImages = [];
+    let currentStoryIndex = 0;
+    let storyTimer;
 
-            img.addEventListener('mouseover', () => {
-                img.src = img.dataset.hover;
-            });
+    function handleStoryClick(element) {
+        const historias = JSON.parse(element.getAttribute('data-historias'));
+        if (!Array.isArray(historias) || historias.length === 0) return;
 
-            img.addEventListener('mouseout', () => {
-                if (!img.classList.contains('reaccion-activa')) {
-                    img.src = originalSrc;
-                }
-            });
+        storyImages = historias.map(item => `/storage/${item.image_path}`);
+        currentStoryIndex = 0;
+        showStory(currentStoryIndex);
 
-            img.addEventListener('click', () => {
-                const tipo = img.dataset.tipo;
-                const publicacionId = img.dataset.publicacion;
-                const isActive = img.classList.contains('reaccion-activa');
+        const modal = new bootstrap.Modal(document.getElementById('storyModal'));
+        modal.show();
+    }
 
-                if (isActive) {
-                    fetch(`/reacciones/${publicacionId}`, {
-                        method: "DELETE",
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    }).then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'deleted') {
-                                document.querySelectorAll(`[data-publicacion="${publicacionId}"]`).forEach(el => {
-                                    el.classList.remove('reaccion-activa');
-                                    el.src = el.src.replace("2.webp", ".webp");
-                                });
-                            }
-                        });
-                } else {
-                    fetch("/reacciones", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            tipo,
-                            publicacion_id: publicacionId
-                        })
-                    }).then(res => res.json())
-                        .then(data => {
-                            document.querySelectorAll(`[data-publicacion="${publicacionId}"]`).forEach(el => {
-                                el.classList.remove('reaccion-activa');
-                                el.src = el.src.replace("2.webp", ".webp");
-                            });
+    function showStory(index) {
+        if (index >= storyImages.length) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('storyModal'));
+            modal.hide();
+            return;
+        }
 
-                            img.classList.add('reaccion-activa');
-                            img.src = img.dataset.hover;
-                        });
-                }
-            });
-        });
-    </script>
+        document.getElementById('storyImage').src = storyImages[index];
+        updateProgressBar(0);
+        let progress = 0;
+
+        clearInterval(storyTimer);
+        storyTimer = setInterval(() => {
+            progress += 1;
+            updateProgressBar(progress);
+            if (progress >= 100) {
+                currentStoryIndex++;
+                showStory(currentStoryIndex);
+            }
+        }, 50);
+
+        document.getElementById('storyImage').onclick = () => {
+            clearInterval(storyTimer);
+            currentStoryIndex++;
+            showStory(currentStoryIndex);
+        };
+    }
+
+    function updateProgressBar(percent) {
+        document.getElementById('storyProgress').style.width = percent + '%';
+    }
+
+    document.getElementById('storyModal').addEventListener('hidden.bs.modal', () => {
+        clearInterval(storyTimer);
+        storyImages = [];
+        currentStoryIndex = 0;
+        updateProgressBar(0);
+    });
+</script>
+
+
+
+
     @include('chats.chat-float')
 @endsection
+
+<!-- Modal Historia -->
+<div class="modal fade" id="storyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content bg-black text-white">
+            <div class="modal-body p-0">
+                <div class="story-container d-flex flex-column justify-content-center align-items-center h-100">
+                    <img id="storyImage" src="" class="img-fluid story-view-img" alt="Historia">
+                    <div class="story-progress-container">
+                        <div id="storyProgress" class="story-progress-bar"></div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

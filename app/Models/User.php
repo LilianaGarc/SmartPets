@@ -106,6 +106,12 @@ class User extends Authenticatable
         return $this->chatsComoUsuario1->merge($this->chatsComoUsuario2);
     }
 
+    public function historias()
+{
+    return $this->hasMany(Historia::class);
+}
+
+
     protected $fillable = [
         'name',
         'email',

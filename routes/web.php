@@ -6,7 +6,7 @@ use App\Http\Controllers\{
     ComentarioController, EventoController, JuegoController, MensajeController, PerfilController,
     ProductoController, PublicacionController, ReaccionController, SolicitudController, UserController, VeterinariaController,
     ImagenController,
-    UbicacionController, ProfileController
+    UbicacionController, ProfileController, HistoriaController
 };
 
 // Rutas públicas generales
@@ -19,7 +19,6 @@ Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index')
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
-Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 
 // Rutas para productos y categorías (públicas)
@@ -54,13 +53,6 @@ Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'
 Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
 Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
-// Rutas públicas de reacciones
-Route::post('/reacciones', [ReaccionController::class, 'store'])->name('reacciones.store');
-Route::get('/reacciones/crear', [ReaccionController::class, 'create'])->name('reacciones.create');
-Route::get('/reacciones/{id}/editar', [ReaccionController::class, 'edit'])->name('reacciones.edit')->whereNumber('id');
-Route::put('/reacciones/{id}/editar', [ReaccionController::class, 'update'])->name('reacciones.update')->whereNumber('id');
-Route::get('/reacciones/{id}/ver', [ReaccionController::class, 'show'])->name('reacciones.show')->whereNumber('id');
-Route::delete('/reacciones/{publicacion}', [ReaccionController::class, 'destroy'])->name('reacciones.destroy')->whereNumber('publicacion');
 
 // Rutas públicas de chatbot y mascota ideal
 Route::middleware(['auth'])->group(function() {
@@ -81,6 +73,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
     Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('perfil.index');
     Route::post('/perfil/actualizar-foto', [PerfilController::class, 'actualizarFoto'])->name('perfil.actualizarFoto');
+
+    //Rutas de historias
+    Route::get('/historias', [HistoriaController::class, 'index'])->name('historias.index');
+    Route::get('/historias/create', [HistoriaController::class, 'create'])->name('historias.create');
+    Route::post('/historias', [HistoriaController::class, 'store'])->name('historias.store');
+
+    // Rutas públicas de reacciones
+    Route::post('/reacciones', [ReaccionController::class, 'store'])->name('reacciones.store');
+    Route::delete('/reacciones/{publicacion}', [ReaccionController::class, 'destroy'])->name('reacciones.destroy');
 
     // Adopciones
     Route::get('/adopciones/crear', [AdopcionController::class, 'create'])->name('adopciones.create');
@@ -187,11 +188,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/buscar/comentarios', [ComentarioController::class, 'search'])->name('comentarios.search');
     Route::delete('/panel/comentarios/{id}', [ComentarioController::class, 'paneldestroy'])->name('comentarios.paneldestroy');
 
-    // Panel de reacciones
-    Route::get('/panel/reacciones', [ReaccionController::class, 'panel'])->name('reacciones.panel');
-    Route::get('/panel/buscar/reacciones', [ReaccionController::class, 'search'])->name('reacciones.search');
-    Route::delete('/panel/reacciones/{id}', [ReaccionController::class, 'paneldestroy'])->name('reacciones.paneldestroy');
-
     // Panel de eventos
     Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
     Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
@@ -226,6 +222,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/buscar/users', [UserController::class, 'search'])->name('users.search');
     Route::get('/panel/users/{id}/show', [UserController::class, 'show'])->name('users.show')->whereNumber('id');
     Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');
+    Route::get('/panel/dashboard', [UserController::class, 'dashboard'])->name('panel.dashboard');
+
 });
 
 require __DIR__.'/auth.php';
