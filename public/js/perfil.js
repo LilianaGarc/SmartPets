@@ -9,12 +9,14 @@
         }
     });
 
-    const cabecera = document.getElementById('cabecera-usuario');
+
+        const cabecera = document.getElementById('cabecera-usuario');
+        const marcador = document.querySelector('.marcador');
     if (tabId === 'petshop') {
-        cabecera.style.display = 'none';
+        marcador.style.display = 'block';
         cargarProductosUsuario();
     }else{
-        cabecera.style.display = '';
+        marcador.style.display = 'none';
     }
 
     /*const botones = document.querySelectorAll('.tab');

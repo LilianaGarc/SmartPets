@@ -59,7 +59,10 @@
             <div class="contador-general">
                 <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>
                 <p><strong>Solicitudes enviadas:</strong> <span class="contador-numero" data-numero="{{ $adopcionesSolicitadas->count() }}">0</span></p>
+            </div>
 
+            <div class="productos-guardados">
+                <img  class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
             </div>
 
         </div>
