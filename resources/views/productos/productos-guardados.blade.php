@@ -4,7 +4,19 @@
 
 @section('nav')@endsection
 
+
     <style>
+
+        :root {
+            --orange: #ED8119;
+            --blue: #18478B;
+            --cream: #FFF8F0;
+            --dark: #1F1F1F;
+        }
+
+        body {
+            background-color: var(--cream);
+        }
         .text-orange { color: #fd7e14; }
         .bg-orange { background-color: #fd7e14; }
         .bg-orange:hover { background-color: #e46b10; }
@@ -18,6 +30,8 @@
             color: white; font-weight: bold;
         }
     </style>
+
+
 
 <div class="container py-5">
     <h1 class="mb-3 fw-bold">Ver más tarde</h1>
@@ -51,8 +65,9 @@
                                 <span class="h5 text-orange me-2">{{ $favorito->producto->precio }}</span>
                             </div>
                             <div>
-                                <button class="btn btn-outline-primary btn-sm me-2">Agregar al carrito</button>
-                                <a href="/producto/1" class="btn btn-sm bg-orange text-white">Ver producto</a>
+                                <!--<button class="btn btn-outline-primary btn-sm me-2">Agregar al carrito</button>-->
+                                <!--Arreglar y agregar la ruta de tellas que se borró-->
+                                <a href="{{route('productos.show', $favorito->producto->id)}}" class="btn btn-sm bg-orange text-white">Ver producto</a>
                             </div>
                         </div>
                     </div>
