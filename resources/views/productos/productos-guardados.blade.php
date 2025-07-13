@@ -32,56 +32,78 @@
     </style>
 
 
-
 <div class="container py-5">
-    <h1 class="mb-3 fw-bold">Ver más tarde</h1>
+    <h1 class="mb-3 fw-bold">PRODUCTOS GUARDADOS</h1>
     <p class="text-secondary">
-        Tienes 15 productos guardados para revisar después
-        <span class="ms-2 small">• Mostrando 1-5 de 15</span>
+        Tienes {{ $prod_favoritos->count() }} productos guardados
+        <span class="ms-2 small">• Mostrando 1-{{ min($prod_favoritos->count(), 10) }}</span>
     </p>
 
-    <!-- PRODUCTO -->
-    @forelse($prod_favoritos as $favorito)
-        @if($favorito -> producto)
-            <div class="card mb-4 shadow-sm">
-                <div class="row g-0">
-                    <div class="col-md-3 position-relative">
-                        <img src="{{ isset($favorito->producto->imagen) ? url('storage/' . $favorito->producto->imagen): asset('images/img_PorDefecto.jpg') }}" class=" object-fit-cover" alt="Producto" style="height: 200px; width: 200px">
-                        <!-- Si está agotado -->
-                        <!-- <div class="out-of-stock"><span class="badge bg-danger">Agotado</span></div> -->
-                    </div>
-                    <div class="col-md-9 p-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h5 class="mb-1">{{ $favorito->producto->nombre }}</h5>
-                                <small class="text-muted d-block mb-2">{{ $favorito->producto->categoria->nombre }}</small>
-                                <p class="mb-3">{{ $favorito->producto->descripcion}}</p>
-                            </div>
+    <div class="row">
+        @forelse($prod_favoritos as $favorito)
+            @if($favorito->producto)
+                <!-- Cada producto ocupa la mitad del ancho (2 por fila) -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm h-100 d-flex flex-row">
+                        <!-- Imagen fija, sin recorte -->
+                        <div class="p-2 d-flex align-items-center">
+                            <img src="{{ isset($favorito->producto->imagen) ? url('storage/' . $favorito->producto->imagen): asset('images/img_PorDefecto.jpg') }}"
+                                 alt="Producto"
+                                 class="img-fluid"
+                                 style="width: 160px; height: auto; max-height: 160px; object-fit: contain;">
                         </div>
 
-                        <!-- Precio y botones -->
-                        <div class="d-flex justify-content-between align-items-center">
+                        <!-- Contenido textual a la derecha de la imagen -->
+                        <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
                             <div>
-                                <span class="h5 text-orange me-2">{{ $favorito->producto->precio }}</span>
+                                <!-- Título más grande -->
+                                <h4 class="mb-1">{{ $favorito->producto->nombre }}</h4>
+
+                                <!-- Categoría -->
+                                <small class="text-muted d-block">{{ $favorito->producto->categoria->nombre }}</small>
+
+                                <!-- Precio debajo de la categoría -->
+                                <span class="h5 text-orange d-block mt-2">L.{{ $favorito->producto->precio }}</span>
                             </div>
-                            <div>
-                                <a href="{{route('productos.show', $favorito->producto->id)}}" class="btn btn-sm bg-orange text-white">Ver producto</a>
+
+                            <!-- Botones -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <a href="{{ route('productos.show', $favorito->producto->id) }}" class="btn btn-sm bg-orange text-white">Ver producto</a>
+
+                                @auth
+                                    @php
+                                        $guardado = \App\Models\ProdFavorito::where('user_id', auth()->id())
+                                            ->where('producto_id', $favorito->producto->id)
+                                            ->first();
+                                    @endphp
+
+                                    <form id="favorito-form-{{ $favorito->producto->id }}" method="POST" style="display: inline-block;">
+                                        @csrf
+                                        <input type="hidden" name="producto_id" value="{{ $favorito->producto->id }}">
+                                        @if($guardado)
+                                            <button type="submit" formaction="{{ route('productos.eliminarGuardado', $favorito->producto->id) }}"
+                                                    class="btn btn-link p-0 m-0" title="Eliminar producto guardado" style="width: 32px; height: 32px;">
+                                                <img src="{{ asset('images/marcadorAzul.png') }}" alt="Guardado" class="img-fluid" style="width: 32px; height: 32px;">
+                                            </button>
+                                        @else
+                                            <button type="submit" formaction="{{ route('productos.guardar', $favorito->producto->id) }}"
+                                                    class="btn btn-link p-0 m-0" title="Guardar producto" style="width: 32px; height: 32px;">
+                                                <img src="{{ asset('images/marcadorVacio.png') }}" alt="No guardado" class="img-fluid" style="width: 32px; height: 32px;">
+                                            </button>
+                                        @endif
+                                    </form>
+                                @endauth
                             </div>
                         </div>
                     </div>
                 </div>
+            @endif
+        @empty
+            <div class="col-12 text-center">
+                <h3>No tienes productos guardados</h3>
             </div>
-        @endif
-    @empty
-        <div class="text-center">
-            <h3>
-                No tienes productos guardados
-            </h3>
-        </div>
-    @endforelse
-
-
-    <!-- Más productos iguales al anterior aquí… (copia y pega el bloque) -->
+        @endforelse
+    </div>
 
     <!-- Paginación -->
     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -106,5 +128,6 @@
         <a href="/productos" class="btn btn-outline-primary">Continuar comprando</a>
     </div>
 </div>
+
 
 @endsection
