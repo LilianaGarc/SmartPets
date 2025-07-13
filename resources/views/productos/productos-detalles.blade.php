@@ -391,6 +391,30 @@
         }
 
     }
+    .main-image {
+        width: 80%;
+        height: 300px; /* Altura fija, puedes ajustarla */
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .main-image img {
+        max-width: 80%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .thumbnails {
+        display: flex;
+        justify-content: center; /* Mueve las miniaturas hacia la derecha */
+        gap: 10px; /* Espaciado entre las miniaturas */
+        margin-top: 10px; /* Espaciado superior */
+        margin-left: 2em;
+    }
 </style>
 
 @section('contenido')
@@ -418,7 +442,7 @@
                             alt="
                             {{ $producto->nombre }}" class="img-fluid rounded">
                     </div>
-                    <div class="thumbnails d-flex gap-2">
+                    <div class="thumbnails d-flex justify-content-center mb-4 gap-2">
                         <img
                             src="{{ isset($producto->imagen2) ? url('storage/' . $producto->imagen2) : asset('images/img_PorDefecto.jpg')}}"
                             alt="
@@ -491,66 +515,36 @@
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
                             <i class="bi bi-star-half" style="color: var(--orange)"></i>
-
                         </div>
                     </div>
-
                     <p class="mb-4">{{$producto->descripcion}}</p>
-
-
                     <!-- Botones de Acción -->
                     @auth
+
+                        <a href="{{route('chats.iniciar', ['userId' => $producto->user_id,
+                        'mensaje' => urlencode('Hola, estoy interesado en el producto: "' . $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))])}}"
+                           class="btn btn-primary mb-2">
+                            <i class="fas fa-comment-dots"></i> Enviar Mensaje
+                        </a>
+
                         @if( auth()->check() && auth()->id()===$producto->user_id)
                             <div class="d-grid gap-2">
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-auto">
-
-                                    <form id="delete-form-{{$producto->id}}"
-                                          action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#ModalProducto">
-                                            Eliminar
+                                        <button class="btn btn-warning"
+                                                onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">Editar
                                         </button>
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="ModalProducto" tabindex="-1"
-                                             aria-labelledby="ModalProductoLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="ModalProductoLabel">Eliminar Producto</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Cancelar"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        ¿Estás seguro de que deseas eliminar este producto?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <form action="{{ route('productos.destroy', $producto->id) }}"
-                                                              method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Cancelar
-                                                            </button>
-                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
                                     </div>
                                     <div class="col-auto">
-
-                                         <button class="btn btn-warning"
-                                            onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar
-                                         </button>
+                                        <form id="delete-form-{{$producto->id}}" action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalProducto">
+                                                Eliminar
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
-
                             </div>
                         @endif
                     @endauth
