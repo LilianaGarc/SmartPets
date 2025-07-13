@@ -389,6 +389,23 @@
     opacity: 0.8;
 }
 
+.notification-label {
+    font-size: 1rem;
+    line-height: 1.4;
+    flex: 1;
+    color: #2a2a2a;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    user-select: none;
+    padding-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.notification-label:hover {
+    color: #1e4183;
+}
+
+
 .switch {
     position: relative;
     display: inline-block;

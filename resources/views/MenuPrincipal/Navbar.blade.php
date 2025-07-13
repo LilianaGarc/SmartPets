@@ -113,12 +113,22 @@
 
                                 <div id="notificationConfig" style="display:none; padding: 15px;">
                                     <div style="display:flex; justify-content: space-between; align-items: center;">
-                                        <span style="font-size: 1rem;">Recibir Notificaciones</span>
+                                        <span class="notification-label">Recibir notificaciones</span>
                                         <label class="switch">
                                             <input type="checkbox" id="recibirNotificacionesSwitch" {{ Auth::user()->recibir_notificaciones ? 'checked' : '' }}>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
+
+                                    <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <span class="notification-label">Sonido de mensajes</span>
+                                        <label class="switch">
+                                            <input type="checkbox" id="sonidoMensajesSwitch">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+
+
                                 </div>
 
                             </div>

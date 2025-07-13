@@ -112,19 +112,16 @@ document.addEventListener('DOMContentLoaded', function () {
         e.stopPropagation();
         const configVisible = notificationConfig.style.display === 'block';
         if (configVisible) {
-            // Mostrar lista notificaciones
             notificationConfig.style.display = 'none';
             notificationList.style.display = 'block';
             toggleConfigBtn.innerHTML = '<i class="fas fa-cog"></i>';
         } else {
-            // Mostrar configuración
             notificationConfig.style.display = 'block';
             notificationList.style.display = 'none';
-            toggleConfigBtn.innerHTML = '<i class="fas fa-times"></i>'; // Cambia icono a "X" para cerrar configuración
+            toggleConfigBtn.innerHTML = '<i class="fas fa-times"></i>';
         }
     });
 
-    // Enviar configuración cuando cambia el switch
     recibirSwitch.addEventListener('change', function () {
         fetch(window.Laravel.configurarNotificacionesUrl, {
             method: 'POST',
@@ -143,5 +140,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(err => {
                 console.error('Error al actualizar configuración', err);
             });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sonidoSwitch = document.getElementById('sonidoMensajesSwitch');
+
+    const sonidoActivo = localStorage.getItem('chatSonidoActivo');
+    sonidoSwitch.checked = sonidoActivo !== 'false';
+
+    sonidoSwitch.addEventListener('change', () => {
+        localStorage.setItem('chatSonidoActivo', sonidoSwitch.checked);
     });
 });
