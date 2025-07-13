@@ -154,6 +154,7 @@ Route::middleware('auth')->group(function () {
     //Rutas para Notificaciones
     Route::post('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
     Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
+    Route::post('/notificaciones/configurar', [NotificationController::class, 'configurar'])->name('notificaciones.configurar');
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');

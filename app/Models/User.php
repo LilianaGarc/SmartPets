@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    
+
     // Relaciones con otros modelos
     // Modelo Veterinaria
 
@@ -111,6 +111,7 @@ class User extends Authenticatable
         'email',
         'password',
         'usertype',
+        'recibir_notificaciones'
     ];
 
     protected $hidden = [
