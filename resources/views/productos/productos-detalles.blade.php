@@ -502,7 +502,6 @@
                     @auth
                         @if( auth()->check() && auth()->id()===$producto->user_id)
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-auto">
 

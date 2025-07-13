@@ -65,8 +65,6 @@
                                 <span class="h5 text-orange me-2">{{ $favorito->producto->precio }}</span>
                             </div>
                             <div>
-                                <!--<button class="btn btn-outline-primary btn-sm me-2">Agregar al carrito</button>-->
-                                <!--Arreglar y agregar la ruta de tellas que se borró-->
                                 <a href="{{route('productos.show', $favorito->producto->id)}}" class="btn btn-sm bg-orange text-white">Ver producto</a>
                             </div>
                         </div>
