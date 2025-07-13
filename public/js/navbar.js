@@ -101,3 +101,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleConfigBtn = document.getElementById('toggleConfigBtn');
+    const notificationList = document.getElementById('notificationList');
+    const notificationConfig = document.getElementById('notificationConfig');
+    const recibirSwitch = document.getElementById('recibirNotificacionesSwitch');
+
+    toggleConfigBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const configVisible = notificationConfig.style.display === 'block';
+        if (configVisible) {
+            // Mostrar lista notificaciones
+            notificationConfig.style.display = 'none';
+            notificationList.style.display = 'block';
+            toggleConfigBtn.innerHTML = '<i class="fas fa-cog"></i>';
+        } else {
+            // Mostrar configuración
+            notificationConfig.style.display = 'block';
+            notificationList.style.display = 'none';
+            toggleConfigBtn.innerHTML = '<i class="fas fa-times"></i>'; // Cambia icono a "X" para cerrar configuración
+        }
+    });
+
+    // Enviar configuración cuando cambia el switch
+    recibirSwitch.addEventListener('change', function () {
+        fetch(window.Laravel.configurarNotificacionesUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': window.Laravel.csrfToken
+            },
+            body: JSON.stringify({
+                recibir_notificaciones: recibirSwitch.checked
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(err => {
+                console.error('Error al actualizar configuración', err);
+            });
+    });
+});

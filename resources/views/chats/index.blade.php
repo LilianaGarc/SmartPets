@@ -223,6 +223,30 @@
 </div>
 
 
+<div id="galeria-modal" class="galeria-overlay">
+    <div class="galeria-content">
+        <span class="cerrar-galeria">✖</span>
+
+        <button class="galeria-prev" aria-label="Anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#fff" viewBox="0 0 24 24">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+        </button>
+
+        <img id="galeria-imagen" src="" alt="Imagen del chat principal">
+
+        <button class="galeria-next" aria-label="Siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#fff" viewBox="0 0 24 24">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+            </svg>
+        </button>
+
+        <div class="galeria-miniaturas" id="miniaturas-container">
+        </div>
+    </div>
+</div>
+
+
 <script>
     window.chatConfig = {
         chatActivoId: {{ $chatActivo ? $chatActivo->id : 'null' }},
@@ -267,6 +291,7 @@
         });
     });
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

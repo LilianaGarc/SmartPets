@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('usertype')->default('user');
             $table->string('email')->unique();
             $table->string('fotoperfil')->nullable();
+            $table->boolean('recibir_notificaciones')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
