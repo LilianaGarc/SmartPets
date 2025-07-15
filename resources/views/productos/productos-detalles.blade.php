@@ -529,17 +529,17 @@
                     <p class="mb-4">{{$producto->descripcion}}</p>
                     <!-- Botones de Acción -->
                     @auth
-
+                    <div class="d-flex align-items-center gap-3 mt-3">
                         <a href="{{route('chats.iniciar', $producto->user_id)}} ?
                         mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
                         $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
-                           class="btn btn-primary mb-2">
+                           class="btn btn-primary">
                             <i class="fas fa-comment-dots"></i> Enviar Mensaje
                         </a>
 
                         @if( auth()->check() && auth()->id()===$producto->user_id)
                             <div class="d-grid gap-2">
-                                <div class="row d-flex justify-content-center">
+                                <div class="row d-flex justify-content-center mt-3">
                                     <div class="col-auto">
                                         <button class="btn btn-warning"
                                                 onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
@@ -558,9 +558,11 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+
                         @endif
+                            </div>
                     @endauth
+                    </div>
                 </div>
 
                 @if($errors->any())
