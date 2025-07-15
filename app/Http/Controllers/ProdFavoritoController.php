@@ -15,7 +15,7 @@ class ProdFavoritoController extends Controller
 
         $prod_favoritos = ProdFavorito::where('user_id', $user->id)
             ->with('producto')
-            ->get();
+            ->paginate(6);
 
 
         return view('productos.productos-guardados', [
