@@ -533,7 +533,7 @@
                         <a href="{{route('chats.iniciar', $producto->user_id)}} ?
                         mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
                         $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
-                           class="btn btn-primary">
+                           class="btn btn-primary text-white">
                             <i class="fas fa-comment-dots"></i> Enviar Mensaje
                         </a>
 
@@ -541,9 +541,9 @@
                             <div class="d-grid gap-2">
                                 <div class="row d-flex justify-content-center mt-3">
                                     <div class="col-auto">
-                                        <button class="btn btn-warning"
+                                        <button class="btn btn-warning text-white"
                                                 onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
-                                            Editar
+                                               <i class="fas fa-edit"></i> Editar
                                         </button>
                                     </div>
                                     <div class="col-auto">
@@ -551,9 +551,9 @@
                                               action="{{ route('productos.destroy', $producto->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
                                                     data-bs-target="#ModalProducto">
-                                                Eliminar
+                                                <i class="fas fa-trash-alt"></i> Eliminar
                                             </button>
                                         </form>
                                     </div>
