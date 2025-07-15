@@ -105,22 +105,8 @@
         @endforelse
     </div>
 
-    <!-- Paginación -->
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <small class="text-muted">Página 1 de 3</small>
-        <nav>
-            <ul class="pagination pagination-sm mb-0">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Anterior</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link bg-orange border-0" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-            </ul>
-        </nav>
+    <div class="d-flex justify-content-center mt-4">
+        {{ $prod_favoritos->links('pagination::bootstrap-5') }}
     </div>
 
     <!-- Continuar comprando -->
