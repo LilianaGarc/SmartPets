@@ -651,6 +651,7 @@
                                         <div class="accordion-body">
                                             <strong>{{ $resenia->titulo }}</strong>
                                             <p>{{ $resenia->contenido }}</p>
+                                            <small class="text-muted">Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
 
                                             <!-- Button trigger modal -->
                                             <!-- Eliminar Reseña -->
