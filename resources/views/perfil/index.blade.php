@@ -65,10 +65,11 @@
             </p>
 
             <div class="acciones">
-                <!-- Botón para abrir el modal -->
-                <button type="button" class="btn-actualizar-foto" id="abrirModalFoto">
-                    Actualizar foto de perfil
-                </button>
+                <form action="{{ route('perfil.actualizarFoto') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="fotoInput" class="btn-actualizar-foto">Actualizar foto de perfil</label>
+                    <input type="file" name="fotoperfil" id="fotoInput" accept="image/*" onchange="this.form.submit()" hidden>
+                </form>
 
                 <a href="{{ route('profile.edit') }}" title="Editar perfil">
                     <i data-lucide="settings" class="icono"></i>
@@ -142,7 +143,6 @@
                 @endforeach
             @endif
         </div>
-
 
         <div id="solicitudes" class="grid">
             @if($adopcionesSolicitadas->isEmpty())

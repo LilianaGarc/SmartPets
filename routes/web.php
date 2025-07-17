@@ -35,7 +35,7 @@ Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicit
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
-Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index')->middleware('no-cache');
+Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
 
 
 // Rutas para productos y categorías (públicas)
@@ -157,7 +157,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/notificaciones/configurar', [NotificationController::class, 'configurar'])->name('notificaciones.configurar');
 
     // Veterinarias
-    Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create')->middleware('no-cache');
+    Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
 
     Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
 
