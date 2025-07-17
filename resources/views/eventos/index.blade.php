@@ -94,7 +94,8 @@
             <div class="card h-100 shadow-sm border vet-anim position-relative">
                 {{-- Imagen --}}
                 @if ($evento->imagen)
-                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
+                    <div class="card-img-top bg-light d-flex align-items-center
+                    justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
                         <img src="{{ asset('storage/' . $evento->imagen) }}"
                             alt="Imagen del evento"
                             style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.3s;">

@@ -45,12 +45,31 @@
         <div class="info">
             <h2>{{ $user->name }}</h2>
             <p>{{ $user->email }}</p>
+            @if($user->telefono)
+                <p><i class="fas fa-phone"></i> {{ $user->telefono }}</p>
+            @endif
+            @if($user->direccion)
+                <p><i class="fas fa-map-marker-alt"></i> {{ $user->direccion }}</p>
+            @endif
+            @if($user->bio)
+                <p><i class="fas fa-user-edit"></i> {{ $user->bio }}</p>
+            @endif
+            <p class="mb-0 text-muted">Miembro desde: {{ $user->created_at->format('d/m/Y') }}</p>
+            <p>
+                <strong>Estado:</strong>
+                @if($user->en_linea)
+                    <span class="badge bg-success">En línea</span>
+                @else
+                    <span class="badge bg-secondary">Desconectado</span>
+                @endif
+            </p>
+
             <div class="acciones">
-                <form action="{{ route('perfil.actualizarFoto') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <label for="fotoInput" class="btn-actualizar-foto">Actualizar foto de perfil</label>
-                    <input type="file" name="fotoperfil" id="fotoInput" accept="image/*" onchange="this.form.submit()" hidden>
-                </form>
+                <!-- Botón para abrir el modal -->
+                <button type="button" class="btn-actualizar-foto" id="abrirModalFoto">
+                    Actualizar foto de perfil
+                </button>
+
                 <a href="{{ route('profile.edit') }}" title="Editar perfil">
                     <i data-lucide="settings" class="icono"></i>
                 </a>
@@ -192,8 +211,5 @@
 </div>
 <script src="{{ asset('js/perfil.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
 </body>
 </html>

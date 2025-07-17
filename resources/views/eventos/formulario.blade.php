@@ -97,7 +97,7 @@
                     <div class="col-md-3">
                         <div class="form-floating">
                             <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" id="hora_inicio" name="hora_inicio"
-                                   placeholder="Hora de inicio" value="{{ old('hora_inicio', $evento->hora_inicio ?? '') }}" required aria-label="Hora de inicio">
+                                   placeholder="Hora de inicio" value="{{ old('hora_inicio', isset($evento) ? \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i') : '') }}" required aria-label="Hora de inicio">
                             <label for="hora_inicio">Hora inicio <span style="color:red">*</span></label>
                             @error('hora_inicio')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -107,7 +107,7 @@
                     <div class="col-md-3">
                         <div class="form-floating">
                             <input type="time" class="form-control @error('hora_fin') is-invalid @enderror" id="hora_fin" name="hora_fin"
-                                   placeholder="Hora de fin" value="{{ old('hora_fin', $evento->hora_fin ?? '') }}" required aria-label="Hora de fin">
+                                   placeholder="Hora de fin" value="{{ old('hora_fin', isset($evento) ? \Carbon\Carbon::parse($evento->hora_fin)->format('H:i') : '') }}" required aria-label="Hora de fin">
                             <label for="hora_fin">Hora fin <span style="color:red">*</span></label>
                             @error('hora_fin')
                                 <div class="invalid-feedback">{{ $message }}</div>

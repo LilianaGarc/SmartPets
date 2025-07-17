@@ -597,6 +597,13 @@
                 });
             }, 1);
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            history.pushState(null, null, location.href);
+            window.onpopstate = function () {
+                window.location.href = "{{ route('veterinarias.index') }}";
+            };
+        });
     </script>
 
     <!-- Vista previa de imágenes -->

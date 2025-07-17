@@ -48,7 +48,19 @@
                 </select>
                 <label for="usertype">Tipo de usuario</label>
             </div>
-
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" value="{{ isset($user) ? $user->telefono : old('telefono') }}">
+                <label for="telefono">Teléfono</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" value="{{ isset($user) ? $user->direccion : old('direccion') }}">
+                <label for="direccion">Dirección</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="descripcion" name="descripcion"
+                placeholder="Descripción" value="{{ isset($user) ? $user->descripcion : old ('descripcion') }}">
+                <label for="descripcion">Descripción</label>
+            </div>
             <br>
             <button type="submit" class="btn">Guardar</button>
             <button type="reset" class="btn">Cancelar</button>

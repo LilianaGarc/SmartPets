@@ -57,4 +57,21 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function enviarCodigoVerificacion(Request $request)
+    {
+        $user = auth()->user();
+        $codigo = rand(100000, 999999);
+
+        // Guarda el código en caché por 10 minutos
+        cache()->put('codigo_verificacion_' . $user->id, $codigo, now()->addMinutes(10));
+
+        // Envía el código por correo
+        \Mail::raw("Tu código de verificación es: $codigo", function($message) use ($user) {
+            $message->to($user->email)
+                    ->subject('Código de verificación para cambio de contraseña');
+        });
+
+        return response()->json(['success' => true]);
+    }
 }

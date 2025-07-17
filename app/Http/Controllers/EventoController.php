@@ -139,7 +139,7 @@ class EventoController
             'descripcion' => 'required|string',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:15',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // La imagen es opcional
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'modalidad_evento' => 'required|in:gratis,pago',
             'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
             'hora_inicio' => 'required|date_format:H:i',

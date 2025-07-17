@@ -35,7 +35,7 @@ Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicit
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
-Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index')->middleware('no-cache');
 
 
 // Rutas para productos y categorías (públicas)
@@ -88,7 +88,7 @@ Route::delete('/reacciones/{publicacion}', [ReaccionController::class, 'destroy'
 Route::get('/eventos/{id}', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
 
 // Rutas públicas de chatbot y mascota ideal
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'prevenir-retorno'])->group(function() {
     Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
     Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
     Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');
@@ -156,7 +156,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
 
     // Veterinarias
-    Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
+    Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create')->middleware('no-cache');
 
     Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
 
@@ -264,4 +264,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');
 });
 
+Route::get('/logout', function () {
+    return redirect()->route('login');
+});
+
 require __DIR__.'/auth.php';
+
+Route::post('/enviar-codigo-verificacion', [\App\Http\Controllers\ProfileController::class, 'enviarCodigoVerificacion'])
+    ->name('enviar.codigo.verificacion')
+    ->middleware('auth');

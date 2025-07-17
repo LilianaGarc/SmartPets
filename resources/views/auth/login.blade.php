@@ -1,3 +1,5 @@
+@section('title', 'Iniciar Sesión')
+
 <x-guest-layout>
 
     @if ($errors->any())
@@ -14,7 +16,7 @@
         <div class="container-form">
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
-                <h2><strong>Iniciar Sesión</strong></h2>
+                <h1><strong>Iniciar Sesión</strong></h1>
                 <span>Use su correo y contraseña</span>
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
@@ -24,7 +26,7 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password" name="password" placeholder="Contraseña">
                 </div>
-                <a href="#">¿Olvidaste tu contraseña?</a>
+                <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
                 <button>INICIAR SESIÓN</button>
             </form>
         </div>
@@ -136,8 +138,33 @@
                 moveGifRandomly();
             });
         </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const btnSignIn = document.getElementById("btn-sign-in");
+    const btnSignUp = document.getElementById("btn-sign-up");
 
+    if (btnSignIn) {
+        btnSignIn.addEventListener("click", () => {
+            document.title = "Iniciar Sesión";
+        });
+    }
+    if (btnSignUp) {
+        btnSignUp.addEventListener("click", () => {
+            document.title = "Registrarse";
+        });
+    }
+});
+</script>
+<style>
+    .link-recuperar {
+        color: #ff7f50; /* Color naranja */
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-
-
+    .link-recuperar:hover {
+        text-decoration: underline;
+    }
+    
+</style>
 </x-guest-layout>

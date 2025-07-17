@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Adopcion;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -111,6 +112,8 @@ class User extends Authenticatable
         'email',
         'password',
         'usertype',
+        'telefono',
+        'direccion',
     ];
 
     protected $hidden = [
@@ -130,5 +133,14 @@ class User extends Authenticatable
     public function getEsAdminAttribute()
     {
         return $this->usertype === 'admin';
+    }
+
+    public function getEnLineaAttribute()
+    {
+        // Verifica si hay una sesión activa para este usuario
+        return \DB::table('sessions')
+            ->where('user_id', $this->id)
+            ->where('last_activity', '>', now()->subMinutes(5)->timestamp)
+            ->exists();
     }
 }
