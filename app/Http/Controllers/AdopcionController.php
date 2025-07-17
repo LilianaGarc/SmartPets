@@ -265,7 +265,9 @@ class AdopcionController extends Controller
 
         $usuarioCreador = Auth::user();
 
-        $usuarios = \App\Models\User::where('id', '!=', $usuarioCreador->id)->get();
+        $usuarios = \App\Models\User::where('id', '!=', $usuarioCreador->id)
+            ->where('recibir_notificaciones', true)
+            ->get();
 
         foreach ($usuarios as $usuario) {
             \App\Models\Notificacion::create([

@@ -12,7 +12,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    
+
     // Relaciones con otros modelos
     // Modelo Veterinaria
 
@@ -114,6 +114,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'usertype',
         'telefono',
         'direccion',
+        'recibir_notificaciones'
     ];
 
     protected $hidden = [

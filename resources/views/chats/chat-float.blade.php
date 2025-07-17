@@ -182,12 +182,16 @@
                     badge.style.display = 'flex';
 
                     if (totalNoLeidos > notificacionesAnteriores) {
-                        sonido.currentTime = 0;
-                        sonido.play().catch(() => {});
+                        const sonidoActivo = localStorage.getItem('chatSonidoActivo');
+                        if (sonidoActivo !== 'false') {
+                            sonido.currentTime = 0;
+                            sonido.play().catch(() => {});
+                        }
 
                         boton.classList.add('bounce');
                         setTimeout(() => boton.classList.remove('bounce'), 600);
                     }
+
                 } else {
                     badge.style.display = 'none';
                 }
