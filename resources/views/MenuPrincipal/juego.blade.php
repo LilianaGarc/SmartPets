@@ -10,8 +10,8 @@
         }
         body {
             margin: 0;
-            background-color: #ffffff;
             font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -37,13 +37,106 @@
             overflow: hidden;
             transform-origin: top left;
         }
+        .floating-squares-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .squares {
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+        .square {
+            animation: squares 9.5s linear infinite;
+            align-self: flex-end;
+            width: 1em;
+            height: 1em;
+            transform: translateY(100%);
+            background: #a8d0ff;
+        }
+        .square:nth-child(2) {
+            height: 1.5em;
+            width: 3em;
+            animation-delay: 1s;
+            animation-duration: 17s;
+            background: #ffd3a3;
+            filter: blur(5px);
+        }
+        .square:nth-child(3) {
+            height: 2em;
+            width: 1em;
+            animation-delay: 1.5s;
+            animation-duration: 8s;
+            background: #ffffff;
+        }
+        .square:nth-child(4) {
+            height: 1em;
+            width: 1.5em;
+            animation-delay: 0.5s;
+            filter: blur(3px);
+            background: #a8d0ff;
+            animation-duration: 13s;
+        }
+        .square:nth-child(5) {
+            height: 1.25em;
+            width: 2em;
+            animation-delay: 4s;
+            filter: blur(2px);
+            background: #ffd3a3;
+            animation-duration: 11s;
+        }
+        .square:nth-child(6) {
+            height: 2.5em;
+            width: 2em;
+            animation-delay: 2s;
+            filter: blur(1px);
+            background: #a8d0ff;
+            animation-duration: 9s;
+        }
+        .square:nth-child(7) {
+            height: 5em;
+            width: 2em;
+            filter: blur(2.5px);
+            background: #ffd3a3;
+            animation-duration: 12s;
+        }
+        .square:nth-child(8) {
+            height: 1em;
+            width: 3em;
+            animation-delay: 5s;
+            filter: blur(6px);
+            background: #ffffff;
+            animation-duration: 18s;
+        }
+        .square:nth-child(9) {
+            height: 3em;
+            width: 2.4em;
+            animation-delay: 6s;
+            background: #a8d0ff;
+            filter: blur(0.5px);
+            animation-duration: 12s;
+        }
+        @keyframes squares {
+            from {
+                transform: translateY(100%) rotate(-50deg);
+            }
+            to {
+                transform: translateY(calc(-100vh - 100%)) rotate(20deg);
+            }
+        }
         .ground-filler {
             position: absolute;
             bottom: 0;
             height: 6vh;
             width: 100%;
             background-color: #343e46;
-            z-index: 0;
+            z-index: 1;
         }
         .background {
             position: absolute;
@@ -54,7 +147,7 @@
             background-size: contain;
             background-repeat: repeat-x;
             animation: moveBg 100s linear infinite;
-            z-index: 1;
+            z-index: 2;
         }
         @keyframes moveBg {
             0% { transform: translateX(0); }
@@ -68,36 +161,32 @@
             left: 3rem;
             background-image: url('https://media.tenor.com/f5IqNksAcW0AAAAi/woof-running.gif');
             background-size: cover;
-            z-index: 2;
+            z-index: 3;
+        }
+        #obstacle, #obstacle2 {
+            width: 4rem;
+            height: 4rem;
+            background-size: cover;
+            position: absolute;
+            bottom: 6vh;
+            left: 100%;
+            z-index: 3;
         }
         #obstacle {
-            width: 4rem;
-            height: 4rem;
             background-image: url('{{ asset('images/bebe.png') }}');
-            background-size: cover;
-            position: absolute;
-            bottom: 6vh;
-            left: 100%;
-            z-index: 2;
         }
         #obstacle2 {
-            width: 4rem;
-            height: 4rem;
             background-image: url('{{ asset('images/bebe2.png') }}');
-            background-size: cover;
-            position: absolute;
-            bottom: 6vh;
-            left: 100%;
-            z-index: 2;
         }
         .jump {
             animation: jump 0.5s ease-out;
         }
         @keyframes jump {
             0% { bottom: 6vh; }
-            50% { bottom: 22vh; }
+            50% { bottom: 30vh; }
             100% { bottom: 6vh; }
         }
+
         .score {
             position: absolute;
             top: 1rem;
@@ -110,7 +199,7 @@
             padding: 0.5rem 1rem;
             border-radius: 0.625rem;
             box-shadow: 0 0 0.4rem #ababab;
-            z-index: 3;
+            z-index: 4;
         }
         .game-over {
             position: absolute;
@@ -125,7 +214,7 @@
             padding: 2rem;
             border-radius: 1rem;
             box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.3);
-            z-index: 3;
+            z-index: 5;
         }
         .game-over button {
             margin-top: 1rem;
@@ -156,42 +245,6 @@
         .sound-button:hover {
             background-color: #1a4cab;
         }
-        body.dark-mode {
-            background-color: #1a1a1a;
-        }
-        body.dark-mode .game-container {
-            background-color: #2a2a2a;
-        }
-        body.dark-mode .score,
-        body.dark-mode .game-over {
-            background: rgba(0, 0, 0, 0.7);
-            color: #ffffff;
-        }
-        body.dark-mode .game-over button {
-            background-color: #ffffff;
-            color: #000000;
-        }
-        body.dark-mode .game-over button:hover {
-            background-color: #dddddd;
-        }
-        body.light-mode {
-            background-color: #ffffff;
-        }
-        body.light-mode .game-container {
-            background-color: #ffffff;
-        }
-        body.light-mode .score,
-        body.light-mode .game-over {
-            background: rgba(255, 255, 255, 0.85);
-            color: #1e4183;
-        }
-        body.light-mode .game-over button {
-            background-color: #1e4183;
-            color: white;
-        }
-        body.light-mode .game-over button:hover {
-            background-color: #1a4cab;
-        }
         .level-up-effect {
             position: absolute;
             top: 50%;
@@ -204,31 +257,17 @@
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow:
-                0 0 10px rgba(255, 215, 0, 0.5),
-                0 0 20px rgba(255, 215, 0, 0.4),
-                2px 2px 8px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.4), 2px 2px 8px rgba(0, 0, 0, 0.2);
             z-index: 10;
             opacity: 0;
             pointer-events: none;
             animation: goldPop 2s ease-out;
         }
         @keyframes goldPop {
-            0% {
-                transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-                opacity: 0;
-            }
-            30% {
-                transform: translate(-50%, -50%) scale(1.3) rotate(2deg);
-                opacity: 1;
-            }
-            70% {
-                transform: translate(-50%, -50%) scale(1.1) rotate(-2deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.6);
-                opacity: 0;
-            }
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            25% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
         }
     </style>
 </head>
@@ -236,6 +275,19 @@
 @include('MenuPrincipal.Navbar')
 <div class="game-wrapper">
     <div class="game-container">
+        <div class="floating-squares-bg">
+            <div class="squares">
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+            </div>
+        </div>
         <div class="ground-filler"></div>
         <div class="background"></div>
         <div id="levelUpEffect" class="level-up-effect"></div>
