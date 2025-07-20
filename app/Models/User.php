@@ -120,6 +120,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'usertype',
         'telefono',
         'direccion',
+        'mascota_virtual',
+        'nombre_mascota_virtual',
+        'hambre_mascota_virtual',
+        'felicidad_mascota_virtual',
         'recibir_notificaciones'
     ];
 
