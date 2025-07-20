@@ -15,6 +15,7 @@ use App\Http\Controllers\{AdopcionController,
     ProdFavoritoController,
     ProductoController,
     PublicacionController,
+    PuntajeController,
     ReaccionController,
     SolicitudController,
     UserController,
@@ -34,7 +35,6 @@ Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopcione
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
-Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
 
 
@@ -155,6 +155,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
     Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
     Route::post('/notificaciones/configurar', [NotificationController::class, 'configurar'])->name('notificaciones.configurar');
+
+    //Rutas para juego y ranking
+    Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
+    Route::post('/guardar-puntaje', [PuntajeController::class, 'store'])->name('puntaje.store');
+    Route::get('/ranking', [PuntajeController::class, 'ranking'])->name('puntaje.ranking');
+    Route::get('/ranking/json', [PuntajeController::class, 'rankingJson'])->name('puntaje.rankingJson');
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
