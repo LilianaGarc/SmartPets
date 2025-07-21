@@ -107,6 +107,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->chatsComoUsuario1->merge($this->chatsComoUsuario2);
     }
 
+    public function puntajes()
+    {
+        return $this->hasMany(Puntaje::class, 'id_usuario');
+    }
+
+
     protected $fillable = [
         'name',
         'email',
@@ -114,6 +120,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'usertype',
         'telefono',
         'direccion',
+        'mascota_virtual',
+        'nombre_mascota_virtual',
+        'hambre_mascota_virtual',
+        'felicidad_mascota_virtual',
         'recibir_notificaciones'
     ];
 
