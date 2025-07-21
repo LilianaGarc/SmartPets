@@ -417,6 +417,16 @@
         margin-top: 10px; /* Espaciado superior */
         margin-left: 2em;
     }
+
+    /* Hora en gris oscuro cuando el acordeón está abierto (naranja) */
+    .accordion-button:not(.collapsed) .user-info small {
+        color: #4a4a4a; /* Gris oscuro */
+    }
+
+    /* Hora en gris claro cuando el acordeón está cerrado (azul) */
+    .accordion-button.collapsed .user-info small {
+        color: #d3d3d3; /* Gris claro */
+    }
 </style>
 
 @section('contenido')
@@ -641,7 +651,11 @@
                                                             : asset('images/fotodeperfil.webp');
                                                 @endphp
                                                 <img src="{{ $foto }}" alt="Foto de perfil" class="profile-image">
-                                                <span class="username">{{ $resenia->user->name }}</span>
+
+                                                <div>
+                                                    <span class="username">{{ $resenia->user->name }}</span>
+                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
+                                                </div>
                                             </div>
                                         </button>
 
@@ -651,7 +665,6 @@
                                         <div class="accordion-body">
                                             <strong>{{ $resenia->titulo }}</strong>
                                             <p>{{ $resenia->contenido }}</p>
-                                            <small class="text-muted">Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
 
                                             <!-- Button trigger modal -->
                                             <!-- Eliminar Reseña -->

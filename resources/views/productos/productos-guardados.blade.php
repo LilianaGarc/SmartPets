@@ -29,6 +29,7 @@
             display: flex; align-items: center; justify-content: center;
             color: white; font-weight: bold;
         }
+
     </style>
 
 
