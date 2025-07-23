@@ -23,6 +23,7 @@ class PerfilController extends Controller
 
     public function showPerfil($id)
     {
+        $productosUsuario = Auth::user()->productos()->with('categoria')->get();
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
 
@@ -37,7 +38,7 @@ class PerfilController extends Controller
             return $item['adopcion'] !== null;
         });
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas'));
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario'));
     }
 
 

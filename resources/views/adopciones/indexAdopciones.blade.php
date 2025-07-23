@@ -14,8 +14,6 @@
     <div class="page-title">
         <h1 class="page-title__text">Mascotas en Adopción</h1>
     </div>
-
-
     <div class="breadcrumb-container">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
@@ -253,5 +251,6 @@
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@include('MenuPrincipal.footer')
 </body>
 </html>

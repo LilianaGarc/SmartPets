@@ -711,6 +711,12 @@
                     <span>Productos</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('eventos.panel') }}">
+                    <img src="{{ asset('images/evento.png') }}" alt="Smart Pets">
+                    <span>Eventos</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </div>

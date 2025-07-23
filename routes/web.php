@@ -1,12 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    AdopcionController, CategoriaController, CalificacionController, ChatController, ChatbotController,
-    ComentarioController, EventoController, JuegoController, MensajeController, PerfilController,
-    ProductoController, PublicacionController, ReaccionController, SolicitudController, UserController, VeterinariaController,
+use App\Http\Controllers\{AdopcionController,
+    CategoriaController,
+    CalificacionController,
+    ChatController,
+    ChatbotController,
+    ComentarioController,
+    EventoController,
+    JuegoController,
+    MensajeController,
+    NotificationController,
+    PerfilController,
+    ProdFavoritoController,
+    ProductoController,
+    PublicacionController,
+    ReaccionController,
+    SolicitudController,
+    UserController,
+    VeterinariaController,
     ImagenController,
-    UbicacionController, ProfileController, HistoriaController
+    UbicacionController, 
+    ProfileController, HistoriaController
 };
 
 // Rutas públicas generales
@@ -15,11 +30,13 @@ Route::get('/index', fn() => view('MenuPrincipal.MenuPrincipal'))->name('index')
 Route::get('animacion', fn() => view('MenuPrincipal.Animacion'))->name('animacion');
 
 // Rutas públicas de recursos principales
-Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index');
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
+Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+
 
 // Rutas para productos y categorías (públicas)
 Route::resource('productos', ProductoController::class);
@@ -33,9 +50,15 @@ Route::delete('/productos/{producto}/resenias/{resenia}', [ProductoController::c
 Route::put('/productos/{producto}/resenias/{resenia}', [ProductoController::class, 'editarResenia'])->name('productos.editarResenia');
 Route::get('/productos/{producto}/resenias/{resenia}/editar', [ProductoController::class, 'mostrarFormularioEdicion'])->name('productos.mostrarFormularioEdicion');
 
-// Rutas públicas de veterinarias
-Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
+// Rutas para Productos Guardados
+Route::middleware(['auth'])->group(function () {
+    Route::post('/producto-guardado', [ProdFavoritoController::class, 'store'])->name('productos.guardar');
+    Route::post('/producto-guardado/destroy/{id}', [ProdFavoritoController::class, 'destroy'])->name('productos.eliminarGuardado');
+    Route::get('/mis-productos', function () {$productos = Auth::user()->productos()->get();return response()->json($productos);})->middleware('auth');
+    Route::get('/productos-guardados', [ProdFavoritoController::class, 'index'])->name('productos.guardados');
+});
 
+// Rutas públicas de veterinarias
 Route::get('/veterinarias/{id}', [VeterinariaController::class, 'show'])->name('veterinarias.show')->whereNumber('id');
 
 
@@ -53,6 +76,9 @@ Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'
 Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
 Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
+
+// Rutas publicas de eventos
+Route::get('/eventos/{id}', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
 
 // Rutas públicas de chatbot y mascota ideal
 Route::middleware(['auth'])->group(function() {
@@ -102,8 +128,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/solicitudes/{adopcion}/{solicitud}/aceptar', [SolicitudController::class, 'aceptar'])->name('solicitudes.aceptar');
     Route::post('/adopciones/{id_adopcion}/solicitudes/{id_solicitud}/cancelar', [SolicitudController::class, 'cancelarAceptacion'])->name('solicitudes.cancelar');
 
-    // Participar en eventos
+    // Eventos
+    Route::get('/eventos/crear', [EventoController::class, 'create'])->name('eventos.create');
+    Route::post('/eventos',[EventoController::class, 'store'])->name('eventos.store');
+    Route::get('/eventos/{id}/editar', [EventoController::class, 'edit'])->name('eventos.edit')->whereNumber('id');
+    Route::put('/eventos/{id}/editar', [EventoController::class, 'update'])->name('eventos.update')->whereNumber('id');
+    Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
+    Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
+
     Route::post('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
+    Route::post('eventos/{id}/dejar-participar', [EventoController::class, 'dejarParticipar'])->name('eventos.dejarParticipar');
 
     // Comentarios
     Route::post('/comentarios/{id}', [ComentarioController::class, 'store'])->name('comentarios.store');
@@ -118,7 +152,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/chats/iniciar/{userId}', [ChatController::class, 'iniciarChat'])->name('chats.iniciar');
     Route::get('/chats/{chat}/mensajes/nuevos', [MensajeController::class, 'getNuevosMensajes'])->name('mensajes.nuevos');
     Route::get('/usuarios-con-mensajes', [ChatController::class, 'usuariosConMensajes'])->name('usuarios.con.mensajes');
-    Route::put('/mensajes/{mensaje}', [MensajeController::class, 'update'])->name('mensajes.update');
+
+    //Rutas para Notificaciones
+    Route::post('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
+    Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
@@ -227,6 +264,3 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-
-

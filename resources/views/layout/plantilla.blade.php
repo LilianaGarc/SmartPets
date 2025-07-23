@@ -426,24 +426,24 @@
             }
 
             /* Carrusel de historias */
-            .story-card {
+            .historia-card {
                 width: 80px;
                 text-align: center;
                 cursor: pointer;
             }
-            .story-avatar {
+            .historia-avatar {
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
                 border: 3px solid #25d366;
                 object-fit: cover;
             }
-            .story-username {
+            .historia-username {
                 font-size: 12px;
                 margin-top: 5px;
                 color: #333;
             }
-            .create-story .story-create {
+            .create-historia .historia-create {
                 width: 60px;
                 height: 60px;
                 border-radius: 50%;
@@ -455,15 +455,15 @@
             }
 
         
-            .story-container {
+            .historia-container {
                 position: relative;
                 padding: 20px;
             }
-            .story-view-img {
+            .historia-img {
                 max-height: 85vh;
                 object-fit: contain;
             }
-            .story-progress-container {
+            .historia-progress-container {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -471,11 +471,16 @@
                 height: 5px;
                 background: rgba(255, 255, 255, 0.3);
             }
-            .story-progress-bar {
+            .historia-progress-bar {
                 width: 0%;
                 height: 100%;
                 background: #25d366;
                 transition: width 0.1s linear;
+            }
+
+            .nueva-historia{
+                width: 10rem !important;
+                height: auto !important;
             }
 
 
@@ -493,6 +498,7 @@
 <div class="container">
     @yield('contenido')
 </div>
+@yield('footer', View::make('MenuPrincipal.footer2'))
 
 <script>
     window.onload = function() {

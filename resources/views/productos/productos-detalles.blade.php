@@ -379,6 +379,18 @@
             width: 100%;
         }
     }
+    @keyframes marcadorAnim {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.3) rotate(15deg);
+        }
+        100% {
+            transform: scale(1) rotate(0deg);
+        }
+
+    }
 </style>
 
 @section('contenido')
@@ -444,6 +456,32 @@
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
                         <span class="stock-badge">En Stock</span>
+                        @auth
+                            @php
+                            $favorito = \App\Models\ProdFavorito::where('user_id', auth()->id())
+                                    ->where('producto_id', $producto->id)
+                                    ->first();
+                            @endphp
+
+                            <form id="favorito-form-{{$producto->id}}" method="POST" style="display: inline-block; margin-top: 1em">
+                                @csrf
+                                @if($favorito)
+                                    <input type="hidden" name="producto_id" value="{{$producto->id}}">
+                                    <button type="submit" formaction="{{route('productos.eliminarGuardado', $producto->id)}}"
+                                    class="btn btn-link p-0 m-0" title="eliminar producto guardado" style="width: 32px; height: 32px;">
+                                    <img src="{{ asset('images/marcador.png') }}" alt="Guardado" class="img-fluid" style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
+                                    </button>
+                                @else
+                                    <input type="hidden" name="producto_id" value="{{$producto->id}}">
+                                    <button type="submit" formaction="{{route('productos.guardar', $producto->id)}}"
+                                    class="btn btn-link p-0 m-0" title="guardar producto" style="width: 32px; height: 32px;">
+                                    <img src="{{ asset('images/marcadorVacio.png') }}" alt="No guardado" class="img-fluid" style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
+                                    </button>
+                                @endif
+
+
+                            </form>
+                        @endauth
                     </div>
 
                     <div class="mb-4">
@@ -716,4 +754,5 @@
                     }
                 });
             </script>
+
 @endsection

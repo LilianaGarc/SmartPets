@@ -12,8 +12,12 @@
 
     <div class="container">
         <div class="container-form">
+            <a href="{{ route('index') }}" class="home-button">
+                    <i class="fa-solid fa-house"></i><h3>Inicio</h3>
+                </a>
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
+
                 <h2><strong>Iniciar Sesión</strong></h2>
                 <span>Use su correo y contraseña</span>
                 <div class="container-input">

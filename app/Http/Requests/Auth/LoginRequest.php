@@ -38,19 +38,30 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-    {
-        $this->ensureIsNotRateLimited();
+{
+    \Illuminate\Support\Facades\App::setLocale('es');
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+    $this->ensureIsNotRateLimited();
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
+    $user = \App\Models\User::where('email', $this->input('email'))->first();
 
-        RateLimiter::clear($this->throttleKey());
+    if (! $user) {
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+        ]);
     }
+
+    if (! \Illuminate\Support\Facades\Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        \Illuminate\Support\Facades\RateLimiter::hit($this->throttleKey());
+
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'password' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+        ]);
+    }
+
+    \Illuminate\Support\Facades\RateLimiter::clear($this->throttleKey());
+}
+
 
     /**
      * Ensure the login request is not rate limited.

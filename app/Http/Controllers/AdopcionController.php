@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
 use App\Models\Solicitud;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,7 @@ class AdopcionController extends Controller
     {
         $nombre = $request->get('nombre');
 
-        $adopciones = Adopcion::with('usuario') // Asegúrate que tengas esta relación
+        $adopciones = Adopcion::with('usuario')
         ->where(function ($query) use ($nombre) {
             $query->whereHas('usuario', function ($q) use ($nombre) {
                 $q->where('name', 'LIKE', "%$nombre%");
@@ -249,7 +250,7 @@ class AdopcionController extends Controller
             }
         }
 
-        Adopcion::create([
+        $adopcion = Adopcion::create([
             'contenido' => $request->contenido,
             'imagen' => $imagenPrincipal,
             'imagenes_secundarias' => json_encode($imagenesSecundarias),
@@ -261,6 +262,27 @@ class AdopcionController extends Controller
             'ubicacion_mascota' => $request->ubicacion_mascota,
             'id_usuario' => Auth::id(),
         ]);
+
+        $usuarioCreador = Auth::user();
+
+        $usuarios = \App\Models\User::where('id', '!=', $usuarioCreador->id)->get();
+
+        foreach ($usuarios as $usuario) {
+            \App\Models\Notificacion::create([
+                'user_id' => $usuario->id,
+                'mensaje' => $usuarioCreador->name . ' creó una nueva publicación de adopción',
+                'visto' => false,
+                'data' => json_encode([
+                    'nombre' => $usuarioCreador->name,
+                    'foto_perfil' => $usuarioCreador->fotoperfil ? $usuarioCreador->fotoperfil : 'images/fotodeperfil.webp',
+                    'mensaje_detalle' => 'Creó una nueva publicación de adopción',
+                    'fecha' => Carbon::now()->toDateTimeString(),
+                    'imagen_adopcion' => $imagenPrincipal,
+                    'url_adopcion' => route('adopciones.show', ['id' => $adopcion->id]),
+                ]),
+            ]);
+        }
+
 
         return redirect()->route('adopciones.index')->with('success', 'La publicación de adopción se ha creado con éxito.');
     }

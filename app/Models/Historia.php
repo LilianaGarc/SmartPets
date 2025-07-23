@@ -9,11 +9,16 @@ class Historia extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'image_path'];
+    protected $fillable = ['user_id', 'media_path', 'media_type', 'expires_at'];
 
     public function user()
     {
          return $this->belongsTo(User::class);
+    }
+
+    public function isActive()
+    {
+        return now()->lt($this->expires_at);
     }
 
 }

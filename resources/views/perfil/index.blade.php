@@ -51,12 +51,18 @@
                     <label for="fotoInput" class="btn-actualizar-foto">Actualizar foto de perfil</label>
                     <input type="file" name="fotoperfil" id="fotoInput" accept="image/*" onchange="this.form.submit()" hidden>
                 </form>
-                <i data-lucide="settings" class="icono"></i>
+                <a href="{{ route('profile.edit') }}" title="Editar perfil">
+                    <i data-lucide="settings" class="icono"></i>
+                </a>
+
             </div>
             <div class="contador-general">
                 <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>
                 <p><strong>Solicitudes enviadas:</strong> <span class="contador-numero" data-numero="{{ $adopcionesSolicitadas->count() }}">0</span></p>
+            </div>
 
+            <div class="productos-guardados">
+                <img  class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
             </div>
 
         </div>
@@ -162,7 +168,26 @@
         <div id="publicaciones" class="grid"></div>
         <div id="veterinarias" class="grid"></div>
         <div id="eventos" class="grid"></div>
-        <div id="petshop" class="grid"></div>
+        <div id="petshop" class="grid">
+            @if($productosUsuario->isEmpty())
+                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado productos!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                </div>
+            @else
+                @foreach($productosUsuario as $producto)
+                    <div class="card">
+                        <a href="{{ route('productos.show', $producto->id) }}">
+                            <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Producto" class="img-card">
+                        </a>
+                        <div class="overlay-info">
+                            <p><strong>{{ $producto->nombre }}</strong></p>
+                            <p>Precio: ${{ number_format($producto->precio, 2) }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
 </div>
 <script src="{{ asset('js/perfil.js') }}"></script>

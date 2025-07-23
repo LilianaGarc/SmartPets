@@ -35,13 +35,17 @@
         }
 
         body {
-            background-color: #ffffff;
             width: 100%;
             height: 100vh;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            font-family: "Montserrat", sans-serif;
+            background: url('{{ asset('images/fondohuellas.png') }}') no-repeat center center fixed;
+            background-size: cover;
         }
 
         .container {
@@ -60,7 +64,6 @@
         .container:hover {
             transform: scale(1.03);
         }
-
 
         .image-esquina {
             position: fixed;
@@ -398,8 +401,6 @@
             background-image: url('{{ asset('images/gato1.gif') }}');
         }
 
-
-
         .alert-error {
             position: fixed;
             top: 10px;
@@ -411,13 +412,49 @@
             border-radius: 4px;
             z-index: 10000;
         }
+
+        .container-form {
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: inline-flex;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button i {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .home-button span {
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .home-button:hover{
+            transform: scale(1.03);
+            background-color: #18478b;
+            color: white;
+        }
+
     </style>
 
 </head>
 <body>
-
-<img src="{{ asset('images/esquinasuperior.png') }}" alt="Esquina superior" class="image-esquina image-superior-derecha">
-<img src="{{ asset('images/esquinainferior.png') }}" alt="Esquina inferior" class="image-esquina image-inferior-izquierda">
 
 
 {{ $slot }}

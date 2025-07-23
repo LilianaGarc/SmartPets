@@ -179,7 +179,8 @@
             </form>
         </div>
     </div>
-
+    @section('footer')
+    @endsection
     <script>
 
         // Detectar clic en el botón y abrir el selector de archivos

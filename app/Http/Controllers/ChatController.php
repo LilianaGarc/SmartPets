@@ -223,12 +223,21 @@ class ChatController
         $mensajePredefinido = request()->query('mensaje', '');
         $imagenMascota = request()->query('imagen_mascota', '');
 
-        return redirect()->route('chats.index', [
+        $parametros = [
             'chat_id' => $chat->id,
-            'mensaje' => $mensajePredefinido,
-            'imagen_mascota' => $imagenMascota,
-        ]);
+        ];
+
+        if (!empty($mensajePredefinido)) {
+            $parametros['mensaje'] = $mensajePredefinido;
+        }
+
+        if (!empty($imagenMascota)) {
+            $parametros['imagen_mascota'] = $imagenMascota;
+        }
+
+        return redirect()->route('chats.index', $parametros);
     }
+
 
 
 

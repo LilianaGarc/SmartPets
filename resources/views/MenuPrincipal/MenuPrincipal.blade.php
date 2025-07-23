@@ -10,26 +10,30 @@
 </head>
 <body>
 
-@include('MenuPrincipal.Navbar')
-<div class="image-carousel">
+@include('MenuPrincipal.Navbar')<div class="image-carousel">
     <div class="image-container">
+
         <div class="image-item">
+            <a href="{{ route('publicaciones.index') }}" class="image-link"></a>
             <img src="{{ asset('images/disfruta.webp') }}" alt="Comparte momentos con tus mascotas">
             <div class="carousel-text">Comparte momentos inolvidables con tus mascotas</div>
             <div class="carousel-subtext">El amor incondicional de una mascota transforma tu vida. ¡Vívelo cada día!</div>
         </div>
 
         <div class="image-item">
+            <a href="{{ route('adopciones.index') }}" class="image-link"></a>
             <img src="{{ asset('images/comparte.webp') }}" alt="Adopta y rescata mascotas">
             <div class="carousel-text black-text">Adopta y rescata, da un hogar lleno de amor</div>
             <div class="carousel-subtext black-text">Tu gesto de amor puede cambiar la vida de un animal. Haz la diferencia hoy mismo.</div>
         </div>
 
         <div class="image-item">
+            <a href="{{ route('eventos.index') }}" class="image-link"></a>
             <img src="{{ asset('images/eventos.webp') }}" alt="Asiste a eventos para apoyar a tus mascotas">
             <div class="carousel-text">Apoya el bienestar de tus mascotas en eventos especiales</div>
             <div class="carousel-subtext">Participa en eventos que promuevan el amor y el cuidado de los animales. ¡Tu presencia es valiosa!</div>
         </div>
+
     </div>
 
     <div class="carousel-dots">

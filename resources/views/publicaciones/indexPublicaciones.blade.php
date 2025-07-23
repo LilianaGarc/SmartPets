@@ -13,31 +13,18 @@
         </div>
     @endif
 
-    <div class="swiper mySwiper px-4">
-        <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-                <a href="{{ route('historias.create') }}" class="story-card create-story">
-                    <div class="story-create">+</div>
-                    <span class="story-username">Tu historia</span>
-                </a>
-            </div>
-
-            @foreach ($historias->groupBy('user_id') as $userHistorias)
-                @php $story = $userHistorias->first(); @endphp
-                <div class="swiper-slide">
-                    <div class="story-card"
-                        data-historias='@json($userHistorias)'
-                        onclick="handleStoryClick(this)">
-                        <img src="{{ asset('storage/' . $story->image_path) }}" alt="story" class="story-avatar">
-                        <span class="story-username">{{ $story->user->name }}</span>
-                    </div>
-                </div>
+    <!--@foreach ($users as $user)
+        <div class="story-user">
+            <h4>{{ $user->name }}</h4>
+            @foreach ($user->historias->where('expires_at', '>', now()) as $historia)
+                @if ($historia->media_type === 'image')
+                    <img src="{{ asset('storage/' . $historia->media_path) }}" alt="Historia" />
+                @else
+                    <video src="{{ asset('storage/' . $historia->media_path) }}" controls></video>
+                @endif
             @endforeach
-
         </div>
-    </div>
-
+    @endforeach-->
 
     <div class="row">
         <div class="container">
@@ -161,61 +148,61 @@
     </div>
 
     <script>
-    let storyImages = [];
-    let currentStoryIndex = 0;
-    let storyTimer;
+        let storyImages = [];
+        let currentStoryIndex = 0;
+        let storyTimer;
 
-    function handleStoryClick(element) {
-        const historias = JSON.parse(element.getAttribute('data-historias'));
-        if (!Array.isArray(historias) || historias.length === 0) return;
+        function handleStoryClick(element) {
+            const historias = JSON.parse(element.getAttribute('data-historias'));
+            if (!Array.isArray(historias) || historias.length === 0) return;
 
-        storyImages = historias.map(item => `/storage/${item.image_path}`);
-        currentStoryIndex = 0;
-        showStory(currentStoryIndex);
+            storyImages = historias.map(item => `/storage/${item.image_path}`);
+            currentStoryIndex = 0;
+            showStory(currentStoryIndex);
 
-        const modal = new bootstrap.Modal(document.getElementById('storyModal'));
-        modal.show();
-    }
-
-    function showStory(index) {
-        if (index >= storyImages.length) {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('storyModal'));
-            modal.hide();
-            return;
+            const modal = new bootstrap.Modal(document.getElementById('storyModal'));
+            modal.show();
         }
 
-        document.getElementById('storyImage').src = storyImages[index];
-        updateProgressBar(0);
-        let progress = 0;
+        function showStory(index) {
+            if (index >= storyImages.length) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('storyModal'));
+                modal.hide();
+                return;
+            }
 
-        clearInterval(storyTimer);
-        storyTimer = setInterval(() => {
-            progress += 1;
-            updateProgressBar(progress);
-            if (progress >= 100) {
+            document.getElementById('storyImage').src = storyImages[index];
+            updateProgressBar(0);
+            let progress = 0;
+
+            clearInterval(storyTimer);
+            storyTimer = setInterval(() => {
+                progress += 1;
+                updateProgressBar(progress);
+                if (progress >= 100) {
+                    currentStoryIndex++;
+                    showStory(currentStoryIndex);
+                }
+            }, 50);
+
+            document.getElementById('storyImage').onclick = () => {
+                clearInterval(storyTimer);
                 currentStoryIndex++;
                 showStory(currentStoryIndex);
-            }
-        }, 50);
+            };
+        }
 
-        document.getElementById('storyImage').onclick = () => {
+        function updateProgressBar(percent) {
+            document.getElementById('storyProgress').style.width = percent + '%';
+        }
+
+        document.getElementById('storyModal').addEventListener('hidden.bs.modal', () => {
             clearInterval(storyTimer);
-            currentStoryIndex++;
-            showStory(currentStoryIndex);
-        };
-    }
-
-    function updateProgressBar(percent) {
-        document.getElementById('storyProgress').style.width = percent + '%';
-    }
-
-    document.getElementById('storyModal').addEventListener('hidden.bs.modal', () => {
-        clearInterval(storyTimer);
-        storyImages = [];
-        currentStoryIndex = 0;
-        updateProgressBar(0);
-    });
-</script>
+            storyImages = [];
+            currentStoryIndex = 0;
+            updateProgressBar(0);
+        });
+    </script>
 
 
 

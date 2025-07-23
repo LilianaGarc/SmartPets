@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('historias', function (Blueprint $table) {
+        Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('media_path');
-            $table->enum('media_type', ['image', 'video']);
-            $table->timestamp('expires_at');
+            $table->integer('user_id');
+            $table->string('mensaje');
+            $table->boolean('visto')->default(false);
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('historias');
+        Schema::dropIfExists('notificaciones');
     }
 };

@@ -193,8 +193,8 @@ class VeterinariaController extends Controller
 
     public function index()
     {
-        $veterinarias = Veterinaria::paginate(6);
-        return view('veterinarias.index', compact('veterinarias'));
+        $veterinarias = Veterinaria::paginate(9);
+        return view('veterinarias.index')->with('veterinarias', $veterinarias);
     }
 
     public function create()

@@ -32,17 +32,20 @@ class HistoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:2048'
+            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
         ]);
-    
-        $path = $request->file('image')->store('stories', 'public');
-    
-        Story::create([
-            'user_id' => Auth::id(),
-            'image_path' => $path,
+
+        $file = $request->file('media');
+        $path = $file->store('stories', 'public');
+
+        $story = Historia::create([
+            'user_id' => auth()->id(),
+            'media_path' => $path,
+            'media_type' => $file->getMimeType() === 'video/mp4' ? 'video' : 'image',
+            'expires_at' => now()->addHours(24),
         ]);
-    
-        return redirect()->route('stories.index')->with('success', 'Historia creada');
+
+        return response()->json(['message' => 'Historia publicada', 'story' => $story]);
     }
 
     /**

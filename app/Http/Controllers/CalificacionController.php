@@ -78,7 +78,7 @@ class CalificacionController extends Controller
     {
         $request->validate([
             'calificacion' => 'required|integer|min:1|max:5',
-            'opinion' => 'nullable|string|max:500',
+            'opinion' => 'nullable|string|max:255',
         ]);
     
         $calificacion = Calificacion::findOrFail($id);

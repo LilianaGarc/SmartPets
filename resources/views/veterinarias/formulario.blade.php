@@ -28,7 +28,7 @@
             </a>
         </li>
     </ul>
-</div> 
+</div>
 
 <div class="container mt-4">
     <div class="card fade-in">
@@ -87,14 +87,14 @@
 
                     <div class="col-12 col-md-6">
                         <div class="form-floating">
-                            <input type="tel" class="form-control" id="telefono" placeholder="Número de teléfono" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
+                            <input type="text" inputmode="tel" class="form-control" id="telefono" placeholder="Número de teléfono" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
                             <label for="telefono">Número de teléfono</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <div class="form-floating">
-                            <input type="tel" class="form-control" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
+                            <input type="text" inputmode="tel" class="form-control" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
                             <label for="whatsapp">Número de WhatsApp</label>
                         </div>
                     </div>
@@ -144,35 +144,35 @@
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="ciudad" placeholder="Ciudad" name="ciudad" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->ciudad : old('ciudad') }}">
+                            <input type="text" inputmode="text" class="form-control" id="ciudad" placeholder="Ciudad" name="ciudad" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->ciudad : old('ciudad') }}">
                             <label for="ciudad">Ciudad</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="municipio" placeholder="Municipio" name="municipio" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->municipio : old('municipio') }}">
+                            <input type="text" inputmode="text" class="form-control" id="municipio" placeholder="Municipio" name="municipio" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->municipio : old('municipio') }}">
                             <label for="municipio">Municipio</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="direccion" placeholder="Dirección" name="direccion" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
+                            <input type="text" inputmode="text" class="form-control" id="direccion" placeholder="Dirección" name="direccion" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
                             <label for="direccion">Dirección</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="number" step="any" class="form-control" id="latitud" placeholder="Latitud" name="latitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control" id="latitud" placeholder="Latitud" name="latitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}">
                             <label for="latitud">Latitud</label>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="number" step="any" class="form-control" id="longitud" placeholder="Longitud" name="longitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->longitud : old('longitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control" id="longitud" placeholder="Longitud" name="longitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->longitud : old('longitud') }}">
                             <label for="longitud">Longitud</label>
                         </div>
                     </div>
@@ -269,7 +269,8 @@
             </div>
         </div>
     </div>
-
+    @section('footer')
+    @endsection
     <style>
         .breadcrumb-container {
             display: flex;
@@ -685,7 +686,7 @@
             <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="this.parentElement.remove()">
                 <i class="fa-solid fa-trash"></i>
             </button>
-            
+
             <input type="hidden" name="redes[${socialCount}][tipo_red_social]" value="${network}">
             <input type="hidden" name="redes[${socialCount}][nombre_usuario]" value="${username}">`;
 
@@ -721,4 +722,5 @@
             redContainer.remove();
         }
     </script>
+
     @endsection
