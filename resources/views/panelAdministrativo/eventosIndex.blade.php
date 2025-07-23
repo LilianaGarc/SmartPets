@@ -11,7 +11,12 @@
             {{ session('fracaso') }}
         </div>
     @endif
-    <h3>  |   Eventos </h3>
+    <div class="d-flex align-items-center mb-2">
+        <h3 class="mb-0">| Eventos</h3>
+        <a href="#" class="btn ms-auto" role="button">
+            <h8>Nueva publicación <i class="fas fa-plus"></i></h8>
+        </a>
+    </div>
     <hr>
     <form action="{{ route('eventos.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
         <div class="row">
