@@ -14,6 +14,46 @@ class EventoController
         return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
     }
 
+    public function panelcreate()
+    {
+        return view('panelAdministrativo.eventosForm');
+    }
+
+    public function panelstore()
+    {
+        $idUsuario = auth()->id();
+
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:250',
+            'fecha' => 'required|date|after_or_equal:today',
+            'telefono' => 'required|string|max:15',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'modalidad_evento' => 'required|in:gratis,pago',
+            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
+            'ubicacion' => 'required|string|max:255',
+        ]);
+
+        $rutaImagen = $request->file('imagen')->store('eventos', 'public');
+        Evento::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'telefono' => $request->telefono,
+            'imagen' => $rutaImagen,
+            'modalidad_evento' => $request->modalidad_evento,
+            'precio' => $request->modalidad_evento === 'pago' ? $request->precio : null,
+            'hora_inicio' => $request->hora_inicio,
+            'hora_fin' => $request->hora_fin,
+            'ubicacion' => $request->ubicacion,
+            'id_user' => $idUsuario,
+        ]);
+
+        return redirect()->route('eventos.panelindex')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
+    }
+
     public function search( Request $request)
     {
         $nombre = $request->get('nombre');
@@ -139,7 +179,7 @@ class EventoController
             'descripcion' => 'required|string',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:15',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // La imagen es opcional
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'modalidad_evento' => 'required|in:gratis,pago',
             'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
             'hora_inicio' => 'required|date_format:H:i',

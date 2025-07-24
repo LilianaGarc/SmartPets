@@ -15,12 +15,13 @@ use App\Http\Controllers\{AdopcionController,
     ProdFavoritoController,
     ProductoController,
     PublicacionController,
+    PuntajeController,
     ReaccionController,
     SolicitudController,
     UserController,
     VeterinariaController,
     ImagenController,
-    UbicacionController, 
+    UbicacionController,
     ProfileController, HistoriaController
 };
 
@@ -34,6 +35,7 @@ Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index'
 Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones.index');
 Route::get('/solicitudes', [SolicitudController::class, 'index'])->name('solicitudes.index');
 Route::get('/publicaciones', [PublicacionController::class, 'index'])->name('publicaciones.index');
+Route::get('/reacciones', [ReaccionController::class, 'index'])->name('reacciones.index');
 Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
 Route::get('/veterinarias', [VeterinariaController::class, 'index'])->name('veterinarias.index');
 
@@ -81,7 +83,7 @@ Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'de
 Route::get('/eventos/{id}', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
 
 // Rutas públicas de chatbot y mascota ideal
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'prevenir-retorno'])->group(function() {
     Route::get('/mascotaideal', [ChatbotController::class, 'index'])->name('chatbot.index');
     Route::post('/mascotaideal', [ChatbotController::class, 'store'])->name('chatbot.store');
     Route::get('/mascotaideal/atras', [ChatbotController::class, 'atras'])->name('chatbot.atras');
@@ -99,6 +101,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
     Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('perfil.index');
     Route::post('/perfil/actualizar-foto', [PerfilController::class, 'actualizarFoto'])->name('perfil.actualizarFoto');
+    Route::post('/perfil/seleccionar-mascota', [PerfilController::class, 'seleccionarMascota'])->name('perfil.seleccionarMascota');
+    Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
+    Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
 
     //Rutas de historias
     Route::get('/historias', [HistoriaController::class, 'index'])->name('historias.index');
@@ -156,6 +161,13 @@ Route::middleware('auth')->group(function () {
     //Rutas para Notificaciones
     Route::post('/notificaciones/borrar-todas', [NotificationController::class, 'borrarTodas'])->name('notificaciones.borrarTodas');
     Route::post('/notificaciones/marcar-vista/{id}', [NotificationController::class, 'marcarComoVista'])->name('notificaciones.marcarVista');
+    Route::post('/notificaciones/configurar', [NotificationController::class, 'configurar'])->name('notificaciones.configurar');
+
+    //Rutas para juego y ranking
+    Route::get('/juego', [JuegoController::class, 'index'])->name('juego.index');
+    Route::post('/guardar-puntaje', [PuntajeController::class, 'store'])->name('puntaje.store');
+    Route::get('/ranking', [PuntajeController::class, 'ranking'])->name('puntaje.ranking');
+    Route::get('/ranking/json', [PuntajeController::class, 'rankingJson'])->name('puntaje.rankingJson');
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
@@ -263,4 +275,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
+Route::get('/logout', function () {
+    return redirect()->route('login');
+});
+
 require __DIR__.'/auth.php';
+
+Route::post('/enviar-codigo-verificacion', [\App\Http\Controllers\ProfileController::class, 'enviarCodigoVerificacion'])
+    ->name('enviar.codigo.verificacion')
+    ->middleware('auth');

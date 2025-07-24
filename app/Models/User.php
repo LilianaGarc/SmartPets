@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Adopcion;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    
+
     // Relaciones con otros modelos
     // Modelo Veterinaria
 
@@ -106,6 +107,12 @@ class User extends Authenticatable
         return $this->chatsComoUsuario1->merge($this->chatsComoUsuario2);
     }
 
+    public function puntajes()
+    {
+        return $this->hasMany(Puntaje::class, 'id_usuario');
+    }
+
+
     public function historias()
 {
     return $this->hasMany(Historia::class);
@@ -117,6 +124,13 @@ class User extends Authenticatable
         'email',
         'password',
         'usertype',
+        'telefono',
+        'direccion',
+        'mascota_virtual',
+        'nombre_mascota_virtual',
+        'hambre_mascota_virtual',
+        'felicidad_mascota_virtual',
+        'recibir_notificaciones'
     ];
 
     protected $hidden = [
@@ -136,5 +150,14 @@ class User extends Authenticatable
     public function getEsAdminAttribute()
     {
         return $this->usertype === 'admin';
+    }
+
+    public function getEnLineaAttribute()
+    {
+        // Verifica si hay una sesión activa para este usuario
+        return \DB::table('sessions')
+            ->where('user_id', $this->id)
+            ->where('last_activity', '>', now()->subMinutes(5)->timestamp)
+            ->exists();
     }
 }

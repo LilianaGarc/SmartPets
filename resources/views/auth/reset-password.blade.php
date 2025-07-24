@@ -1,39 +1,140 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+        .form-description {
+            display: block;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+        }
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 1rem 0.75rem 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+        .form-label {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.75rem;
+            color: #718096;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -0.6rem;
+            left: 0.5rem;
+            font-size: 0.75rem;
+            color: #4299e1;
+            background: white;
+            padding: 0 0.25rem;
+        }
+        .form-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .form-button:hover {
+            background: #e0673e;
+        }
+        .form-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #4299e1;
+            text-decoration: none;
+        }
+        .form-link:hover {
+            text-decoration: underline;
+        }
+        .alert {
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        .alert-success {
+            background: #f0fff4;
+            color: #38a169;
+            border: 1px solid #c6f6d5;
+        }
+        .alert-error {
+            background: #fff5f5;
+            color: #e53e3e;
+            border: 1px solid #fed7d7;
+        }
+        .alert i {
+            margin-right: 0.5rem;
+        }
+    </style>
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+    <div class="form-container">
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <h1 class="form-title"><strong>Restablecer Contraseña</strong></h1>
+            <span class="form-description">Ingresa tu correo y tu nueva contraseña.</span>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            @if ($errors->any())
+                <div class="alert alert-error mb-1">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <div class="form-group">
+                <input type="email" id="email" name="email" class="form-input" placeholder=" " value="{{ old('email', $request->email) }}" required autofocus>
+                <label for="email" class="form-label">Correo electrónico</label>
+            </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            <div class="form-group">
+                <input type="password" id="password" name="password" class="form-input" placeholder=" " required autocomplete="new-password">
+                <label for="password" class="form-label">Nueva contraseña</label>
+            </div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <div class="form-group">
+                <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" placeholder=" " required autocomplete="new-password">
+                <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <button type="submit" class="form-button">Restablecer contraseña</button>
+            <a href="{{ route('login') }}" class="form-link">Volver a iniciar sesión</a>
+        </form>
+    </div>
 </x-guest-layout>

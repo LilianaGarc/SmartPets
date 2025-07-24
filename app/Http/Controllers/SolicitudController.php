@@ -81,7 +81,11 @@ class SolicitudController
         $usuarioReceptor = \App\Models\User::find($adopcion->id_usuario);
         $usuarioSolicitante = auth()->user();
 
-        if ($usuarioReceptor && $usuarioReceptor->id !== $usuarioSolicitante->id) {
+        if (
+            $usuarioReceptor &&
+            $usuarioReceptor->id !== $usuarioSolicitante->id &&
+            $usuarioReceptor->recibir_notificaciones
+        ) {
             \App\Models\Notificacion::create([
                 'user_id' => $usuarioReceptor->id,
                 'mensaje' => $usuarioSolicitante->name . ' ha enviado una solicitud de adopción para tu mascota.',
@@ -96,6 +100,7 @@ class SolicitudController
                 ]),
             ]);
         }
+
 
         return redirect()->route('adopciones.index')->with('success', 'Solicitud enviada con éxito');
     }

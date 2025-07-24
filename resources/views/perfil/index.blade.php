@@ -45,12 +45,32 @@
         <div class="info">
             <h2>{{ $user->name }}</h2>
             <p>{{ $user->email }}</p>
+            @if($user->telefono)
+                <p><i class="fas fa-phone"></i> {{ $user->telefono }}</p>
+            @endif
+            @if($user->direccion)
+                <p><i class="fas fa-map-marker-alt"></i> {{ $user->direccion }}</p>
+            @endif
+            @if($user->bio)
+                <p><i class="fas fa-user-edit"></i> {{ $user->bio }}</p>
+            @endif
+            <p class="mb-0 text-muted">Miembro desde: {{ $user->created_at->format('d/m/Y') }}</p>
+            <p>
+                <strong>Estado:</strong>
+                @if($user->en_linea)
+                    <span class="badge bg-success">En línea</span>
+                @else
+                    <span class="badge bg-secondary">Desconectado</span>
+                @endif
+            </p>
+
             <div class="acciones">
                 <form action="{{ route('perfil.actualizarFoto') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label for="fotoInput" class="btn-actualizar-foto">Actualizar foto de perfil</label>
                     <input type="file" name="fotoperfil" id="fotoInput" accept="image/*" onchange="this.form.submit()" hidden>
                 </form>
+
                 <a href="{{ route('profile.edit') }}" title="Editar perfil">
                     <i data-lucide="settings" class="icono"></i>
                 </a>
@@ -62,10 +82,68 @@
             </div>
 
             <div class="productos-guardados">
-                <img  class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
+                <a href="{{ route('productos.guardados') }}">
+                    <img class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
+                </a>
             </div>
 
         </div>
+        <div class="mascota-virtual" style="width: 100%; text-align: center;">
+
+        @if(!$user->fotoperfil)
+                <h3 class="titulo-mascota">Tu Mascota Virtual</h3>
+                <p>Actualiza tu foto de perfil para desbloquear tu mascota virtual.</p>
+            @elseif(!$user->mascota_virtual)
+                <form action="{{ route('perfil.seleccionarMascota') }}" method="POST">
+                    @csrf
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="carousel-track">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <div class="carousel-item">
+                                    <label>
+                                        <input type="radio" name="mascota_virtual" value="mascota{{ $i }}.png"
+                                               hidden>
+                                        <img src="{{ asset('images/mascota' . $i . '.png') }}" class="mascota-img" alt="Mascota {{ $i }}">
+                                    </label>
+                                </div>
+                            @endfor
+                        </div>
+                        <button type="button" class="carousel-btn prev" onclick="moverCarrusel(-1)">❮</button>
+                        <button type="button" class="carousel-btn next" onclick="moverCarrusel(1)">❯</button>
+                    </div>
+                    <button type="submit" class="btn-guardar-mascota">Guardar Mascota</button>
+                </form>
+            @else
+                <div class="mascota-seleccionada">
+                    <div class="contenedor-mascota-y-botones" style="position: relative;">
+                        <div class="columna-boton-estadistica">
+                            <button onclick="alimentarMascota()" class="btn-izquierda">🍖</button>
+                            <p class="estadistica">Hambre: <span id="nivelHambre">100</span>%</p>
+                        </div>
+
+                        <div class="mascota-con-animaciones" style="position: relative; width: 220px; height: 220px;">
+                            <img src="{{ asset('images/' . $user->mascota_virtual) }}" alt="Mascota seleccionada" class="mascota-centro">
+
+                            <div id="animacionAlimentar" class="animacion-interaccion">🍖</div>
+                            <div id="animacionAcariciar" class="animacion-interaccion">💖</div>
+                        </div>
+
+                        <div class="columna-boton-estadistica">
+                            <button onclick="acariciarMascota()" class="btn-derecha">💖</button>
+                            <p class="estadistica">Felicidad: <span id="nivelFelicidad">100</span>%</p>
+                        </div>
+                    </div>
+
+
+                    <form action="{{ route('perfil.actualizarMascotaVirtual') }}" method="POST">
+                        @csrf
+                        <input type="text" name="nombre_mascota_virtual" value="{{ $user->nombre_mascota_virtual }}" placeholder="Ponle un nombre...">
+                        <button type="submit" class="btn-guardar-mascota">Guardar Nombre</button>
+                    </form>
+                </div>
+            @endif
+        </div>
+    </div>
     </div>
 
     <div class="tabs">
@@ -121,7 +199,6 @@
                 @endforeach
             @endif
         </div>
-
 
         <div id="solicitudes" class="grid">
             @if($adopcionesSolicitadas->isEmpty())
@@ -190,10 +267,113 @@
         </div>
     </div>
 </div>
+
 <script src="{{ asset('js/perfil.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    let currentIndex = 0;
+
+    function moverCarrusel(direccion) {
+        const track = document.getElementById('carousel-track');
+        const items = track.querySelectorAll('.carousel-item');
+        const total = items.length;
+
+        currentIndex = (currentIndex + direccion + total) % total;
+
+        const offset = -currentIndex * 100;
+        track.style.transform = `translateX(${offset}%)`;
+
+        const input = items[currentIndex].querySelector('input[type="radio"]');
+        if (input) input.checked = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const items = document.querySelectorAll('.carousel-item input[type="radio"]');
+        items.forEach((input, index) => {
+            if (input.checked) {
+                currentIndex = index;
+                moverCarrusel(0);
+            }
+        });
+    });
+</script>
+
+<script>
+    let nivelHambre = {{ $user->hambre_mascota_virtual ?? 100 }};
+    let nivelFelicidad = {{ $user->felicidad_mascota_virtual ?? 100 }};
+    const spanHambre = document.getElementById('nivelHambre');
+    const spanFelicidad = document.getElementById('nivelFelicidad');
+
+    function mostrarAnimacion(idElemento) {
+        const animacion = document.getElementById(idElemento);
+
+        animacion.style.animation = 'none';
+        animacion.offsetHeight;
+        animacion.style.animation = null;
+
+        animacion.style.opacity = '1';
+
+        setTimeout(() => {
+            animacion.style.opacity = '0';
+        }, 1000);
+    }
 
 
+    function actualizarEstadisticas() {
+        spanHambre.textContent = nivelHambre.toFixed(0);
+        spanFelicidad.textContent = nivelFelicidad.toFixed(0);
+    }
+
+    function disminuirEstadisticas() {
+        nivelHambre = Math.max(0, nivelHambre - 5);
+        nivelFelicidad = Math.max(0, nivelFelicidad - 3);
+        actualizarEstadisticas();
+        guardarEstadisticas();
+    }
+
+    function alimentarMascota() {
+        nivelHambre = Math.min(100, nivelHambre + 20);
+        nivelFelicidad = Math.min(100, nivelFelicidad + 5);
+        actualizarEstadisticas();
+        guardarEstadisticas();
+        mostrarAnimacion('animacionAlimentar');
+    }
+
+    function acariciarMascota() {
+        nivelFelicidad = Math.min(100, nivelFelicidad + 15);
+        actualizarEstadisticas();
+        guardarEstadisticas();
+        mostrarAnimacion('animacionAcariciar');
+    }
+
+    function guardarEstadisticas() {
+        fetch('{{ route("perfil.actualizarEstadisticas") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({
+                hambre: nivelHambre,
+                felicidad: nivelFelicidad
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error('Error al guardar estadísticas');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la petición:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarEstadisticas();
+        setInterval(disminuirEstadisticas, 10000);
+    });
+</script>
 
 </body>
 </html>

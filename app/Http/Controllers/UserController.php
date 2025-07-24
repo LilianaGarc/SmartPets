@@ -135,9 +135,6 @@ class UserController
         }
     }
 
-
-
-
     /**
      * Remove the specified resource from storage.
      */

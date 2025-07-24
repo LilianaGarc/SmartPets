@@ -392,3 +392,74 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.getElementById('galeria-modal');
+    const imgViewer = document.getElementById('galeria-imagen');
+    const cerrarBtn = document.querySelector('.cerrar-galeria');
+    const prevBtn = document.querySelector('.galeria-prev');
+    const nextBtn = document.querySelector('.galeria-next');
+    const miniaturasContainer = document.getElementById('miniaturas-container');
+
+    let imagenes = [];
+    let indiceActual = 0;
+
+    const imagenesEnChat = Array.from(document.querySelectorAll('.messages-box img'))
+        .filter(img => img.src.includes('/storage/'));
+
+    imagenes = imagenesEnChat.map(img => img.src);
+
+    function renderMiniaturas() {
+        miniaturasContainer.innerHTML = '';
+        imagenes.forEach((src, i) => {
+            const thumb = document.createElement('img');
+            thumb.src = src;
+            thumb.classList.add('miniatura');
+            if (i === indiceActual) thumb.classList.add('active');
+            thumb.addEventListener('click', () => {
+                indiceActual = i;
+                mostrarImagen(indiceActual);
+            });
+            miniaturasContainer.appendChild(thumb);
+        });
+    }
+
+    function mostrarImagen(index) {
+        if (index >= 0 && index < imagenes.length) {
+            imgViewer.src = imagenes[index];
+            indiceActual = index;
+            modal.style.display = 'flex';
+            renderMiniaturas();
+        }
+    }
+
+    imagenesEnChat.forEach((img, index) => {
+        img.addEventListener('click', function (e) {
+            e.preventDefault();
+            mostrarImagen(index);
+        });
+    });
+
+    prevBtn.addEventListener('click', () => {
+        indiceActual = (indiceActual - 1 + imagenes.length) % imagenes.length;
+        mostrarImagen(indiceActual);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        indiceActual = (indiceActual + 1) % imagenes.length;
+        mostrarImagen(indiceActual);
+    });
+
+    cerrarBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e) => {
+        const clickedInsideImage = e.target.closest('#galeria-imagen') !== null;
+        const clickedInsideMiniaturas = e.target.closest('#miniaturas-container') !== null;
+        const clickedInsideFlechas = e.target.closest('.galeria-prev, .galeria-next') !== null;
+
+        if (!clickedInsideImage && !clickedInsideMiniaturas && !clickedInsideFlechas) {
+            modal.style.display = 'none';
+        }
+    });
+});

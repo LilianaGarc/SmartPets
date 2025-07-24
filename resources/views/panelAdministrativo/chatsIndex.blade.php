@@ -38,8 +38,28 @@
             <tbody>
             @foreach($chats as $chat)
                 <tr>
-                    <td>{{  $mensaje->id_usuario_1}}</td>
-                    <td>{{  $mensaje->id_usuario_2}}</td>
+                    <td>
+                        {{ $chat->id_usuario_1 }}
+                        @php
+                            $user1 = \App\Models\User::find($chat->id_usuario_1);
+                        @endphp
+                        @if($user1 && $user1->en_linea)
+                            <span class="badge bg-success ms-1">En línea</span>
+                        @else
+                            <span class="badge bg-secondary ms-1">Desconectado</span>
+                        @endif
+                    </td>
+                    <td>
+                        {{ $chat->id_usuario_2 }}
+                        @php
+                            $user2 = \App\Models\User::find($chat->id_usuario_2);
+                        @endphp
+                        @if($user2 && $user2->en_linea)
+                            <span class="badge bg-success ms-1">En línea</span>
+                        @else
+                            <span class="badge bg-secondary ms-1">Desconectado</span>
+                        @endif
+                    </td>
                     <td>
 
                         <!-- Button trigger modal -->

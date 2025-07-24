@@ -1,3 +1,5 @@
+@section('title', 'Iniciar Sesión')
+
 <x-guest-layout>
 
     @if ($errors->any())
@@ -17,6 +19,7 @@
                 </a>
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
+                <h1><strong>Iniciar Sesión</strong></h1>
 
                 <h2><strong>Iniciar Sesión</strong></h2>
                 <span>Use su correo y contraseña</span>
@@ -28,7 +31,7 @@
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password" name="password" placeholder="Contraseña">
                 </div>
-                <a href="#">¿Olvidaste tu contraseña?</a>
+                <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
                 <button>INICIAR SESIÓN</button>
             </form>
         </div>
@@ -117,6 +120,7 @@
                 function moveGifHorizontally() {
                     const left = getRandomHorizontalPosition();
                     gifElement.style.left = `${left}px`;
+                    gifElement.style.top = `${top}px`;
                 }
 
                 gifElement.addEventListener('click', () => {
@@ -129,8 +133,33 @@
                 moveGifHorizontally();
             });
         </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const btnSignIn = document.getElementById("btn-sign-in");
+    const btnSignUp = document.getElementById("btn-sign-up");
 
+    if (btnSignIn) {
+        btnSignIn.addEventListener("click", () => {
+            document.title = "Iniciar Sesión";
+        });
+    }
+    if (btnSignUp) {
+        btnSignUp.addEventListener("click", () => {
+            document.title = "Registrarse";
+        });
+    }
+});
+</script>
+<style>
+    .link-recuperar {
+        color: #ff7f50; /* Color naranja */
+        text-decoration: none;
+        font-weight: bold;
+    }
 
+    .link-recuperar:hover {
+        text-decoration: underline;
+    }
 
-
+</style>
 </x-guest-layout>

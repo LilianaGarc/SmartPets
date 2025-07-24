@@ -379,6 +379,7 @@
             width: 100%;
         }
     }
+
     @keyframes marcadorAnim {
         0% {
             transform: scale(1);
@@ -390,6 +391,31 @@
             transform: scale(1) rotate(0deg);
         }
 
+    }
+
+    .main-image {
+        width: 80%;
+        height: 300px; /* Altura fija, puedes ajustarla */
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .main-image img {
+        max-width: 80%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .thumbnails {
+        display: flex;
+        justify-content: center; /* Mueve las miniaturas hacia la derecha */
+        gap: 10px; /* Espaciado entre las miniaturas */
+        margin-top: 10px; /* Espaciado superior */
+        margin-left: 2em;
     }
 </style>
 
@@ -418,7 +444,7 @@
                             alt="
                             {{ $producto->nombre }}" class="img-fluid rounded">
                     </div>
-                    <div class="thumbnails d-flex gap-2">
+                    <div class="thumbnails d-flex justify-content-center mb-4 gap-2">
                         <img
                             src="{{ isset($producto->imagen2) ? url('storage/' . $producto->imagen2) : asset('images/img_PorDefecto.jpg')}}"
                             alt="
@@ -458,24 +484,31 @@
                         <span class="stock-badge">En Stock</span>
                         @auth
                             @php
-                            $favorito = \App\Models\ProdFavorito::where('user_id', auth()->id())
-                                    ->where('producto_id', $producto->id)
-                                    ->first();
+                                $favorito = \App\Models\ProdFavorito::where('user_id', auth()->id())
+                                        ->where('producto_id', $producto->id)
+                                        ->first();
                             @endphp
 
-                            <form id="favorito-form-{{$producto->id}}" method="POST" style="display: inline-block; margin-top: 1em">
+                            <form id="favorito-form-{{$producto->id}}" method="POST"
+                                  style="display: inline-block; margin-top: 1em">
                                 @csrf
                                 @if($favorito)
                                     <input type="hidden" name="producto_id" value="{{$producto->id}}">
-                                    <button type="submit" formaction="{{route('productos.eliminarGuardado', $producto->id)}}"
-                                    class="btn btn-link p-0 m-0" title="eliminar producto guardado" style="width: 32px; height: 32px;">
-                                    <img src="{{ asset('images/marcador.png') }}" alt="Guardado" class="img-fluid" style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
+                                    <button type="submit"
+                                            formaction="{{route('productos.eliminarGuardado', $producto->id)}}"
+                                            class="btn btn-link p-0 m-0" title="eliminar producto guardado"
+                                            style="width: 32px; height: 32px;">
+                                        <img src="{{ asset('images/marcador.png') }}" alt="Guardado" class="img-fluid"
+                                             style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
                                     </button>
                                 @else
                                     <input type="hidden" name="producto_id" value="{{$producto->id}}">
                                     <button type="submit" formaction="{{route('productos.guardar', $producto->id)}}"
-                                    class="btn btn-link p-0 m-0" title="guardar producto" style="width: 32px; height: 32px;">
-                                    <img src="{{ asset('images/marcadorVacio.png') }}" alt="No guardado" class="img-fluid" style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
+                                            class="btn btn-link p-0 m-0" title="guardar producto"
+                                            style="width: 32px; height: 32px;">
+                                        <img src="{{ asset('images/marcadorVacio.png') }}" alt="No guardado"
+                                             class="img-fluid"
+                                             style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
                                     </button>
                                 @endif
 
@@ -491,70 +524,45 @@
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
                             <i class="bi bi-star-half" style="color: var(--orange)"></i>
-
                         </div>
                     </div>
-
                     <p class="mb-4">{{$producto->descripcion}}</p>
-
-
                     <!-- Botones de Acción -->
                     @auth
+                    <div class="d-flex align-items-center gap-3 mt-3">
+                        <a href="{{route('chats.iniciar', $producto->user_id)}} ?
+                        mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
+                        $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
+                           class="btn btn-primary">
+                            <i class="fas fa-comment-dots"></i> Enviar Mensaje
+                        </a>
+
                         @if( auth()->check() && auth()->id()===$producto->user_id)
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary btn-lg">Añadir al Carrito</button>
-                                <div class="row d-flex justify-content-center">
+                                <div class="row d-flex justify-content-center mt-3">
                                     <div class="col-auto">
-
-                                    <form id="delete-form-{{$producto->id}}"
-                                          action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#ModalProducto">
-                                            Eliminar
+                                        <button class="btn btn-warning"
+                                                onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
+                                            Editar
                                         </button>
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="ModalProducto" tabindex="-1"
-                                             aria-labelledby="ModalProductoLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="ModalProductoLabel">Eliminar Producto</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Cancelar"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        ¿Estás seguro de que deseas eliminar este producto?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <form action="{{ route('productos.destroy', $producto->id) }}"
-                                                              method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Cancelar
-                                                            </button>
-                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
                                     </div>
                                     <div class="col-auto">
-
-                                         <button class="btn btn-warning"
-                                            onclick=window.location.href='{{ route('productos.edit',$producto->id)}}'>Editar
-                                         </button>
+                                        <form id="delete-form-{{$producto->id}}"
+                                              action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#ModalProducto">
+                                                Eliminar
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
 
-                            </div>
                         @endif
+                            </div>
                     @endauth
+                    </div>
                 </div>
 
                 @if($errors->any())
@@ -570,7 +578,7 @@
                 <h1 class="mb-4">Reseñas</h1>
                 <!-- ACORDEON -->
                 @auth
-                <div class="">
+                    <div class="">
                         <div class="review-system">
                             <!-- Circular Toggle Button -->
                             <button id="review-toggle-btn" class="review-toggle-btn">
@@ -579,7 +587,8 @@
 
                             <!-- Review Form Container -->
                             <!-- En el formulario de reseñas -->
-                            <div id="review-container" class="review-container {{ isset($mostrarFormulario) ? 'review-visible' : 'review-hidden' }}">
+                            <div id="review-container"
+                                 class="review-container {{ isset($mostrarFormulario) ? 'review-visible' : 'review-hidden' }}">
                                 <div class="review-header">
                                     <h2 class="review-title-header">{{ isset($resenia) ? 'Editar Reseña' : 'Escribir Reseña' }}</h2>
                                 </div>
@@ -599,160 +608,165 @@
                                         </div>
                                         <div class="review-form-group">
                                             <label for="review-content" class="review-label">Contenido</label>
-                                            <textarea class="review-textarea" id="review-content" rows="4" name="contenido"
+                                            <textarea class="review-textarea" id="review-content" rows="4"
+                                                      name="contenido"
                                                       placeholder="Escribe tu reseña aquí...">{{ old('contenido', $resenia->contenido ?? '') }}</textarea>
                                         </div>
                                         <div class="review-actions">
                                             <button type="submit" class="review-button review-button-publish">
                                                 {{ isset($resenia) ? 'Actualizar' : 'Publicar' }}
                                             </button>
-                                            <button type="button" class="review-button review-button-cancel">Cancelar</button>
+                                            <button type="button" class="review-button review-button-cancel">Cancelar
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                    @endauth
+                        @endauth
 
-                    <div class="accordion" id="accordionExample">
-                        @foreach($resenias as $index => $resenia)
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading{{ $index }}">
-                                    <button class="accordion-button {{ $index == 0 ? '' : 'collapsed' }}" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                            aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
-                                            aria-controls="collapse{{ $index }}">
-                                        <div class="user-info">
-                                            @php
-                                                $foto = $resenia->user->fotoperfil
-                                                        ? asset('storage/' . $resenia->user->fotoperfil)
-                                                        : asset('images/fotodeperfil.webp');
-                                            @endphp
-                                            <img src="{{ $foto }}" alt="Foto de perfil" class="profile-image">
-                                            <span class="username">{{ $resenia->user->name }}</span>
-                                        </div>
-                                    </button>
+                        <div class="accordion" id="accordionExample">
+                            @foreach($resenias as $index => $resenia)
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{ $index }}">
+                                        <button class="accordion-button {{ $index == 0 ? '' : 'collapsed' }}"
+                                                type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
+                                                aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
+                                                aria-controls="collapse{{ $index }}">
+                                            <div class="user-info">
+                                                @php
+                                                    $foto = $resenia->user->fotoperfil
+                                                            ? asset('storage/' . $resenia->user->fotoperfil)
+                                                            : asset('images/fotodeperfil.webp');
+                                                @endphp
+                                                <img src="{{ $foto }}" alt="Foto de perfil" class="profile-image">
+                                                <span class="username">{{ $resenia->user->name }}</span>
+                                            </div>
+                                        </button>
 
-                                </h2>
-                                <div id="collapse{{ $index }}"
-                                     aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <strong>{{ $resenia->titulo }}</strong>
-                                        <p>{{ $resenia->contenido }}</p>
+                                    </h2>
+                                    <div id="collapse{{ $index }}"
+                                         aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <strong>{{ $resenia->titulo }}</strong>
+                                            <p>{{ $resenia->contenido }}</p>
 
-                                        <!-- Button trigger modal -->
-                                        <!-- Eliminar Reseña -->
-                                        @auth
-                                            @if( auth()->check() && auth()->id()===$resenia->user_id)
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#ModalResenia{{$resenia->id}}">
-                                                    <i class="fa fa-trash-alt"></i>
-                                                </button>
-                                                <!-- Editar Reseña -->
-                                                <button type="button" class="btn btn-warning" onclick="location.href='{{ route('productos.mostrarFormularioEdicion', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}'">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                </button>
+                                            <!-- Button trigger modal -->
+                                            <!-- Eliminar Reseña -->
+                                            @auth
+                                                @if( auth()->check() && auth()->id()===$resenia->user_id)
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                            data-bs-target="#ModalResenia{{$resenia->id}}">
+                                                        <i class="fa fa-trash-alt"></i>
+                                                    </button>
+                                                    <!-- Editar Reseña -->
+                                                    <button type="button" class="btn btn-warning"
+                                                            onclick="location.href='{{ route('productos.mostrarFormularioEdicion', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}'">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="ModalResenia{{$resenia->id}}" tabindex="-1"
-                                                     aria-labelledby="ModalReseniaLabel{{$resenia->id}}"
-                                                     aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5"
-                                                                    id="ModalReseniaLabel{{$resenia->id}}">Eliminar
-                                                                    Reseña</h1>
-                                                                <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                ¿Estás seguro de que deseas eliminar esta reseña?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('productos.eliminarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Cancelar
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-danger">
-                                                                        Eliminar
-                                                                    </button>
-                                                                </form>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="ModalResenia{{$resenia->id}}"
+                                                         tabindex="-1"
+                                                         aria-labelledby="ModalReseniaLabel{{$resenia->id}}"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5"
+                                                                        id="ModalReseniaLabel{{$resenia->id}}">Eliminar
+                                                                        Reseña</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    ¿Estás seguro de que deseas eliminar esta reseña?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <form
+                                                                        action="{{ route('productos.eliminarResenia', ['producto' => $producto->id, 'resenia' => $resenia->id]) }}"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Cancelar
+                                                                        </button>
+                                                                        <button type="submit" class="btn btn-danger">
+                                                                            Eliminar
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                        @endauth
+                                                @endif
+                                            @endauth
+                                        </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
-                            </div>
+                        </div>
+                        <!-- FIN ACORDEON -->
                     </div>
-                    <!-- FIN ACORDEON -->
-                </div>
             </div>
         </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    // Botones y contenedor del formulario de reseña
-                    const toggleBtn = document.getElementById('review-toggle-btn');
-                    const reviewContainer = document.getElementById('review-container');
-                    const cancelBtn = document.querySelector('.review-button-cancel');
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Botones y contenedor del formulario de reseña
+                const toggleBtn = document.getElementById('review-toggle-btn');
+                const reviewContainer = document.getElementById('review-container');
+                const cancelBtn = document.querySelector('.review-button-cancel');
 
-                    // Función para mostrar/ocultar el formulario de reseñas
-                    function toggleForm(show) {
-                        if (show === undefined) {
-                            reviewContainer.classList.toggle('review-hidden');
-                            reviewContainer.classList.toggle('review-visible');
-                            toggleBtn.classList.toggle('active');
-                        } else {
-                            reviewContainer.classList.remove(show ? 'review-hidden' : 'review-visible');
-                            reviewContainer.classList.add(show ? 'review-visible' : 'review-hidden');
-                            toggleBtn.classList.toggle('active', show);
-                        }
+                // Función para mostrar/ocultar el formulario de reseñas
+                function toggleForm(show) {
+                    if (show === undefined) {
+                        reviewContainer.classList.toggle('review-hidden');
+                        reviewContainer.classList.toggle('review-visible');
+                        toggleBtn.classList.toggle('active');
+                    } else {
+                        reviewContainer.classList.remove(show ? 'review-hidden' : 'review-visible');
+                        reviewContainer.classList.add(show ? 'review-visible' : 'review-hidden');
+                        toggleBtn.classList.toggle('active', show);
                     }
+                }
 
-                    // Mostrar el formulario automáticamente si estamos en modo edición
-                    if (@json(isset($mostrarFormulario) && $mostrarFormulario)) {
-                        toggleForm(true);
-                    }
+                // Mostrar el formulario automáticamente si estamos en modo edición
+                if (@json(isset($mostrarFormulario) && $mostrarFormulario)) {
+                    toggleForm(true);
+                }
 
-                    // Eventos de clic
-                    toggleBtn.addEventListener('click', () => toggleForm());
+                // Eventos de clic
+                toggleBtn.addEventListener('click', () => toggleForm());
 
-                    cancelBtn.addEventListener('click', () => {
-                        toggleForm(false);
-                        // Redirigir solo si estamos editando
-                        if (window.location.href.includes('/editar')) {
-                            window.location.href = '{{ route("productos.show", $producto->id) }}';
-                        }
-                    });
-
-                    // Código para cambiar las imágenes miniaturas
-                    const mainImage = document.querySelector('.main-image img');
-                    const thumbnails = document.querySelectorAll('.thumbnail-image');
-
-                    thumbnails.forEach(thumbnail => {
-                        thumbnail.addEventListener('click', () => {
-                            const tempSrc = mainImage.src;
-                            mainImage.src = thumbnail.src;
-                            thumbnail.src = tempSrc;
-                        });
-                    });
-
-                    // Función para habilitar/deshabilitar botón de eliminar con checkbox (si usas esa función)
-                    window.toggleDeleteButton = function(id) {
-                        let checkbox = document.getElementById(`confirm-checkbox-${id}`);
-                        let button = document.getElementById(`delete-button-${id}`);
-                        button.disabled = !checkbox.checked;
+                cancelBtn.addEventListener('click', () => {
+                    toggleForm(false);
+                    // Redirigir solo si estamos editando
+                    if (window.location.href.includes('/editar')) {
+                        window.location.href = '{{ route("productos.show", $producto->id) }}';
                     }
                 });
-            </script>
+
+                // Código para cambiar las imágenes miniaturas
+                const mainImage = document.querySelector('.main-image img');
+                const thumbnails = document.querySelectorAll('.thumbnail-image');
+
+                thumbnails.forEach(thumbnail => {
+                    thumbnail.addEventListener('click', () => {
+                        const tempSrc = mainImage.src;
+                        mainImage.src = thumbnail.src;
+                        thumbnail.src = tempSrc;
+                    });
+                });
+
+                // Función para habilitar/deshabilitar botón de eliminar con checkbox (si usas esa función)
+                window.toggleDeleteButton = function (id) {
+                    let checkbox = document.getElementById(`confirm-checkbox-${id}`);
+                    let button = document.getElementById(`delete-button-${id}`);
+                    button.disabled = !checkbox.checked;
+                }
+            });
+        </script>
 
 @endsection

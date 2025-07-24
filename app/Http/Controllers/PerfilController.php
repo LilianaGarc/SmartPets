@@ -42,6 +42,7 @@ class PerfilController extends Controller
     }
 
 
+
     public function actualizarFoto(Request $request)
     {
         $request->validate([
@@ -116,4 +117,51 @@ class PerfilController extends Controller
     {
         //
     }
+    public function seleccionarMascota(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->fotoperfil) {
+            return redirect()->back()->with('error', 'Debes actualizar tu foto de perfil para desbloquear la mascota virtual.');
+        }
+
+        $request->validate([
+            'mascota_virtual' => 'required|in:mascota1.png,mascota2.png,mascota3.png,mascota4.png,mascota5.png',
+        ]);
+
+        $user->mascota_virtual = $request->mascota_virtual;
+        $user->save();
+
+        return redirect()->back()->with('success', '¡Mascota virtual actualizada con éxito!');
+    }
+    public function actualizarMascotaVirtual(Request $request)
+    {
+        $request->validate([
+            'nombre_mascota_virtual' => 'nullable|string|max:30',
+        ]);
+
+        $user = auth()->user();
+        $user->nombre_mascota_virtual = $request->nombre_mascota_virtual;
+        $user->save();
+
+        return back()->with('success', 'Nombre de tu mascota actualizado');
+    }
+    public function actualizarEstadisticas(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'hambre' => 'required|integer|min:0|max:100',
+            'felicidad' => 'required|integer|min:0|max:100',
+        ]);
+
+
+        $user->hambre_mascota_virtual = $request->hambre;
+        $user->felicidad_mascota_virtual = $request->felicidad;
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
 }

@@ -28,6 +28,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $request->user()->update(['last_login_at' => now()]);
+        
         if ($request->user()->usertype === 'admin') {
             return redirect('/panel/publicaciones');
         } else {
@@ -43,11 +45,16 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
+        return redirect()->route('login');
+    }
 
-        return redirect('/dashboard');
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }

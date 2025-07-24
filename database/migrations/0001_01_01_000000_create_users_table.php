@@ -16,7 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('usertype')->default('user');
             $table->string('email')->unique();
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('descripción')->nullable();
             $table->string('fotoperfil')->nullable();
+            $table->string('mascota_virtual')->nullable();
+            $table->string('nombre_mascota_virtual')->nullable();
+            $table->integer('hambre_mascota_virtual')->default(100);
+            $table->integer('felicidad_mascota_virtual')->default(100);
+            $table->boolean('recibir_notificaciones')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
