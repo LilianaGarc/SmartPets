@@ -13,8 +13,8 @@
     @endif
     <div class="d-flex align-items-center mb-2">
         <h3 class="mb-0">| Eventos</h3>
-        <a href="#" class="btn ms-auto" role="button">
-            <h8>Nueva publicación <i class="fas fa-plus"></i></h8>
+        <a href="{{ route('eventos.panelcreate') }}" class="btn ms-auto" role="button">
+            <h8>Nuevo evento <i class="fas fa-plus"></i></h8>
         </a>
     </div>
     <hr>
@@ -36,19 +36,19 @@
         <table class="table table-striped table-bordered" >
             <thead>
             <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripcion</th>
-                <th scope="col">Participates</th>
-                <th scope="col">Telefono</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora de Inicio</th>
+                <th scope="col">Hora de Fin</th>
             </tr>
             </thead>
             <tbody>
             @foreach($eventos as $evento)
                 <tr>
-                    <td>{{  $evento->nombre}}</td>
-                    <td>{{  $evento->descripcion}}</td>
-                    <td>{{  $evento->participantes}}</td>
-                    <td>{{  $evento->telefono}}</td>
+                    <td>{{  $evento->titulo}}</td>
+                    <td>{{  $evento->fecha}}</td>
+                    <td>{{  $evento->hora_inicio}}</td>
+                    <td>{{  $evento->hora_fin}}</td>
                     <td style="text-align: center;">
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,7 +63,7 @@
 
 
                         <!-- Modal -->
-                        <div class="modal fade" id="modalEliminar{{$eveto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalEliminar{{$evento->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
