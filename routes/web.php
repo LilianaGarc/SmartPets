@@ -141,10 +141,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
     Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
 
+    // Panel de eventos
+    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
+    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
     Route::get('panel/eventos/crear', [EventoController::class, 'panelcreate'])->name('eventos.panelcreate');
     Route::post('panel/eventos',[EventoController::class, 'panelstore'])->name('eventos.panelstore');
     Route::get('panel/eventos/{id}/editar', [EventoController::class, 'paneledit'])->name('eventos.paneledit')->whereNumber('id');
-    Route::put('/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
+    Route::put('panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
     Route::get('panel/eventos/{id}/ver', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
     Route::delete('panel/eventos/{id}/eliminar', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy')->whereNumber('id');
 
@@ -244,11 +247,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/comentarios', [ComentarioController::class, 'panel'])->name('comentarios.panel');
     Route::get('/panel/buscar/comentarios', [ComentarioController::class, 'search'])->name('comentarios.search');
     Route::delete('/panel/comentarios/{id}', [ComentarioController::class, 'paneldestroy'])->name('comentarios.paneldestroy');
-
-    // Panel de eventos
-    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
-    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
-    Route::delete('/panel/eventos/{id}', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy');
 
     // Panel de mensajes
     Route::get('/panel/mensajes', [MensajeController::class, 'panel'])->name('mensajes.panel');
