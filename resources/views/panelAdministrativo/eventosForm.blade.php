@@ -13,8 +13,8 @@
 
     <form method="POST"
           enctype="multipart/form-data"
-          @if (isset($publicacion))
-              action="{{ route('eventos.panelupdate', ['id'=>$eventos->id]) }}"
+          @if (isset($evento))
+              action="{{ route('eventos.panelupdate', ['id'=>$evento->id]) }}"
           @else
               action="{{ route('eventos.panelstore') }}"
         @endif>
