@@ -55,7 +55,7 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Detalles</a></li>
+                                <li><a class="dropdown-item" href="{{ route('eventos.panelshow', ['id'=> $evento->id]) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('eventos.paneledit', ['id'=> $evento->id]) }}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$evento->id}}">Eliminar</a></li>
                             </ul>
