@@ -9,6 +9,7 @@ use App\Models\Historia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class PublicacionController
@@ -24,14 +25,14 @@ class PublicacionController
         return view('panelAdministrativo.publicacionesForm');
     }
 
-    public function panelshow($id)
+    public function detalles($id)
     {
         $publicacion = Publicacion::findorFail($id);
         $comentarios = Comentario::with('user')
             ->where('id_publicacion', $id)
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('panelAdministrativo.verPublicacion', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios]);
+        return view('publicaciones.verPublicacion', ['publicacion'=>$publicacion, 'comentarios'=>$comentarios]);
     }
 
     public function panelstore(Request $request)
@@ -117,13 +118,19 @@ class PublicacionController
     public function index()
     {
         $publicaciones = Publicacion::with('user')
-            ->withCount('reacciones')
+            ->withCount('likes')
+            ->with(['likes' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('created_at', 'desc')
             ->get();
-        $users = User::all();
-        $historias = Historia::with('user')->orderByDesc('created_at')->get();
 
-        return view('publicaciones.indexPublicaciones', ['publicaciones'=>$publicaciones, 'historias'=>$historias, 'users'=>$users ]);
+        $publicaciones->each(function ($publicacion) {
+            $publicacion->user_has_liked = $publicacion->likes->isNotEmpty();
+            unset($publicacion->likes);
+        });
+
+        return view('publicaciones.indexPublicaciones', ['publicaciones'=>$publicaciones]);
     }
 
     /**
