@@ -220,23 +220,28 @@ function actualizarUsuariosConMensajes() {
                     if (!usuario.name.toLowerCase().includes(filtro)) return;
 
                     html += `
-                        <a href="/chats/iniciar/${usuario.id}" class="chat-user">
-                        <img src="${usuario.fotoperfil ? '/storage/' + usuario.fotoperfil : '/images/fotodeperfil.webp'}" alt="Foto" />
-                            <div class="user-details">
-                                <strong>${usuario.name}</strong>
-                                <small>
-                            ${ultimoMensaje
+    <a href="/chats/iniciar/${usuario.id}" class="chat-user">
+        <img src="${usuario.fotoperfil ? '/storage/' + usuario.fotoperfil : '/images/fotodeperfil.webp'}" alt="Foto" />
+        <div class="user-details">
+            <strong class="d-flex align-items-center gap-1">
+                ${usuario.name}
+                ${usuario.en_linea
+                        ? `<span class="estado-dot online" title="En línea"></span>`
+                        : `<span class="estado-dot offline" title="Desconectado"></span>`}
+            </strong>
+            <small>
+                ${ultimoMensaje
                         ? `<span class="${mensajesNoLeidos > 0 ? 'ultimo-mensaje-no-leido' : ''}">
-                                  ${ultimoMensaje.imagen && (!ultimoMensaje.texto || ultimoMensaje.texto.trim() === '')
+                        ${ultimoMensaje.imagen && (!ultimoMensaje.texto || ultimoMensaje.texto.trim() === '')
                             ? 'Foto'
                             : (ultimoMensaje.texto.length > 30 ? ultimoMensaje.texto.substring(0, 30) + '...' : ultimoMensaje.texto)}
-                            </span><br>`
+                    </span><br>`
                         : 'Empieza una conversación'}
-                            </small>
-                            </div>
-                            ${mensajesNoLeidos > 0 ? `<span class="unread-badge">${mensajesNoLeidos}</span>` : ''}
-                        </a>
-                        `;
+            </small>
+        </div>
+        ${mensajesNoLeidos > 0 ? `<span class="unread-badge">${mensajesNoLeidos}</span>` : ''}
+    </a>
+`;
                 });
             }
 

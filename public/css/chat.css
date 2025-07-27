@@ -877,3 +877,20 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 
+.estado-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 6px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.estado-dot.online {
+    background-color: #28a745;
+}
+
+.estado-dot.offline {
+    background-color: rgba(108, 117, 125, 0);
+}
+
