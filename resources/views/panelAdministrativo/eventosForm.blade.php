@@ -11,14 +11,19 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ isset($user) ? route('eventos.panelupdate', ['id' => $evento->id]) : route('eventos.panelstore') }}">
-        @csrf
-        @isset($user)
-            @method('PUT')
+    <form method="POST"
+          enctype="multipart/form-data"
+          @if (isset($publicacion))
+              action="{{ route('eventos.panelupdate', ['id'=>$eventos->id]) }}"
+          @else
+              action="{{ route('eventos.panelstore') }}"
+        @endif>
+        @isset($evento)
+            @method('put')
         @endisset
-
+        @csrf
         <div class="card-body">
-            @if(isset($user))
+            @if(isset($evento))
                 <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar información del evento</strong></h4>
             @else
                 <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear un nuevo evento</strong></h4>
