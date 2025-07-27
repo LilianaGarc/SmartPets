@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    @stack('scripts')
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,6 +50,15 @@
             transform: scale(1.1);
             background-color: #18478b;
         }
+
+        .like-button.liked {
+            background-color: #dc3545 !important;
+        }
+
+        .like-button.liked:hover {
+            background-color: #c82333 !important;
+        }
+
 
         .card-publicacion{
             width: 50vw;
@@ -454,7 +464,7 @@
                 justify-content: center;
             }
 
-        
+
             .historia-container {
                 position: relative;
                 padding: 20px;
@@ -481,6 +491,9 @@
             .nueva-historia{
                 width: 10rem !important;
                 height: auto !important;
+            }
+            .li{
+                font-family: Arial, sans-serif;
             }
 
 
