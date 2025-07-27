@@ -13,19 +13,6 @@
         </div>
     @endif
 
-    <!--@foreach ($users as $user)
-        <div class="story-user">
-            <h4>{{ $user->name }}</h4>
-            @foreach ($user->historias->where('expires_at', '>', now()) as $historia)
-                @if ($historia->media_type === 'image')
-                    <img src="{{ asset('storage/' . $historia->media_path) }}" alt="Historia" />
-                @else
-                    <video src="{{ asset('storage/' . $historia->media_path) }}" controls></video>
-                @endif
-            @endforeach
-        </div>
-    @endforeach-->
-
     <div class="row">
         <div class="container">
             <div class="breadcrumb-container">
@@ -66,6 +53,17 @@
                                     <h4 class="mb-0">
                                         <strong>{{ $publicacion->user ? $publicacion->user->name : 'Usuario no disponible' }}</strong>
                                     </h4>
+                                    @if (auth()->check() && auth()->id() === $publicacion->id_user)
+                                        <div class="dropdown ms-auto">
+                                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{{ route('publicaciones.edit' , ['id'=>$publicacion->id]) }}"><i class="fa-solid fa-pen-to-square"></i> Editar publicación</a></li>
+                                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}"><i class="fa-solid fa-trash"></i> Eliminar publicación</a></li>
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </div>
                             </h3>
                             <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
@@ -76,43 +74,35 @@
                                 <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion">
                             @endif
                         </div>
+
+                        <div class="col align-items-center">
+                            <h6 style="margin-top: 8px;">
+                                <i class="fa-solid fa-heart" style="color: darkred;"></i>
+                                <span class="likes-count">{{ $publicacion->likes_count }}</span>
+                            </h6>
+                        </div>
+
+                        <hr>
                         <div class="interacciones" style="margin-top: 1vh;">
                             <div class="reactions" id="reactions-{{ $publicacion->id }}">
-                                <p class="card-text"><small class="text-body-secondary">Cantidad de Reacciones: {{$publicacion->reacciones_count}}</small></p>
 
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        @php
-                                            $reaccionUsuario = $publicacion->reaccionesUsuarioActual;
-                                        @endphp
-
-                                        @foreach(['triste', 'feliz', 'enojado', 'wow'] as $tipo)
-                                            @php
-                                                $src = asset("images/{$tipo}perrito.png");
-                                                $hover = asset("images/perrito{$tipo}.gif");
-                                                $active = $reaccionUsuario && $reaccionUsuario->tipo === $tipo;
-                                            @endphp
-                                            <img src="{{ $src }}"
-                                                 data-hover="{{ $hover }}"
-                                                 data-tipo="{{ $tipo }}"
-                                                 data-publicacion="{{ $publicacion->id }}"
-                                                 class="imagen-publicacion-reaccion {{ $active ? 'reaccion-activa' : '' }}">
-                                        @endforeach
-                                    </div>
-                                    <div class="col text-end">
-                                        <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fas fa-comment"></i> Comentar
-                                        </a>
-
-                                        @if (auth()->check() && auth()->id() === $publicacion->id_user)
-                                            <a href="{{ route('publicaciones.edit', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                                <i class="fa-solid fa-pen-to-square"></i> Editar
-                                            </a>
-                                            <a href="#" class="btn" role="button" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}" style="margin: 1px;">
-                                                <i class="fa-solid fa-trash"></i> Eliminar
-                                            </a>
-                                        @endif
-                                    </div>
+                                <div class="col align-items-center">
+                                    <button
+                                        class="btn like-button"
+                                        role="button"
+                                        style="margin: 1px;"
+                                        data-publicacion-id="{{ $publicacion->id }}"
+                                        data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
+                                    >
+                                        <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
+                                        Me gusta
+                                    </button>
+                                    <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
+                                        <i class="fa-regular fa-comment"></i> Comentar
+                                    </a>
+                                    <a href="#" class="btn" role="button" style="margin: 1px;">
+                                        <i class="fa-regular fa-share-from-square"></i> Compartir
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -147,83 +137,100 @@
         </div>
     </div>
 
-    <script>
-        let storyImages = [];
-        let currentStoryIndex = 0;
-        let storyTimer;
+        @if(Auth::check())
+        @push('scripts')
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.like-button').forEach(button => {
+                        if (button.dataset.isLiked === 'true') {
+                            button.classList.add('liked');
+                        }
 
-        function handleStoryClick(element) {
-            const historias = JSON.parse(element.getAttribute('data-historias'));
-            if (!Array.isArray(historias) || historias.length === 0) return;
+                        button.addEventListener('click', async function(event) {
+                            event.preventDefault();
 
-            storyImages = historias.map(item => `/storage/${item.image_path}`);
-            currentStoryIndex = 0;
-            showStory(currentStoryIndex);
+                            const publicacionId = this.dataset.publicacionId;
+                            let isLiked = this.dataset.isLiked === 'true';
 
-            const modal = new bootstrap.Modal(document.getElementById('storyModal'));
-            modal.show();
-        }
+                            const likeIcon = this.querySelector('i');
+                            const likesCountElement = this.closest('.card-publicacion').querySelector('.likes-count');
+                            let currentLikes = parseInt(likesCountElement.textContent);
 
-        function showStory(index) {
-            if (index >= storyImages.length) {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('storyModal'));
-                modal.hide();
-                return;
-            }
+                            const method = isLiked ? 'DELETE' : 'POST';
+                            const url = `/publicaciones/${publicacionId}/${isLiked ? 'unlike' : 'like'}`;
 
-            document.getElementById('storyImage').src = storyImages[index];
-            updateProgressBar(0);
-            let progress = 0;
+                            if (isLiked) {
+                                likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                button.classList.remove('liked');
+                                currentLikes--;
+                            } else {
+                                likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                likeIcon.classList.add('fa-solid', 'text-red-500');
+                                button.classList.add('liked');
+                                currentLikes++;
+                            }
+                            likesCountElement.textContent = currentLikes;
+                            this.dataset.isLiked = !isLiked;
 
-            clearInterval(storyTimer);
-            storyTimer = setInterval(() => {
-                progress += 1;
-                updateProgressBar(progress);
-                if (progress >= 100) {
-                    currentStoryIndex++;
-                    showStory(currentStoryIndex);
-                }
-            }, 50);
+                            try {
+                                const response = await fetch(url, {
+                                    method: method,
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                });
 
-            document.getElementById('storyImage').onclick = () => {
-                clearInterval(storyTimer);
-                currentStoryIndex++;
-                showStory(currentStoryIndex);
-            };
-        }
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    alert(`Error: ${errorData.message || 'No se pudo realizar la acción.'}`);
 
-        function updateProgressBar(percent) {
-            document.getElementById('storyProgress').style.width = percent + '%';
-        }
+                                    if (isLiked) {
+                                        likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                        likeIcon.classList.add('fa-solid', 'text-red-500');
+                                        button.classList.add('liked');
+                                        currentLikes++;
+                                    } else {
+                                        likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                        likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                        button.classList.remove('liked');
+                                        currentLikes--;
+                                    }
+                                    likesCountElement.textContent = currentLikes;
+                                    this.dataset.isLiked = isLiked;
+                                } else {
+                                    const responseData = await response.json();
+                                    if (responseData.likes_count !== undefined) {
+                                        likesCountElement.textContent = responseData.likes_count;
+                                    }
+                                }
 
-        document.getElementById('storyModal').addEventListener('hidden.bs.modal', () => {
-            clearInterval(storyTimer);
-            storyImages = [];
-            currentStoryIndex = 0;
-            updateProgressBar(0);
-        });
-    </script>
+                            } catch (error) {
+                                console.error('Error al comunicarse con la API:', error);
+                                alert('Hubo un problema de conexión. Inténtalo de nuevo.');
 
-
+                                if (isLiked) {
+                                    likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                    likeIcon.classList.add('fa-solid', 'text-red-500');
+                                    button.classList.add('liked');
+                                    currentLikes++;
+                                } else {
+                                    likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                    likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                    button.classList.remove('liked');
+                                    currentLikes--;
+                                }
+                                likesCountElement.textContent = currentLikes;
+                                this.dataset.isLiked = isLiked;
+                            }
+                        });
+                    });
+                });
+            </script>
+        @endpush
+        @endif
 
 
     @include('chats.chat-float')
 @endsection
-
-<!-- Modal Historia -->
-<div class="modal fade" id="storyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content bg-black text-white">
-            <div class="modal-body p-0">
-                <div class="story-container d-flex flex-column justify-content-center align-items-center h-100">
-                    <img id="storyImage" src="" class="img-fluid story-view-img" alt="Historia">
-                    <div class="story-progress-container">
-                        <div id="storyProgress" class="story-progress-bar"></div>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
