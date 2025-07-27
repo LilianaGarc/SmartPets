@@ -32,7 +32,7 @@
     </form>
     <hr>
 
-    <div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
+    <div style="overflow-x: visible; margin-left: 1rem; margin-right: 1rem;">
         <table class="table table-striped table-bordered" >
             <thead>
             <tr>
@@ -56,7 +56,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Detalles</a></li>
-                                <li><a class="dropdown-item" href="#">Editar</a></li>
+                                <li><a class="dropdown-item" href="{{ route('eventos.paneledit', ['id'=> $evento->id]) }}">Editar</a></li>
                                 <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$evento->id}}">Eliminar</a></li>
                             </ul>
                         </div>
