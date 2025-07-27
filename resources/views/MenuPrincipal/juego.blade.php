@@ -514,10 +514,9 @@
     let isGameOver = false;
     let obstacleX = window.innerWidth;
     let obstacle2X = window.innerWidth + 600;
-    const baseSpeed = 12;
-    const baseWidth = 1920;
+    const rawSpeed = window.innerWidth * 0.001;
 
-    let speed = baseSpeed * (window.innerWidth / baseWidth);
+    let speed = Math.min(Math.max(rawSpeed, 6), 12);
     let isMuted = false;
     const minSeparation = 500;
     const maxSeparation = 1400;
