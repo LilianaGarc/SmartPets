@@ -19,7 +19,7 @@ class EventoController
         return view('panelAdministrativo.eventosForm');
     }
 
-    public function panelstore()
+    public function panelstore( Request $request)
     {
         $idUsuario = auth()->id();
 
@@ -51,7 +51,62 @@ class EventoController
             'id_user' => $idUsuario,
         ]);
 
-        return redirect()->route('eventos.panelindex')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
+        return redirect()->route('eventos.panel')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
+    }
+
+    public function panelshow($id)
+    {
+        $evento = Evento::findOrFail($id);
+        return view('panelAdministrativo.eventosDetalles')->with('evento',$evento);
+
+    }
+
+
+    public function paneledit($id)
+    {
+        $evento = Evento::findOrFail($id);
+        return view('panelAdministrativo.eventosForm')->with('evento', $evento);
+    }
+
+
+    public function panelupdate(Request $request, $id)
+
+    {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'fecha' => 'required|date|after_or_equal:today',
+            'telefono' => 'required|string|max:15',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'modalidad_evento' => 'required|in:gratis,pago',
+            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
+            'ubicacion' => 'required|string|max:255',
+        ]);
+
+        $evento = Evento::findOrFail($id);
+        if ($request->hasFile('imagen')) {
+            if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
+                Storage::delete('public/' . $evento->imagen);
+            }
+            $evento->imagen = $request->file('imagen')->store('eventos', 'public');
+        }
+
+        $evento->update([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha' => $request->fecha,
+            'telefono' => $request->telefono,
+            'imagen' => $evento->imagen,
+            'modalidad_evento' => $request->modalidad_evento,
+            'precio' => $request->modalidad_evento === 'pago' ? $request->precio : null,
+            'hora_inicio' => $request->hora_inicio,
+            'hora_fin' => $request->hora_fin,
+            'ubicacion' => $request->ubicacion,
+        ]);
+
+        return redirect()->route('eventos.panel')->with('exito', 'Evento actualizado correctamente.');
     }
 
     public function search( Request $request)
