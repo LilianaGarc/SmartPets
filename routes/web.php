@@ -22,7 +22,9 @@ use App\Http\Controllers\{AdopcionController,
     VeterinariaController,
     ImagenController,
     UbicacionController,
-    ProfileController, HistoriaController
+    ProfileController,
+    HistoriaController,
+    LikeController
 };
 
 // Rutas públicas generales
@@ -104,6 +106,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/seleccionar-mascota', [PerfilController::class, 'seleccionarMascota'])->name('perfil.seleccionarMascota');
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
+
+    //Rutas Like
+    Route::post('/publicaciones/{publicacion}/like', [LikeController::class, 'store'])->name('publicacion.like');
+    Route::delete('/publicaciones/{publicacion}/unlike', [LikeController::class, 'destroy'])->name('publicacion.unlike');
 
     //Rutas de historias
     Route::get('/historias', [HistoriaController::class, 'index'])->name('historias.index');
