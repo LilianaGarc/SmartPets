@@ -417,20 +417,14 @@
         margin-top: 10px; /* Espaciado superior */
         margin-left: 2em;
     }
-
-    /* Hora en gris oscuro cuando el acordeón está abierto (naranja) */
     .accordion-button:not(.collapsed) .user-info small {
-        color: #4a4a4a; /* Gris oscuro */
+        color: #4a4a4a;
     }
-
-    /* Hora en gris claro cuando el acordeón está cerrado (azul) */
     .accordion-button.collapsed .user-info small {
-        color: #d3d3d3; /* Gris claro */
+        color: #d3d3d3;
     }
 </style>
-
 @section('contenido')
-
     <div class="container-fluid mx-2  py-5">
 
         @if(session('success'))
@@ -444,9 +438,7 @@
             </div>
         @endif
         <div class="product-container p-4">
-            <!-- Producto Principal -->
             <div class="row mb-5">
-                <!-- Galería de Imágenes -->
                 <div class="col-md-6 mb-4">
                     <div class="main-image mb-3">
                         <img
@@ -472,11 +464,7 @@
                             alt="
                             {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
                     </div>
-
                 </div>
-                <!-- Fin Galería de Imágenes -->
-
-                <!-- Información del Producto -->
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -487,7 +475,6 @@
                                     style="color: var(--blue)">{{$producto->categoria->nombre}}</a></li>
                         </ol>
                     </nav>
-
                     <h1 class="mb-3">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
@@ -521,12 +508,9 @@
                                              style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
                                     </button>
                                 @endif
-
-
                             </form>
                         @endauth
                     </div>
-
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
@@ -568,13 +552,11 @@
                                         </form>
                                     </div>
                                 </div>
-
                         @endif
                             </div>
                     @endauth
                     </div>
                 </div>
-
                 @if($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -586,17 +568,12 @@
                 @endif
 
                 <h1 class="mb-4">Reseñas</h1>
-                <!-- ACORDEON -->
                 @auth
                     <div class="">
                         <div class="review-system">
-                            <!-- Circular Toggle Button -->
                             <button id="review-toggle-btn" class="review-toggle-btn">
                                 <span class="review-toggle-icon">+</span>
                             </button>
-
-                            <!-- Review Form Container -->
-                            <!-- En el formulario de reseñas -->
                             <div id="review-container"
                                  class="review-container {{ isset($mostrarFormulario) ? 'review-visible' : 'review-hidden' }}">
                                 <div class="review-header">
@@ -634,7 +611,6 @@
                             </div>
                         </div>
                         @endauth
-
                         <div class="accordion" id="accordionExample">
                             @foreach($resenias as $index => $resenia)
                                 <div class="accordion-item">
