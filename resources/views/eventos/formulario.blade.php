@@ -48,6 +48,16 @@
             </div>
             <hr>
 
+             @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-unstyled mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form action="{{ isset($evento) ? route('eventos.update', $evento->id) : route('eventos.store') }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
@@ -60,7 +70,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
                                    placeholder="Título" inputmode="text" autocomplete="off"
-                                   value="{{ old('titulo', $evento->titulo ?? '') }}" required aria-label="Título">
+                                   value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título">
                             <label for="titulo">Título <span style="color:red">*</span></label>
                             @error('titulo')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -73,7 +83,7 @@
                                    placeholder="Fecha"
                                    value="{{ old('fecha', $evento->fecha ?? '') }}"
                                    min="{{ date('Y-m-d') }}"
-                                   required aria-label="Fecha">
+                                   aria-label="Fecha">
                             <label for="fecha">Fecha <span style="color:red">*</span></label>
                             @error('fecha')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -84,7 +94,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
                                    placeholder="Teléfono" inputmode="tel" autocomplete="tel"
-                                   value="{{ old('telefono', $evento->telefono ?? '') }}" required aria-label="Teléfono">
+                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono">
                             <label for="telefono">Teléfono <span style="color:red">*</span></label>
                             @error('telefono')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -97,7 +107,7 @@
                     <div class="col-md-3">
                         <div class="form-floating">
                             <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" id="hora_inicio" name="hora_inicio"
-                                   placeholder="Hora de inicio" value="{{ old('hora_inicio', isset($evento) ? \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i') : '') }}" required aria-label="Hora de inicio">
+                                   placeholder="Hora de inicio" value="{{ old('hora_inicio', isset($evento) ? \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i') : '') }}" aria-label="Hora de inicio">
                             <label for="hora_inicio">Hora inicio <span style="color:red">*</span></label>
                             @error('hora_inicio')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -107,7 +117,7 @@
                     <div class="col-md-3">
                         <div class="form-floating">
                             <input type="time" class="form-control @error('hora_fin') is-invalid @enderror" id="hora_fin" name="hora_fin"
-                                   placeholder="Hora de fin" value="{{ old('hora_fin', isset($evento) ? \Carbon\Carbon::parse($evento->hora_fin)->format('H:i') : '') }}" required aria-label="Hora de fin">
+                                   placeholder="Hora de fin" value="{{ old('hora_fin', isset($evento) ? \Carbon\Carbon::parse($evento->hora_fin)->format('H:i') : '') }}" aria-label="Hora de fin">
                             <label for="hora_fin">Hora fin <span style="color:red">*</span></label>
                             @error('hora_fin')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -116,7 +126,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating">
-                            <select class="form-select" id="modalidad_evento" name="modalidad_evento" required aria-label="Acceso al evento" onchange="mostrarCampoPrecio()">
+                            <select class="form-select" id="modalidad_evento" name="modalidad_evento" aria-label="Acceso al evento" onchange="mostrarCampoPrecio()">
                                 <option value="gratis" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'gratis' ? 'selected' : '' }}>Gratuito</option>
                                 <option value="pago" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'pago' ? 'selected' : '' }}>De pago</option>
                             </select>
@@ -139,7 +149,7 @@
                     <div class="col-12">
                         <div class="form-floating">
                             <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion"
-                                   placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" required aria-label="Ubicación">
+                                   placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" aria-label="Ubicación">
                             <label for="ubicacion">Ubicación <span style="color:red">*</span></label>
                             @error('ubicacion')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -152,7 +162,7 @@
                     <div class="col-12">
                         <div class="form-floating">
                             <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
-                                placeholder="Descripción" style="height: 100px" required aria-label="Descripción"
+                                placeholder="Descripción" style="height: 100px" aria-label="Descripción"
                                 maxlength="250"
                                 oninput="actualizarContadorDescripcion()"
                             >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
@@ -171,7 +181,7 @@
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ isset($evento) ? '' : 'required' }}>
+                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ isset($evento) ? '' : '' }}>
                             @if(isset($evento) && $evento->imagen)
                                 <span class="input-group-text bg-white">
                                     <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Imagen actual" style="max-width: 60px; max-height: 60px; object-fit: cover;">

@@ -22,7 +22,8 @@ use App\Http\Controllers\{AdopcionController,
     VeterinariaController,
     ImagenController,
     UbicacionController,
-    ProfileController};
+    ProfileController
+};
 
 // Rutas públicas generales
 Route::get('/', fn() => redirect()->route('animacion'));
@@ -283,3 +284,4 @@ require __DIR__.'/auth.php';
 Route::post('/enviar-codigo-verificacion', [\App\Http\Controllers\ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
+

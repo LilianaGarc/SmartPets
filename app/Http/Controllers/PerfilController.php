@@ -42,7 +42,6 @@ class PerfilController extends Controller
     }
 
 
-
     public function actualizarFoto(Request $request)
     {
         $request->validate([
