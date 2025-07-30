@@ -10,10 +10,18 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\Models\StoryMedia;
 
 
-class PublicacionController
+
+class PublicacionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index','show']);
+    }
+
     public function panel()
     {
         $publicaciones = Publicacion::with('user')->orderBy('created_at', 'desc')->get();
@@ -130,8 +138,85 @@ class PublicacionController
             unset($publicacion->likes);
         });
 
-        return view('publicaciones.indexPublicaciones', ['publicaciones'=>$publicaciones]);
+        $groupedStories = $this->getGroupedStoriesData();
+
+        return view('publicaciones.indexPublicaciones', [
+            'publicaciones' => $publicaciones,
+            'historiasGrouped' => $groupedStories
+        ]);
     }
+
+    public function getGroupedStories(Request $request)
+    {
+        $groupedStories = $this->getGroupedStoriesData();
+        return response()->json($groupedStories);
+    }
+
+    private function getGroupedStoriesData()
+    {
+        $user = Auth::user();
+        $now = Carbon::now();
+
+        if (!$user) {
+            $allStories = Historia::where('expires_at', '>', $now)
+                ->with(['user:id,name,email', 'media'])
+                ->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get();
+        } else {
+            $ownStories = Historia::where('user_id', $user->id)
+                ->where('expires_at', '>', $now)
+                ->with('media')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $otherUsersStories = Historia::where('user_id', '!=', $user->id)
+                ->where('expires_at', '>', $now)
+                ->with(['user:id,name,email', 'media'])
+                ->orderBy('created_at', 'desc')
+                ->limit(50)
+                ->get();
+            $allStories = $ownStories->concat($otherUsersStories)->unique('id')->sortByDesc('created_at');
+        }
+
+
+        $groupedStories = $allStories->groupBy('user_id')->map(function ($items, $userId) use ($user) {
+            $firstStory = $items->first();
+            $userName = $firstStory->user->name ?? 'Usuario Desconocido';
+            $userAvatar = $firstStory->user->profile_photo_path ?? null;
+
+            return [
+                'user_id' => $userId,
+                'user_name' => $userName,
+                'user_avatar' => $userAvatar,
+                'stories_count' => $items->count(),
+                'stories' => $items->values()->map(function($story) {
+                    return [
+                        'id' => $story->id,
+                        'created_at' => $story->created_at->diffForHumans(),
+                        'expires_at_timestamp' => $story->expires_at->timestamp,
+                        'media' => $story->media->map(function($media) {
+                            return [
+                                'id' => $media->id,
+                                'file_url' => Storage::url($media->file_path),
+                                'file_type' => $media->file_type,
+                                'caption' => $media->caption,
+                                'order' => $media->order,
+                            ];
+                        })->sortBy('order')->values()->all(),
+                    ];
+                })->all(),
+                'is_current_user' => ($user && $userId == $user->id),
+            ];
+        })->values()->all();
+
+        if (empty($groupedStories)) {
+            return [];
+        }
+
+        return $groupedStories;
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -173,7 +258,12 @@ class PublicacionController
      */
     public function show(string $id)
     {
-        $publicacion = Publicacion::findorFail($id);
+        $publicacion = Publicacion::with('user')
+            ->withCount('likes')
+            ->with(['likes' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])
+            ->findOrFail($id);
         $comentarios = Comentario::with('user')
             ->where('id_publicacion', $id)
             ->orderBy('created_at', 'desc')
