@@ -108,13 +108,15 @@
                     </span>
                     <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
                     <div>{{ $usuarioChat->name }}</div>
-                    <div style="margin-top: 2px; font-size: 0.95em;">
+                    <div class="estado-contacto" style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
                         @if($usuarioChat->en_linea)
-                            <span class="estado-dot online" title="En línea" style="vertical-align: middle;"></span>
-                            <span style="color: #28a745; font-weight: 500;">En línea</span>
+                            <span style="width: 10px; height: 10px; background: #28a745; border-radius: 50%; display: inline-block;" title="En línea"></span>
+                            <span style="color: #28a745; font-size: 0.95em;">En línea</span>
                         @else
-                            <span class="estado-dot offline" title="Desconectado" style="vertical-align: middle;"></span>
-                            <span style="color: #888888; font-weight: 500;">Desconectado</span>
+                            <span style="width: 10px; height: 10px; background: #888; border-radius: 50%; display: inline-block;" title="Desconectado"></span>
+                            <span style="color: #888888; font-size: 0.95em;">
+                                Últ. vez {{ $usuarioChat->last_online ? \Carbon\Carbon::parse($usuarioChat->last_online)->diffForHumans() : 'desconocida' }}
+                            </span>
                         @endif
                     </div>
                 </div>
