@@ -6,10 +6,18 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>
+        window.Laravel = {
+            csrfToken: '{{ csrf_token() }}'
+        };
+    </script>
     <title>@yield('titulo')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    @stack('scripts')
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,6 +50,15 @@
             transform: scale(1.1);
             background-color: #18478b;
         }
+
+        .like-button.liked {
+            background-color: #dc3545 !important;
+        }
+
+        .like-button.liked:hover {
+            background-color: #c82333 !important;
+        }
+
 
         .card-publicacion{
             width: 50vw;
@@ -277,10 +294,20 @@
             color: #FFF;
         }
 
-        .imagen-publicacion-reaccion.reaccion-activa {
-            transform: scale(1.3);
-            transition: transform 0.2s ease;
+        @keyframes palpitacion {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
         }
+
+        .imagen-publicacion-reaccion.reaccion-activa {
+            animation: palpitacion 2s infinite ease-in-out;
+            cursor: pointer;
+        }
+
 
         /*Responsive*/
         @media (max-width: 500px) {
@@ -407,6 +434,68 @@
             hr{
                 display: none;
             }
+
+            /* Carrusel de historias */
+            .historia-card {
+                width: 80px;
+                text-align: center;
+                cursor: pointer;
+            }
+            .historia-avatar {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: 3px solid #25d366;
+                object-fit: cover;
+            }
+            .historia-username {
+                font-size: 12px;
+                margin-top: 5px;
+                color: #333;
+            }
+            .create-historia .historia-create {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: #eee;
+                font-size: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+
+            .historia-container {
+                position: relative;
+                padding: 20px;
+            }
+            .historia-img {
+                max-height: 85vh;
+                object-fit: contain;
+            }
+            .historia-progress-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.3);
+            }
+            .historia-progress-bar {
+                width: 0%;
+                height: 100%;
+                background: #25d366;
+                transition: width 0.1s linear;
+            }
+
+            .nueva-historia{
+                width: 10rem !important;
+                height: auto !important;
+            }
+            .li{
+                font-family: Arial, sans-serif;
+            }
+
 
 
         }

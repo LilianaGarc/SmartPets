@@ -159,4 +159,6 @@ return [
         'password' => 'contraseña',
         'password_confirmation' => 'confirmación de contraseña',
     ],
+
 ];
+

@@ -48,7 +48,14 @@
                 <a href="{{ route('chats.iniciar', $usuario->id) }}" class="chat-user">
                     <img src="{{ $usuario->fotoperfil ? asset('storage/' . $usuario->fotoperfil) : asset('images/fotodeperfil.webp') }}" alt="Foto" />
                     <div class="user-details">
-                        <strong>{{ $usuario->name }}</strong>
+                        <strong class="d-flex align-items-center gap-1">
+                            {{ $usuario->name }}
+                            @if($usuario->en_linea)
+                                <span class="estado-dot online" title="En línea"></span>
+                            @else
+                                <span class="estado-dot offline" title="Desconectado"></span>
+                            @endif
+                        </strong>
                         <small>
                             @php
                                 $mostrarTexto = 'Empieza una conversación';

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 
 class UserController
 {
-    public function paginaPrincipal()
+    public function dashboard()
     {
         return view('panelAdministrativo.principalPanel');
     }

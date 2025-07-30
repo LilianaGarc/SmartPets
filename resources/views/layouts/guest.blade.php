@@ -35,16 +35,17 @@
         }
 
         body {
-            background-image: url("{{ asset('images/fondohuellas.png') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
             width: 100%;
             height: 100vh;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f4f3;
+            overflow: hidden;
+            font-family: "Montserrat", sans-serif;
+            background: url('{{ asset('images/fondohuellas.png') }}') no-repeat center center fixed;
+            background-size: cover;
         }
 
         .container {
@@ -55,7 +56,30 @@
             background-color: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.03);
+        }
+
+        .image-esquina {
+            position: fixed;
+            z-index: 1;
+            width: 30vw;
+            height: auto;
+        }
+
+        .image-superior-derecha {
+            top: 0;
+            right: 0;
+        }
+
+        .image-inferior-izquierda {
+            bottom: 0;
+            left: 0;
         }
 
         .container-form {
@@ -362,6 +386,8 @@
 
         .floating-gif {
             position: fixed;
+            bottom: 0;
+            left: 50%;
             width: 120px;
             height: 120px;
             background-size: contain;
@@ -369,14 +395,11 @@
             background-position: center;
             pointer-events: auto;
             cursor: pointer;
-            transition: left 1s ease-in-out, top 1s ease-in-out;
+            transition: left 1s ease-in-out;
             z-index: 9999;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             background-image: url('{{ asset('images/gato1.gif') }}');
         }
-
 
         .alert-error {
             position: fixed;
@@ -390,10 +413,50 @@
             border-radius: 4px;
             z-index: 10000;
         }
+
+        .container-form {
+            position: relative;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: inline-flex;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button i {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .home-button span {
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .home-button:hover{
+            transform: scale(1.03);
+            background-color: #18478b;
+            color: white;
+        }
+
     </style>
 
 </head>
 <body>
+
 
 {{ $slot }}
 

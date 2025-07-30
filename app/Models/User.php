@@ -27,6 +27,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Publicacion::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function hasLiked(Post $post)
+    {
+        return $this->likes()->where('post_id', $post->id)->exists();
+    }
+
+
     // Modelo Comentarios
     public function comentarios()
     {
@@ -111,6 +122,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Puntaje::class, 'id_usuario');
     }
+
+
+    public function historias()
+{
+    return $this->hasMany(Historia::class);
+}
 
 
     protected $fillable = [

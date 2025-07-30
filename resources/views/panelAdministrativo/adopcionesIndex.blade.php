@@ -34,7 +34,7 @@
 </form>
 <hr>
 
-<div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
+<div style="overflow-x: visible !important; margin-left: 1rem; margin-right: 1rem;">
     <table class="table table-striped table-bordered" style="margin: 15px;  ">
         <thead>
             <tr>
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                </td> 
+                </td>
             </tr>
             @endforeach
         </tbody>

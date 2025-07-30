@@ -514,7 +514,9 @@
     let isGameOver = false;
     let obstacleX = window.innerWidth;
     let obstacle2X = window.innerWidth + 600;
-    let speed = 5;
+    const rawSpeed = window.innerWidth * 0.001;
+
+    let speed = Math.min(Math.max(rawSpeed, 8), 14);
     let isMuted = false;
     const minSeparation = 500;
     const maxSeparation = 1400;
@@ -633,7 +635,7 @@
                 document.body.classList.toggle('light-mode');
             }
             if (score % 20 === 0) {
-                speed += 0.15;
+                speed += 0.05;
             }
         }
     }, 200);
@@ -736,7 +738,19 @@
             event.preventDefault();
         }
     });
-</script>
 
+
+</script>
+<script>
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+            isGameOver = true;
+            backgroundMusic.pause();
+        } else {
+            location.reload();
+        }
+    });
+
+</script>
 </body>
 </html>

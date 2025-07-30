@@ -53,6 +53,17 @@
                                     <h4 class="mb-0">
                                         <strong>{{ $publicacion->user ? $publicacion->user->name : 'Usuario no disponible' }}</strong>
                                     </h4>
+                                    @if (auth()->check() && auth()->id() === $publicacion->id_user)
+                                        <div class="dropdown ms-auto">
+                                            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="{{ route('publicaciones.edit' , ['id'=>$publicacion->id]) }}"><i class="fa-solid fa-pen-to-square"></i> Editar publicación</a></li>
+                                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}"><i class="fa-solid fa-trash"></i> Eliminar publicación</a></li>
+                                            </ul>
+                                        </div>
+                                    @endif
                                 </div>
                             </h3>
                             <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
@@ -63,49 +74,40 @@
                                 <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion">
                             @endif
                         </div>
+
+                        <div class="col align-items-center">
+                            <h6 style="margin-top: 8px;">
+                                <i class="fa-solid fa-heart" style="color: darkred;"></i>
+                                <span class="likes-count">{{ $publicacion->likes_count }}</span>
+                            </h6>
+                        </div>
+
+                        <hr>
                         <div class="interacciones" style="margin-top: 1vh;">
                             <div class="reactions" id="reactions-{{ $publicacion->id }}">
-                                <p class="card-text"><small class="text-body-secondary">Cantidad de Reacciones: {{$publicacion->reacciones_count}}</small></p>
 
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        @php
-                                            $reaccionUsuario = $publicacion->reaccionesUsuarioActual;
-                                        @endphp
-
-                                        @foreach(['amor', 'risa', 'triste', 'enojado'] as $tipo)
-                                            @php
-                                                $src = asset("images/{$tipo}perrito.webp");
-                                                $hover = asset("images/perrito{$tipo}2.webp");
-                                                $active = $reaccionUsuario && $reaccionUsuario->tipo === $tipo;
-                                            @endphp
-                                            <img src="{{ $src }}"
-                                                 data-hover="{{ $hover }}"
-                                                 data-tipo="{{ $tipo }}"
-                                                 data-publicacion="{{ $publicacion->id }}"
-                                                 class="imagen-publicacion-reaccion {{ $active ? 'reaccion-activa' : '' }}">
-                                        @endforeach
-                                    </div>
-                                    <div class="col text-end">
-                                        <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fas fa-comment"></i> Comentar
-                                        </a>
-
-                                        @if (auth()->check() && auth()->id() === $publicacion->id_user)
-                                            <a href="{{ route('publicaciones.edit', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                                <i class="fa-solid fa-pen-to-square"></i> Editar
-                                            </a>
-                                            <a href="#" class="btn" role="button" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$publicacion->id}}" style="margin: 1px;">
-                                                <i class="fa-solid fa-trash"></i> Eliminar
-                                            </a>
-                                        @endif
-                                    </div>
+                                <div class="col align-items-center">
+                                    <button
+                                        class="btn like-button"
+                                        role="button"
+                                        style="margin: 1px;"
+                                        data-publicacion-id="{{ $publicacion->id }}"
+                                        data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
+                                    >
+                                        <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
+                                        Me gusta
+                                    </button>
+                                    <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
+                                        <i class="fa-regular fa-comment"></i> Comentar
+                                    </a>
+                                    <a href="#" class="btn" role="button" style="margin: 1px;">
+                                        <i class="fa-regular fa-share-from-square"></i> Compartir
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Modal fuera de la card, se colocó fuera del ciclo foreach -->
                     @if (auth()->check() && auth()->id() === $publicacion->id_user)
                         <div class="modal fade" id="modalEliminar{{$publicacion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -135,64 +137,100 @@
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('.imagen-publicacion-reaccion').forEach(img => {
-            const originalSrc = img.src;
-
-            img.addEventListener('mouseover', () => {
-                img.src = img.dataset.hover;
-            });
-
-            img.addEventListener('mouseout', () => {
-                if (!img.classList.contains('reaccion-activa')) {
-                    img.src = originalSrc;
-                }
-            });
-
-            img.addEventListener('click', () => {
-                const tipo = img.dataset.tipo;
-                const publicacionId = img.dataset.publicacion;
-                const isActive = img.classList.contains('reaccion-activa');
-
-                if (isActive) {
-                    fetch(`/reacciones/${publicacionId}`, {
-                        method: "DELETE",
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        @if(Auth::check())
+        @push('scripts')
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.like-button').forEach(button => {
+                        if (button.dataset.isLiked === 'true') {
+                            button.classList.add('liked');
                         }
-                    }).then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'deleted') {
-                                document.querySelectorAll(`[data-publicacion="${publicacionId}"]`).forEach(el => {
-                                    el.classList.remove('reaccion-activa');
-                                    el.src = el.src.replace("2.webp", ".webp");
+
+                        button.addEventListener('click', async function(event) {
+                            event.preventDefault();
+
+                            const publicacionId = this.dataset.publicacionId;
+                            let isLiked = this.dataset.isLiked === 'true';
+
+                            const likeIcon = this.querySelector('i');
+                            const likesCountElement = this.closest('.card-publicacion').querySelector('.likes-count');
+                            let currentLikes = parseInt(likesCountElement.textContent);
+
+                            const method = isLiked ? 'DELETE' : 'POST';
+                            const url = `/publicaciones/${publicacionId}/${isLiked ? 'unlike' : 'like'}`;
+
+                            if (isLiked) {
+                                likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                button.classList.remove('liked');
+                                currentLikes--;
+                            } else {
+                                likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                likeIcon.classList.add('fa-solid', 'text-red-500');
+                                button.classList.add('liked');
+                                currentLikes++;
+                            }
+                            likesCountElement.textContent = currentLikes;
+                            this.dataset.isLiked = !isLiked;
+
+                            try {
+                                const response = await fetch(url, {
+                                    method: method,
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
                                 });
+
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    alert(`Error: ${errorData.message || 'No se pudo realizar la acción.'}`);
+
+                                    if (isLiked) {
+                                        likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                        likeIcon.classList.add('fa-solid', 'text-red-500');
+                                        button.classList.add('liked');
+                                        currentLikes++;
+                                    } else {
+                                        likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                        likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                        button.classList.remove('liked');
+                                        currentLikes--;
+                                    }
+                                    likesCountElement.textContent = currentLikes;
+                                    this.dataset.isLiked = isLiked;
+                                } else {
+                                    const responseData = await response.json();
+                                    if (responseData.likes_count !== undefined) {
+                                        likesCountElement.textContent = responseData.likes_count;
+                                    }
+                                }
+
+                            } catch (error) {
+                                console.error('Error al comunicarse con la API:', error);
+                                alert('Hubo un problema de conexión. Inténtalo de nuevo.');
+
+                                if (isLiked) {
+                                    likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                    likeIcon.classList.add('fa-solid', 'text-red-500');
+                                    button.classList.add('liked');
+                                    currentLikes++;
+                                } else {
+                                    likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                    likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                    button.classList.remove('liked');
+                                    currentLikes--;
+                                }
+                                likesCountElement.textContent = currentLikes;
+                                this.dataset.isLiked = isLiked;
                             }
                         });
-                } else {
-                    fetch("/reacciones", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            tipo,
-                            publicacion_id: publicacionId
-                        })
-                    }).then(res => res.json())
-                        .then(data => {
-                            document.querySelectorAll(`[data-publicacion="${publicacionId}"]`).forEach(el => {
-                                el.classList.remove('reaccion-activa');
-                                el.src = el.src.replace("2.webp", ".webp");
-                            });
+                    });
+                });
+            </script>
+        @endpush
+        @endif
 
-                            img.classList.add('reaccion-activa');
-                            img.src = img.dataset.hover;
-                        });
-                }
-            });
-        });
-    </script>
+
     @include('chats.chat-float')
 @endsection

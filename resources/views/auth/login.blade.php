@@ -14,9 +14,14 @@
 
     <div class="container">
         <div class="container-form">
+            <a href="{{ route('index') }}" class="home-button">
+                    <i class="fa-solid fa-house"></i><h3>Inicio</h3>
+                </a>
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
                 <h1><strong>Iniciar Sesión</strong></h1>
+
+                <h2><strong>Iniciar Sesión</strong></h2>
                 <span>Use su correo y contraseña</span>
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
@@ -105,25 +110,15 @@
                 let currentIndex = 0;
                 gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
 
-                function getRandomPosition() {
-                    const padding = 50;
+                function getRandomHorizontalPosition() {
                     const winWidth = window.innerWidth;
-                    const winHeight = window.innerHeight;
-                    let left, top;
-
-                    do {
-                        left = Math.floor(Math.random() * (winWidth - 120));
-                        top = Math.floor(Math.random() * (winHeight - 120));
-                    } while (
-                        left > window.innerWidth / 4 && left < (window.innerWidth * 3) / 4 &&
-                        top > window.innerHeight / 4 && top < (window.innerHeight * 3) / 4
-                        );
-
-                    return { left, top };
+                    const gifWidth = 120;
+                    const left = Math.floor(Math.random() * (winWidth - gifWidth));
+                    return left;
                 }
 
-                function moveGifRandomly() {
-                    const { left, top } = getRandomPosition();
+                function moveGifHorizontally() {
+                    const left = getRandomHorizontalPosition();
                     gifElement.style.left = `${left}px`;
                     gifElement.style.top = `${top}px`;
                 }
@@ -133,9 +128,9 @@
                     gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
                 });
 
-                setInterval(moveGifRandomly, 10000);
+                setInterval(moveGifHorizontally, 10000);
 
-                moveGifRandomly();
+                moveGifHorizontally();
             });
         </script>
 <script>
@@ -165,6 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .link-recuperar:hover {
         text-decoration: underline;
     }
-    
+
 </style>
 </x-guest-layout>

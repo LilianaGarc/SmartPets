@@ -670,7 +670,7 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ route('users.dashboard') }}">
+                <a href="{{ route('panel.dashboard') }}">
                     <img src="{{ asset('images/principal.svg') }}" alt="Smart Pets">
                     <span>Página principal</span>
                 </a>
@@ -709,6 +709,12 @@
                 <a href="{{ route('productos.panel') }}">
                     <img src="{{ asset('images/productos.svg') }}" alt="Smart Pets">
                     <span>Productos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('eventos.panel') }}">
+                    <img src="{{ asset('images/evento.png') }}" alt="Smart Pets">
+                    <span>Eventos</span>
                 </a>
             </li>
         </ul>

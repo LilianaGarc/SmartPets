@@ -40,45 +40,59 @@ class ReaccionController
      */
     public function store(Request $request)
     {
-        if (!auth()->check()) {
-            return response()->json(['status' => 'unauthorized'], 401);
-        }
-
         $request->validate([
-            'tipo' => 'required|string',
-            'publicacion_id' => 'required|exists:publicaciones,id',
+            'publicacion_id' => 'required|exists:publicacions,id',
+            'tipo' => 'required|in:amor,risa,triste,enojado',
         ]);
 
-        $reaccion = Reaccion::updateOrCreate(
-            [
-                'id_user' => auth()->id(),
-                'publicacion_id' => $request->publicacion_id,
-            ],
-            ['tipo' => $request->tipo]
-        );
+        $userId = Auth::id();
 
-        return response()->json(['status' => 'success', 'reaccion' => $reaccion]);
-    }
-
-    /**
-     * Eliminar una reacción.
-     */
-    public function destroy(string $publicacion_id)
-    {
-
-        if (!auth()->check()) {
-            return response()->json(['status' => 'unauthorized'], 401);
-        }
-
-
-        $reaccion = Reaccion::where('publicacion_id', $publicacion_id)
-            ->where('id_user', auth()->id())
+        // Buscar si ya reaccionó a esta publicación
+        $reaccion = Reaccion::where('user_id', $userId)
+            ->where('publicacion_id', $request->publicacion_id)
             ->first();
 
+        if ($reaccion) {
+            // Actualizar tipo de reacción
+            $reaccion->tipo = $request->tipo;
+            $reaccion->save();
+        } else {
+            // Crear nueva reacción
+            $reaccion = Reaccion::create([
+                'user_id' => $userId,
+                'publicacion_id' => $request->publicacion_id,
+                'tipo' => $request->tipo,
+            ]);
+        }
+
+        // Contar reacciones actualizadas
+        $reaccionesCount = Reaccion::where('publicacion_id', $request->publicacion_id)->count();
+
+        return response()->json([
+            'status' => 'success',
+            'reaccionesCount' => $reaccionesCount,
+            'tipo' => $reaccion->tipo,
+        ]);
+    }
+
+
+    public function destroy($publicacionId)
+    {
+        $userId = Auth::id();
+
+        $reaccion = Reaccion::where('user_id', $userId)
+            ->where('publicacion_id', $publicacionId)
+            ->first();
 
         if ($reaccion) {
             $reaccion->delete();
-            return response()->json(['status' => 'deleted']);
+
+            $reaccionesCount = Reaccion::where('publicacion_id', $publicacionId)->count();
+
+            return response()->json([
+                'status' => 'deleted',
+                'reaccionesCount' => $reaccionesCount,
+            ]);
         }
 
         return response()->json(['status' => 'not_found'], 404);

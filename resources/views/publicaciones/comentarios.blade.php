@@ -87,13 +87,60 @@
                     <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top" alt="Img publicacion">
                 @endif
             </div>
-            <div class="interacciones" style="margin-left: 2%">
-                <div class="reactions" id="reactions-{{ $publicacion->id }}">
-                    <img src="{{ asset('images/amorperrito.webp') }}" id="amor" data-hover="{{ asset('images/perritoamor2.webp') }}" class="imagen-publicacion-reaccion">
-                    <img src="{{ asset('images/risaperrito.webp') }}" id="risa" data-hover="{{ asset('images/perritorisa2.webp') }}" class="imagen-publicacion-reaccion">
-                    <img src="{{ asset('images/tristeperrito.webp') }}" id="triste" data-hover="{{ asset('images/perritotriste2.webp') }}" class="imagen-publicacion-reaccion">
-                    <img src="{{ asset('images/enojadoperrito.webp') }}" id="enojado" data-hover="{{ asset('images/perritoenojado2.webp') }}" class="imagen-publicacion-reaccion"></div>
+            <div class="col align-items-center">
+                <h6 style="margin-top: 8px;">
+                    <i class="fa-solid fa-heart" style="color: darkred;"></i>
+                    <span class="likes-count">{{ $publicacion->likes_count }}</span>
+                </h6>
             </div>
+
+            <hr>
+            <div class="interacciones" style="margin-top: 1vh;">
+                <div class="reactions" id="reactions-{{ $publicacion->id }}">
+
+                    <div class="col align-items-center">
+                        <button
+                            class="btn like-button"
+                            role="button"
+                            style="margin: 1px;"
+                            data-publicacion-id="{{ $publicacion->id }}"
+                            data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
+                        >
+                            <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
+                            Me gusta
+                        </button>
+                        <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;" disabled="">
+                            <i class="fa-regular fa-comment"></i> Comentar
+                        </a>
+                        <a href="#" class="btn" role="button" style="margin: 1px;">
+                            <i class="fa-regular fa-share-from-square"></i> Compartir
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @if (auth()->check() && auth()->id() === $publicacion->id_user)
+                <div class="modal fade" id="modalEliminar{{$publicacion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar publicación</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Está seguro de eliminar esta publicación?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <form method="post" action="{{ route('publicaciones.destroy', ['id'=> $publicacion->id]) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="submit" value="Eliminar" class="btn btn-danger">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <hr>
             <div>
                 <div class="col">
@@ -137,6 +184,99 @@
                     }
                 };
             </script>
+                @if(Auth::check())
+                    @push('scripts')
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                document.querySelectorAll('.like-button').forEach(button => {
+                                    if (button.dataset.isLiked === 'true') {
+                                        button.classList.add('liked');
+                                    }
+
+                                    button.addEventListener('click', async function(event) {
+                                        event.preventDefault();
+
+                                        const publicacionId = this.dataset.publicacionId;
+                                        let isLiked = this.dataset.isLiked === 'true';
+
+                                        const likeIcon = this.querySelector('i');
+                                        const likesCountElement = this.closest('.card-publicacion').querySelector('.likes-count');
+                                        let currentLikes = parseInt(likesCountElement.textContent);
+
+                                        const method = isLiked ? 'DELETE' : 'POST';
+                                        const url = `/publicaciones/${publicacionId}/${isLiked ? 'unlike' : 'like'}`;
+
+                                        if (isLiked) {
+                                            likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                            likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                            button.classList.remove('liked');
+                                            currentLikes--;
+                                        } else {
+                                            likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                            likeIcon.classList.add('fa-solid', 'text-red-500');
+                                            button.classList.add('liked');
+                                            currentLikes++;
+                                        }
+                                        likesCountElement.textContent = currentLikes;
+                                        this.dataset.isLiked = !isLiked;
+
+                                        try {
+                                            const response = await fetch(url, {
+                                                method: method,
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                                },
+                                            });
+
+                                            if (!response.ok) {
+                                                const errorData = await response.json();
+                                                alert(`Error: ${errorData.message || 'No se pudo realizar la acción.'}`);
+
+                                                if (isLiked) {
+                                                    likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                                    likeIcon.classList.add('fa-solid', 'text-red-500');
+                                                    button.classList.add('liked');
+                                                    currentLikes++;
+                                                } else {
+                                                    likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                                    likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                                    button.classList.remove('liked');
+                                                    currentLikes--;
+                                                }
+                                                likesCountElement.textContent = currentLikes;
+                                                this.dataset.isLiked = isLiked;
+                                            } else {
+                                                const responseData = await response.json();
+                                                if (responseData.likes_count !== undefined) {
+                                                    likesCountElement.textContent = responseData.likes_count;
+                                                }
+                                            }
+
+                                        } catch (error) {
+                                            console.error('Error al comunicarse con la API:', error);
+                                            alert('Hubo un problema de conexión. Inténtalo de nuevo.');
+
+                                            if (isLiked) {
+                                                likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                                                likeIcon.classList.add('fa-solid', 'text-red-500');
+                                                button.classList.add('liked');
+                                                currentLikes++;
+                                            } else {
+                                                likeIcon.classList.remove('fa-solid', 'text-red-500');
+                                                likeIcon.classList.add('fa-regular', 'text-gray-400');
+                                                button.classList.remove('liked');
+                                                currentLikes--;
+                                            }
+                                            likesCountElement.textContent = currentLikes;
+                                            this.dataset.isLiked = isLiked;
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                    @endpush
+                @endif
 
 
         </div>

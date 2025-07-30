@@ -16,7 +16,7 @@
         <a href="{{ route('productos.panelcreate') }}" class="btn ms-auto" role="button">
             <h8>Nuevo producto <i class="fas fa-plus"></i></h8>
         </a>
-    </div>    
+    </div>
     <hr>
     <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
         <div class="row">
@@ -33,7 +33,7 @@
     <hr>
 
 
-    <div style="overflow-x: auto; margin-left: 1rem; margin-right: 1rem;">
+    <div style="overflow-x: visible !important; margin-left: 1rem; margin-right: 1rem;">
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
