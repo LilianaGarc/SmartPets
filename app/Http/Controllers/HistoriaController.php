@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Historia;
-use Illuminate\Support\Facades\Auth;
+use App\Models\StoryMedia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class HistoriaController extends Controller
 {
@@ -14,8 +15,7 @@ class HistoriaController extends Controller
      */
     public function index()
     {
-        $stories = Story::where('created_at', '>=', now()->subDay())->with('user')->latest()->get();
-        return view('.index', compact('historias'));
+        //
     }
 
     /**
@@ -32,20 +32,45 @@ class HistoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240',
+            'files' => 'required|array|min:1|max:10',
+            'files.*' => 'mimes:jpeg,png,jpg,gif,mp4,mov,ogg,qt|max:20480',
+            'captions.*' => 'nullable|string|max:255',
         ]);
 
-        $file = $request->file('media');
-        $path = $file->store('stories', 'public');
+        DB::beginTransaction();
 
-        $story = Historia::create([
-            'user_id' => auth()->id(),
-            'media_path' => $path,
-            'media_type' => $file->getMimeType() === 'video/mp4' ? 'video' : 'image',
-            'expires_at' => now()->addHours(24),
-        ]);
+        try {
+            $historia = new Historia();
+            $historia->user_id = auth()->id();
+            $historia->expires_at = now()->addHours(24);
+            $historia->save();
 
-        return response()->json(['message' => 'Historia publicada', 'story' => $story]);
+            foreach ($request->file('files') as $index => $file) {
+                // *** ¡CAMBIO CLAVE AQUÍ! ***
+                // Almacenar directamente en el subdirectorio 'historias' del disco 'public'.
+                // Esto guardará el archivo en storage/app/public/historias/
+                $filePath = $file->store('historias', 'public'); // Elimina 'public/' del primer argumento
+
+                // $filePath ahora ya contendrá algo como 'historias/nombre_del_archivo.ext'
+                // Por lo tanto, ¡ya no necesitas el str_replace!
+                // $publicPath = str_replace('public/', '', $filePath); // ¡Elimina esta línea!
+
+                StoryMedia::create([ // Asumo que StoryMedia es tu modelo para HistoriaMedia
+                    'historia_id' => $historia->id,
+                    'file_path' => $filePath, // Usa directamente $filePath
+                    'file_type' => $file->getClientMimeType(),
+                    'caption' => $request->input("captions.{$index}"),
+                    'order' => $index,
+                ]);
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Historia creada con éxito'], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Error al crear la historia', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
