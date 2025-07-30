@@ -1,6 +1,4 @@
 <?php
-use App\Notifications\EstadoEventoNotificacion;
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,6 +6,7 @@ use App\Models\Evento;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Notifications\PeticionEventoNotificacion;
+use App\Notifications\EstadoEventoNotificacion;
 
 class EventoController
 {
