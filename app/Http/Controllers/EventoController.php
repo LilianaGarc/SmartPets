@@ -14,10 +14,10 @@ class EventoController
     {
         $eventos = Evento::all();
 
-        $notificacionesAdmin = auth()->user()
-            ->notifications()
-            ->where('type', 'App\Notifications\PeticionEventoNotificacion')
-            ->where('read_at', null) // Solo no leídas
+        $notificacionesAdmin = \App\Models\Notificacion::where('user_id', auth()->id())
+            ->where('visto', false)
+            ->where('mensaje', 'like', 'Nueva petición de evento%')
+            ->latest()
             ->get();
 
         return view('panelAdministrativo.eventosIndex', compact('eventos', 'notificacionesAdmin'));
@@ -63,7 +63,17 @@ class EventoController
         // Notificar a todos los administradores
         $admins = User::where('typeuser', 'admin')->get();
         foreach ($admins as $admin) {
-            $admin->notify(new PeticionEventoNotificacion($evento));
+            \App\Models\Notificacion::create([
+                'user_id' => $admin->id,
+                'mensaje' => 'Nueva petición de evento: ' . $evento->titulo,
+                'visto' => false,
+                'data' => json_encode([
+                    'evento_id' => $evento->id,
+                    'titulo' => $evento->titulo,
+                    'fecha' => $evento->fecha,
+                    'url_evento' => route('eventos.panelshow', ['id' => $evento->id]),
+                ]),
+            ]);
         }
 
         return redirect()->route('eventos.panel')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
@@ -225,7 +235,17 @@ class EventoController
         // Notificar a todos los administradores
         $admins = User::where('typeuser', 'admin')->get();
         foreach ($admins as $admin) {
-            $admin->notify(new PeticionEventoNotificacion($evento));
+            \App\Models\Notificacion::create([
+                'user_id' => $admin->id,
+                'mensaje' => 'Nueva petición de evento: ' . $evento->titulo,
+                'visto' => false,
+                'data' => json_encode([
+                    'evento_id' => $evento->id,
+                    'titulo' => $evento->titulo,
+                    'fecha' => $evento->fecha,
+                    'url_evento' => route('eventos.panelshow', ['id' => $evento->id]),
+                ]),
+            ]);
         }
 
         return redirect()->route('eventos.index')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
