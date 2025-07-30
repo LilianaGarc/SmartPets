@@ -108,13 +108,13 @@
                     </span>
                     <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
                     <div>{{ $usuarioChat->name }}</div>
-                    <div>
+                    <div style="margin-top: 2px; font-size: 0.95em;">
                         @if($usuarioChat->en_linea)
-                            <span class="estado-dot online" title="En línea"></span>
-                            <span style="color: #28a745; font-size: 0.95em;">En línea</span>
+                            <span class="estado-dot online" title="En línea" style="vertical-align: middle;"></span>
+                            <span style="color: #28a745; font-weight: 500;">En línea</span>
                         @else
-                            <span class="estado-dot offline" title="Desconectado"></span>
-                            <span style="color: #888888; font-size: 0.95em;">Desconectado</span>
+                            <span class="estado-dot offline" title="Desconectado" style="vertical-align: middle;"></span>
+                            <span style="color: #888888; font-weight: 500;">Desconectado</span>
                         @endif
                     </div>
                 </div>
