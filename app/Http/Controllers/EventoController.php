@@ -375,8 +375,18 @@ class EventoController
         $evento->estado = 'aceptado';
         $evento->save();
 
-        // Notificar al usuario (implementa la notificación aquí)
-        $evento->user->notify(new EstadoEventoNotificacion($evento, 'aceptado'));
+        \App\Models\Notificacion::create([
+            'user_id' => $evento->id_user,
+            'mensaje' => 'Tu evento "' . $evento->titulo . '" ha sido aceptado.',
+            'visto' => false,
+            'data' => json_encode([
+                'evento_id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'fecha' => $evento->fecha,
+                'estado' => $evento->estado,
+                'url_evento' => route('eventos.show', ['id' => $evento->id]),
+            ]),
+        ]);
 
         return back()->with('exito', 'Evento aceptado correctamente.');
     }
@@ -385,11 +395,22 @@ class EventoController
     {
         $evento = Evento::findOrFail($id);
         $evento->estado = 'rechazado';
-        $evento->motivo_rechazo = $request->motivo; // Si tienes este campo en la BD
+        $evento->motivo_rechazo = $request->motivo;
         $evento->save();
 
-        // Notificar al usuario con motivo
-        $evento->user->notify(new EstadoEventoNotificacion($evento, 'rechazado', $request->motivo));
+        \App\Models\Notificacion::create([
+            'user_id' => $evento->id_user,
+            'mensaje' => 'Tu evento "' . $evento->titulo . '" ha sido rechazado. Motivo: ' . $request->motivo,
+            'visto' => false,
+            'data' => json_encode([
+                'evento_id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'fecha' => $evento->fecha,
+                'estado' => $evento->estado,
+                'motivo' => $request->motivo,
+                'url_evento' => route('eventos.show', ['id' => $evento->id]),
+            ]),
+        ]);
 
         return back()->with('exito', 'Evento rechazado correctamente.');
     }
