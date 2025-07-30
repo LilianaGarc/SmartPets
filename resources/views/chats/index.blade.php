@@ -108,6 +108,15 @@
                     </span>
                     <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
                     <div>{{ $usuarioChat->name }}</div>
+                    <div>
+                        @if($usuarioChat->en_linea)
+                            <span class="estado-dot online" title="En línea"></span>
+                            <span style="color: #28a745; font-size: 0.95em;">En línea</span>
+                        @else
+                            <span class="estado-dot offline" title="Desconectado"></span>
+                            <span style="color: #888888; font-size: 0.95em;">Desconectado</span>
+                        @endif
+                    </div>
                 </div>
                 <div class="theme-wrapper">
                     <div class="theme-selector" tabindex="0" aria-label="Selector de tema">
