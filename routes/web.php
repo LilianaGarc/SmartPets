@@ -24,7 +24,7 @@ use App\Http\Controllers\{AdopcionController,
     UbicacionController,
     ProfileController,
     HistoriaController,
-    LikeController
+    LikeController,
 };
 
 // Rutas públicas generales
@@ -73,12 +73,7 @@ Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->n
 Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
 
 // Rutas públicas de publicaciones
-Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
-Route::post('/publicaciones/crear', [PublicacionController::class, 'store'])->name('publicaciones.store');
-Route::get('/publicaciones/{id}/editar', [PublicacionController::class, 'edit'])->name('publicaciones.edit')->whereNumber('id');
-Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'])->name('publicaciones.update')->whereNumber('id');
 Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
-Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
 
 // Rutas publicas de eventos
@@ -107,14 +102,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
 
+    //Rutas publicaciones
+    Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
+    Route::post('/publicaciones/crear', [PublicacionController::class, 'store'])->name('publicaciones.store');
+    Route::get('/publicaciones/{id}/editar', [PublicacionController::class, 'edit'])->name('publicaciones.edit')->whereNumber('id');
+    Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'])->name('publicaciones.update')->whereNumber('id');
+    Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
+
+
     //Rutas Like
     Route::post('/publicaciones/{publicacion}/like', [LikeController::class, 'store'])->name('publicacion.like');
     Route::delete('/publicaciones/{publicacion}/unlike', [LikeController::class, 'destroy'])->name('publicacion.unlike');
 
     //Rutas de historias
-    Route::get('/historias', [HistoriaController::class, 'index'])->name('historias.index');
-    Route::get('/historias/create', [HistoriaController::class, 'create'])->name('historias.create');
     Route::post('/historias', [HistoriaController::class, 'store'])->name('historias.store');
+    Route::get('/historias/grouped', [App\Http\Controllers\PublicacionController::class, 'getGroupedStories'])->name('historias.grouped');
+
+
 
     // Rutas públicas de reacciones
     Route::post('/reacciones', [ReaccionController::class, 'store'])->name('reacciones.store');
@@ -147,17 +151,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
     Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
 
-    // Panel de eventos
-    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
-    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
-    Route::get('panel/eventos/crear', [EventoController::class, 'panelcreate'])->name('eventos.panelcreate');
-    Route::post('panel/eventos',[EventoController::class, 'panelstore'])->name('eventos.panelstore');
-    Route::get('panel/eventos/{id}/editar', [EventoController::class, 'paneledit'])->name('eventos.paneledit')->whereNumber('id');
-    Route::put('panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
-    Route::get('panel/eventos/{id}/ver', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
-    Route::delete('panel/eventos/{id}/eliminar', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy')->whereNumber('id');
-
-
     Route::post('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
     Route::post('eventos/{id}/dejar-participar', [EventoController::class, 'dejarParticipar'])->name('eventos.dejarParticipar');
 
@@ -188,9 +181,7 @@ Route::middleware('auth')->group(function () {
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
-
     Route::post('/veterinarias', [VeterinariaController::class, 'store'])->name('veterinarias.store');
-
     Route::get('/veterinarias/{id}/editar', [VeterinariaController::class, 'edit'])->name('veterinarias.edit')->whereNumber('id');
     Route::put('/veterinarias/{id}', [VeterinariaController::class, 'update'])->name('veterinarias.update')->whereNumber('id');
     Route::delete('/veterinarias/{id}/eliminar', [VeterinariaController::class, 'destroy'])->name('veterinarias.destroy')->whereNumber('id');
@@ -210,33 +201,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // Panel de productos
     Route::get('/panel/productos', [ProductoController::class, 'panel'])->name('productos.panel');
-
     Route::get('/panel/productos/create', [ProductoController::class, 'panelcreate'])->name('productos.panelcreate');
     Route::post('/panel/productos/crear', [ProductoController::class, 'panelstore'])->name('productos.panelstore');
-
     Route::get('/panel/productos/{id}/editar', [ProductoController::class, 'paneledit'])->name('productos.paneledit')->whereNumber('id');
     Route::put('/panel/productos/{id}/editar', [ProductoController::class, 'panelupdate'])->name('productos.panelupdate')->whereNumber('id');
-
     Route::get('/panel/buscar/productos', [ProductoController::class, 'search'])->name('productos.search');
-
     Route::delete('/panel/productos/{id}', [ProductoController::class, 'paneldestroy'])->name('productos.paneldestroy');
-
     Route::get('/panel/productos/{id}/show', [ProductoController::class, 'panelshow'])->name('productos.panelshow')->whereNumber('id');
 
     // Panel de veterinarias
     Route::get('/panel/veterinarias', [VeterinariaController::class, 'panel'])->name('veterinarias.panel');
-
     Route::get('/panel/veterinarias/create', [VeterinariaController::class, 'panelcreate'])->name('veterinarias.panelcreate');
     Route::post('/panel/veterinarias/crear', [VeterinariaController::class, 'panelstore'])->name('veterinarias.panelstore');
-
     Route::get('/panel/veterinarias/{id}/editar', [VeterinariaController::class, 'paneledit'])->name('veterinarias.paneledit')->whereNumber('id');
-
     Route::put('/panel/veterinarias/{id}/editar', [VeterinariaController::class, 'panelupdate'])->name('veterinarias.panelupdate')->whereNumber('id');
-
     Route::get('/panel/veterinarias/{id}/show', [VeterinariaController::class, 'panelshow'])->name('veterinarias.panelshow')->whereNumber('id');
-
     Route::get('/panel/buscar/veterinarias', [VeterinariaController::class, 'search'])->name('veterinarias.search');
-
     Route::delete('/panel/veterinarias/{id}', [VeterinariaController::class, 'paneldestroy'])->name('veterinarias.paneldestroy');
 
     // Panel de publicaciones
@@ -284,6 +264,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/users/{id}/show', [UserController::class, 'show'])->name('users.show')->whereNumber('id');
     Route::delete('/panel/users/{id}', [UserController::class, 'paneldestroy'])->name('users.paneldestroy');
     Route::get('/panel/dashboard', [UserController::class, 'dashboard'])->name('panel.dashboard');
+
+    // Panel de eventos
+    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
+    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
+    Route::get('panel/eventos/crear', [EventoController::class, 'panelcreate'])->name('eventos.panelcreate');
+    Route::post('panel/eventos',[EventoController::class, 'panelstore'])->name('eventos.panelstore');
+    Route::get('panel/eventos/{id}/editar', [EventoController::class, 'paneledit'])->name('eventos.paneledit')->whereNumber('id');
+    Route::put('panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
+    Route::get('panel/eventos/{id}/ver', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
+    Route::delete('panel/eventos/{id}/eliminar', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy')->whereNumber('id');
 
 });
 
