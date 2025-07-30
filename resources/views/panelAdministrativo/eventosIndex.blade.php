@@ -52,17 +52,29 @@
                     <td style="text-align: center;">
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Actions
+                                Acciones
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('eventos.panelshow', ['id'=> $evento->id]) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('eventos.paneledit', ['id'=> $evento->id]) }}">Editar</a></li>
-                                <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$evento->id}}">Eliminar</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$evento->id}}">Eliminar</a></li>
+                                @if($evento->estado === 'pendiente')
+                                    <li>
+                                        <form method="POST" action="{{ route('eventos.aceptar', $evento->id) }}">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item text-success">Aceptar evento</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#modalRechazar{{$evento->id}}">
+                                            Rechazar evento
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
 
-
-                        <!-- Modal -->
+                        <!-- Modal Eliminar -->
                         <div class="modal fade" id="modalEliminar{{$evento->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -71,10 +83,10 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        Esta seguro de eliminar El evento?
+                                        ¿Está seguro de eliminar el evento?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                         <form method="post" action="{{ route('eventos.paneldestroy' , ['id'=>$evento->id]) }}">
                                             @csrf
                                             @method('delete')
@@ -82,6 +94,29 @@
                                         </form>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Rechazar -->
+                        <div class="modal fade" id="modalRechazar{{$evento->id}}" tabindex="-1" aria-labelledby="modalRechazarLabel{{$evento->id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form method="POST" action="{{ route('eventos.rechazar', $evento->id) }}">
+                                    @csrf
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalRechazarLabel{{$evento->id}}">Rechazar evento</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="motivoRechazo{{$evento->id}}" class="form-label">Motivo del rechazo</label>
+                                            <textarea name="motivo" id="motivoRechazo{{$evento->id}}" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm">Rechazar evento</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 
