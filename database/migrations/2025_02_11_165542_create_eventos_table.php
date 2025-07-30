@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->string('imagen')->nullable();
             $table->string('estado')->default('pendiente'); // pendiente, confirmado, cancelado
+            $table->string('motivo')->nullable(); // motivo de cancelación o rechazo
             $table->string('modalidad_evento')->default('gratis'); 
             $table->decimal('precio', 8, 2)->nullable(); 
             $table->time('hora_inicio');

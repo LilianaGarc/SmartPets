@@ -11,8 +11,30 @@
             {{ session('fracaso') }}
         </div>
     @endif
-    <div class="d-flex align-items-center mb-2">
-        <h3 class="mb-0">| Eventos</h3>
+    {{-- Campanita de notificaciones --}}
+    <div class="d-flex align-items-center mb-3">
+        <h3 class="mb-0 flex-grow-1">| Eventos</h3>
+        <a href="#" class="position-relative me-3" id="notificacionesDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+            <i class="fas fa-bell" style="font-size: 1.7rem; color: #1e4183;"></i>
+            @if($notificacionesAdmin->count() > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.8rem;">
+                    {{ $notificacionesAdmin->count() }}
+                </span>
+            @endif
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown" style="min-width: 320px;">
+            @forelse($notificacionesAdmin as $notificacion)
+                <li class="px-3 py-2 border-bottom">
+                    <div style="font-size: 0.95rem;">
+                        <i class="fas fa-calendar-alt text-primary me-1"></i>
+                        {{ $notificacion->data['mensaje'] ?? 'Nueva notificación' }}
+                    </div>
+                    <small class="text-muted">{{ $notificacion->created_at->diffForHumans() }}</small>
+                </li>
+            @empty
+                <li class="px-3 py-2 text-center text-muted">Sin notificaciones</li>
+            @endforelse
+        </ul>
         <a href="{{ route('eventos.panelcreate') }}" class="btn ms-auto" role="button">
             <h8>Nuevo evento <i class="fas fa-plus"></i></h8>
         </a>

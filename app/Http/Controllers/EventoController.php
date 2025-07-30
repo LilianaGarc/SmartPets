@@ -5,13 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Evento;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Notifications\PeticionEventoNotificacion;
 
 class EventoController
 {
     public function panel()
     {
         $eventos = Evento::all();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+
+        $notificacionesAdmin = auth()->user()
+            ->notifications()
+            ->where('type', 'App\Notifications\PeticionEventoNotificacion')
+            ->where('read_at', null) // Solo no leídas
+            ->get();
+
+        return view('panelAdministrativo.eventosIndex', compact('eventos', 'notificacionesAdmin'));
     }
 
     public function panelcreate()
@@ -37,7 +46,7 @@ class EventoController
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
-        Evento::create([
+        $evento = Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
@@ -50,6 +59,12 @@ class EventoController
             'ubicacion' => $request->ubicacion,
             'id_user' => $idUsuario,
         ]);
+
+        // Notificar a todos los administradores
+        $admins = User::where('typeuser', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new PeticionEventoNotificacion($evento));
+        }
 
         return redirect()->route('eventos.panel')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
     }
@@ -193,7 +208,7 @@ class EventoController
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
-        Evento::create([
+        $evento = Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
@@ -206,6 +221,12 @@ class EventoController
             'ubicacion' => $request->ubicacion,
             'id_user' => $idUsuario,
         ]);
+
+        // Notificar a todos los administradores
+        $admins = User::where('typeuser', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new PeticionEventoNotificacion($evento));
+        }
 
         return redirect()->route('eventos.index')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
     }
@@ -328,5 +349,29 @@ class EventoController
         return back()->with('exito', 'Has dejado de participar en este evento.');
     }
 
+    public function aceptar($id)
+    {
+        $evento = Evento::findOrFail($id);
+        $evento->estado = 'aceptado';
+        $evento->save();
+
+        // Notificar al usuario (implementa la notificación aquí)
+        $evento->user->notify(new EstadoEventoNotificacion($evento, 'aceptado'));
+
+        return back()->with('exito', 'Evento aceptado correctamente.');
+    }
+
+    public function rechazar(Request $request, $id)
+    {
+        $evento = Evento::findOrFail($id);
+        $evento->estado = 'rechazado';
+        $evento->motivo_rechazo = $request->motivo; // Si tienes este campo en la BD
+        $evento->save();
+
+        // Notificar al usuario con motivo
+        $evento->user->notify(new EstadoEventoNotificacion($evento, 'rechazado', $request->motivo));
+
+        return back()->with('exito', 'Evento rechazado correctamente.');
+    }
 
 }
