@@ -1,4 +1,5 @@
 <?php
+use App\Notifications\EstadoEventoNotificacion;
 
 namespace App\Http\Controllers;
 
