@@ -106,6 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/seleccionar-mascota', [PerfilController::class, 'seleccionarMascota'])->name('perfil.seleccionarMascota');
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
+    Route::get('/perfil/{id}', [UserController::class, 'perfil'])->name('users.perfil')->whereNumber('id');
 
     //Rutas Like
     Route::post('/publicaciones/{publicacion}/like', [LikeController::class, 'store'])->name('publicacion.like');

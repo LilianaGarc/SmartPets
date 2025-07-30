@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('usertype')->default('user');
             $table->string('email')->unique();
             $table->timestamp('last_login_at')->nullable();
+            $table->timestamp('last_online')->nullable();
             $table->string('telefono')->nullable();
             $table->string('direccion')->nullable();
             $table->string('descripción')->nullable();

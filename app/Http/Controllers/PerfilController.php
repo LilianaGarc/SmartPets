@@ -17,8 +17,20 @@ class PerfilController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $adopciones = \App\Models\Adopcion::where('id_usuario', $user->id)->get();
+        $productosUsuario = $user->productos()->with('categoria')->get();
 
-        return view('perfil.index', compact('user'));
+        $solicitudes = \App\Models\Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
+        $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
+            return [
+                'adopcion' => $solicitud->adopcion,
+                'solicitud' => $solicitud,
+            ];
+        })->filter(function ($item) {
+            return $item['adopcion'] !== null;
+        });
+
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario'));
     }
 
     public function showPerfil($id)
