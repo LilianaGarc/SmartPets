@@ -61,7 +61,7 @@ class EventoController
         ]);
 
         // Notificar a todos los administradores
-        $admins = User::where('typeuser', 'admin')->get();
+        $admins = User::where('usertype', 'admin')->get();
         foreach ($admins as $admin) {
             \App\Models\Notificacion::create([
                 'user_id' => $admin->id,
@@ -233,7 +233,7 @@ class EventoController
         ]);
 
         // Notificar a todos los administradores
-        $admins = User::where('typeuser', 'admin')->get();
+        $admins = User::where('usertype', 'admin')->get();
         foreach ($admins as $admin) {
             \App\Models\Notificacion::create([
                 'user_id' => $admin->id,
