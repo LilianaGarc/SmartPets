@@ -76,10 +76,7 @@
                 </a>
 
             </div>
-            <div class="contador-general">
-                <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>
-                <p><strong>Solicitudes enviadas:</strong> <span class="contador-numero" data-numero="{{ $adopcionesSolicitadas->count() }}">0</span></p>
-            </div>
+
 
             <div class="productos-guardados">
                 <a href="{{ route('productos.guardados') }}">

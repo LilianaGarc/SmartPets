@@ -109,17 +109,11 @@
     <img src="{{ $fotoPerfil }}" alt="Foto Perfil" />
 
     <div>
-        <a href="{{ route('users.perfil', $usuarioChat->id) }}">
-    {{ $usuarioChat->name }}
-</a>
+        <a href="{{ route('users.perfil', $usuarioChat->id) }}" style="text-decoration: none; color: black;">
+            {{ $usuarioChat->name }}
+        </a>
 
-        <span style="margin-top: 4px;">
-            @if($usuarioChat->en_linea)
-                <span style="width: 10px; height: 10px; background: #28a745; border-radius: 50%; display: inline-block;" title="En línea"></span>
-            @else
-                <span style="width: 10px; height: 10px; background: #888; border-radius: 50%; display: inline-block;" title="Desconectado"></span>
-            @endif
-        </span>
+
     </div>
 
                 </div>
