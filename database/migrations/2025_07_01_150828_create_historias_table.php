@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('historias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('media_path');
-            $table->enum('media_type', ['image', 'video']);
-            $table->timestamp('expires_at');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
