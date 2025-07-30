@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('story_media', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('historia_id')->constrained('historias')->onDelete('cascade');
+            $table->string('file_path');
+            $table->string('file_type');
+            $table->text('caption')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

@@ -114,7 +114,7 @@
                     @endphp
 
                     <h4 class="card-title d-flex align-items-center justify-content-between">
-                        <span>{{ $evento->titulo }}</span>
+                        <span class="titulo_evento">{{ $evento->titulo }}</span>
                         <span class="badge bg-success ms-2" style="font-size: 1rem;">
                             <span class="badge text-dark" title="Participantes" style="font-size: 1em;">
                                 <i class="fas fa-users"></i> {{ $evento->participaciones->count() }}
@@ -237,7 +237,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form id="formEliminarEvento" method="POST" action="">
+                <form id="formEliminarEvento" method="POST" action="{{ route('eventos.destroy', '$evento->id') }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -428,6 +428,17 @@
         0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);}
         70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);}
         100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);}
+    }
+    .titulo_evento {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        max-width: 70%;
+        font-size: 1.25rem;
+        min-height: 2.7em;
     }
 </style>
 @include('chats.chat-float')

@@ -73,7 +73,12 @@ Route::put('/calificaciones/{id}', [CalificacionController::class, 'update'])->n
 Route::delete('/calificaciones/{id}', [CalificacionController::class, 'destroy'])->name('calificaciones.destroy');
 
 // Rutas públicas de publicaciones
+Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
+Route::post('/publicaciones/crear', [PublicacionController::class, 'store'])->name('publicaciones.store');
+Route::get('/publicaciones/{id}/editar', [PublicacionController::class, 'edit'])->name('publicaciones.edit')->whereNumber('id');
+Route::put('/publicaciones/{id}/editar', [PublicacionController::class, 'update'])->name('publicaciones.update')->whereNumber('id');
 Route::get('/publicaciones/{id}/ver', [PublicacionController::class, 'show'])->name('publicaciones.show')->whereNumber('id');
+Route::delete('/publicaciones/{id}/eliminar', [PublicacionController::class, 'destroy'])->name('publicaciones.destroy')->whereNumber('id');
 
 
 // Rutas publicas de eventos
@@ -101,6 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/seleccionar-mascota', [PerfilController::class, 'seleccionarMascota'])->name('perfil.seleccionarMascota');
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
+    Route::get('/perfil/{id}', [UserController::class, 'perfil'])->name('users.perfil')->whereNumber('id');
 
     //Rutas publicaciones
     Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
@@ -151,6 +157,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
     Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
 
+
+// Panel de eventos
+    Route::get('/panel/eventos', [EventoController::class, 'panel'])->name('eventos.panel');
+    Route::get('/panel/buscar/eventos', [EventoController::class, 'search'])->name('eventos.search');
+    Route::get('panel/eventos/crear', [EventoController::class, 'panelcreate'])->name('eventos.panelcreate');
+    Route::post('panel/eventos',[EventoController::class, 'panelstore'])->name('eventos.panelstore');
+    Route::get('panel/eventos/{id}/editar', [EventoController::class, 'paneledit'])->name('eventos.paneledit')->whereNumber('id');
+    Route::put('panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
+    Route::get('panel/eventos/{id}/ver', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
+    Route::delete('panel/eventos/{id}/eliminar', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy')->whereNumber('id');
     Route::post('eventos/{id}/participar', [EventoController::class, 'participar'])->name('eventos.participar');
     Route::post('eventos/{id}/dejar-participar', [EventoController::class, 'dejarParticipar'])->name('eventos.dejarParticipar');
 
@@ -274,6 +290,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('panel/eventos/{id}/editar', [EventoController::class, 'panelupdate'])->name('eventos.panelupdate')->whereNumber('id');
     Route::get('panel/eventos/{id}/ver', [EventoController::class, 'panelshow'])->name('eventos.panelshow')->whereNumber('id');
     Route::delete('panel/eventos/{id}/eliminar', [EventoController::class, 'paneldestroy'])->name('eventos.paneldestroy')->whereNumber('id');
+    Route::post('panel/eventos/{id}/rechazar', [EventoController::class, 'rechazar'])->name('eventos.rechazar');
+    Route::post('panel/eventos/{id}/aceptar', [EventoController::class, 'aceptar'])->name('eventos.aceptar');
 
 });
 

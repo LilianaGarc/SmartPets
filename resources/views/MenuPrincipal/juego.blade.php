@@ -516,7 +516,7 @@
     let obstacle2X = window.innerWidth + 600;
     const rawSpeed = window.innerWidth * 0.001;
 
-    let speed = Math.min(Math.max(rawSpeed, 6), 12);
+    let speed = Math.min(Math.max(rawSpeed, 8), 14);
     let isMuted = false;
     const minSeparation = 500;
     const maxSeparation = 1400;

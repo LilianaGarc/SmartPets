@@ -97,12 +97,24 @@ class UserController
         return view('panelAdministrativo.usersDetalles', compact('user'));
     }
 
+    public function perfil(string $id)
+    {
+        $user = User::findOrFail($id);
+        $adopciones = $user->adopciones ?? collect();
+        $solicitudesEnviadas = $user->solicitudesEnviadas ?? collect();
+        $productos = $user->productos ?? collect();
+        $vet = $user->veterinarias ?? collect();
+
+        return view('perfil.unPerfil', compact('user', 'adopciones', 'solicitudesEnviadas', 'productos', 'vet'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
+
         return view('panelAdministrativo.usersForm')->with('user', $user);
     }
 

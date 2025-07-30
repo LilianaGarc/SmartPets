@@ -3,7 +3,6 @@
 
 @section('contenido')
 
-
 <div class="breadcrumb-container">
     <ul class="breadcrumb">
         <li class="breadcrumb__item">
@@ -23,7 +22,6 @@
         </li>
     </ul>
 </div>
-
 
 <div class="container-fluid pb-4">
 
@@ -66,7 +64,34 @@
         @endphp
 
         <div class="col mb-4">
-            <div class="card h-100 shadow-sm border vet-anim">
+            <div class="card h-100 shadow-sm border vet-anim position-relative">
+                {{-- Botón de acciones para veterinarias --}}
+                @if(auth()->id() === $veterinaria->id_user)
+                <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Acciones">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('veterinarias.edit', $veterinaria->id) }}">
+                                    <i class="fas fa-edit text-warning"></i> Editar
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ route('veterinarias.destroy', $veterinaria->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta veterinaria?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-trash"></i> Borrar
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @endif
+
                 @if ($imagen)
                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center p-0" style="height: 300px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
                     <img src="{{ asset('storage/' . $imagen->path) }}"
@@ -80,12 +105,23 @@
                 @endif
 
                 <div class="card-body">
-                    <h4 class="card-title d-flex align-items-center justify-content-between">
-                        <span>{{ $veterinaria->nombre }}</span>
+                    <div class="d-flex align-items-start justify-content-between">
+                        <h4 class="card-title mb-0" style="
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            word-break: break-word;
+                            max-width: 70%;
+                            font-size: 1.25rem;
+                        ">
+                            {{ $veterinaria->nombre }}
+                        </h4>
                         <span class="badge bg-success ms-2" style="font-size: 1rem;">
                             {{ number_format($veterinaria->calificacion_promedio, 1) }}
                         </span>
-                    </h4>
+                    </div>
 
                     <div class="card-text">
                         <div class="mt-1"><b>Horario:</b> {{ $veterinaria->horario_apertura }} - {{ $veterinaria->horario_cierre }}</div>
@@ -93,7 +129,7 @@
                         <div class="mt-1"><b>Dirección: </b>{{ $veterinaria->ubicacion->direccion }}</div>
                     </div>
 
-                    <div class="mt-1 d-flex gap-2 mt-3">
+                    <div class="mt-3 d-flex flex-wrap gap-2">
                         @if($veterinaria->whatsapp)
                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $veterinaria->whatsapp) }}"
                             target="_blank"
@@ -103,34 +139,10 @@
                         </a>
                         @endif
                         <a href="{{ route('veterinarias.show', $veterinaria->id) }}"
-                            class="btn btn-primary d-flex align-items-center gap-2">
-                            <i class="fas fa-info-circle"></i>
-                            Ver más
+                            class="btn btn-outline-primary d-flex align-items-center gap-2"
+                            title="Ver detalles">
+                            <i class="fas fa-eye"></i>
                         </a>
-
-                        @if(auth()->id() === $veterinaria->id_user)
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-cog"></i> Acciones
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('veterinarias.edit', $veterinaria->id) }}">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                </li>
-                                <li>
-                                    <form action="{{ route('veterinarias.destroy', $veterinaria->id) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar esta veterinaria?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-trash"></i> Borrar
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>
