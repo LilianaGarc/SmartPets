@@ -518,7 +518,7 @@
 
     let speed = Math.min(Math.max(rawSpeed, 8), 14);
     let isMuted = false;
-    const minSeparation = 500;
+    const minSeparation = 600;
     const maxSeparation = 1400;
 
     function getRandomSeparation() {

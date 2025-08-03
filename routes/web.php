@@ -11,6 +11,7 @@ use App\Http\Controllers\{AdopcionController,
     JuegoController,
     MensajeController,
     NotificationController,
+    OpenAIController,
     PerfilController,
     ProdFavoritoController,
     ProductoController,
@@ -24,8 +25,7 @@ use App\Http\Controllers\{AdopcionController,
     UbicacionController,
     ProfileController,
     HistoriaController,
-    LikeController,
-};
+    LikeController};
 
 // Rutas públicas generales
 Route::get('/', fn() => redirect()->route('animacion'));
@@ -194,6 +194,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/guardar-puntaje', [PuntajeController::class, 'store'])->name('puntaje.store');
     Route::get('/ranking', [PuntajeController::class, 'ranking'])->name('puntaje.ranking');
     Route::get('/ranking/json', [PuntajeController::class, 'rankingJson'])->name('puntaje.rankingJson');
+
+    //Rutas IA Pets
+    Route::post('/preguntar-ia', [OpenAIController::class, 'preguntar']);
+    Route::get('/preguntas-restantes', [OpenAIController::class, 'preguntasRestantes']);
 
     // Veterinarias
     Route::get('/veterinarias/crear', [VeterinariaController::class, 'create'])->name('veterinarias.create');
