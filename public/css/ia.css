@@ -31,7 +31,7 @@
 .right {
     flex: 1;
     background-color: black;
-    background-image: url('../images/ia.jpg');
+    background-image: url('../images/ia.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
