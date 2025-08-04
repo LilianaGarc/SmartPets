@@ -180,11 +180,11 @@
                     IA Pets
                     <span class="usage-counter">0/5</span>
                     <span class="help-tooltip-container">
-      <span class="help-icon">?</span>
-      <div class="help-tooltip">
-        Solo tienes 5 preguntas disponibles.
-      </div>
-    </span>
+            <span class="help-icon">?</span>
+            <div class="help-tooltip">
+              Solo tienes 5 preguntas disponibles.
+            </div>
+          </span>
                 </h2>
                 <p class="animation" style="--delay: 0.1s;">
                     Tu asistente inteligente para resolver tus dudas sobre el cuidado de tus mascotas. ¡Consulta todo lo que necesites saber sobre ellos!
@@ -195,8 +195,16 @@
             </div>
 
             <div class="form">
-                <textarea id="preguntaIA" class="form-field animation" style="--delay: 0.2s;" placeholder="¿Qué quieres saber sobre tu mascota?"></textarea>
-                <button id="btnPreguntar" class="animation" style="--delay: 0.3s;" onclick="hacerPreguntaIA()">Preguntar</button>
+                <textarea id="preguntaIA" class="form-field animation" style="--delay: 0.2s;" placeholder="¿Qué quieres saber sobre tu mascota?" maxlength="200"></textarea>
+                <div class="controls" style="margin-top: 5px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; width: 100%;">
+                    <span id="contadorCaracteres" style="font-size: 0.9em; color: #666;">0 / 200</span>
+                    <button id="btnBorrar" title="Borrar texto" style="
+                            background: transparent; border: none;color: #999;font-size: 1.2em;cursor: pointer;padding: 0;display: flex;align-items: center;transition: color 0.2s ease;">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+
+                <button id="btnPreguntar" class="animation" style="--delay: 0.3s; margin-top: 10px;" onclick="hacerPreguntaIA()">Preguntar</button>
                 <div id="infoCreditos" class="info-creditos animation" style="--delay: 0.4s;"></div>
                 <div id="respuestaIA" class="respuesta-ia animation" style="--delay: 0.5s;"></div>
             </div>
@@ -204,8 +212,6 @@
         <div class="right"></div>
     </div>
 </section>
-
-
 <section class="compartir-mascotas reveal">
     <div class="button">
         <div class="box">S</div>

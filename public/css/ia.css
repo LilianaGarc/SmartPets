@@ -109,14 +109,14 @@
 }
 
 textarea.form-field {
-    height: 150px;
+    height: 160px;
     padding: 18px 22px;
     border: 2px solid rgba(204, 204, 204, 0.4);
     border-radius: 12px;
     font-family: 'Rubik', sans-serif;
     font-size: 15px;
     line-height: 1.5;
-    resize: vertical;
+    resize: none;
     outline: none;
     background: linear-gradient(145deg, #fafafa 0%, #f5f7fa 100%);
     backdrop-filter: blur(10px);

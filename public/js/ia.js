@@ -144,3 +144,25 @@ function iniciarCuentaRegresiva(segundos) {
     }, 60000);
 }
 
+const textarea = document.getElementById('preguntaIA');
+const contador = document.getElementById('contadorCaracteres');
+const btnBorrar = document.getElementById('btnBorrar');
+const maxChars = 200;
+
+textarea.addEventListener('input', () => {
+    const length = textarea.value.length;
+    contador.textContent = `${length} / ${maxChars}`;
+});
+
+btnBorrar.addEventListener('click', () => {
+    textarea.value = '';
+    contador.textContent = `0 / ${maxChars}`;
+    textarea.focus();
+});
+
+btnBorrar.addEventListener('mouseenter', () => {
+    btnBorrar.style.color = '#1e4183';
+});
+btnBorrar.addEventListener('mouseleave', () => {
+    btnBorrar.style.color = '#999';
+});
