@@ -125,6 +125,23 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="col-md-6">
+                            <label for="subcategoria_id" class="form-label">Seleccione Subcategoría</label>
+                            <select class="form-select" id="subcategoria_id" name="subcategoria_id" required>
+                                <option value="">Seleccione una subcategoría</option>
+                                @foreach($categorias as $categoria)
+                                    <optgroup label="{{$categoria->nombre}}">
+                                        @foreach($categoria->subcategorias as $subcategoria)
+                                            <option value="{{$subcategoria->id}}" {{ old('subcategoria_id', $producto->subcategoria_id ?? '') == $subcategoria->id ? 'selected' : '' }}>
+                                                {{$subcategoria->nombre}}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
 

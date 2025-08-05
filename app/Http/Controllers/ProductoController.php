@@ -60,8 +60,10 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::with('subcategorias')->get();
         return view('productos.productos-formulario', ['categorias' => $categorias]);
+
+
 
     }
 
@@ -78,7 +80,8 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
             'precio.required' => 'El precio del producto es obligatorio.',
@@ -88,8 +91,14 @@ class ProductoController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
             'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
-            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.'
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
+            'subcategoria_id.required' => 'La subcategoría es obligatoria.',
+            'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
+            'subcategoria_id.integer' => 'La subcategoría debe ser un número entero.'
+
+
         ]);
+
 
         // Validar la cantidad de imágenes
         if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
@@ -215,6 +224,8 @@ class ProductoController extends Controller
         $producto->imagen3 = $imagenesGuardadas[2] ?? $producto->imagen3;
         $producto->imagen4 = $imagenesGuardadas[3] ?? $producto->imagen4;
         $producto->imagen5 = $imagenesGuardadas[4] ?? $producto->imagen5;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
+
 
         if ($producto->save()) {
             return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
