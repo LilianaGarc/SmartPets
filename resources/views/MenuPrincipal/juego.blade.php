@@ -167,7 +167,7 @@
             position: absolute;
             bottom: 6vh;
             left: 3rem;
-            background-image: url('https://media.tenor.com/f5IqNksAcW0AAAAi/woof-running.gif');
+            background-image: url('{{ asset('images/perritocorriendo.gif') }}');
             background-size: cover;
             z-index: 3;
         }
@@ -516,9 +516,9 @@
     let obstacle2X = window.innerWidth + 600;
     const rawSpeed = window.innerWidth * 0.001;
 
-    let speed = Math.min(Math.max(rawSpeed, 8), 14);
+    let speed = Math.min(Math.max(rawSpeed, 9), 14);
     let isMuted = false;
-    const minSeparation = 500;
+    const minSeparation = 600;
     const maxSeparation = 1400;
 
     function getRandomSeparation() {

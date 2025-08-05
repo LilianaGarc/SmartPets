@@ -448,3 +448,9 @@ input:checked + .slider:before {
     transform: translateX(18px);
 }
 
+@media (max-width: 768px) {
+    .notification-icon img {
+        width: 25px !important;
+        height: 25px !important;
+    }
+}

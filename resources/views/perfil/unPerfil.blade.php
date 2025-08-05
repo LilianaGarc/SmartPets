@@ -33,9 +33,7 @@
                     <span style="color: #888; font-weight: 500; margin-left: 6px;">Desconectado</span>
                 @endif
             </div>
-            <div class="contador-general">
-                <p><strong>Mascotas:</strong> <span class="contador-numero" data-numero="{{ $adopciones->count() }}">0</span></p>
-            </div>
+
         </div>
         {{-- Mascota virtual igual que en tu perfil --}}
         <div class="mascota-virtual" style="width: 100%; text-align: center;">
@@ -50,9 +48,8 @@
                     <div class="contenedor-mascota-y-botones" style="position: relative;">
                         <div class="mascota-con-animaciones" style="position: relative; width: 220px; height: 220px;">
                             <img src="{{ asset('images/' . $user->mascota_virtual) }}" alt="Mascota seleccionada" class="mascota-centro">
+                            <p><strong>{{ $user->nombre_mascota_virtual }}</p></strong>
                         </div>
-                        <p><strong>Nombre:</strong> {{ $user->nombre_mascota_virtual }}</p>
-                        <p>Hambre: {{ $user->hambre_mascota_virtual }}% | Felicidad: {{ $user->felicidad_mascota_virtual }}%</p>
                     </div>
                 </div>
             @endif
@@ -96,9 +93,6 @@
                             <a href="{{ route('adopciones.show', $adopcion->id) }}">
                                 <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
                             </a>
-                            <div class="overlay-info">
-                                <p><i class="fas fa-file-alt"></i> Solicitudes recibidas: <strong>{{ $adopcion->solicitudes->count() }}</strong></p>
-                            </div>
                             <p class="contador-visitas">
                                 <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
                             </p>

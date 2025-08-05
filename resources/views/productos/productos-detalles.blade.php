@@ -417,10 +417,14 @@
         margin-top: 10px; /* Espaciado superior */
         margin-left: 2em;
     }
+    .accordion-button:not(.collapsed) .user-info small {
+        color: #4a4a4a;
+    }
+    .accordion-button.collapsed .user-info small {
+        color: #d3d3d3;
+    }
 </style>
-
 @section('contenido')
-
     <div class="container-fluid mx-2  py-5">
 
         @if(session('success'))
@@ -434,9 +438,7 @@
             </div>
         @endif
         <div class="product-container p-4">
-            <!-- Producto Principal -->
             <div class="row mb-5">
-                <!-- Galería de Imágenes -->
                 <div class="col-md-6 mb-4">
                     <div class="main-image mb-3">
                         <img
@@ -462,22 +464,27 @@
                             alt="
                             {{ $producto->nombre }}" class="thumbnail-image rounded" width="100px">
                     </div>
-
                 </div>
-                <!-- Fin Galería de Imágenes -->
-
-                <!-- Información del Producto -->
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('productos.index')}}"
-                                                           style="color: var(--blue)">Productos</a></li>
-                            <li class="breadcrumb-item"><a
-                                    href="{{ route('productos.index',['categoria_id'=>$producto->categoria_id]) }}"
-                                    style="color: var(--blue)">{{$producto->categoria->nombre}}</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('productos.index') }}" style="color: var(--blue)">Productos</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('productos.index', ['categoria_id' => $producto->categoria_id]) }}" style="color: var(--blue)">
+                                    {{ $producto->categoria->nombre }}
+                                </a>
+                            </li>
+                            @if($producto->subcategoria)
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('productos.index', ['subcategoria_id' => $producto->subcategoria_id]) }}" style="color: var(--blue)">
+                                        {{ $producto->subcategoria->nombre }}
+                                    </a>
+                                </li>
+                            @endif
                         </ol>
                     </nav>
-
                     <h1 class="mb-3">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
@@ -511,12 +518,9 @@
                                              style="width: 32px; height: 32px; animation: marcadorAnim 0.5s ease-in-out;">
                                     </button>
                                 @endif
-
-
                             </form>
                         @endauth
                     </div>
-
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-star-fill" style="color: var(--orange)"></i>
@@ -533,7 +537,7 @@
                         <a href="{{route('chats.iniciar', $producto->user_id)}} ?
                         mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
                         $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
-                           class="btn btn-primary">
+                           class="btn btn-primary text-white">
                             <i class="fas fa-comment-dots"></i> Enviar Mensaje
                         </a>
 
@@ -541,9 +545,9 @@
                             <div class="d-grid gap-2">
                                 <div class="row d-flex justify-content-center mt-3">
                                     <div class="col-auto">
-                                        <button class="btn btn-warning"
+                                        <button class="btn btn-warning text-white"
                                                 onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
-                                            Editar
+                                               <i class="fas fa-edit"></i> Editar
                                         </button>
                                     </div>
                                     <div class="col-auto">
@@ -551,20 +555,18 @@
                                               action="{{ route('productos.destroy', $producto->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
                                                     data-bs-target="#ModalProducto">
-                                                Eliminar
+                                                <i class="fas fa-trash-alt"></i> Eliminar
                                             </button>
                                         </form>
                                     </div>
                                 </div>
-
                         @endif
                             </div>
                     @endauth
                     </div>
                 </div>
-
                 @if($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -576,17 +578,12 @@
                 @endif
 
                 <h1 class="mb-4">Reseñas</h1>
-                <!-- ACORDEON -->
                 @auth
                     <div class="">
                         <div class="review-system">
-                            <!-- Circular Toggle Button -->
                             <button id="review-toggle-btn" class="review-toggle-btn">
                                 <span class="review-toggle-icon">+</span>
                             </button>
-
-                            <!-- Review Form Container -->
-                            <!-- En el formulario de reseñas -->
                             <div id="review-container"
                                  class="review-container {{ isset($mostrarFormulario) ? 'review-visible' : 'review-hidden' }}">
                                 <div class="review-header">
@@ -624,7 +621,6 @@
                             </div>
                         </div>
                         @endauth
-
                         <div class="accordion" id="accordionExample">
                             @foreach($resenias as $index => $resenia)
                                 <div class="accordion-item">
@@ -641,7 +637,11 @@
                                                             : asset('images/fotodeperfil.webp');
                                                 @endphp
                                                 <img src="{{ $foto }}" alt="Foto de perfil" class="profile-image">
-                                                <span class="username">{{ $resenia->user->name }}</span>
+
+                                                <div>
+                                                    <span class="username">{{ $resenia->user->name }}</span>
+                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
+                                                </div>
                                             </div>
                                         </button>
 
