@@ -225,7 +225,7 @@
                 let storiesSwiper;
                 let initialGroupedStories = @json($historiasGrouped);
 
-                function initializeStoriesSwiper() {
+                /*function initializeStoriesSwiper() {
                     if (storiesSwiper) {
                         storiesSwiper.destroy(true, true);
                     }
@@ -415,7 +415,7 @@
                     initializeStoriesSwiper();
                 }
 
-                loadAndRenderStories(initialGroupedStories);
+                loadAndRenderStories(initialGroupedStories);*/
 
 
                 document.querySelectorAll('.like-button').forEach(button => {
