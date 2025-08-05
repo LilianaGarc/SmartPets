@@ -108,6 +108,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
     Route::get('/perfil/{id}', [UserController::class, 'perfil'])->name('users.perfil')->whereNumber('id');
 
+    //Compartir
+    Route::get('/publicaciones/{publicacion}/compartir', [PublicacionController::class, 'compartir'])->name('publicaciones.compartir')->middleware(['auth']);
+    Route::post('/publicaciones/guardar-compartida', [PublicacionController::class, 'guardarCompartida'])->name('publicaciones.guardar.compartida')->middleware(['auth']);
+
     //Rutas publicaciones
     Route::get('/publicaciones/crear', [PublicacionController::class, 'create'])->name('publicaciones.create');
     Route::post('/publicaciones/crear', [PublicacionController::class, 'store'])->name('publicaciones.store');
