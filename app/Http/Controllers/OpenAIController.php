@@ -39,7 +39,7 @@ class OpenAIController extends Controller
         }
 
         try {
-            $prompt = "Eres un asistente experto en mascotas. Por favor, responde brevemente solo preguntas relacionadas con mascotas y animales domésticos. Si la pregunta no está relacionada, responde: 'Lo siento, solo respondo preguntas sobre mascotas.'\nPregunta: " . $request->pregunta;
+            $prompt = "Responde brevemente y con claridad:\nPregunta: " . $request->pregunta;
 
             $response = OpenAI::chat()->create([
                 'model' => 'gpt-3.5-turbo',
