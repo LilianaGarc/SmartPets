@@ -468,11 +468,21 @@
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('productos.index')}}"
-                                                           style="color: var(--blue)">Productos</a></li>
-                            <li class="breadcrumb-item"><a
-                                    href="{{ route('productos.index',['categoria_id'=>$producto->categoria_id]) }}"
-                                    style="color: var(--blue)">{{$producto->categoria->nombre}}</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('productos.index') }}" style="color: var(--blue)">Productos</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('productos.index', ['categoria_id' => $producto->categoria_id]) }}" style="color: var(--blue)">
+                                    {{ $producto->categoria->nombre }}
+                                </a>
+                            </li>
+                            @if($producto->subcategoria)
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('productos.index', ['subcategoria_id' => $producto->subcategoria_id]) }}" style="color: var(--blue)">
+                                        {{ $producto->subcategoria->nombre }}
+                                    </a>
+                                </li>
+                            @endif
                         </ol>
                     </nav>
                     <h1 class="mb-3">{{$producto->nombre}}</h1>

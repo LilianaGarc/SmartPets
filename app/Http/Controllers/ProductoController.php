@@ -44,6 +44,7 @@ class ProductoController extends Controller
     {
         $query = $request->input('search');
         $categoriaId = $request->input('categoria');
+        $subcategoriaId = $request->input('subcategoria');
         $productos = Producto::query();
         if ($query){
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
@@ -51,9 +52,12 @@ class ProductoController extends Controller
         if ($categoriaId){
             $productos->where('categoria_id', $categoriaId);
         }
+        if ($subcategoriaId){
+            $productos->where('subcategoria_id', $subcategoriaId);
+        }
         $productos = $productos->paginate(12);
         $categorias = Categoria::limit(6)->get();
-        return view('productos.productos-lista', compact('productos', 'categorias','query', 'categoriaId'));
+        return view('productos.productos-lista', compact('productos', 'categorias','query', 'categoriaId', 'subcategoriaId'));
     }
     /**
      * Show the form for creating a new resource.
@@ -135,6 +139,7 @@ class ProductoController extends Controller
         $producto->imagen3 = $imagenesGuardadas[2] ?? null;
         $producto->imagen4 = $imagenesGuardadas[3] ?? null;
         $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
 
         if ($producto->save()) {
             return redirect()->route('productos.index')->with('success', 'Producto publicado correctamente');
@@ -148,9 +153,9 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        $producto = Producto::findOrFail($id);
+        $producto = Producto::with(['subcategoria', 'categoria'])->findOrFail($id);
         $resenias = $producto->resenias()->with('user')->get();
-        return view('productos.productos-detalles', compact('producto','resenias'));
+        return view('productos.productos-detalles', compact('producto', 'resenias'));
     }
 
     /**

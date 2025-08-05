@@ -131,14 +131,13 @@
                             <select class="form-select" id="subcategoria_id" name="subcategoria_id" required>
                                 <option value="">Seleccione una subcategoría</option>
                                 @foreach($categorias as $categoria)
-                                    <optgroup label="{{$categoria->nombre}}">
+                                    <optgroup label="{{ $categoria->nombre }}">
                                         @foreach($categoria->subcategorias as $subcategoria)
-                                            <option value="{{$subcategoria->id}}" {{ old('subcategoria_id', $producto->subcategoria_id ?? '') == $subcategoria->id ? 'selected' : '' }}>
-                                                {{$subcategoria->nombre}}
+                                            <option value="{{ $subcategoria->id }}" {{ old('subcategoria_id', $producto->subcategoria_id ?? '') == $subcategoria->id ? 'selected' : '' }}>
+                                                {{ $subcategoria->nombre }}
                                             </option>
                                         @endforeach
                                     </optgroup>
-
                                 @endforeach
                             </select>
                         </div>
