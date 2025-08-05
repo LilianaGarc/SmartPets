@@ -1,9 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     const leftPanel = document.querySelector(".left");
 
+    const isMobile = window.innerWidth <= 600;
+
+    if (isMobile) {
+        leftPanel.style.width = '100%';
+        leftPanel.style.padding = '16px';
+        leftPanel.style.opacity = '1';
+        return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if(entry.isIntersecting) {
+            if (entry.isIntersecting) {
                 setTimeout(() => {
                     leftPanel.classList.add("active");
                 }, 1500);
@@ -15,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observer.observe(leftPanel);
 });
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
