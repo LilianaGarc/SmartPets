@@ -15,9 +15,13 @@ class Publicacion extends Model
         'visibilidad',
         'contenido',
         'imagen',
+        'publicacion_original_id',
     ];
 
-
+    public function publicacionOriginal()
+    {
+        return $this->belongsTo(Publicacion::class, 'publicacion_original_id');
+    }
     public function comentarios()
     {
         return $this->hasMany(Comentario::class,'publicacion_id' );
