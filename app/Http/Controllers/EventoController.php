@@ -108,6 +108,8 @@ class EventoController
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
+            'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
+            'motivo_rechazo' => 'nullable|string|max:255',
         ]);
 
         $evento = Evento::findOrFail($id);
@@ -129,6 +131,8 @@ class EventoController
             'hora_inicio' => $request->hora_inicio,
             'hora_fin' => $request->hora_fin,
             'ubicacion' => $request->ubicacion,
+            'estado' => $request->estado_evento,
+            'motivo_rechazo' => $request->motivo_rechazo,
         ]);
 
         return redirect()->route('eventos.panel')->with('exito', 'Evento actualizado correctamente.');

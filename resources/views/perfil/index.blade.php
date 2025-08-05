@@ -44,25 +44,27 @@
         <img src="{{ $user->fotoperfil ? asset('storage/' . $user->fotoperfil) : asset('images/fotodeperfil.webp') }}" alt="Foto de perfil" class="foto-perfil"/>
         <div class="info">
             <h2>{{ $user->name }}</h2>
-            <p>{{ $user->email }}</p>
+            <p>✉️ {{ $user->email }}</p>
             @if($user->telefono)
-                <p><i class="fas fa-phone"></i> {{ $user->telefono }}</p>
+                <p>📞 {{ $user->telefono }}</p>
             @endif
             @if($user->direccion)
-                <p><i class="fas fa-map-marker-alt"></i> {{ $user->direccion }}</p>
+                <p>📍 {{ $user->direccion }}</p>
             @endif
-            @if($user->bio)
-                <p><i class="fas fa-user-edit"></i> {{ $user->bio }}</p>
+            @if($user->descripción)
+                <p>📝 {{ $user->descripción }}</p>
             @endif
-            <p class="mb-0 text-muted">Miembro desde: {{ $user->created_at->format('d/m/Y') }}</p>
+           
             <p>
                 <strong>Estado:</strong>
                 @if($user->en_linea)
-                    <span class="badge bg-success">En línea</span>
+                    <span class="badge bg-success">🟢 En línea</span>
                 @else
-                    <span class="badge bg-secondary">Desconectado</span>
+                    <span class="badge bg-secondary">⚪ Desconectado</span>
                 @endif
             </p>
+
+             <p class="mb-0 text-muted">Miembro desde: {{ $user->created_at->format('d/m/Y') }}</p>
 
             <div class="acciones">
                 <form action="{{ route('perfil.actualizarFoto') }}" method="POST" enctype="multipart/form-data">

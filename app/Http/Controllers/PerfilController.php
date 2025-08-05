@@ -35,9 +35,9 @@ class PerfilController extends Controller
 
     public function showPerfil($id)
     {
-        $productosUsuario = Auth::user()->productos()->with('categoria')->get();
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
+        $productosUsuario = $user->productos()->with('categoria')->get();
 
         $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
 

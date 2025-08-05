@@ -96,9 +96,9 @@
                 @if ($evento->imagen)
                     <div class="card-img-top bg-light d-flex align-items-center
                     justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
-                        <img src="{{ asset('storage/' . $evento->imagen) }}"
-                            alt="Imagen del evento"
-                            style="width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 0.3s;">
+                        <img src="{{ asset('storage/' . $evento->imagen) }}" 
+                             class="img-fluid rounded mb-4 shadow evento-img-fija" 
+                             alt="Imagen del evento">
                     </div>
                 @else
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px; border-radius: 0.5rem 0.5rem 0 0;">
@@ -199,15 +199,13 @@
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm btn-action-anim" title="Dejar de participar">
                                         <i class="fas fa-user-minus"></i> Dejar de participar
-                                    </button>
-                                </form>
+                                    </form>
                             @else
                                 <form action="{{ route('eventos.participar', $evento->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm btn-action-anim" title="Participar">
                                         <i class="fas fa-user-plus"></i> Participar
-                                    </button>
-                                </form>
+                                    </form>
                             @endif
                         @endif
                     @endauth
@@ -439,6 +437,39 @@
         max-width: 70%;
         font-size: 1.25rem;
         min-height: 2.7em;
+    }
+
+    .evento-img-fija {
+        width: 100%;
+        max-width: 400px;
+        min-width: 220px;
+        height: 280px;
+        min-height: 180px;
+        max-height: 320px;
+        object-fit: cover;
+        border: 3px solid #1e4183;
+        background: #f5f5f5;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    @media (max-width: 991.98px) {
+        .evento-img-fija {
+            max-width: 100%;
+            height: 200px;
+            min-width: 120px;
+            min-height: 120px;
+            max-height: 220px;
+        }
+    }
+    @media (max-width: 575.98px) {
+        .evento-img-fija {
+            max-width: 100%;
+            height: 140px;
+            min-width: 80px;
+            min-height: 80px;
+            max-height: 140px;
+        }
     }
 </style>
 @include('chats.chat-float')

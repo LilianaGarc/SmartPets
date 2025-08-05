@@ -47,8 +47,8 @@
                         <label for="direccion">Dirección</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="bio" name="bio" placeholder="Biografía">{{ old('bio', Auth::user()->bio) }}</textarea>
-                        <label for="bio">Biografía</label>
+                        <textarea class="form-control" id="descripción" name="descripción" placeholder="descripción">{{ old('descripción', Auth::user()->descripción) }}</textarea>
+                        <label for="descripción">Descripción</label>
                     </div>
         </div>
 

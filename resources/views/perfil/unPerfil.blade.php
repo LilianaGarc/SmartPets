@@ -16,13 +16,13 @@
             <h2>{{ $user->name }}</h2>
             <p>{{ $user->email }}</p>
             @if($user->telefono)
-                <p><i class="fas fa-phone"></i> {{ $user->telefono }}</p>
+                <p>📞 {{ $user->telefono }}</p>
             @endif
             @if($user->direccion)
-                <p><i class="fas fa-map-marker-alt"></i> {{ $user->direccion }}</p>
+                <p>📍 {{ $user->direccion }}</p>
             @endif
-            @if($user->bio)
-                <p><i class="fas fa-user-edit"></i> {{ $user->bio }}</p>
+            @if($user->descripción)
+                <p>📝 {{ $user->descripción }}</p>
             @endif
             <div style="margin-top: 8px;">
                 @if($user->en_linea)
@@ -105,7 +105,7 @@
         <div id="publicaciones" class="grid">
             @if(isset($publicaciones) && $publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado publicaciones!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado publicaciones aún! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @elseif(isset($publicaciones))
@@ -124,7 +124,7 @@
         <div id="veterinarias" class="grid">
             @if(isset($vet) && $vet->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado veterinarias!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado veterinarias aún! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @elseif(isset($vet))
@@ -143,7 +143,7 @@
         <div id="eventos" class="grid">
             @if(isset($eventos) && $eventos->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado eventos!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado eventos aún! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay eventos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @elseif(isset($eventos))
@@ -162,7 +162,7 @@
         <div id="petshop" class="grid">
             @if(isset($productosUsuario) && $productosUsuario->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no ha publicado productos!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no ha publicado productos! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @elseif(isset($productosUsuario))
@@ -182,5 +182,23 @@
     </div>
 </div>
 <script src="{{ asset('js/perfil.js') }}"></script>
+<script>
+document.querySelectorAll('.tabs .tab').forEach(function(btn, idx) {
+    btn.addEventListener('click', function() {
+        // Oculta todos los grids
+        document.querySelectorAll('.contenido .grid').forEach(function(div) {
+            div.style.display = 'none';
+            div.classList.remove('activo');
+        });
+        // Quita activo a todos los tabs
+        document.querySelectorAll('.tabs .tab').forEach(function(tabBtn) {
+            tabBtn.classList.remove('activo');
+        });
+        // Muestra el grid correspondiente y activa el tab
+        document.getElementById(btn.getAttribute('onclick').split("'")[1]).style.display = 'grid';
+        btn.classList.add('activo');
+    });
+});
+</script>
 </body>
 </html>
