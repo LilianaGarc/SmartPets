@@ -99,19 +99,6 @@
                 <div class="reactions" id="reactions-{{ $publicacion->id }}">
 
                     <div class="col align-items-center">
-                        <button
-                            class="btn like-button"
-                            role="button"
-                            style="margin: 1px;"
-                            data-publicacion-id="{{ $publicacion->id }}"
-                            data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
-                        >
-                            <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
-                            Me gusta
-                        </button>
-                        <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;" disabled="">
-                            <i class="fa-regular fa-comment"></i> Comentar
-                        </a>
                         <a href="#" class="btn" role="button" style="margin: 1px;">
                             <i class="fa-regular fa-share-from-square"></i> Compartir
                         </a>
@@ -193,7 +180,7 @@
                                         button.classList.add('liked');
                                     }
 
-                                    button.addEventListener('click', async function(event) {
+                                    button.addEventListener('click', async function (event) {
                                         event.preventDefault();
 
                                         const publicacionId = this.dataset.publicacionId;

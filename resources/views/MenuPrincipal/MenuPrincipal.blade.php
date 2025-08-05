@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SmartPets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ia.css') }}">
 </head>
 <body>
 
 @include('MenuPrincipal.Navbar')<div class="image-carousel">
+
     <div class="image-container">
 
         <div class="image-item">
@@ -45,7 +50,7 @@
 
 
 
-<div class="cuadrado-container-wrapper">
+<div class="cuadrado-container-wrapper reveal">
 
     <div class="cuadrado-container">
         <div class="cuadrado" onclick="window.location.href='{{route('eventos.index')}}'">
@@ -96,7 +101,7 @@
 
 
 
-<section class="compartir-mascota">
+<section class="compartir-mascota reveal">
     <div class="compartir-text">
         <h2>Usa el Petchat, chatea y comparte</h2>
         <p>Conéctate con otros amantes de los animales, comparte consejos, historias y crea una red de apoyo para ti y tus mascotas.</p>
@@ -133,7 +138,7 @@
     </div>
 </section>
 
-<section class="petshop-section">
+<section class="petshop-section reveal">
     <div class="petshop_texto">
         <h2>Explora nuestra PetShop</h2>
         <p>Encuentra los mejores productos para tus mascotas, desde juguetes hasta alimentos y accesorios exclusivos.</p>
@@ -167,8 +172,47 @@
     </div>
 </section>
 
+<section class="iamigopet-section reveal" id="iamigopet-section" style="display:block;">
+    <div class="iamigopet-container">
+        <div class="left">
+            <div class="header">
+                <h2 class="animation" style="--delay: 0s;">
+                    IA Pets
+                    <span class="usage-counter">0/5</span>
+                    <span class="help-tooltip-container">
+            <span class="help-icon">?</span>
+            <div class="help-tooltip">
+              Solo tienes 5 preguntas disponibles.
+            </div>
+          </span>
+                </h2>
+                <p class="animation" style="--delay: 0.1s;">
+                    Tu asistente inteligente para resolver tus dudas sobre el cuidado de tus mascotas. ¡Consulta todo lo que necesites saber sobre ellos!
+                </p>
+                <p class="animation advertencia-azul" style="--delay: 0.1s;">
+                    Cuando uses tus 5 preguntas, deberás esperar 24 horas para que se restablezcan.
+                </p>
+            </div>
 
-<section class="compartir-mascotas">
+            <div class="form">
+                <textarea id="preguntaIA" class="form-field animation" style="--delay: 0.2s;" placeholder="¿Qué quieres saber sobre tu mascota?" maxlength="200"></textarea>
+                <div class="controls" style="margin-top: 5px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; width: 100%;">
+                    <span id="contadorCaracteres" style="font-size: 0.9em; color: #666;">0 / 200</span>
+                    <button id="btnBorrar" title="Borrar texto" style="
+                            background: transparent; border: none;color: #999;font-size: 1.2em;cursor: pointer;padding: 0;display: flex;align-items: center;transition: color 0.2s ease;">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+
+                <button id="btnPreguntar" class="animation" style="--delay: 0.3s; margin-top: 10px;" onclick="hacerPreguntaIA()">Preguntar</button>
+                <div id="infoCreditos" class="info-creditos animation" style="--delay: 0.4s;"></div>
+                <div id="respuestaIA" class="respuesta-ia animation" style="--delay: 0.5s;"></div>
+            </div>
+        </div>
+        <div class="right"></div>
+    </div>
+</section>
+<section class="compartir-mascotas reveal">
     <div class="button">
         <div class="box">S</div>
         <div class="box">M</div>
@@ -178,7 +222,7 @@
     </div>
 </section>
 
-<footer class="footer">
+<footer class="footer reveal">
     <div class="footer__parralax">
         <div class="footer__parralax-trees"></div>
         <div class="footer__parralax-moto"></div>
@@ -243,11 +287,16 @@
 
 
 <script src="{{ asset('js/MPscripts.js') }}"></script>
+<script src="{{ asset('js/ia.js') }}"></script>
 <script>
     document.getElementById('secret-dog').addEventListener('click', function () {
         window.location.href = "{{ route('juego.index') }}";
     });
 </script>
+<script>
+    window.USER_AUTHENTICATED = @json(auth()->check());
+</script>
+
 @include('chats.chat-float')
 
 

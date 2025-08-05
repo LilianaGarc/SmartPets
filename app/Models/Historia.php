@@ -9,16 +9,22 @@ class Historia extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'media_path', 'media_type', 'expires_at'];
+    protected $fillable = ['user_id', 'expires_at'];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function user()
     {
-         return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function isActive()
+    public function media()
     {
-        return now()->lt($this->expires_at);
+        return $this->hasMany(StoryMedia::class);
     }
 
 }

@@ -1,17 +1,26 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Evento;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Notifications\PeticionEventoNotificacion;
+use App\Notifications\EstadoEventoNotificacion;
 
 class EventoController
 {
     public function panel()
     {
         $eventos = Evento::all();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+
+        $notificacionesAdmin = \App\Models\Notificacion::where('user_id', auth()->id())
+            ->where('visto', false)
+            ->where('mensaje', 'like', 'Nueva petición de evento%')
+            ->latest()
+            ->get();
+
+        return view('panelAdministrativo.eventosIndex', compact('eventos', 'notificacionesAdmin'));
     }
 
     public function panelcreate()
@@ -37,7 +46,7 @@ class EventoController
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
-        Evento::create([
+        $evento = Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
@@ -50,6 +59,22 @@ class EventoController
             'ubicacion' => $request->ubicacion,
             'id_user' => $idUsuario,
         ]);
+
+        // Notificar a todos los administradores
+        $admins = User::where('usertype', 'admin')->get();
+        foreach ($admins as $admin) {
+            \App\Models\Notificacion::create([
+                'user_id' => $admin->id,
+                'mensaje' => 'Nueva petición de evento: ' . $evento->titulo,
+                'visto' => false,
+                'data' => json_encode([
+                    'evento_id' => $evento->id,
+                    'titulo' => $evento->titulo,
+                    'fecha' => $evento->fecha,
+                    'url_evento' => route('eventos.panelshow', ['id' => $evento->id]),
+                ]),
+            ]);
+        }
 
         return redirect()->route('eventos.panel')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
     }
@@ -193,7 +218,7 @@ class EventoController
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
-        Evento::create([
+        $evento = Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha' => $request->fecha,
@@ -206,6 +231,22 @@ class EventoController
             'ubicacion' => $request->ubicacion,
             'id_user' => $idUsuario,
         ]);
+
+        // Notificar a todos los administradores
+        $admins = User::where('usertype', 'admin')->get();
+        foreach ($admins as $admin) {
+            \App\Models\Notificacion::create([
+                'user_id' => $admin->id,
+                'mensaje' => 'Nueva petición de evento: ' . $evento->titulo,
+                'visto' => false,
+                'data' => json_encode([
+                    'evento_id' => $evento->id,
+                    'titulo' => $evento->titulo,
+                    'fecha' => $evento->fecha,
+                    'url_evento' => route('eventos.panelshow', ['id' => $evento->id]),
+                ]),
+            ]);
+        }
 
         return redirect()->route('eventos.index')->with('exito', 'Tu evento está pendiente de revisión. Una vez aceptado, podrás verlo en la lista de eventos.');
     }
@@ -328,5 +369,50 @@ class EventoController
         return back()->with('exito', 'Has dejado de participar en este evento.');
     }
 
+    public function aceptar($id)
+    {
+        $evento = Evento::findOrFail($id);
+        $evento->estado = 'aceptado';
+        $evento->save();
+
+        \App\Models\Notificacion::create([
+            'user_id' => $evento->id_user,
+            'mensaje' => 'Tu evento "' . $evento->titulo . '" ha sido aceptado.',
+            'visto' => false,
+            'data' => json_encode([
+                'evento_id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'fecha' => $evento->fecha,
+                'estado' => $evento->estado,
+                'url_evento' => route('eventos.show', ['id' => $evento->id]),
+            ]),
+        ]);
+
+        return back()->with('exito', 'Evento aceptado correctamente.');
+    }
+
+    public function rechazar(Request $request, $id)
+    {
+        $evento = Evento::findOrFail($id);
+        $evento->estado = 'rechazado';
+        $evento->motivo_rechazo = $request->motivo;
+        $evento->save();
+
+        \App\Models\Notificacion::create([
+            'user_id' => $evento->id_user,
+            'mensaje' => 'Tu evento "' . $evento->titulo . '" ha sido rechazado. Motivo: ' . $request->motivo,
+            'visto' => false,
+            'data' => json_encode([
+                'evento_id' => $evento->id,
+                'titulo' => $evento->titulo,
+                'fecha' => $evento->fecha,
+                'estado' => $evento->estado,
+                'motivo' => $request->motivo,
+                'url_evento' => route('eventos.show', ['id' => $evento->id]),
+            ]),
+        ]);
+
+        return back()->with('exito', 'Evento rechazado correctamente.');
+    }
 
 }

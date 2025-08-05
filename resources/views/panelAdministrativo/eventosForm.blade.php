@@ -35,8 +35,8 @@
                         <div class="form-floating">
                             <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
                                    placeholder="Título" inputmode="text" autocomplete="off"
-                                   value="{{ old('titulo', $evento->titulo ?? '') }}" required aria-label="Título">
-                            <label for="titulo">Título <span style="color:red">*</span></label>
+                                   value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título">
+                            <label for="titulo">Título</label>
                             @error('titulo')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -48,8 +48,8 @@
                                    placeholder="Fecha"
                                    value="{{ old('fecha', $evento->fecha ?? '') }}"
                                    min="{{ date('Y-m-d') }}"
-                                   required aria-label="Fecha">
-                            <label for="fecha">Fecha <span style="color:red">*</span></label>
+                                   aria-label="Fecha">
+                            <label for="fecha">Fecha</label>
                             @error('fecha')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -59,8 +59,8 @@
                         <div class="form-floating">
                             <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
                                    placeholder="Teléfono" inputmode="tel" autocomplete="tel"
-                                   value="{{ old('telefono', $evento->telefono ?? '') }}" required aria-label="Teléfono">
-                            <label for="telefono">Teléfono <span style="color:red">*</span></label>
+                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono">
+                            <label for="telefono">Teléfono</label>
                             @error('telefono')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -163,11 +163,44 @@
                     </div>
                 </div>
 
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <div class="form-floating">
+                            <select class="form-select" id="estado_evento" name="estado_evento" aria-label="Estado del evento" onchange="mostrarMotivoRechazo()">
+                                <option value="pendiente" {{ old('estado_evento', $evento->estado ?? '') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                <option value="aceptado" {{ old('estado_evento', $evento->estado ?? '') == 'aceptado' ? 'selected' : '' }}>Aceptar</option>
+                                <option value="rechazado" {{ old('estado_evento', $evento->estado ?? '') == 'rechazado' ? 'selected' : '' }}>Rechazar</option>
+                            </select>
+                            <label for="estado_evento">Estado del evento</label>
+                        </div>
+                    </div>
+                    <div class="col-md-9" id="motivoRechazoContainer" style="display: none;">
+                        <div class="form-floating">
+                            <input type="text" class="form-control @error('motivo_rechazo') is-invalid @enderror" id="motivo_rechazo" name="motivo_rechazo"
+                                   placeholder="Motivo del rechazo" value="{{ old('motivo_rechazo', $evento->motivo_rechazo ?? '') }}" aria-label="Motivo del rechazo">
+                            <label for="motivo_rechazo">Motivo del rechazo</label>
+                            @error('motivo_rechazo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
 
                 <br>
             <button type="submit" class="btn">Guardar</button>
             <button type="reset" class="btn">Cancelar</button>
         </div>
     </form>
+
+    <script>
+        function mostrarMotivoRechazo() {
+            var estado = document.getElementById('estado_evento').value;
+            var motivoContainer = document.getElementById('motivoRechazoContainer');
+            motivoContainer.style.display = (estado === 'rechazado') ? 'block' : 'none';
+        }
+        document.addEventListener('DOMContentLoaded', mostrarMotivoRechazo);
+        document.getElementById('estado_evento').addEventListener('change', mostrarMotivoRechazo);
+    </script>
 
 @endsection

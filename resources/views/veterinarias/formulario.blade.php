@@ -6,7 +6,7 @@
 
 <div class="breadcrumb-container">
     <ul class="breadcrumb">
-        <li class="breadcrumb__item">s
+        <li class="breadcrumb__item">
             <a href="{{ route('index') }}" class="breadcrumb__inner">
                 <span class="breadcrumb__title">Inicio</span>
             </a>
@@ -34,14 +34,14 @@
     <div class="card fade-in">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                <h1 class="mb-0 card-title fw-bold">
+                <h1 class="mb-0 card-title fw-bold" >
                     @if(isset($veterinaria))
                         Editar Veterinaria
                     @else
                         Crear Veterinaria
                     @endif
                 </h1>
-                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" style="font-size: 150%;" role="button">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
             </div>
@@ -185,7 +185,7 @@
                         <h5 class="form-label">Imágenes de la Veterinaria</h5>
                         <hr>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="addImageButton" data-bs-toggle="dropdown" aria-expanded="false" onchange="previewImage()">
+                            <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="addImageButton" data-bs-toggle="dropdown" aria-expanded="false" onchange="previewImage()">
                                 <i class="fa-solid fa-plus me-2"></i> Agregar Imagen
                             </button>
                             <div class="dropdown-menu p-3 w-100" aria-labelledby="addImageButton">
@@ -199,7 +199,9 @@
                             @foreach ($veterinaria->imagenes as $imagen)
                             <div class="image-preview-item" data-image-id="{{ $imagen->id }}">
                                 <img src="{{ asset('storage/' . $imagen->path) }}" alt="Imagen de la veterinaria" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
-                                <button type="button" class="remove-btn" onclick="removeImage(this)" data-id="{{ $imagen->id }}">X</button>
+                                <button type="button" class="remove-btn btn btn-danger btn-sm" onclick="removeImage(this)" data-id="{{ $imagen->id }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
                             @endforeach
                             @endif
@@ -211,7 +213,7 @@
                         <h5 class="form-label">Redes Sociales</h5>
                         <hr>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="addSocialButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="addSocialButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-plus me-2"></i> Agregar Red Social
                             </button>
                             <div class="dropdown-menu p-3 w-100" aria-labelledby="addSocialButton">
@@ -244,11 +246,14 @@
                             @endif
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }} mt-1">
-                        {{ isset($evento) ? 'Actualizar' : 'Crear' }}</button>
-                    <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
-                        Limpiar
-                    </button>
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }} btn-sm">
+                            <i class="fa-solid fa-save"></i>
+                            {{ isset($veterinaria) ? 'Actualizar' : 'Crear' }}
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm" title="Borrar todos los campos">
+                            <i class="fa-solid fa-broom"></i> Limpiar
+                        </button>
             </form>
         </div>
     </div>
@@ -560,6 +565,21 @@
         .btn-success:hover {
             background: #1e4183;
             transform: scale(1.08) rotate(-3deg);
+        }
+
+        .form-floating > .form-control, .form-floating > .form-select {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.95rem;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.7rem;
+            font-size: 0.95rem;
+        }
+        .image-preview-item .remove-btn {
+            width: 22px;
+            height: 22px;
+            font-size: 11px;
+            padding: 0;
         }
     </style>
 
