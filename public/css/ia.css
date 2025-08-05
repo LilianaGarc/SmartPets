@@ -303,3 +303,17 @@ textarea.form-field:hover:not(:focus) {
     border-radius: 4px;
     font-size: 0.80rem !important;
 }
+
+
+@media (max-width: 768px) {
+    .iamigopet-section {
+        height: auto;
+        overflow-y: auto;
+        display: block;
+    }
+
+
+
+
+
+}
