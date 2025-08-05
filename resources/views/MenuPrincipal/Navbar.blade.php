@@ -154,33 +154,69 @@
                     <span class="line line3"></span>
                 </div>
                 </div>
-                <div class="menu-items" id="menu">
+                <div class="menu-items custom-menu" id="menu">
                     <ul>
                         @guest
-                        <li>
-                            <a href="{{ route('login') }}">
-                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                            </a>
-                        </li>
+                            <li>
+                                <a href="{{ route('login') }}" class="menu-link">
+                                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                                </a>
+                            </li>
                         @else
-                        <li>
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="fas fa-sign-out-alt"></i> Salir
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </li>
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                   class="menu-link">
+                                    <i class="fas fa-sign-out-alt"></i> Salir
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
                         @endguest
 
-                        <li><a href="{{ route('eventos.index') }}"><i class="fas fa-calendar-alt"></i> Eventos</a></li>
-                        <li><a href="{{ route('publicaciones.index') }}"><i class="fas fa-newspaper"></i> Publicaciones</a></li>
-                        <li><a href="{{ route('adopciones.index') }}"><i class="fas fa-heart"></i> Adopciones</a></li>
-                        <li><a href="{{ route('veterinarias.index') }}"><i class="fas fa-user-md"></i> Veterinarias</a></li>
-                        <li><a href="{{ route('productos.index') }}"><i class="fas fa-store"></i> PetShop</a></li>
-                        <li><a href="{{ route('chats.index') }}"><i class="fas fa-comments"></i> PetChat</a></li>
-                        <li><a href="{{ route('chatbot.index') }}"><i class="fas fa-paw"></i> Mascota ideal</a></li>
+                        <li>
+                            <a href="{{ route('eventos.index') }}"
+                               class="menu-link {{ request()->routeIs('eventos.*') ? 'active' : '' }}">
+                                Eventos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('publicaciones.index') }}"
+                               class="menu-link {{ request()->routeIs('publicaciones.*') ? 'active' : '' }}">
+                                Publicaciones
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('adopciones.index') }}"
+                               class="menu-link {{ request()->routeIs('adopciones.*') ? 'active' : '' }}">
+                                Adopciones
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('veterinarias.index') }}"
+                               class="menu-link {{ request()->routeIs('veterinarias.*') ? 'active' : '' }}">
+                                Veterinarias
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('productos.index') }}"
+                               class="menu-link {{ request()->routeIs('productos.*') ? 'active' : '' }}">
+                                PetShop
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('chats.index') }}"
+                               class="menu-link {{ request()->routeIs('chats.*') ? 'active' : '' }}">
+                                PetChat
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('chatbot.index') }}"
+                               class="menu-link {{ request()->routeIs('chatbot.*') ? 'active' : '' }}">
+                                Mascota ideal
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
