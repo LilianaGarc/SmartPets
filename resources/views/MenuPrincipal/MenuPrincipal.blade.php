@@ -200,7 +200,7 @@
                     <span id="contadorCaracteres" style="font-size: 0.9em; color: #666;">0 / 200</span>
                     <button id="btnBorrar" title="Borrar texto" style="
                             background: transparent; border: none;color: #999;font-size: 1.2em;cursor: pointer;padding: 0;display: flex;align-items: center;transition: color 0.2s ease;">
-                        <i class="bi bi-trash"></i>
+                        <img src="{{ asset('images/trash.svg') }}" alt="borrar" width="20" height="20">
                     </button>
                 </div>
 

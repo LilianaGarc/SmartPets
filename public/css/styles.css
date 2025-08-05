@@ -3251,7 +3251,7 @@ button, .btn-view, .btn-editar {
     margin-left: 250px;
     height: 200px;
     width: 206px;
-    background: url(https://media.tenor.com/f5IqNksAcW0AAAAj/woof-running.gif);
+    background-image: url('../images/perritocorriendo.gif');
     background-repeat: no-repeat;
     animation: voiture 1s linear infinite;
 }

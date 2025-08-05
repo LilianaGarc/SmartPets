@@ -131,7 +131,12 @@ class ChatController
             }
 
             return [
-                'usuario' => $usuario,
+                'usuario' => [
+                    'id' => $usuario->id,
+                    'name' => $usuario->name,
+                    'fotoperfil' => $usuario->fotoperfil,
+                    'en_linea' => $usuario->en_linea,
+                ],
                 'chat' => $chat,
                 'ultimo_mensaje' => $ultimoMensaje,
                 'fechaOrden' => $fechaOrden,
