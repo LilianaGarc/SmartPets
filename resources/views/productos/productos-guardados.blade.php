@@ -29,6 +29,7 @@
             display: flex; align-items: center; justify-content: center;
             color: white; font-weight: bold;
         }
+
     </style>
 
 
@@ -67,8 +68,10 @@
                             </div>
 
                             <!-- Botones -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex align-items-center gap-2 mt-3">
                                 <a href="{{ route('productos.show', $favorito->producto->id) }}" class="btn btn-sm bg-orange text-white">Ver producto</a>
+                                <a href="{{ route('chats.iniciar', $favorito->producto->user_id) }}?mensaje={{ urlencode('Hola, estoy interesado en el producto: "' . $favorito->producto->nombre . '", este es el enlace: ' . route('productos.show', $favorito->producto->id)) }}"
+                                   class="btn btn-sm bg-orange text-white">Enviar mensaje</a>
 
                                 @auth
                                     @php
@@ -82,7 +85,7 @@
                                         <input type="hidden" name="producto_id" value="{{ $favorito->producto->id }}">
                                         @if($guardado)
                                             <button type="submit" formaction="{{ route('productos.eliminarGuardado', $favorito->producto->id) }}"
-                                                    class="btn btn-link p-0 m-0" title="Eliminar producto guardado" style="width: 32px; height: 32px;">
+                                                    class="btn btn-link p-0 m-0 ms-5" title="Eliminar producto guardado" style="width: 32px; height: 32px;">
                                                 <img src="{{ asset('images/marcadorAzul.png') }}" alt="Guardado" class="img-fluid" style="width: 32px; height: 32px;">
                                             </button>
                                         @else

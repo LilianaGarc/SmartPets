@@ -19,7 +19,6 @@
                 </a>
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
-                <h1><strong>Iniciar Sesión</strong></h1>
 
                 <h2><strong>Iniciar Sesión</strong></h2>
                 <span>Use su correo y contraseña</span>

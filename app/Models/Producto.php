@@ -32,4 +32,9 @@ class Producto extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function subcategoria()
+    {
+        return $this->belongsTo(Subcategoria::class);
+    }
+
 }

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             //UsersTableSeeder::class,
             CategoriasTableSeeder::class,
             //PublicacionesTableSeeder::class,
+            SubcategoriaTableSeeder::class,
         ]);
     }
 }

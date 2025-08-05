@@ -63,6 +63,16 @@
                 </a>
             </div>
 
+            <div class="col">
+                <a href="{{ route('eventos.panelcreate') }}" class="card-link">
+                    <div class="custom-card">
+                        <img src="{{ asset('images/cardeventopanel.png') }}" alt="Card 6">
+                        <h5>Evento</h5>
+                        <p>Crear un evento para mascotas.</p>
+                    </div>
+                </a>
+            </div>
+
         </div>
     </div>
 @endsection

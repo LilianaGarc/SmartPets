@@ -38,7 +38,7 @@
                     @auth
                         <div class="notification-panel">
                             <div class="notification-icon" id="notificationToggle" aria-haspopup="true" aria-expanded="false" aria-label="Toggle notifications">
-                                <i class="fas fa-bell"></i>
+                                <img src="{{ asset('images/bell.svg') }}" alt="Notificaciones" width="30" height="30">
                                 @if($notificaciones->count() > 0)
                                     <span class="notification-count" id="notificationCount">{{ $notificaciones->count() }}</span>
                                 @endif

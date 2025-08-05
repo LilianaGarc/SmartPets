@@ -1,0 +1,319 @@
+.iamigopet-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 0;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.iamigopet-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    background: #fff;
+}
+
+.left {
+    overflow: hidden;
+    width: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.right {
+    flex: 1;
+    background-color: black;
+    background-image: url('../images/ia.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 1s;
+    position: relative;
+}
+.right::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0) 10%,
+        rgba(255, 255, 255, 0) 94%,
+        rgb(255, 255, 255) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+.left.active {
+    animation-name: left;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-delay: 0s;
+}
+
+@keyframes left {
+    from {
+        opacity: 0;
+        width: 0;
+        padding: 0;
+    }
+    to {
+        opacity: 1;
+        width: 440px;
+        padding: 20px 40px;
+    }
+}
+
+.header > h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #222;
+    margin: 0;
+    padding: 0.5em 0;
+    letter-spacing: 0.3px;
+}
+
+
+
+.header > p {
+    margin-top: 12px;
+    font-weight: 400;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.7);
+    font-family: 'Rubik', sans-serif;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+.form {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+    gap: 24px;
+    padding: 0 4px;
+}
+
+textarea.form-field {
+    height: 160px;
+    padding: 18px 22px;
+    border: 2px solid rgba(204, 204, 204, 0.4);
+    border-radius: 12px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    background: linear-gradient(145deg, #fafafa 0%, #f5f7fa 100%);
+    backdrop-filter: blur(10px);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.05),
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+textarea.form-field:focus {
+    border-color: #1e4183;
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.05),
+        0 0 0 3px rgba(30, 65, 131, 0.1),
+        0 4px 16px rgba(30, 65, 131, 0.15),
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+}
+
+textarea.form-field:hover:not(:focus) {
+    border-color: rgba(30, 65, 131, 0.3);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.05),
+        0 3px 12px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.form > button {
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #1e4183 0%, #1d366c 50%, #2b5398 100%);
+    color: white;
+    font-family: 'Rubik', sans-serif;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 4px 14px rgba(30, 65, 131, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.25px;
+}
+
+.form > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.form > button:hover {
+    background: linear-gradient(135deg, #183260 0%, #1e4183 50%, #1e4183 100%);
+    transform: translateY(-3px);
+}
+
+.form > button:hover::before {
+    left: 100%;
+}
+
+.form > button:active {
+    transform: translateY(-1px);
+    box-shadow:
+        0 4px 14px rgba(30, 65, 131, 0.3),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.left.active .animation {
+    animation-name: move;
+    animation-duration: .4s;
+    animation-fill-mode: both;
+    animation-delay: var(--delay);
+}
+
+@keyframes move {
+    0% {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-40px);
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+.usage-counter {
+    margin-left: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1e4183;
+    background-color: #e6ecf8;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.help-tooltip-container {
+    display: inline-block;
+    position: relative;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.help-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #1e4183;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    transition: background 0.3s;
+}
+
+.help-icon:hover {
+    background-color: #2b5398;
+}
+
+.help-tooltip {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    background-color: white;
+    color: #333;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: max-content;
+    max-width: 200px;
+    z-index: 10;
+    white-space: normal;
+}
+
+.help-tooltip-container:hover .help-tooltip {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .help-tooltip {
+        background-color: #ffffff;
+        left: 50%;
+        top: 36px;
+        transform: translateX(-50%);
+        max-width: 60vw;
+        white-space: normal;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .help-tooltip-container:focus-within .help-tooltip,
+    .help-tooltip-container:active .help-tooltip {
+        display: block;
+    }
+
+    .help-icon {
+        outline: none;
+    }
+}
+
+.advertencia-azul {
+    color: #1e4183;
+    font-weight: 200;
+    background-color: #e6f0ff;
+    padding: 8px 12px;
+    border-left: 4px solid #1e4183;
+    border-radius: 4px;
+    font-size: 0.80rem !important;
+}
+
+
+@media (max-width: 768px) {
+    .iamigopet-section {
+        height: auto;
+        overflow-y: auto;
+        display: block;
+    }
+
+
+
+
+
+}

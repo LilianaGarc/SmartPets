@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('precio',12,2);
             $table->unsignedBigInteger('categoria_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('subcategoria_id')->nullable();
             $table->integer('stock');
             $table->string('imagen')->nullable();
             $table->string('imagen2')->nullable();
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('subcategoria_id')->references('id')->on('subcategorias')->onDelete('set null');
         });
     }
 
