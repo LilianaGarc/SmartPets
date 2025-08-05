@@ -25,9 +25,12 @@
     <div class="card shadow-sm p-4 mb-4 mt-4">
         <!-- Datos de la Veterinaria -->
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap mb-3">
-                <h2 class="card-title fw-bold">{{ $veterinaria->nombre }}</h2>
-                <a href="{{ route('veterinarias.index') }}" class="btn btn-success" role="button" style="font-size: 150%;">
+            <div class="d-flex align-items-center mb-3 flex-nowrap gap-2" style="min-height: 56px;">
+                <h2 class="card-title fw-bold flex-grow-1 mb-0 .titulo-nombre-veterinaria-responsive"
+                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size:clamp(1.3rem, 3vw, 2.2rem); min-width:0;">
+                    {{ $veterinaria->nombre }}
+                </h2>
+                <a href="{{ route('veterinarias.index') }}" class="btn btn-success btn-volver-evento ms-2" role="button" style="font-size: 150%;">
                     <i class="fa-solid fa-circle-arrow-left"></i>
                 </a>
             </div>
@@ -586,6 +589,17 @@
         .d-flex.align-items-start {
             flex-direction: column !important;
             align-items: flex-start !important;
+        }
+    }
+
+    .titulo-nombre-veterinaria-responsive {
+        min-width: 0;
+        max-width: 100%;
+    }
+    @media (max-width: 767.98px) {
+        .titulo-nombre-veterinaria-responsive {
+            font-size: 1.1rem !important;
+            padding-right: 60px;
         }
     }
 </style>

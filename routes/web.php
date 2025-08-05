@@ -145,7 +145,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/eventos',[EventoController::class, 'store'])->name('eventos.store');
     Route::get('/eventos/{id}/editar', [EventoController::class, 'edit'])->name('eventos.edit')->whereNumber('id');
     Route::put('/eventos/{id}/editar', [EventoController::class, 'update'])->name('eventos.update')->whereNumber('id');
-    Route::get('/eventos/{id}/ver', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('id');
     Route::delete('/eventos/{id}/eliminar', [EventoController::class, 'destroy'])->name('eventos.destroy')->whereNumber('id');
 
 
@@ -297,6 +296,6 @@ Route::get('/logout', function () {
 
 require __DIR__.'/auth.php';
 
-Route::post('/enviar-codigo-verificacion', [\App\Http\Controllers\ProfileController::class, 'enviarCodigoVerificacion'])
+Route::post('/enviar-codigo-verificacion', [ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
