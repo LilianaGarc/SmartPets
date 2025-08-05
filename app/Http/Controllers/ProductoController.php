@@ -44,6 +44,7 @@ class ProductoController extends Controller
     {
         $query = $request->input('search');
         $categoriaId = $request->input('categoria');
+        $subcategoriaId = $request->input('subcategoria');
         $productos = Producto::query();
         if ($query){
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
@@ -51,17 +52,22 @@ class ProductoController extends Controller
         if ($categoriaId){
             $productos->where('categoria_id', $categoriaId);
         }
+        if ($subcategoriaId){
+            $productos->where('subcategoria_id', $subcategoriaId);
+        }
         $productos = $productos->paginate(12);
         $categorias = Categoria::limit(6)->get();
-        return view('productos.productos-lista', compact('productos', 'categorias','query', 'categoriaId'));
+        return view('productos.productos-lista', compact('productos', 'categorias','query', 'categoriaId', 'subcategoriaId'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $categorias = Categoria::all();
+        $categorias = Categoria::with('subcategorias')->get();
         return view('productos.productos-formulario', ['categorias' => $categorias]);
+
+
 
     }
 
@@ -78,7 +84,8 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
             'precio.required' => 'El precio del producto es obligatorio.',
@@ -88,8 +95,14 @@ class ProductoController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
             'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
-            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.'
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
+            'subcategoria_id.required' => 'La subcategoría es obligatoria.',
+            'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
+            'subcategoria_id.integer' => 'La subcategoría debe ser un número entero.'
+
+
         ]);
+
 
         // Validar la cantidad de imágenes
         if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
@@ -126,6 +139,7 @@ class ProductoController extends Controller
         $producto->imagen3 = $imagenesGuardadas[2] ?? null;
         $producto->imagen4 = $imagenesGuardadas[3] ?? null;
         $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
 
         if ($producto->save()) {
             return redirect()->route('productos.index')->with('success', 'Producto publicado correctamente');
@@ -139,9 +153,9 @@ class ProductoController extends Controller
      */
     public function show(string $id)
     {
-        $producto = Producto::findOrFail($id);
+        $producto = Producto::with(['subcategoria', 'categoria'])->findOrFail($id);
         $resenias = $producto->resenias()->with('user')->get();
-        return view('productos.productos-detalles', compact('producto','resenias'));
+        return view('productos.productos-detalles', compact('producto', 'resenias'));
     }
 
     /**
@@ -215,6 +229,8 @@ class ProductoController extends Controller
         $producto->imagen3 = $imagenesGuardadas[2] ?? $producto->imagen3;
         $producto->imagen4 = $imagenesGuardadas[3] ?? $producto->imagen4;
         $producto->imagen5 = $imagenesGuardadas[4] ?? $producto->imagen5;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
+
 
         if ($producto->save()) {
             return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');

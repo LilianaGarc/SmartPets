@@ -10,7 +10,7 @@ class SubcategoriaTableSeeder extends Seeder
 {
     public function run(): void
     {
-        $subcategorias = ['juguetes', 'accesorios','alimento','higiene'];
+        $subcategorias = ['Juguetes', 'Accesorios','Alimento','Higiene'];
 
         Categoria::all()->each(function ($categoria) use ($subcategorias) {
             foreach ($subcategorias as $nombre) {
