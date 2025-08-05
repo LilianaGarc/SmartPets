@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
+use App\Models\Publicacion;
 use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,14 @@ class PerfilController extends Controller
         $adopciones = \App\Models\Adopcion::where('id_usuario', $user->id)->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
 
+        $publicaciones = Publicacion::with('user')
+            ->withCount('likes')
+            ->with(['likes' => function ($query) {
+                $query->where('user_id', Auth::id());
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $solicitudes = \App\Models\Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
         $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
             return [
@@ -30,7 +39,7 @@ class PerfilController extends Controller
             return $item['adopcion'] !== null;
         });
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario'));
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones'));
     }
 
     public function showPerfil($id)
