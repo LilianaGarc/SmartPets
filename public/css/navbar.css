@@ -105,10 +105,12 @@
 }
 
 .navbar .menu-items a {
+    padding: 8px 0 8px 20%;!important;
     text-decoration: none;
     color: #0e2431;
-    font-weight: 500;
+    font-weight: 400;!important;
     font-size: 1.7rem;
+    font-family: Arial, sans-serif;
     display: flex;
     align-items: start;
     justify-content: start;
@@ -117,7 +119,6 @@
     width: 100%;
     box-sizing: border-box;
     text-align: start;
-    padding: 8px 0 8px 20%;
 }
 
 .navbar .menu-items a i {
@@ -454,3 +455,11 @@ input:checked + .slider:before {
         height: 25px !important;
     }
 }
+
+.navbar .menu-items a.active {
+    color: #fff;
+    background: linear-gradient(135deg, #ff864e 83%, rgba(255, 255, 255, 0) 83%);
+}
+
+
+
