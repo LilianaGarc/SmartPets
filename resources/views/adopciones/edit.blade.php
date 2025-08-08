@@ -89,7 +89,7 @@
 
         <div class="form-group">
             <label for="contenido">🖊️ Mensaje</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="250">{{ old('contenido', $adopcion->contenido) }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido', $adopcion->contenido) }}</textarea>
         </div>
 
 
@@ -112,11 +112,47 @@
             </div>
         @endif
 
+        <div class="form-group">
+            <label for="imagenes_secundarias">Agregar Imágenes Secundarias</label>
+            <div class="input-file-wrapper">
+                <input type="file" name="imagenes_secundarias[]" id="imagenes_secundarias" accept="image/*" multiple>
+                <label for="imagenes_secundarias">Seleccionar Imágenes</label>
+            </div>
+            <p id="info-cupo" style="margin-top: 10px; font-weight: bold;"></p>
+            <div id="preview-nuevas-imagenes" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+        </div>
+
+        @if($adopcion->imagenes_secundarias)
+            @php
+                $imagenesSecundarias = json_decode($adopcion->imagenes_secundarias, true);
+            @endphp
+
+            <div class="form-group">
+                <label>Imágenes Secundarias Actuales (selecciona para eliminar)</label>
+                <div class="secondary-images-edit">
+                    @foreach($imagenesSecundarias as $index => $imagen)
+                        <div class="secondary-image-item">
+                            <img src="{{ asset('storage/'.$imagen) }}" alt="Imagen secundaria {{ $index }}">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="imagenes_secundarias_eliminar[]" value="{{ $imagen }}" class="checkbox-eliminar">
+                                <span></span> Eliminar
+                            </label>
+
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
 
         <button type="submit" class="btn btn-success">🚀 Actualizar Adopción</button>
     </form>
 </div>
 
+<script>
+</script>
+<span id="total-imagenes-secundarias" style="display:none;">{{ isset($imagenesSecundarias) ? count($imagenesSecundarias) : 0 }}</span>
+<script src="{{ asset('js/adopcioneditar.js') }}"></script>
 <script src="{{ asset('js/vistaprevia.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>

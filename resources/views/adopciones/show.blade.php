@@ -61,12 +61,15 @@
         @endif
             <div class="header">
                 <div class="pet-greeting">
-                    <h1>Hola soy {{$adopcion->nombre_mascota }}</h1>
-                    <p>Esta es mi información y espero encontrar una familia amorosa</p>
+                    <h1>¡Hola! Soy {{ $adopcion->nombre_mascota }}</h1>
+                    <p>Estoy buscando un hogar lleno de amor donde me cuiden y me hagan feliz. ¿Quieres ser mi nueva familia?. Aquí encontrarás toda mi información para que puedas conocerme mejor.</p>
+
+
                 </div>
             </div>
 
-        <div class="card-contentX">
+
+            <div class="card-contentX">
             <div class="photosX">
                 @if($adopcion->imagen)
                     <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-imgX">

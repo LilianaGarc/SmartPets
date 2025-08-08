@@ -3715,3 +3715,163 @@ button, .btn-view, .btn-editar {
     transform: translateY(0);
 }
 
+.form-group {
+    margin-bottom: 1.5rem;
+    font-family: Arial, sans-serif;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.form-group input[type="file"] {
+    display: block;
+    margin-top: 0.3rem;
+    cursor: pointer;
+}
+
+.file-info span {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.3rem;
+    display: block;
+    font-style: italic;
+}
+
+.image-preview-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 0.7rem;
+}
+
+.image-preview-grid label {
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.preview-thumb {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.preview-thumb:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.input-file-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.input-file-wrapper input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+}
+
+.input-file-wrapper label {
+    background-color: #ff7f50;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+.input-file-wrapper label:hover {
+    background-color: #ff6347;
+}
+
+.secondary-images-edit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.secondary-image-item {
+    position: relative;
+    width: 120px;
+    text-align: center;
+}
+
+.secondary-image-item img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #444;
+    user-select: none;
+    font-size: 14px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-label input[type="checkbox"] + span {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #1e4183;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span {
+    background-color: #1e4183;
+    border-color: #1e4183;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 2px;
+    height: 5px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label span {
+    pointer-events: none;
+}
