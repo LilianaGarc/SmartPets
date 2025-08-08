@@ -143,6 +143,13 @@ body {
     color: #1e293b;
 }
 
+.descriptionsX p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #4f4f4f;
+    text-align: center;
+
+}
 
 .descriptionsX .detalle-item {
     display: flex;
@@ -229,6 +236,88 @@ body {
 }
 
 
+@media (max-width: 992px) {
+    .card-contentX {
+        grid-template-columns: 1fr; /
+        gap: 20px;
+        padding: 0 20px 20px 0;
+    }
+
+    .adopcion-imgX {
+        width: 100%;
+        height: auto;
+    }
+
+    .imagenes-secundaria-containerX {
+        justify-content: center;
+    }
+
+    .imagen-secundariaX {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-containerverX {
+        width: 90%;
+        transform: translateY(10px);
+        padding: 10px;
+    }
+
+    .pet-greeting h1 {
+        font-size: 1.8rem;
+    }
+
+    .pet-greeting p {
+        font-size: 1rem;
+    }
+
+    .card-contentX {
+        grid-template-columns: 1fr;
+        padding: 0 10px 10px 0;
+        gap: 15px;
+    }
+
+    .adopcion-imgX {
+        width: 100%;
+        height: auto;
+    }
+
+    .imagenes-secundaria-containerX {
+        gap: 8px;
+        margin-top: 15px;
+        padding: 5px;
+    }
+
+    .imagen-secundariaX {
+        width: 50px;
+        height: 50px;
+    }
+
+    .descriptionsX h1 {
+        font-size: 1.8rem;
+    }
+
+    .descriptionsX h2 {
+        font-size: 1.1rem;
+    }
+
+    .detalle-item.contenido-detalle span {
+        font-size: 1rem;
+    }
+
+    .enlace-mensajeX {
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+    .descriptionsX p {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: #4f4f4f;
+
+    }
+}
 
 .image-item {
     position: relative;
