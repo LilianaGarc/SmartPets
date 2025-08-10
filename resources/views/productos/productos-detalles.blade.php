@@ -423,6 +423,11 @@
     .accordion-button.collapsed .user-info small {
         color: #d3d3d3;
     }
+    .textoAjustado {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+    }
 </style>
 @section('contenido')
     <div class="container-fluid mx-2  py-5">
@@ -485,7 +490,7 @@
                             @endif
                         </ol>
                     </nav>
-                    <h1 class="mb-3">{{$producto->nombre}}</h1>
+                    <h1 class="mb-3 textoAjustado">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
                         <span class="stock-badge">En Stock</span>
@@ -530,7 +535,7 @@
                             <i class="bi bi-star-half" style="color: var(--orange)"></i>
                         </div>
                     </div>
-                    <p class="mb-4">{{$producto->descripcion}}</p>
+                    <p class="mb-4 textoAjustado">{{$producto->descripcion}}</p>
                     <!-- Botones de Acción -->
                     @auth
                     <div class="d-flex align-items-center gap-3 mt-3">

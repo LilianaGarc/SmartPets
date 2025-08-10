@@ -19,6 +19,7 @@
             color: white;
             transform: rotate(-10deg);
         }
+
     </style>
 
     <div class="breadcrumb-container">
@@ -75,20 +76,17 @@
                 @endif
 
                 <form method="post" enctype="multipart/form-data" id="formularioProducto"
-                      @if (isset($producto))
-                      @else
-                          action="{{ route('productos.store') }}"
-                    @endif>
-                    @isset($producto)
-                        @method('put')
-                    @endisset
+                      action="{{ isset($producto) ? route('productos.update', $producto->id) : route('productos.store') }}">
                     @csrf
+                    @isset($producto)
+                        @method('PUT')
+                    @endisset
 
                     <div class="row g-3">
                         <!-- Nombre del Producto -->
                         <div class="col-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="nombre" placeholder="Nombre del Producto" name="nombre" value="{{ isset($producto) ? $producto->nombre : old('nombre') }}" maxlength="255" required>
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre del Producto" name="nombre" value="{{ isset($producto) ? $producto->nombre : old('nombre') }}" maxlength="50" required>
                                 <label for="nombre">Nombre del Producto</label>
                             </div>
                         </div>
@@ -129,7 +127,7 @@
                                 <select class="form-select" id="subcategoria" name="subcategoria_id" required>
                                     <option value="">Seleccione una subcategoría</option>
                                     @foreach ($categorias as $categoria)
-                                        <optgroup label="{{ $categoria->nombre }}">
+                                        <optgroup label="{{ $categoria->nombre }}" label-id="{{ $categoria->id }}">
                                             @foreach ($categoria->subcategorias as $subcategoria)
                                                 <option value="{{ $subcategoria->id }}" {{ isset($producto) && $producto->subcategoria_id == $subcategoria->id ? 'selected' : '' }}>
                                                 {{ $subcategoria->nombre }}
@@ -180,5 +178,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputImagenes = document.getElementById('imagenes');
+            inputImagenes.addEventListener('change', function () {
+                if (this.files.length > 5) {
+                    alert('Solo puedes seleccionar un máximo de 5 imágenes.');
+                    this.value = '';
+                }
+            });
+
+            const selectCategoria = document.getElementById('categoria');
+            const selectSubcategoria = document.getElementById('subcategoria');
+            const opcionesOriginales = Array.from(selectSubcategoria.options);
+
+            selectCategoria.addEventListener('change', function () {
+                const categoriaId = this.value;
+                selectSubcategoria.innerHTML = '<option value="">Seleccione una subcategoría</option>';
+                opcionesOriginales.forEach(option => {
+                    const optgroup = option.closest('optgroup');
+                    if (optgroup && optgroup.label) {
+                        if (optgroup.getAttribute('label-id') == categoriaId) {
+                            selectSubcategoria.appendChild(option.cloneNode(true));
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
 
 @endsection

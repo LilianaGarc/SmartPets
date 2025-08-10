@@ -17,6 +17,12 @@
             object-fit: cover !important; /* Ajusta la imagen para que se recorte y se ajuste al contenedor */
             border-radius: 8px !important;
         }
+
+        .textoAjustado {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
     </style>
 
     <div class="container d-flex justify-content-center mt-4">
@@ -98,7 +104,7 @@
                          style="background-image: url('{{ $foto }}'); background-size: cover; width: 70px; height: 70px; border-radius: 50%; margin-right: 10px;"></div>
 
                     <div class="informacion-perfil" style="flex: 1;">
-                        <p class="fecha-publicacion" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
+                        <p class="fecha-publicacion textoAjustado" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
                         <p class="usuario-nombre" style="margin: 0; font-weight:  bold; font-size: 0.9rem; color: #555;">{{ $producto->user->name }}</p>
                         <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->setTimezone('America/Tegucigalpa')->format('d/m/Y , H:i A') }}</p>
                     </div>
