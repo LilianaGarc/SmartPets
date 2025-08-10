@@ -1,273 +1,184 @@
-@extends('productos.productos-layout') @extends('MenuPrincipal.Navbar')
-@section('titulo','Formulario Producto')
+@extends('layout.plantillaSaid')
+
+@section('titulo', isset($producto) ? 'Editar Producto' : 'Crear Producto')
+
 @section('contenido')
+
     <style>
-        :root {
-            --orange: #ED8119;
-            --blue: #18478B;
-            --cream: #FFF8F0;
-            --dark: #1F1F1F;
-        }
-
         body {
-            background-color: var(--cream);
+            background-color: #FFF8F0;
         }
-
-        .form-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        .btn-naranja {
+            background-color: #ed8119;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-
-        .form-label {
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 0 0.25rem rgba(237, 129, 25, 0.25);
-        }
-
-        .btn-primary {
-            background-color: var(--blue);
-            border-color: var(--blue);
-        }
-
-        .btn-primary:hover {
-            background-color: #133c75;
-            border-color: #133c75;
-        }
-
-        .btn-outline-primary {
-            color: var(--blue);
-            border-color: var(--blue);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--blue);
-            border-color: var(--blue);
-        }
-
-        .section-title {
-            color: var(--orange);
-            border-bottom: 2px solid var(--orange);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .image-preview {
-            border: 2px dashed var(--orange);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+        .btn-naranja:hover {
+            background-color: #18478b;
+            color: white;
+            transform: rotate(-10deg);
         }
     </style>
-    </head>
-    <body>
-    @section('nav') @endsection
-    <div class="container-fluid mx-3 px-3 mt-2" >
-        <div class="form-container p-4 p-md-5">
-            <h2 class="text-center mb-4" style="color: var(--blue);">{{isset($producto) ? 'Editar Producto' : 'Publicar Nuevo Producto'}}</h2>
 
-            <!-- Mostrar en los errores de las validaciones-->
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{session('success')}}
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="alert alert-danger">
-                    {{session('error')}}
-                </div>
-            @endif
+    <div class="breadcrumb-container">
+        <ul class="breadcrumb">
+            <li class="breadcrumb__item">
+                <a href="{{ route('index') }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Inicio</span>
+                </a>
+            </li>
+            <li class="breadcrumb__item">
+                <a href="{{ route('productos.index') }}" class="breadcrumb__inner">
+                    <span class="breadcrumb__title">Productos</span>
+                </a>
+            </li>
+            <li class="breadcrumb__item breadcrumb__item-active">
+                <a href="{{ route('productos.create') }}" class="breadcrumb__inner">
+                <span class="breadcrumb__title">
+                    @if (isset($producto))
+                        Editar Producto
+                    @else
+                        Crear Producto
+                    @endif
+                </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+    <div class="container mt-4">
+        <div class="card fade-in">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                    <h1 class="mb-0 card-title fw-bold">
+                        @if(isset($producto))
+                            Editar Producto
+                        @else
+                            Crear Producto
+                        @endif
+                    </h1>
+                    <a href="{{ route('productos.index') }}" class="btn btn-naranja" style="font-size: 150%;" role="button">
+                        <i class="fa-solid fa-circle-arrow-left"></i>
+                    </a>
                 </div>
-            @endif
+                <hr>
 
-            <form action="{{ isset($producto) ? route('productos.update',$producto->id) : route('productos.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @if(isset($producto))
-                    @method('PUT')
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="list-unstyled mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
-                <!-- csrf permite realizar peticiones-->
-                <!-- Información Básica -->
-                <div class="mb-4">
-                    <h4 class="section-title">Información Básica</h4>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="nombre" class="form-label">Nombre del Producto</label>
-                            <input type="text" class="form-control" id= "nombre" name="nombre" value="{{old('nombre', $producto->nombre ?? '')}}" required>
-                        </div>
 
-                        <div class="col-md-6">
-                            <label for="precio" class="form-label">Precio</label>
-                            <div class="input-group">
-                                <span class="input-group-text">L.</span>
-                                <input type="number" class="form-control" id="precio" name="precio" required value="{{old('precio', $producto->precio ?? '')}}" step="0.01">
+                <form method="post" enctype="multipart/form-data" id="formularioProducto"
+                      @if (isset($producto))
+                      @else
+                          action="{{ route('productos.store') }}"
+                    @endif>
+                    @isset($producto)
+                        @method('put')
+                    @endisset
+                    @csrf
+
+                    <div class="row g-3">
+                        <!-- Nombre del Producto -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre del Producto" name="nombre" value="{{ isset($producto) ? $producto->nombre : old('nombre') }}" maxlength="255" required>
+                                <label for="nombre">Nombre del Producto</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="categoria" class="form-label">Seleccionar mascota</label>
-                            <select class="form-select" id="categoria" name="categoria_id" required>
-                                @foreach($categorias as $categoria)
-                                    <option value="{{$categoria->id}}"{{ old('categoria_id', $producto-> categoria_id ?? '') == $categoria->id ? 'selected': '' }}>
-                                    {{$categoria->nombre}}
-                                    </option>
-                                @endforeach
-                            </select>
+
+                        <!-- Precio -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="precio" placeholder="Precio" name="precio" value="{{ isset($producto) ? $producto->precio : old('precio') }}" step="0.01" required>
+                                <label for="precio">Precio</label>
+                            </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <label for="subcategoria_id" class="form-label">Seleccione Subcategoría</label>
-                            <select class="form-select" id="subcategoria_id" name="subcategoria_id" required>
-                                <option value="">Seleccione una subcategoría</option>
-                                @foreach($categorias as $categoria)
-                                    <optgroup label="{{ $categoria->nombre }}">
-                                        @foreach($categoria->subcategorias as $subcategoria)
-                                            <option value="{{ $subcategoria->id }}" {{ old('subcategoria_id', $producto->subcategoria_id ?? '') == $subcategoria->id ? 'selected' : '' }}>
+                        <!-- Stock -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="stock" min="0" placeholder="Cantidad disponible" name="stock" value="{{ isset($producto) ? $producto->stock : old('stock') }}" required>
+                                <label for="stock">Cantidad disponible</label>
+                            </div>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="categoria" name="categoria_id" required>
+                                    <option value="">Seleccione una categoría</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}" {{ isset($producto) && $producto->categoria_id == $categoria->id ? 'selected' : '' }}>
+                                            {{ $categoria->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Subcategoría -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="subcategoria" name="subcategoria_id" required>
+                                    <option value="">Seleccione una subcategoría</option>
+                                    @foreach ($categorias as $categoria)
+                                        <optgroup label="{{ $categoria->nombre }}">
+                                            @foreach ($categoria->subcategorias as $subcategoria)
+                                                <option value="{{ $subcategoria->id }}" {{ isset($producto) && $producto->subcategoria_id == $subcategoria->id ? 'selected' : '' }}>
                                                 {{ $subcategoria->nombre }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
+                                            @endforeach
+                                        </optgroup>
+                                    @endforeach
+                                </select>
+                                <label for="subcategoria">Subcategoría</label>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Imágenes del Producto -->
-                <div class="mb-4">
-                    <h4 class="section-title">Imágenes del Producto</h4>
-                    <div class="image-preview" id="drop-area">
-                        <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 2rem; color: var(--orange);"></i>
-                        <p class="mb-2">Selecciona las imágenes</p>
-                        <input class="btn btn-outline-primary" type="file" id="image-input" name="imagenes[]" accept=".jpg, .png, .gif"  multiple>
-                        <small class="d-block mt-2 text-muted">Máximo 5 imágenes. Formato: JPG, PNG. Tamaño máximo: 2MB</small>
-                    </div>
-                </div>
-                <div id="image-preview-container" class="d-flex flex-wrap mt-3"></div>
-                    <div class="mt-3">
-                        @if(isset($producto) && $producto->imagenes)
-                            @foreach($producto->imagenes as $imagen)
-                                <div class="mb-2">
-                                    <img src="{{ url('storage/' . $imagen) }}" alt="Imagen del Producto" class="img-thumbnail" width="100px">
+
+                        <!-- Descripción -->
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" id="descripcion" placeholder="Descripción" name="descripcion" style="height: 100px;" maxlength="255" required>{{ isset($producto) ? $producto->descripcion : old('descripcion') }}</textarea>
+                                <label for="descripcion">Descripción</label>
+                            </div>
+                        </div>
+
+                        <!-- Imágenes -->
+                        <div class="col-12">
+                            <h5 class="form-label">Imágenes del Producto</h5>
+                            <hr>
+                            <div class="dropdown">
+                                <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="addImageButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-plus me-2"></i> Agregar Imágenes
+                                </button>
+                                <div class="dropdown-menu p-3 w-100" aria-labelledby="addImageButton">
+                                    <input type="file" class="form-control mb-2" id="imagenes" name="imagenes[]" accept="image/*" multiple>
                                 </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-
-                <!-- Descripción -->
-                <div class="mb-4">
-                    <h4 class="section-title">Descripción</h4>
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" rows="4" name="descripcion" required  > {{old('descripcion', $producto->descripcion ?? '')}} </textarea>
-                    </div>
-                </div>
-
-                <!-- Inventario -->
-                <div class="mb-4">
-                    <h4 class="section-title">Inventario</h4>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="stock" class="form-label">Cantidad disponible</label>
-                            <input type="number" class="form-control" id="stock" name="stock" required value="{{old('stock', $producto->stock ?? '')}}">
+                            </div>
+                            <small class="text-muted">Máximo 5 imágenes. Formato: JPG/JPEG, PNG, GIF, BMP, SVG, WEBP, TIFF. Tamaño máximo: 2MB</small>
                         </div>
-
                     </div>
-                </div>
 
-                  <!-- Botones de Acción -->
-                <div class="d-flex gap-2 justify-content-end">
-                    <a href="{{route('productos.index')}}" class="btn btn-outline-primary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Publicar</button>
-                </div>
-            </form>
+                    <br>
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-save"></i>
+                            {{ isset($producto) ? 'Actualizar' : 'Crear' }}
+                        </button>
+                        <button type="reset" class="btn btn-primary btn-sm" title="Borrar todos los campos">
+                            <i class="fa-solid fa-broom"></i> Limpiar
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    @section('footer')
-    @endsection
-    <script>
-
-        // Detectar clic en el botón y abrir el selector de archivos
-        document.getElementById('image-input').addEventListener('click', function() {
-            this.value = null; // Resetear el valor para permitir la misma imagen
-        });
-
-
-        document.getElementById('image-input').addEventListener('change', function() {
-            const files = this.files;
-            const previewContainer = document.getElementById('image-preview-container');
-
-            // Limpiar la vista previa anterior
-            previewContainer.innerHTML = '';
-
-            // Validar cantidad de imágenes
-            if (files.length > 5) {
-                alert('No se pueden subir más de 5 imágenes.');
-                this.value = ''; // Limpiar el input
-                return;
-            }
-
-            // Mostrar vista previa de las imágenes seleccionadas
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.classList.add('img-thumbnail');
-                    img.style.width = '100px';
-                    img.style.margin = '5px';
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        });
-
-        // Manejar arrastrar y soltar
-        const dropArea = document.getElementById('drop-area');
-
-        dropArea.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            dropArea.classList.add('dragover');
-        });
-
-        dropArea.addEventListener('dragleave', () => {
-            dropArea.classList.remove('dragover');
-        });
-
-        dropArea.addEventListener('drop', (event) => {
-            event.preventDefault();
-            dropArea.classList.remove('dragover');
-            const files = event.dataTransfer.files;
-            document.getElementById('image-input').files = files;
-            console.log("Imágenes arrastradas:", files); // Para depuración
-
-
-            document.getElementById('image-input').addEventListener('change', function() {
-                const files = this.files;
-                if (files.length > 5) {
-                    alert('No se pueden subir más de 5 imágenes.');
-                    this.value = ''; // Limpiar el input
-                }
-            });
-
-
-
-    </script>
-
-
 
 @endsection
-
-
