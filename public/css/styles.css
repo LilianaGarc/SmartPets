@@ -973,12 +973,12 @@ input[type="date"] {
 }
 
 .foto-perfil {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     margin-right: 15px;
     overflow: hidden;
     border-radius: 50%;
-    border: 2px solid #d7d7d7;
+    border: 2px solid #1e4183;
     background-size: cover;
     background-position: center;
 }
@@ -3226,17 +3226,23 @@ button, .btn-view, .btn-editar {
 
 
     .category-buttons {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 10px;
+        padding-bottom: 10px;
+        white-space: nowrap;
+        width: 100%;
+        scroll-snap-type: x mandatory;
     }
+
 
     .pill-btn {
         font-size: 15px !important;
         padding: 3px 6px !important;
         white-space: nowrap;
-        width: 55px;
-        height: 55px;
+        width: 64px;
+        height: 64px;
     }
 
     .order-pills {
@@ -3249,17 +3255,22 @@ button, .btn-view, .btn-editar {
     }
 
 
-
     .pill-text {
        display: none;
     }
 
     .category-btn {
-        flex-direction: column;
-        font-size: 11px;
-        padding: 4px;
-        width: 70px;
-        text-align: center;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+
+    .category-buttons::-webkit-scrollbar {
+        display: none;
+    }
+
+    .category-buttons {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     .category-icon {

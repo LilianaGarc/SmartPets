@@ -153,15 +153,18 @@
                                             data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
                                         >
                                             <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
-                                            Me gusta
+                                            <span class="like-text">Me gusta</span>
                                         </button>
 
+
                                         <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fa-regular fa-comment"></i> Comentar
+                                            <i class="fa-regular fa-comment"></i> <span class="btn-text">Comentar</span>
                                         </a>
+
                                         <a href="{{ route('publicaciones.compartir', $publicacion->id) }}" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fa-regular fa-share-from-square"></i> Compartir
+                                            <i class="fa-regular fa-share-from-square"></i> <span class="btn-text">Compartir</span>
                                         </a>
+
                                     @else
                                         <a href="{{ route('login') }}" class="btn" role="button" style="margin: 1px;">
                                             <i class="fa-regular fa-heart text-gray-400"></i> Me gusta

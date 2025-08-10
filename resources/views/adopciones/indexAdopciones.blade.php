@@ -248,6 +248,21 @@
     {{ $adopciones->links('vendor.pagination.mascotas') }}
 </div>
 @include('chats.chat-float')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.querySelector('.category-buttons');
+        const activeBtn = container.querySelector('.category-btn.active');
+
+        if (activeBtn) {
+            activeBtn.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center',
+                block: 'nearest'
+            });
+        }
+    });
+</script>
+
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
