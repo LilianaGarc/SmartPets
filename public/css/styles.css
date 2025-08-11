@@ -259,6 +259,10 @@ body {
 }
 
 @media (max-width: 600px) {
+    .cardX .header {
+      padding: 0;
+        margin: 0;
+    }
     .card-containerverX {
         width: 90%;
         transform: translateY(10px);
