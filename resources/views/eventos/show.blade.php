@@ -74,6 +74,7 @@
                         @endif
                     @endif
                 @endauth
+                
                 {{-- Participantes en escritorio --}}
                 <div class="d-none d-lg-block mt-4">
                     <div class="card shadow h-100">

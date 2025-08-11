@@ -38,6 +38,8 @@ class PerfilController extends Controller
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
+        $eventos = $user->eventos()->with('id_usuario')->get();
+        $veterinarios = $user->veterinarios()->with('id_usuario')->get();
 
         $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
 
