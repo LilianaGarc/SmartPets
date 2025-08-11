@@ -16,6 +16,7 @@
 
     body {
         background-color: var(--cream);
+        overflow-x: hidden;
     }
 
     .product-container {
@@ -416,6 +417,7 @@
         gap: 10px; /* Espaciado entre las miniaturas */
         margin-top: 10px; /* Espaciado superior */
         margin-left: 2em;
+        flex-wrap: wrap;
     }
     .accordion-button:not(.collapsed) .user-info small {
         color: #4a4a4a;
@@ -610,7 +612,7 @@
                                         </div>
                                         <div class="review-form-group">
                                             <label for="review-content" class="review-label">Contenido</label>
-                                            <textarea class="review-textarea" id="review-content" rows="4"
+                                            <textarea class="review-textarea" id="review-content" maxlength="255"
                                                       name="contenido"
                                                       placeholder="Escribe tu reseña aquí...">{{ old('contenido', $resenia->contenido ?? '') }}</textarea>
                                         </div>
@@ -630,10 +632,10 @@
                             @foreach($resenias as $index => $resenia)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading{{ $index }}">
-                                        <button class="accordion-button {{ $index == 0 ? '' : 'collapsed' }}"
+                                        <button class="accordion-button collapsed"
                                                 type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                                aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
+                                                data-bs-target="#collapse{{$index}}" data-bs-toggle="collapse"
+                                                aria-expanded="false"
                                                 aria-controls="collapse{{ $index }}">
                                             <div class="user-info">
                                                 @php
@@ -652,11 +654,11 @@
 
                                     </h2>
                                     <div id="collapse{{ $index }}"
+                                         class="accordion-collapse collapse"
                                          aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <strong>{{ $resenia->titulo }}</strong>
-                                            <p>{{ $resenia->contenido }}</p>
-
+                                            <p class="textoAjustado">{{ $resenia->contenido }}</p>
                                             <!-- Button trigger modal -->
                                             <!-- Eliminar Reseña -->
                                             @auth

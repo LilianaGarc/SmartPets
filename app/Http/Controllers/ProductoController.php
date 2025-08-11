@@ -79,20 +79,26 @@ class ProductoController extends Controller
     {
         // Validación de datos
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255',
-            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
-            'descripcion' => 'nullable|string',
+            'nombre' => 'required|string|max:50',
+            'precio' => ['required','numeric','min:0','regex:/^\d{1,10}(\.\d{1,2})?$/'],
+            'descripcion' => 'nullable|string|max:255',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.max' => 'El nombre del producto no debe exceder los 50 caracteres.',
             'precio.required' => 'El precio del producto es obligatorio.',
             'precio.numeric' => 'El precio debe ser un número.',
+            'precio.regex' => 'El precio debe tener hasta 10 dígitos enteros y 2 decimales.',
+            'precio.min' => 'El precio no puede ser negativo.',
             'descripcion.string' => 'La descripción debe ser un texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 255 caracteres.',
             'categoria_id.required' => 'La categoría es obligatoria.',
             'stock.required' => 'La cantidad disponible es obligatoria.',
+            'stock.integer' => 'La cantidad debe ser un número entero.',
+            'stock.min' => 'La cantidad no puede ser negativa.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
             'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
             'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
@@ -176,22 +182,34 @@ class ProductoController extends Controller
     {
         // Validación de datos
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255',
-            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
-            'descripcion' => 'nullable|string',
+            'nombre' => 'required|string|max:50',
+            'precio' => ['required','numeric','min:0','regex:/^\d{1,10}(\.\d{1,2})?$/'],
+            'descripcion' => 'nullable|string|max:255',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.max' => 'El nombre del producto no debe exceder los 50 caracteres.',
             'precio.required' => 'El precio del producto es obligatorio.',
             'precio.numeric' => 'El precio debe ser un número.',
+            'precio.regex' => 'El precio debe tener hasta 10 dígitos enteros y 2 decimales.',
+            'precio.min' => 'El precio no puede ser negativo.',
             'descripcion.string' => 'La descripción debe ser un texto.',
+            'descripcion.max' => 'La descripción no debe exceder los 255 caracteres.',
             'categoria_id.required' => 'La categoría es obligatoria.',
             'stock.required' => 'La cantidad disponible es obligatoria.',
+            'stock.integer' => 'La cantidad debe ser un número entero.',
+            'stock.min' => 'La cantidad no puede ser negativa.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
             'imagenes.*.mimes' => 'Las imágenes deben estar en formato JPG, JPEG, PNG o GIF.',
-            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.'
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
+            'subcategoria_id.required' => 'La subcategoría es obligatoria.',
+            'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
+            'subcategoria_id.integer' => 'La subcategoría debe ser un número entero.'
+
+
         ]);
 
         // Validar la cantidad de imágenes
