@@ -88,7 +88,7 @@ class ChatController
             $mensajes = $chatActivo->mensajes()->orderBy('created_at')->get();
         }
 
-        $mensajePredefinido = $request->query('mensaje', '');
+        $mensajePredefinido = urldecode($request->query('mensaje', ''));
         $imagenMascota = $request->query('imagen_mascota', '');
 
         return view('chats.index', [

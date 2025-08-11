@@ -540,39 +540,45 @@
                     <p class="mb-4 textoAjustado">{{$producto->descripcion}}</p>
                     <!-- Botones de Acción -->
                     @auth
-                    <div class="d-flex align-items-center gap-3 mt-3">
-                        <a href="{{route('chats.iniciar', $producto->user_id)}} ?
-                        mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
-                        $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
-                           class="btn btn-primary text-white">
-                            <i class="fas fa-comment-dots"></i> Enviar Mensaje
-                        </a>
+                        <div class="d-flex align-items-center gap-3 mt-3">
+                            @php
+                                $mensaje = 'Estoy interesado en el producto "' . $producto->nombre . '". <a href="' . route('productos.show', $producto->id) . '">Más info</a>';
+                            @endphp
 
-                        @if( auth()->check() && auth()->id()===$producto->user_id)
-                            <div class="d-grid gap-2">
-                                <div class="row d-flex justify-content-center mt-3">
-                                    <div class="col-auto">
-                                        <button class="btn btn-warning text-white"
-                                                onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
-                                               <i class="fas fa-edit"></i> Editar
-                                        </button>
-                                    </div>
-                                    <div class="col-auto">
-                                        <form id="delete-form-{{$producto->id}}"
-                                              action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
-                                                    data-bs-target="#ModalProducto">
-                                                <i class="fas fa-trash-alt"></i> Eliminar
+                            <a href="{{ route('chats.iniciar', $producto->user_id) }}?mensaje={{ rawurlencode($mensaje) }}"
+                               class="btn btn-primary text-white">
+                                <i class="fas fa-comment-dots"></i> Enviar Mensaje
+                            </a>
+
+                            @if(auth()->check() && auth()->id() === $producto->user_id)
+                                <div class="d-grid gap-2">
+                                    <div class="row d-flex justify-content-center mt-3">
+                                        <div class="col-auto">
+                                            <button class="btn btn-warning text-white"
+                                                    onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
+                                                <i class="fas fa-edit"></i> Editar
                                             </button>
-                                        </form>
+                                        </div>
+                                        <div class="col-auto">
+                                            <form id="delete-form-{{$producto->id}}"
+                                                  action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                                                        data-bs-target="#ModalProducto">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                        @endif
-                            </div>
+                            @endif
+                        </div>
                     @endauth
-                    </div>
+
+
+
+                </div>
                 </div>
                 @if($errors->any())
                     <div class="alert alert-danger">
