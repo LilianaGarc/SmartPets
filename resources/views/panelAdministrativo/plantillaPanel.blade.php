@@ -529,10 +529,6 @@
             transition: none !important;
         }
 
-
-
-
-
         .card-link {
             text-decoration: none;
             color: inherit;
@@ -569,13 +565,11 @@
             font-size: 0.95rem;
         }
 
-        /* Estilo base para el enlace */
         .card-link {
             text-decoration: none;
             color: inherit;
         }
 
-        /* Tarjeta personalizada */
         .custom-card {
             background: white;
             border: 1px solid #ddd;
@@ -587,7 +581,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Imagen dentro de la tarjeta */
         .custom-card img {
             max-height: 150px;
             width: auto;
@@ -596,7 +589,6 @@
             border-radius: 8px;
         }
 
-        /* Título y texto */
         .custom-card h5 {
             font-weight: bold;
             color: #18478b;
@@ -618,8 +610,6 @@
             transform: scale(1.05);
             z-index: 1;
         }
-
-
 
     </style>
 </head>
@@ -730,6 +720,8 @@
 </main>
 
 <script>
+    const currentUrl = "{{ url()->current() }}";
+
     const menu = document.getElementById('menu');
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('main');
@@ -758,7 +750,6 @@
         }
     }
 
-
     menu.addEventListener('click', () => {
         sidebar.classList.toggle('menu-toggle');
         menu.classList.toggle('menu-toggle');
@@ -783,30 +774,19 @@
     const sidebarLinks = document.querySelectorAll('.sidebar a');
 
     function cargarEstadoEnlace() {
-        const selectedLink = localStorage.getItem('selectedLink');
-        if (selectedLink) {
-            sidebarLinks.forEach(link => {
-                if (link.getAttribute('href') === selectedLink) {
-                    link.classList.add('selected');
-                } else {
-                    link.classList.remove('selected');
-                }
-            });
-        }
-    }
-
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            sidebarLinks.forEach(l => l.classList.remove('selected'));
-            this.classList.add('selected');
-            localStorage.setItem('selectedLink', this.getAttribute('href'));
+        sidebarLinks.forEach(link => {
+            link.classList.remove('selected');
+            if (link.getAttribute('href') === currentUrl) {
+                link.classList.add('selected');
+            }
         });
-    });
+    }
 
     window.addEventListener('load', () => {
         cargarEstadoSidebar();
         cargarEstadoEnlace();
     });
+
 </script>
 
 <script src="{{ asset(path: 'js/bootstrap.bundle.min.js') }}"></script>
