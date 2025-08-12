@@ -553,7 +553,7 @@
                                             {{ $producto->activo ? 'checked' : '' }}
                                         >
                                         <label class="form-check-label ms-1" for="switchActivo{{$producto->id}}" title="Cambiar estado de disponibilidad">
-                                            {{ $producto->activo ? 'Activo' : 'Inactivo' }}
+                                            {{ $producto->activo ? 'Disponible' : 'No disponible' }}
                                         </label>
                                     </div>
                                 </form>

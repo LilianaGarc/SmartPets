@@ -78,7 +78,7 @@
             </div>
 
 
-            <div class="productos-guardados">
+            <div class="productos-guardados" style="margin-top: 10px;">
                 <a href="{{ route('productos.guardados') }}">
                     <img class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
                 </a>

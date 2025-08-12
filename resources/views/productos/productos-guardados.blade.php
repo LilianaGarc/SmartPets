@@ -36,13 +36,24 @@
             white-space: normal;
         }
 
+        .btn-naranja {
+            background-color: #18478b;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-naranja:hover {
+            background-color: #ed8119;
+            color: white;
+        }
+
     </style>
 
 
 <div class="container py-5">
     <h1 class="mb-3 fw-bold d-flex align-items-center">
-        <a href="{{ url()->previous() }}" class="text-decoration-none" style="color: #18478B; font-size: 1.5rem; margin-right: 15px;">
-            <i class="fas fa-arrow-left mr-6"></i>
+        <a href="{{ url()->previous() }}" class="btn btn-naranja" style="font-size: 45%; margin-right: 15px" role="button">
+            <i class="fa-solid fa-circle-arrow-left"></i>
         </a>
         PRODUCTOS GUARDADOS</h1>
     <p class="text-secondary">

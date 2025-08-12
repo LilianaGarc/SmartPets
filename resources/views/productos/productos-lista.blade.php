@@ -32,6 +32,13 @@
             background-color: #18478b;
             color: white;
         }
+        .out-of-stock {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold;
+        }
     </style>
 
     <div class="container d-flex justify-content-center mt-4">
@@ -140,13 +147,18 @@
                     @endif
                 </div>
 
-                <div class="producto-imagen" style="margin-top: 10px;">
+                <div class="producto-imagen" style="margin-top: 10px; position: relative;">
                     <a href="{{ route('productos.show', $producto->id) }}">
                         <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg') }}"
                              alt="Imagen del producto"
                              class="producto-img"
                              style="width: 100%; height: auto; border-radius: 8px;">
                     </a>
+                    @if(!$producto->activo)
+                        <div class="out-of-stock">
+                            No disponible
+                        </div>
+                    @endif
                 </div>
             </div>
         @endforeach
