@@ -45,7 +45,7 @@ class ProductoController extends Controller
         $query = $request->input('search');
         $categoriaId = $request->input('categoria');
         $subcategoriaId = $request->input('subcategoria');
-        $productos = Producto::query();
+        $productos = Producto::query()->where('activo', true);
         if ($query){
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
         }
