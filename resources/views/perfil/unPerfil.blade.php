@@ -103,37 +103,33 @@
         </div>
 
         <div id="publicaciones" class="grid">
-            @if($publicaciones->isEmpty())
+           @if(isset($publicaciones) && $publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado aún!</p>
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado publicaciones aún! 😿</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @else
+            @elseif(isset($publicaciones))
                 @foreach($publicaciones as $publicacion)
-                    @if($publicacion->imagen)
-                        <div class="card">
-                            <a href="{{ route('publicaciones.show', $publicacion->id) }}">
-                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Adopción" class="img-card">
-                            </a>
-                            <div class="overlay-info">
-                                <strong>{{ $publicacion->contenido }}</strong></p>
-                            </div>
-                            <p class="contador-visitas">
-                                <i class="fa-solid fa-heart" style="color: darkred;"></i> {{ $publicacion->likes_count }}
-                            </p>
+                    <div class="card">
+                        <a href="{{ route('publicaciones.show', $publicacion->id) }}">
+                            <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
+                        </a>
+                        <div class="overlay-info">
+                            <p><strong>{{ $publicacion->titulo }}</strong></p>
                         </div>
-                    @endif
+                    </div>
                 @endforeach
             @endif
         </div>
+
         <div id="veterinarias" class="grid">
-            @if(isset($vet) && $vet->isEmpty())
+            @if(isset($veterinarias) && $veterinarias->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
                     <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado veterinarias aún! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @elseif(isset($vet))
-                @foreach($vet as $veterinaria)
+            @elseif(isset($veterinarias))
+                @foreach($veterinarias as $veterinaria)
                     <div class="card">
                         <a href="{{ route('veterinarias.show', $veterinaria->id) }}">
                             <img src="{{ asset('storage/' . $veterinaria->imagen) }}" alt="Veterinaria" class="img-card">
@@ -145,6 +141,7 @@
                 @endforeach
             @endif
         </div>
+        
         <div id="eventos" class="grid">
             @if(isset($eventos) && $eventos->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">

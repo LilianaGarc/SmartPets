@@ -82,6 +82,12 @@
             <div class="col">
                 <hr>
                 <div class="row row-container">
+                    @if($publicaciones->isEmpty())
+                        <div class="card-publicacion mb-3" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                            <p class="no-hay-message" style="font-size: 18px;">¡No hay publicaciones aún! 😿</p>
+                            <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                        </div>
+                    @endif
                     @foreach($publicaciones as $publicacion)
                         <div class="card-publicacion mb-3">
                             <div class="card-body">

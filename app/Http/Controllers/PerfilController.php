@@ -22,7 +22,8 @@ class PerfilController extends Controller
         $user = Auth::user();
         $adopciones = \App\Models\Adopcion::where('id_usuario', operator: $user->id)->get();
         $veterinarias = \App\Models\Veterinaria::where('id_user', operator: $user->id)->get();
-
+        $veterinarias = Veterinaria::where('id_user', $user->id)->get();
+        $eventos = Evento::where('id_user', $user->id)->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
 
         $publicaciones = Publicacion::with('user')
@@ -42,8 +43,6 @@ class PerfilController extends Controller
         })->filter(function ($item) {
             return $item['adopcion'] !== null;
         });
-        $eventos = $user->eventos()->with('id_usuario')->get();
-        $veterinarias = $user->veterinarias()->with('id_usuario')->get();
 
         return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones', 'eventos', 'veterinarias'));
     }
@@ -52,9 +51,9 @@ class PerfilController extends Controller
     {
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
+        $eventos = Evento::where('id_user', $user->id)->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
-        $eventos = $user->eventos()->with('id_usuario')->get();
-        $veterinarios = $user->veterinarios()->with('id_usuario')->get();
+        $veterinarias = Veterinaria::where('id_user', $user->id)->get();
 
         $publicaciones = Publicacion::with('user')
             ->withCount('likes')
@@ -75,7 +74,7 @@ class PerfilController extends Controller
             return $item['adopcion'] !== null;
         });
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones'));
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones', 'eventos', 'veterinarias'));
     }
 
 
@@ -198,6 +197,4 @@ class PerfilController extends Controller
 
         return response()->json(['success' => true]);
     }
-
-
 }
