@@ -86,6 +86,8 @@ class ProductoController extends Controller
             'stock' => 'required|integer|min:0',
             'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'subcategoria_id' => 'required|integer|exists:subcategorias,id'
+
+
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
             'nombre.max' => 'El nombre del producto no debe exceder los 50 caracteres.',
@@ -414,7 +416,14 @@ class ProductoController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|min:5|max:255',
-            'contenido' => 'required|string|min:5',
+            'contenido' => 'required|string|min:5'|'max:255',
+        ], [
+            'titulo.required' => 'El título es obligatorio.',
+            'titulo.min' => 'El título debe tener al menos 5 caracteres.',
+            'titulo.max' => 'El título no puede exceder los 50 caracteres.',
+            'contenido.required' => 'El contenido de la reseña es obligatorio.',
+            'contenido.min' => 'El contenido debe tener al menos 5 caracteres.',
+            'contenido.max' => 'El contenido no puede exceder los 255 caracteres.'
         ]);
 
         $producto = Producto::findOrFail($producto_id);
@@ -445,7 +454,14 @@ class ProductoController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|min:5|max:255',
-            'contenido' => 'required|string|min:5',
+            'contenido' => 'required|string|min:5|max:255',
+        ], [
+            'titulo.required' => 'El título es obligatorio.',
+            'titulo.min' => 'El título debe tener al menos 5 caracteres.',
+            'titulo.max' => 'El título no puede exceder los 50 caracteres.',
+            'contenido.required' => 'El contenido de la reseña es obligatorio.',
+            'contenido.min' => 'El contenido debe tener al menos 5 caracteres.',
+            'contenido.max' => 'El contenido no puede exceder los 255 caracteres.'
         ]);
 
         $producto = Producto::findOrFail($producto_id);
