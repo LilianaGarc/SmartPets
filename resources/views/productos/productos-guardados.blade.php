@@ -53,11 +53,15 @@
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm h-100 d-flex flex-row">
                         <!-- Imagen fija, sin recorte -->
-                        <div class="p-2 d-flex align-items-center">
+
+                        <div class="p-2 d-flex align-items-center" style="position: relative; z-index: 1;">
                             <img src="{{ isset($favorito->producto->imagen) ? url('storage/' . $favorito->producto->imagen): asset('images/img_PorDefecto.jpg') }}"
                                  alt="Producto"
                                  class="img-fluid"
                                  style="width: 160px; height: auto; max-height: 160px; object-fit: contain;">
+                            @if(!$favorito->producto->activo)
+                                <div class="out-of-stock" style="z-index:2;">No disponible</div>
+                            @endif
                         </div>
 
                         <!-- Contenido textual a la derecha de la imagen -->
@@ -86,7 +90,7 @@
                                             ->first();
                                     @endphp
 
-                                    <form id="favorito-form-{{ $favorito->producto->id }}" method="POST" style="display: inline-block;">
+                                    <form id="favorito-form-{{ $favorito->producto->id }}" method="POST" style="display: inline-block; position: relative; z-index: 3;">
                                         @csrf
                                         <input type="hidden" name="producto_id" value="{{ $favorito->producto->id }}">
                                         @if($guardado)
