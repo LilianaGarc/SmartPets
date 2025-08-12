@@ -501,4 +501,17 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function toggleActivo(Producto $producto)
+    {
+        if (auth()->id() === $producto->user_id || auth()->user()->is_admin) {
+            $producto->activo = !$producto->activo;
+            $producto->save();
+
+            return back()->with('success', 'Estado del producto actualizado correctamente.');
+        }
+
+        return back()->with('error', 'No tienes permiso para cambiar el estado de este producto.');
+    }
+
+
 }

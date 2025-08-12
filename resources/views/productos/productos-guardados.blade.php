@@ -30,6 +30,12 @@
             color: white; font-weight: bold;
         }
 
+        .textoAjustado {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+
     </style>
 
 
@@ -58,7 +64,7 @@
                         <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
                             <div>
                                 <!-- Título más grande -->
-                                <h4 class="mb-1">{{ $favorito->producto->nombre }}</h4>
+                                <h4 class="mb-1 textoAjustado">{{ $favorito->producto->nombre }}</h4>
 
                                 <!-- Categoría -->
                                 <small class="text-muted d-block">{{ $favorito->producto->categoria->nombre }}</small>

@@ -495,7 +495,18 @@
                     <h1 class="mb-3 textoAjustado">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
-                        <span class="stock-badge">En Stock</span>
+                        <span class="badge
+                        @if($producto->activo)
+                        stock-badge
+                        @else
+                        bg-danger
+                        @endif " style="font-size: 1rem; padding: 0.5em 1em;">
+                            @if($producto->activo)
+                                En Stock
+                            @else
+                                No Disponible
+                            @endif
+                        </span>
                         @auth
                             @php
                                 $favorito = \App\Models\ProdFavorito::where('user_id', auth()->id())
@@ -526,6 +537,27 @@
                                     </button>
                                 @endif
                             </form>
+                        @endauth
+                        @auth
+                            @if(auth()->id() === $producto->user_id || auth()->user()->is_admin)
+                                <form action="{{ route('productos.toggleActivo', $producto->id) }}" method="POST" style="display: inline-block; margin-left: 10px;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="form-check form-switch" style="display: inline-flex; align-items: center;">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="switchActivo{{$producto->id}}"
+                                            name="activo"
+                                            onchange="this.form.submit()"
+                                            {{ $producto->activo ? 'checked' : '' }}
+                                        >
+                                        <label class="form-check-label ms-1" for="switchActivo{{$producto->id}}" title="Cambiar estado de disponibilidad">
+                                            {{ $producto->activo ? 'Activo' : 'Inactivo' }}
+                                        </label>
+                                    </div>
+                                </form>
+                            @endif
                         @endauth
                     </div>
                     <div class="mb-4">

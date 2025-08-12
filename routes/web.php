@@ -61,6 +61,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mis-productos', function () {$productos = Auth::user()->productos()->get();return response()->json($productos);})->middleware('auth');
     Route::get('/productos-guardados', [ProdFavoritoController::class, 'index'])->name('productos.guardados');
 });
+//Rutas para Estado Producto Activo
+Route::patch('/productos/{producto}/toggle-activo', [ProductoController::class, 'toggleActivo'])
+    ->name('productos.toggleActivo')
+    ->middleware('auth');
+
 
 // Rutas públicas de veterinarias
 Route::get('/veterinarias/{id}', [VeterinariaController::class, 'show'])->name('veterinarias.show')->whereNumber('id');
