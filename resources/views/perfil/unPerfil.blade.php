@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Perfil de {{ $user->name }}</title>
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
-    <link rel="stylesheet" href="{{ asset(path: 'css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 </head>
 <body>

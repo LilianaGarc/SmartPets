@@ -6,7 +6,6 @@
     <title>Perfil de Usuario</title>
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="{{ asset(path: 'css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 </head>
 <body>

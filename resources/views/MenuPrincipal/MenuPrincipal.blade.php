@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ia.css') }}">
-    <link rel="stylesheet" href="{{ asset(path: 'css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 
 </head>

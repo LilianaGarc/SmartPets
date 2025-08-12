@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <title>Detalles de Adopción</title>
-    <link rel="stylesheet" href="{{ asset(path: 'css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 </head>
 <body>
