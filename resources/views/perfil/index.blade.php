@@ -240,7 +240,7 @@
         <div id="publicaciones" class="grid">
             @if($publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado aún!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado publicaciones aún 😿!</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @else
@@ -263,25 +263,38 @@
         </div>
 
         <div id="veterinarias" class="grid">
-            @if($veterinarias->isEmpty())
-                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado veterinarias!</p>
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
-                </div>
-            @else
-                @foreach($veterinarias as $veterinaria)
-                    <div class="card">
-                        <a href="{{ route('veterinarias.show', $veterinaria->id) }}">
-                            <img src="{{ asset('storage/' . $veterinaria->imagen) }}" alt="Veterinaria" class="img-card">
-                        </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $veterinaria->nombre }}</strong></p>
-                            <p>Teléfono: {{ $veterinaria->telefono }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
+    @if($veterinarias->isEmpty())
+        <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+            <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado veterinarias 😿!</p>
+            <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
         </div>
+    @else
+        @foreach($veterinarias as $veterinaria)
+            @php
+                $imagen = $veterinaria->imagenes->first();
+            @endphp
+
+            <div class="card">
+                <a href="{{ route('veterinarias.show', $veterinaria->id) }}" class="card-img-top" style="border-radius: 0.5rem 0.5rem 0 0; display: flex; justify-content: center; align-items: center; height: 300px; background-color: #f8f9fa;">
+                    @if ($imagen)
+                        <img src="{{ asset('storage/' . $imagen->path) }}" alt="Veterinaria {{ $veterinaria->nombre }}" class="img-card" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                    @else
+                        <div class="d-flex flex-column align-items-center justify-content-center text-muted" style="height: 100%;">
+                            <p>No hay imágenes disponibles</p>
+                            <img src="{{ asset('images/no_hay.svg') }}" alt="No hay imágenes" style="width: 150px; opacity: 0.7;">
+                        </div>
+                    @endif
+                </a>
+
+                <div class="overlay-info" style="padding: 10px;">
+                    <p><strong>{{ $veterinaria->nombre }}</strong></p>
+                    <p>Teléfono: {{ $veterinaria->telefono }}</p>
+                </div>
+            </div>
+        @endforeach
+    @endif
+</div>
+
 
         <div id="eventos" class="grid">
             @if($eventos->isEmpty())
@@ -296,7 +309,7 @@
                             <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Evento" class="img-card">
                         </a>
                         <div class="overlay-info">
-                            <p><strong>{{ $evento->nombre }}</strong></p>
+                            <p><strong>{{ $evento->titulo }}</strong></p>
                             <p>Fecha: {{ $evento->fecha }}</p>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Publicacion;
 use App\Http\Controllers\Controller;
 
 
@@ -99,13 +100,8 @@ class UserController
 
     public function perfil(string $id)
     {
-        $user = User::findOrFail($id);
-        $adopciones = $user->adopciones ?? collect();
-        $solicitudesEnviadas = $user->solicitudesEnviadas ?? collect();
-        $productos = $user->productos ?? collect();
-        $vet = $user->veterinarias ?? collect();
+       
 
-        return view('perfil.unPerfil', compact('user', 'adopciones', 'solicitudesEnviadas', 'productos', 'vet'));
     }
 
     /**

@@ -65,7 +65,6 @@
 
         <div class="col mb-4">
             <div class="card h-100 shadow-sm border vet-anim position-relative">
-                {{-- Botón de acciones para veterinarias --}}
                 @if(auth()->id() === $veterinaria->id_user)
                 <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
                     <div class="dropdown">
@@ -99,8 +98,9 @@
                         style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
                 </div>
                 @else
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px; border-radius: 0.5rem 0.5rem 0 0;">
-                    <p class="text-muted m-0">No hay imágenes disponibles</p>
+                <div class="card-img-top bg-light d-flex flex-column align-items-center justify-content-center" style="height: 300px; border-radius: 0.5rem 0.5rem 0 0;">
+                    <p class="text-muted mb-2">No hay imágenes disponibles</p>
+                    <img src="{{ asset('images/no_hay.svg') }}" alt="No hay imágenes" class="img-fluid" style="width: 220px; max-width: 200px; opacity: 0.7;">
                 </div>
                 @endif
 

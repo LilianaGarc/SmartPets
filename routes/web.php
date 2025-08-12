@@ -106,12 +106,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
-    Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('perfil.index');
+    Route::get('/perfil/{id}', [PerfilController::class, 'index'])->name('perfil.index');
     Route::post('/perfil/actualizar-foto', [PerfilController::class, 'actualizarFoto'])->name('perfil.actualizarFoto');
     Route::post('/perfil/seleccionar-mascota', [PerfilController::class, 'seleccionarMascota'])->name('perfil.seleccionarMascota');
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
-    Route::get('/perfil/{id}', [UserController::class, 'perfil'])->name('users.perfil')->whereNumber('id');
+    Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('users.perfil')->whereNumber('id');
 
     //Compartir
     Route::get('/publicaciones/{publicacion}/compartir', [PublicacionController::class, 'compartir'])->name('publicaciones.compartir')->middleware(['auth']);

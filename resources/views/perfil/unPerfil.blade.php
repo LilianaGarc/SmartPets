@@ -9,6 +9,7 @@
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
+
 <div class="perfil">
     <div class="cabecera">
         <img src="{{ $user->fotoperfil ? asset('storage/' . $user->fotoperfil) : asset('images/fotodeperfil.webp') }}" alt="Foto de perfil" class="foto-perfil"/>
@@ -123,32 +124,46 @@
         </div>
 
         <div id="veterinarias" class="grid">
-            @if(isset($veterinarias) && $veterinarias->isEmpty())
-                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado veterinarias aún! 😿</p>
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
-                </div>
-            @elseif(isset($veterinarias))
-                @foreach($veterinarias as $veterinaria)
-                    <div class="card">
-                        <a href="{{ route('veterinarias.show', $veterinaria->id) }}">
-                            <img src="{{ asset('storage/' . $veterinaria->imagen) }}" alt="Veterinaria" class="img-card">
-                        </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $veterinaria->nombre }}</strong></p>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
+    @if($veterinarias->isEmpty())
+        <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+            <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado veterinarias aún 😿!</p>
+            <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
         </div>
+    @else
+        @foreach($veterinarias as $veterinaria)
+            @php
+                $imagen = $veterinaria->imagenes->first();
+            @endphp
+
+            <div class="card">
+                <a href="{{ route('veterinarias.show', $veterinaria->id) }}" class="card-img-top" style="border-radius: 0.5rem 0.5rem 0 0; display: flex; justify-content: center; align-items: center; height: 300px; background-color: #f8f9fa;">
+                    @if ($imagen)
+                        <img src="{{ asset('storage/' . $imagen->path) }}" alt="Veterinaria {{ $veterinaria->nombre }}" class="img-card" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                    @else
+                        <div class="d-flex flex-column align-items-center justify-content-center text-muted" style="height: 100%;">
+                            <p>No hay imágenes disponibles</p>
+                            <img src="{{ asset('images/no_hay.svg') }}" alt="No hay imágenes" style="width: 150px; opacity: 0.7;">
+                        </div>
+                    @endif
+                </a>
+
+                <div class="overlay-info" style="padding: 10px;">
+                    <p><strong>{{ $veterinaria->nombre }}</strong></p>
+                    <p>Teléfono: {{ $veterinaria->telefono }}</p>
+                </div>
+            </div>
+        @endforeach
+    @endif
+</div>
+
         
         <div id="eventos" class="grid">
-            @if(isset($eventos) && $eventos->isEmpty())
+            @if($eventos->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
                     <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado eventos aún! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay eventos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @elseif(isset($eventos))
+            @else
                 @foreach($eventos as $evento)
                     <div class="card">
                         <a href="{{ route('eventos.show', $evento->id) }}">
@@ -162,12 +177,12 @@
             @endif
         </div>
         <div id="petshop" class="grid">
-            @if(isset($productosUsuario) && $productosUsuario->isEmpty())
+            @if($productosUsuario->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
                     <p class="no-hay-message" style="font-size: 18px;">¡Aún no ha publicado productos! 😿</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @elseif(isset($productosUsuario))
+            @else
                 @foreach($productosUsuario as $producto)
                     <div class="card">
                         <a href="{{ route('productos.show', $producto->id) }}">

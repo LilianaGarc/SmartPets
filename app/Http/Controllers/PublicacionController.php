@@ -146,11 +146,9 @@ class PublicacionController extends Controller
             unset($publicacion->likes);
         });
 
-        $groupedStories = $this->getGroupedStoriesData();
 
         return view('publicaciones.indexPublicaciones', [
             'publicaciones' => $publicaciones,
-            'historiasGrouped' => $groupedStories
         ]);
     }
 

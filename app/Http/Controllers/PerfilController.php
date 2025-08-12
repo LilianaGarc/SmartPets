@@ -23,16 +23,17 @@ class PerfilController extends Controller
         $adopciones = \App\Models\Adopcion::where('id_usuario', operator: $user->id)->get();
         $veterinarias = \App\Models\Veterinaria::where('id_user', operator: $user->id)->get();
         $veterinarias = Veterinaria::where('id_user', $user->id)->get();
-        $eventos = Evento::where('id_user', $user->id)->get();
+        $eventos = Evento::where('id_user', $user->id)->where('estado', 'aceptado')->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
 
-        $publicaciones = Publicacion::with('user')
-            ->withCount('likes')
-            ->with(['likes' => function ($query) {
-                $query->where('user_id', Auth::id());
-            }])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $publicaciones = Publicacion::where('id_user', $user->id)
+        ->withCount('likes')
+        ->with(['likes' => function ($query) use ($user) {
+            $query->where('id_user', $user->id);
+        }])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
 
         $solicitudes = \App\Models\Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
         $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
@@ -51,17 +52,18 @@ class PerfilController extends Controller
     {
         $user = User::findOrFail($id);
         $adopciones = Adopcion::where('id_usuario', $user->id)->get();
-        $eventos = Evento::where('id_user', $user->id)->get();
+        $eventos = Evento::where('id_user', $user->id)->where('estado', 'aceptado')->get();
         $productosUsuario = $user->productos()->with('categoria')->get();
         $veterinarias = Veterinaria::where('id_user', $user->id)->get();
 
-        $publicaciones = Publicacion::with('user')
-            ->withCount('likes')
-            ->with(['likes' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $publicaciones = Publicacion::where('id_user', $user->id)
+        ->withCount('likes')
+        ->with(['likes' => function ($query) use ($user) {
+            $query->where('id_user', $user->id);
+        }])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
 
         $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
 
@@ -74,7 +76,7 @@ class PerfilController extends Controller
             return $item['adopcion'] !== null;
         });
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones', 'eventos', 'veterinarias'));
+        return view('perfil.unPerfil', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones', 'eventos', 'veterinarias'));
     }
 
 

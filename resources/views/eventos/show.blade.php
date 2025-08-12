@@ -16,7 +16,7 @@
         </li>
         <li class="breadcrumb__item breadcrumb__item-active">
             <span class="breadcrumb__inner">
-                <span class="breadcrumb__title">{{ $evento->titulo }}</span>
+                <span class="breadcrumb__title">Ver Evento</span>
             </span>
         </li>
     </ul>

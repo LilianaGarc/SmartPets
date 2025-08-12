@@ -87,7 +87,7 @@
                             <p class="no-hay-message" style="font-size: 18px;">¡No hay publicaciones aún! 😿</p>
                             <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                         </div>
-                    @endif
+                    @else
                     @foreach($publicaciones as $publicacion)
                         <div class="card-publicacion mb-3">
                             <div class="card-body">
@@ -120,6 +120,7 @@
                                 </h3>
                                 <p class="card-text"><small class="text-body-secondary">{{$publicacion->updated_at->diffForHumans()}}</small></p>
                             </div>
+                            
                             @if ($publicacion->publicacionOriginal)
                                 <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
                                 <div class="shared-original-card" style="margin-top: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; background-color: #f9fafb;">
@@ -188,7 +189,6 @@
                             </div>
                         </div>
 
-
                         @auth
                             @if (auth()->id() === $publicacion->id_user)
                                 <div class="modal fade" id="modalEliminar{{$publicacion->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -214,8 +214,8 @@
                                 </div>
                             @endif
                         @endauth
-
                     @endforeach
+                    @endif
                 </div>
             </div>
     </div>

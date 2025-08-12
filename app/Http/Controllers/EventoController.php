@@ -279,7 +279,7 @@ class EventoController
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|string|max:12',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'modalidad_evento' => 'required|in:gratis,pago',
             'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
@@ -406,7 +406,7 @@ class EventoController
     {
         $evento = Evento::findOrFail($id);
         $evento->estado = 'rechazado';
-        $evento->motivo_rechazo = $request->motivo;
+        $evento->motivo = $request->motivo;
         $evento->save();
 
         \App\Models\Notificacion::create([

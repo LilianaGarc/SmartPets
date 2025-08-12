@@ -16,7 +16,7 @@
         </li>
         <li class="breadcrumb__item breadcrumb__item-active">
             <a href="{{ route('veterinarias.show', $veterinaria->id) }}" class="breadcrumb__inner">
-                <span class="breadcrumb__title">{{ $veterinaria->nombre }}</span>
+                <span class="breadcrumb__title">Ver Veterinaria</span>
             </a>
         </li>
     </ul>

@@ -92,8 +92,8 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <label for="motivoRechazo{{$evento->id}}" class="form-label">Motivo</label>
-                                                <textarea name="motivo" id="motivoRechazo{{$evento->id}}" class="form-control" required></textarea>
+                                                <label for="motivo{{$evento->id}}" class="form-label">Motivo</label>
+                                                <textarea name="motivo" id="motivo{{$evento->id}}" class="form-control" required></textarea>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
@@ -154,7 +154,5 @@
             </tbody>
         </table>
     </div>
-
-
 
 @endsection

@@ -175,10 +175,10 @@
                     </div>
                     <div class="col-md-9" id="motivoRechazoContainer" style="display: none;">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('motivo_rechazo') is-invalid @enderror" id="motivo_rechazo" name="motivo_rechazo"
-                                   placeholder="Motivo del rechazo" value="{{ old('motivo_rechazo', $evento->motivo_rechazo ?? '') }}" aria-label="Motivo del rechazo">
-                            <label for="motivo_rechazo">Motivo del rechazo</label>
-                            @error('motivo_rechazo')
+                            <input type="text" class="form-control @error('motivo') is-invalid @enderror" id="motivo" name="motivo"
+                                   placeholder="Motivo del rechazo" value="{{ old('motivo', $evento->motivo ?? '') }}" aria-label="Motivo del rechazo">
+                            <label for="motivo">Motivo del rechazo</label>
+                            @error('motivo')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
