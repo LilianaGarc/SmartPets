@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="col">
-                            <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                            <textarea class="form-control" name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         </div>
 
                         <div class="mb-3">
