@@ -440,6 +440,7 @@
             text-align: center;
             user-select: none;
         }
+
     </style>
 </head>
 <body class="light-mode">
@@ -498,7 +499,6 @@
     <source src="{{ asset('images/intro.mp3') }}" type="audio/mp3" />
     Tu navegador no soporta el elemento de audio.
 </audio>
-
 <script>
     const dog = document.getElementById('dog');
     const obstacle = document.getElementById('obstacle');
@@ -514,12 +514,15 @@
     let isGameOver = false;
     let obstacleX = window.innerWidth;
     let obstacle2X = window.innerWidth + 600;
-    const rawSpeed = window.innerWidth * 0.001;
 
-    let speed = Math.min(Math.max(rawSpeed, 9), 14);
+    let speedPxPerSec = 600;
+
     let isMuted = false;
     const minSeparation = 600;
     const maxSeparation = 1400;
+
+    let obstacleRotation = 0;
+    let obstacle2Rotation = 0;
 
     function getRandomSeparation() {
         return Math.floor(Math.random() * (maxSeparation - minSeparation + 1)) + minSeparation;
@@ -539,7 +542,6 @@
     }
     updateSound();
 
-
     document.addEventListener('keydown', function (e) {
         if ((e.code === 'Space' || e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w') && !isGameOver) {
             jump();
@@ -553,40 +555,45 @@
         }
     }
 
-    let obstacleRotation = 0;
-    let obstacle2Rotation = 0;
-
-    function moveObstacles() {
+    let lastTime = null;
+    function moveObstacles(timestamp) {
         if (isGameOver) return;
-        const deltaX1 = speed + Math.random() * 0.3;
-        obstacleX -= deltaX1;
+
+        if (!lastTime) lastTime = timestamp;
+        const deltaSec = (timestamp - lastTime) / 1000;
+        lastTime = timestamp;
+
+        const moveAmount = speedPxPerSec * deltaSec;
+
+        obstacleX -= moveAmount;
         if (obstacleX < -70) {
             let separation = getRandomSeparation();
             obstacleX = obstacle2X + separation;
         }
-        const deltaX2 = speed + Math.random() * 0.3;
-        obstacle2X -= deltaX2;
+
+        obstacle2X -= moveAmount;
         if (obstacle2X < -70) {
             let separation = getRandomSeparation();
             obstacle2X = obstacleX + separation;
         }
+
         obstacle.style.left = obstacleX + 'px';
         obstacle2.style.left = obstacle2X + 'px';
 
         const obstacleRadius = 2 * 16;
-        const rotationDegrees1 = -(deltaX1 / (2 * Math.PI * obstacleRadius)) * 360;
-        obstacleRotation += rotationDegrees1;
+        const rotationDegrees = -(moveAmount / (2 * Math.PI * obstacleRadius)) * 360;
+        obstacleRotation += rotationDegrees;
+        obstacle2Rotation += rotationDegrees;
         obstacle.style.transform = `rotate(${obstacleRotation}deg)`;
-
-        const rotationDegrees2 = -(deltaX2 / (2 * Math.PI * obstacleRadius)) * 360;
-        obstacle2Rotation += rotationDegrees2;
         obstacle2.style.transform = `rotate(${obstacle2Rotation}deg)`;
+
 
         const dogBottom = parseInt(window.getComputedStyle(dog).getPropertyValue("bottom"));
         if ((obstacleX < 130 && obstacleX > 30 && dogBottom < 140) ||
             (obstacle2X < 130 && obstacle2X > 30 && dogBottom < 140)) {
             endGame();
         }
+
         requestAnimationFrame(moveObstacles);
     }
 
@@ -618,12 +625,9 @@
         isGameOver = true;
         gameOver.style.display = "block";
         finalScore.innerText = `Puntaje final: ${score}`;
-
         console.log("Guardando puntaje final:", score);
         guardarPuntaje(score);
     }
-
-    requestAnimationFrame(moveObstacles);
 
     setInterval(() => {
         if (!isGameOver) {
@@ -635,7 +639,7 @@
                 document.body.classList.toggle('light-mode');
             }
             if (score % 20 === 0) {
-                speed += 0.05;
+                speedPxPerSec += 10;
             }
         }
     }, 200);
@@ -666,7 +670,6 @@
             }
             const result = await response.json();
             const ranking = result.data;
-            const total = result.total;
             const lastPage = result.lastPage;
 
             const tbody = document.querySelector('#rankingTable tbody');
@@ -676,7 +679,6 @@
 
             ranking.forEach((item, index) => {
                 const position = (page - 1) * perPage + index + 1;
-
                 let medal = '';
                 let rowClass = '';
 
@@ -695,13 +697,13 @@
                 const tr = document.createElement('tr');
                 tr.className = rowClass;
                 tr.innerHTML = `
-                <td>${medal} ${position}</td>
-                <td>
-                    <div class="foto-perfil" style="background-image: url('${photoUrl}'); margin-right: 0.5rem; display: inline-block; vertical-align: middle;"></div>
-                    <span style="vertical-align: middle;">${item.nombre}</span>
-                </td>
-                <td>${item.puntaje}</td>
-            `;
+                    <td>${medal} ${position}</td>
+                    <td>
+                        <div class="foto-perfil" style="background-image: url('${photoUrl}'); margin-right: 0.5rem; display: inline-block; vertical-align: middle;"></div>
+                        <span style="vertical-align: middle;">${item.nombre}</span>
+                    </td>
+                    <td>${item.puntaje}</td>
+                `;
                 tbody.appendChild(tr);
             });
 
@@ -726,9 +728,6 @@
 
     cargarRanking();
 
-
-</script>
-<script>
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('keydown', event => {
         if (event.key === "F12" ||
@@ -739,9 +738,6 @@
         }
     });
 
-
-</script>
-<script>
     document.addEventListener('visibilitychange', function () {
         if (document.hidden) {
             isGameOver = true;
@@ -751,6 +747,8 @@
         }
     });
 
+    requestAnimationFrame(moveObstacles);
 </script>
+
 </body>
 </html>

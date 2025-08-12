@@ -39,24 +39,27 @@
 
             <hr>
 
-            <form method="POST" action="{{ route('comentarios.store', ['id' => $publicacion->id]) }}">
+            <form method="POST" action="{{ route('comentarios.store', ['id' => $publicacion->id]) }}" class="fixed-bottom bg-white border-top p-3 shadow-sm">
                 @csrf
-                <div class="card-nuevo-comentario">
-                    <div class="row align-items-center">
-                        <div class="col-10">
-                            <textarea class="form-control" placeholder="Escribe un comentario..." name="comentario" id="comentario" rows="1" style="resize: none;"></textarea>
-                        </div>
-                        <div class="col-2 d-flex justify-content-around">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                            <button type="reset" class="btn btn-secondary">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    </div>
+                <div class="container d-flex align-items-center gap-2">
+        <textarea
+            class="form-control rounded-pill flex-grow-1"
+            placeholder="Escribe un comentario..."
+            name="comentario"
+            id="comentario"
+            rows="1"
+            style="resize: none; max-height: 100px; overflow-y: auto;"></textarea>
+
+                    <button type="submit" class="btn btn-primary rounded-circle p-2 d-flex align-items-center justify-content-center" title="Enviar" style="width: 42px; height: 42px;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+
+                    <button type="reset" class="btn btn-secondary rounded-circle p-2 d-flex align-items-center justify-content-center" title="Cancelar" style="width: 42px; height: 42px;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </form>
+
 
 
         </div>
@@ -98,11 +101,7 @@
             <div class="interacciones" style="margin-top: 1vh;">
                 <div class="reactions" id="reactions-{{ $publicacion->id }}">
 
-                    <div class="col align-items-center">
-                        <a href="#" class="btn" role="button" style="margin: 1px;">
-                            <i class="fa-regular fa-share-from-square"></i> Compartir
-                        </a>
-                    </div>
+
                 </div>
             </div>
             @if (auth()->check() && auth()->id() === $publicacion->id_user)
@@ -132,28 +131,33 @@
             <div>
                 <div class="col">
                     @foreach($comentarios as $comentario)
-                        <div class="row">
-                            <div class="col-1">
-                                @php
-                                    $fotoComentario = $comentario->user && $comentario->user->fotoperfil
-                                        ? asset('storage/' . $comentario->user->fotoperfil)
-                                        : asset('images/fotodeperfil.webp');
-                                @endphp
-                                <img src="{{ $fotoComentario }}" alt="Foto de perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
-                            </div>
-                            <div class="col">
-                                <div class="card" style="padding: 1vw; background-color: rgba(3,45,129,0.17)">
+                        @php
+                            $fotoComentario = $comentario->user && $comentario->user->fotoperfil
+                                ? asset('storage/' . $comentario->user->fotoperfil)
+                                : asset('images/fotodeperfil.webp');
+                        @endphp
+
+                        <div class="row mb-3">
+                            <div class="d-flex align-items-start gap-3">
+                                <img src="{{ $fotoComentario }}" alt="Foto de perfil"
+                                     class="rounded-circle"
+                                     style="width: 45px; height: 45px; object-fit: cover;">
+
+                                <div class="card flex-grow-1 px-3 py-2"
+                                     style="background-color: rgba(3, 45, 129, 0.08); border: none;">
                                     <h6 class="card-title mb-0">
                                         {{ $comentario->user ? $comentario->user->name : 'Usuario no disponible' }}
                                     </h6>
-                                    <p class="card-text"><small class="text-body-secondary">{{ $comentario->updated_at->diffForHumans() }}</small></p>
-                                    <p class="card-text">{{ $comentario->contenido }}</p>
+                                    <p class="card-text mb-1">
+                                        <small class="text-muted">{{ $comentario->updated_at->diffForHumans() }}</small>
+                                    </p>
+                                    <p class="card-text mb-0">{{ $comentario->contenido }}</p>
                                 </div>
                             </div>
                         </div>
-                        <br>
                     @endforeach
                 </div>
+
             </div>
 
         </div>

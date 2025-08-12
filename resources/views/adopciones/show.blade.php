@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Detalles de Adopción</title>
 </head>
@@ -35,8 +36,8 @@
     </div>
 </div>
 
-<div class="card-containerver">
-    <div class="card">
+<div class="card-containerverX">
+    <div class="cardX">
         @if(Auth::check() && Auth::id() === $adopcion->id_usuario)
             <div class="dropdown">
                 <button class="dropbtn" title="Opciones">
@@ -58,39 +59,32 @@
                 </div>
             </div>
         @endif
+            <div class="header">
+                <div class="pet-greeting">
+                    <h1>¡Hola! Soy {{ $adopcion->nombre_mascota }}</h1>
+                    <p>Estoy buscando un hogar lleno de amor donde me cuiden y me hagan feliz. ¿Quieres ser mi nueva familia?. Aquí encontrarás toda mi información para que puedas conocerme mejor.</p>
 
-        <div class="card-content">
-            <div class="photos">
-                @if($adopcion->imagen)
-                    <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-img">
-                @endif
 
-                @if ($adopcion->imagenes_secundarias)
-                    @php
-                        $imagenesSecundarias = json_decode($adopcion->imagenes_secundarias, true);
-                    @endphp
-
-                    <div class="imagenes-secundaria-container">
-                        @if($adopcion->imagen)
-                            <div class="imagen-secundaria-container">
-                                <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="imagen-secundaria" onclick="changeMainImage(this)">
-                            </div>
-                        @endif
-                        @foreach ($imagenesSecundarias as $imagen)
-                            <div class="imagen-secundaria-container">
-                                <img src="{{ asset('storage/'.$imagen) }}" alt="Imagen Secundaria" class="imagen-secundaria" onclick="changeMainImage(this)">
-                            </div>
-                        @endforeach
-                    </div>
-
-                @endif
+                </div>
             </div>
 
-            <div class="descriptions">
+
+            <div class="card-contentX">
+            <div class="photosX">
+                @if($adopcion->imagen)
+                    <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="adopcion-imgX">
+                @endif
+
+
+            </div>
+
+            <div class="descriptionsX">
                 <h1>{{ $adopcion->nombre_mascota }}</h1>
                 <h2>{{ $adopcion->tipo_mascota }}</h2>
-                <p>{{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
-                <p><strong>{{ $adopcion->contenido }}</strong></p>
+                <p>Publlicado el {{ \Carbon\Carbon::parse($adopcion->created_at)->format('d M Y, H:i') }}</p>
+                <div class="detalle-item contenido-detalle">
+                    <span>{{ $adopcion->contenido }}</span>
+                </div>
                 @php
                     use Carbon\Carbon;
 
@@ -122,20 +116,29 @@
                         }
                     }
                 @endphp
-                <p><strong>Edad:</strong> {{ $edadTexto }}</p>
-                <p><strong>Raza:</strong> {{ $adopcion->raza_mascota }}</p>
-                <p><strong>Ubicación:</strong> {{ $adopcion->ubicacion_mascota }}</p>
-                @auth
+
+                <div class="detalle-item">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Edad: {{ $edadTexto }}</span>
+                </div>
+                <div class="detalle-item">
+                    <i class="fas fa-dog"></i>
+                    <span>Raza: {{ $adopcion->raza_mascota }}</span>
+                </div>
+                <div class="detalle-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Ubicación: {{ $adopcion->ubicacion_mascota }}</span>
+                </div>                @auth
                     @if(auth()->id() !== $adopcion->id_usuario)
                         <p>
-                            <a href="{{ route('chats.iniciar', $adopcion->id_usuario) }}?nombre_mascota={{ urlencode($adopcion->nombre_mascota) }}&mensaje={{ urlencode('Hola, estoy interesado en adoptar a ' . $adopcion->nombre_mascota . '. ¿Podrías darme más información? 😸') }}" class="enlace-mensaje">
+                            <a href="{{ route('chats.iniciar', $adopcion->id_usuario) }}?nombre_mascota={{ urlencode($adopcion->nombre_mascota) }}&mensaje={{ urlencode('Hola, estoy interesado en adoptar a ' . $adopcion->nombre_mascota . '. ¿Podrías darme más información? 😸') }}" class="enlace-mensajeX">
                                 <i class="fas fa-envelope"></i> Enviar mensaje a: {{ $adopcion->usuario->name }}
                             </a>
                         </p>
                     @endif
                 @endauth
 
-            @auth
+                @auth
                     @php
                         $miSolicitud = \App\Models\Solicitud::where('id_usuario', auth()->id())
                             ->where('id_adopcion', $adopcion->id)
@@ -158,12 +161,32 @@
                                 </form>
                             @endif
                         @endif
+                            @if ($adopcion->imagenes_secundarias)
+                                @php
+                                    $imagenesSecundarias = json_decode($adopcion->imagenes_secundarias, true);
+                                @endphp
+
+                                <div class="imagenes-secundaria-containerX">
+                                    @if($adopcion->imagen)
+                                        <div class="imagen-secundaria-containerX">
+                                            <img id="mainImage" src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Imagen de adopción" class="imagen-secundariaX" onclick="changeMainImage(this)">
+                                        </div>
+                                    @endif
+                                    @foreach ($imagenesSecundarias as $imagen)
+                                        <div class="imagen-secundaria-containerX">
+                                            <img src="{{ asset('storage/'.$imagen) }}" alt="Imagen Secundaria" class="imagen-secundariaX" onclick="changeMainImage(this)">
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                            @endif
                     </div>
                 @endauth
             </div>
         </div>
     </div>
 </div>
+
 <section class="sugerencias-adopcion">
     <h2 class="titulo-sugerencias">
         Adopciones similares que podrían interesarte 🐶❤️‍🩹
@@ -232,7 +255,7 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
 </div>
-
+@include('MenuPrincipal.footer')
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/Modalscripts.js') }}"></script>
 <script src="{{ asset('js/variasimagenes.js') }}"></script>

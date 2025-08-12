@@ -241,7 +241,31 @@
             @endif
         </div>
 
-        <div id="publicaciones" class="grid"></div>
+        <div id="publicaciones" class="grid">
+            @if($publicaciones->isEmpty())
+                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado aún!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                </div>
+            @else
+                @foreach($publicaciones as $publicacion)
+                    @if($publicacion->imagen)
+                        <div class="card">
+                            <a href="{{ route('publicaciones.show', $publicacion->id) }}">
+                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Adopción" class="img-card">
+                            </a>
+                            <div class="overlay-info">
+                                <strong>{{ $publicacion->contenido }}</strong></p>
+                            </div>
+                            <p class="contador-visitas">
+                                <i class="fa-solid fa-heart" style="color: darkred;"></i> {{ $publicacion->likes_count }}
+                            </p>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+        </div>
+
         <div id="veterinarias" class="grid"></div>
         <div id="eventos" class="grid"></div>
         <div id="petshop" class="grid">

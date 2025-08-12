@@ -305,7 +305,9 @@ class AdopcionController extends Controller
     {
         $request->validate([
             'contenido' => 'required|string|max:255',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagen_principal' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'imagenes_secundarias' => 'nullable|array|max:4',
+            'imagenes_secundarias.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'tipo_mascota' => 'required|string|max:100',
             'nombre_mascota' => 'required|string|max:100',
             'fecha_nacimiento' => 'required|date|before_or_equal:today',
@@ -315,14 +317,41 @@ class AdopcionController extends Controller
 
         $adopcion = Adopcion::findOrFail($id);
 
+        if ($adopcion->id_usuario != Auth::id()) {
+            return redirect()->route('adopciones.index')->with('fracaso', 'No tienes permiso para editar esta publicación.');
+        }
+
+        // Imagen principal
         if ($request->hasFile('imagen_principal')) {
             if ($adopcion->imagen) {
                 Storage::disk('public')->delete($adopcion->imagen);
             }
-
-            $rutaImagen = $request->file('imagen_principal')->store('adopciones', 'public');
-            $adopcion->imagen = $rutaImagen;
+            $adopcion->imagen = $request->file('imagen_principal')->store('adopciones', 'public');
         }
+
+        $imagenesExistentes = $adopcion->imagenes_secundarias ? json_decode($adopcion->imagenes_secundarias, true) : [];
+
+        $imagenesAEliminar = $request->input('imagenes_secundarias_eliminar', []);
+        if (!empty($imagenesAEliminar)) {
+            foreach ($imagenesAEliminar as $imagen) {
+                if (in_array($imagen, $imagenesExistentes)) {
+                    Storage::disk('public')->delete($imagen);
+                    $imagenesExistentes = array_filter($imagenesExistentes, fn($img) => $img !== $imagen);
+                }
+            }
+        }
+
+        if ($request->hasFile('imagenes_secundarias')) {
+            $archivosNuevos = $request->file('imagenes_secundarias');
+            foreach ($archivosNuevos as $archivo) {
+                if ($archivo->isValid() && count($imagenesExistentes) < 4) {
+                    $ruta = $archivo->store('adopciones', 'public');
+                    $imagenesExistentes[] = $ruta;
+                }
+            }
+        }
+
+        $adopcion->imagenes_secundarias = count($imagenesExistentes) ? json_encode(array_values($imagenesExistentes)) : null;
 
         $adopcion->contenido = $request->contenido;
         $adopcion->tipo_mascota = $request->tipo_mascota;
@@ -333,8 +362,10 @@ class AdopcionController extends Controller
 
         $adopcion->save();
 
-        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito. Podrás ver tu publicación en tu perfil. ☺️');
+        return redirect()->route('adopciones.index')->with('success', 'Publicación de adopción actualizada con éxito. ☺️');
     }
+
+
 
 
     public function show($id)

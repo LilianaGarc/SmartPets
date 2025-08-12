@@ -134,14 +134,14 @@
                 @php
                     $tipoSeleccionado = request('tipo_mascota');
                     $mensajes = [
-                        'Perro' => 'No has enviado solicitudes de adopción para perros. 😞',
-                        'Gato' => 'No has enviado solicitudes de adopción para gatos. 😞',
-                        'Conejo' => 'No has enviado solicitudes de adopción para conejos. 😞',
-                        'Tortuga' => 'No has enviado solicitudes de adopción para tortugas. 😞',
-                        'Peces' => 'No has enviado solicitudes de adopción para peces. 😞',
-                        'Otro' => 'No has enviado solicitudes en esta categoría por el momento. 😞',
-                        '' => 'No has enviado solicitudes de adopción aún. 😞',
-                        null => 'No has enviado solicitudes de adopción aún. 😞',
+                        'Perro' => 'No has enviado solicitudes de adopción para perros. ',
+                        'Gato' => 'No has enviado solicitudes de adopción para gatos. ',
+                        'Conejo' => 'No has enviado solicitudes de adopción para conejos. ',
+                        'Tortuga' => 'No has enviado solicitudes de adopción para tortugas. ',
+                        'Peces' => 'No has enviado solicitudes de adopción para peces. ',
+                        'Otro' => 'No has enviado solicitudes en esta categoría por el momento. ',
+                        '' => 'No has enviado solicitudes de adopción aún. ',
+                        null => 'No has enviado solicitudes de adopción aún. ',
                     ];
                 @endphp
 
@@ -156,14 +156,14 @@
                 @php
                     $tipoSeleccionado = request('tipo_mascota');
                     $mensajes = [
-                        'Perro' => '¡No hay adopciones disponibles de perros por el momento! 🐶',
-                        'Gato' => '¡No hay adopciones disponibles de gatos por el momento! 🐱',
-                        'Conejo' => '¡No hay adopciones disponibles de conejos por el momento! 🐰',
-                        'Tortuga' => '¡No hay adopciones disponibles de tortugas por el momento! 🐢',
-                        'Peces' => '¡No hay adopciones disponibles de peces por el momento! 🐟',
-                        'Otro' => '¡No hay adopciones disponibles en esta categoría por el momento! 🐾',
-                        '' => '¡No hay adopciones disponibles por el momento! 😿',
-                        null => '¡No hay adopciones disponibles por el momento! 😿',
+                        'Perro' => '¡No hay adopciones disponibles de perros por el momento! ',
+                        'Gato' => '¡No hay adopciones disponibles de gatos por el momento! ',
+                        'Conejo' => '¡No hay adopciones disponibles de conejos por el momento! ',
+                        'Tortuga' => '¡No hay adopciones disponibles de tortugas por el momento! ',
+                        'Peces' => '¡No hay adopciones disponibles de peces por el momento! ',
+                        'Otro' => '¡No hay adopciones disponibles en esta categoría por el momento! ',
+                        '' => '¡No hay adopciones disponibles por el momento! ',
+                        null => '¡No hay adopciones disponibles por el momento! ',
                     ];
                 @endphp
 
@@ -248,6 +248,21 @@
     {{ $adopciones->links('vendor.pagination.mascotas') }}
 </div>
 @include('chats.chat-float')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.querySelector('.category-buttons');
+        const activeBtn = container.querySelector('.category-btn.active');
+
+        if (activeBtn) {
+            activeBtn.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center',
+                block: 'nearest'
+            });
+        }
+    });
+</script>
+
 <script src="{{ asset('js/Ascripts.js') }}"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

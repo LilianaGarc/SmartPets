@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        <div class="stories-container">
+        <!--<div class="stories-container">
             <h2 style="text-align: center;">Historias</h2>
 
             <div class="swiper-container">
@@ -76,7 +76,7 @@
                     </form>
                 </div>
             </div>
-        @endauth
+        @endauth-->
 
 
         <div class="col">
@@ -112,14 +112,26 @@
                                     @endauth
                                 </div>
                             </h3>
-                            <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
                             <p class="card-text"><small class="text-body-secondary">{{$publicacion->updated_at->diffForHumans()}}</small></p>
                         </div>
-                        <div class="card-footer text-body-secondary">
-                            @if($publicacion->imagen)
-                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion">
-                            @endif
-                        </div>
+                        @if ($publicacion->publicacionOriginal)
+                            <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
+                            <div class="shared-original-card" style="margin-top: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; background-color: #f9fafb;">
+                                <p style="font-weight: bold;">Original de: {{ $publicacion->publicacionOriginal->user->name }}</p>
+                                <p>{{ $publicacion->publicacionOriginal->contenido }}</p>
+                                @if($publicacion->publicacionOriginal->imagen)
+                                    <img src="{{ asset('storage/' . $publicacion->publicacionOriginal->imagen) }}" class="img-fluid mt-2" alt="Imagen de la publicación original">
+                                @endif
+                            </div>
+                        @else
+                            <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
+                            <div class="card-footer text-body-secondary">
+                                @if($publicacion->imagen)
+                                    <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion">
+                                @endif
+                            </div>
+                        @endif
+
 
                         <div class="col align-items-center">
                             <h6 style="margin-top: 8px;">
@@ -141,15 +153,18 @@
                                             data-is-liked="{{ $publicacion->user_has_liked ? 'true' : 'false' }}"
                                         >
                                             <i class="{{ $publicacion->user_has_liked ? 'fa-solid' : 'fa-regular' }} fa-heart {{ $publicacion->user_has_liked ? 'text-red-500' : 'text-gray-400' }}"></i>
-                                            Me gusta
+                                            <span class="like-text">Me gusta</span>
                                         </button>
 
+
                                         <a href="{{ route('publicaciones.show', ['id'=> $publicacion->id]) }}" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fa-regular fa-comment"></i> Comentar
+                                            <i class="fa-regular fa-comment"></i> <span class="btn-text">Comentar</span>
                                         </a>
-                                        <a href="#" class="btn" role="button" style="margin: 1px;">
-                                            <i class="fa-regular fa-share-from-square"></i> Compartir
+
+                                        <a href="{{ route('publicaciones.compartir', $publicacion->id) }}" class="btn" role="button" style="margin: 1px;">
+                                            <i class="fa-regular fa-share-from-square"></i> <span class="btn-text">Compartir</span>
                                         </a>
+
                                     @else
                                         <a href="{{ route('login') }}" class="btn" role="button" style="margin: 1px;">
                                             <i class="fa-regular fa-heart text-gray-400"></i> Me gusta
@@ -213,7 +228,7 @@
                 let storiesSwiper;
                 let initialGroupedStories = @json($historiasGrouped);
 
-                function initializeStoriesSwiper() {
+                /*function initializeStoriesSwiper() {
                     if (storiesSwiper) {
                         storiesSwiper.destroy(true, true);
                     }
@@ -403,7 +418,7 @@
                     initializeStoriesSwiper();
                 }
 
-                loadAndRenderStories(initialGroupedStories);
+                loadAndRenderStories(initialGroupedStories);*/
 
 
                 document.querySelectorAll('.like-button').forEach(button => {

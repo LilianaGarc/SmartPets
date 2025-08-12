@@ -13,6 +13,7 @@
     <style>
         body {
             padding-top: 120px;
+            font-family: Arial, sans-serif;
         }
 
         @media (max-width: 768px) {

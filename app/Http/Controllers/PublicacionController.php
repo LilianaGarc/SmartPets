@@ -350,4 +350,28 @@ class PublicacionController extends Controller
             return redirect()->route('publicaciones.panel')->with('exito', 'La publicacion se elimino correctamente.');
         }
     }
+
+    public function compartir(Publicacion $publicacion)
+    {
+        return view('publicaciones.crearCompartida', [
+            'publicacionOriginal' => $publicacion
+        ]);
+    }
+
+    public function guardarCompartida(Request $request)
+    {
+        $request->validate([
+            'contenido' => 'nullable|string|max:255',
+            'publicacion_original_id' => 'required|exists:publicaciones,id',
+        ]);
+
+        $publicacion = new Publicacion();
+        $publicacion->id_user = auth()->id();
+        $publicacion->contenido = $request->input('contenido');
+        $publicacion->publicacion_original_id = $request->input('publicacion_original_id');
+        $publicacion->visibilidad = 'publico';
+        $publicacion->save();
+
+        return redirect()->route('publicaciones.index')->with('exito', '¡Publicación compartida con éxito!');
+    }
 }

@@ -105,10 +105,12 @@
 }
 
 .navbar .menu-items a {
+    padding: 8px 0 8px 20%;!important;
     text-decoration: none;
     color: #0e2431;
-    font-weight: 500;
+    font-weight: 400;!important;
     font-size: 1.7rem;
+    font-family: Arial, sans-serif;
     display: flex;
     align-items: start;
     justify-content: start;
@@ -117,7 +119,6 @@
     width: 100%;
     box-sizing: border-box;
     text-align: start;
-    padding: 8px 0 8px 20%;
 }
 
 .navbar .menu-items a i {
@@ -452,5 +453,103 @@ input:checked + .slider:before {
     .notification-icon img {
         width: 25px !important;
         height: 25px !important;
+    }
+}
+
+.navbar .menu-items a.active {
+    color: #fff;
+    background: linear-gradient(135deg, #ff864e 83%, rgba(255, 255, 255, 0) 83%);
+}
+
+.btn-login {
+    font-size: 14px;
+    font-weight: 600;
+    background-color: transparent;
+    border: 2px solid #1e4183;
+    padding: 14px 20px 14px 24px;
+    display: flex;
+    align-items: center;
+    border-radius: 99px;
+    position: relative;
+    margin-top: 0;
+    overflow: hidden;
+    transition:
+        border-color 0.5s cubic-bezier(0.77, 0, 0.175, 1),
+        background-color 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.btn-login .text {
+    color: #1e4183;
+    line-height: 1;
+    position: relative;
+    z-index: 5;
+    margin-right: 20px;
+    transition: color 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.btn-login:hover {
+    border-color: transparent;
+}
+
+.btn-login:hover .text {
+    color: #ffffff;
+}
+
+.btn-login svg {
+    display: inline-block;
+    position: relative;
+    z-index: 5;
+    transform: rotate(0deg) translateX(0);
+    transform-origin: left;
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    width: 14px;
+    height: 14px;
+}
+
+.btn-login::before {
+    content: '';
+    background-color: #1e4183;
+    width: 24px;
+    height: 24px;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    border-radius: 99px;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.btn-login:hover svg {
+    transform: rotate(45deg) translateX(-6px);
+}
+
+.btn-login:hover::before {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    transform: none;
+}
+
+.btn-login.light {
+    background-color: #ffffff;
+    color: rgba(255, 0, 0, 0);
+}
+
+.btn-login.light::before {
+    background-color: #1e4183;
+}
+
+.login-button-container {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .btn-login {
+        display: none;
     }
 }

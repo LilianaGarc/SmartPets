@@ -107,7 +107,7 @@
 
                 <div class="form-group">
                     <label for="contenido">🖊️ Mensaje</label>
-                    <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" placeholder="Ingresa una breve descripción de tu mascota">{{ old('contenido') }}</textarea>
+                    <textarea name="contenido" id="contenido" class="form-control" required maxlength="250" placeholder="Ingresa una breve descripción de tu mascota">{{ old('contenido') }}</textarea>
                 </div>
 
                 <div class="form-group">

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var modalImg = document.getElementById("modalImage");
     var closeBtn = document.getElementsByClassName("close")[0];
 
-    var images = document.querySelectorAll('.card-containerver .adopcion-img');
+    var images = document.querySelectorAll('.card-containerverX .adopcion-imgX');
 
     function openImageModal() {
         modal.style.display = "block";
