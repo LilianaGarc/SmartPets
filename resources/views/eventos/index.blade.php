@@ -92,7 +92,6 @@
         @foreach ($eventos as $evento)
         <div class="col mb-4">
             <div class="card h-100 shadow-sm border vet-anim position-relative">
-                {{-- Imagen --}}
                 @if ($evento->imagen)
                     <div class="card-img-top bg-light d-flex align-items-center
                     justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
@@ -108,9 +107,10 @@
 
                 <div class="card-body">
                     @php
+
                         $yaParticipa = auth()->check() ? $evento->participaciones->contains('id_user', auth()->id()) : false;
                         $esCreador = auth()->check() && auth()->id() == $evento->id_user;
-                        $eventoFinalizado = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin)->isPast();
+                        $eventoFinalizado = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin, 'America/Tegucigalpa')->isPast();
                     @endphp
 
                     <h4 class="card-title d-flex align-items-center justify-content-between">
@@ -122,14 +122,12 @@
                         </span>
                     </h4>
 
-                    {{-- Badge de evento finalizado centrado --}}
                     @if($eventoFinalizado)
                         <div class="d-flex justify-content-center my-2">
                             <span class="badge bg-secondary fs-5 px-4 py-2">Evento finalizado</span>
                         </div>
                     @endif
 
-                    {{-- Estado solo para el creador --}}
                     @if($esCreador)
                         <span class="badge bg-{{ ($evento->estado ?? 'pendiente') == 'aceptado' ? 'success' : (($evento->estado ?? 'pendiente') == 'pendiente' ? 'warning' : 'danger') }}">
                             {{ ucfirst($evento->estado ?? 'pendiente') }}
@@ -221,7 +219,6 @@
     @endif
 </div>
 
-{{-- Modal de confirmación para eliminar evento --}}
 <div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

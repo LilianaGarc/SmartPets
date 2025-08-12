@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Evento;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Carbon\Carbon;
 use App\Notifications\PeticionEventoNotificacion;
 use App\Notifications\EstadoEventoNotificacion;
 
@@ -327,8 +328,14 @@ class EventoController
     public function participar($id)
     {
         $evento = Evento::findOrFail($id);
-
         // No permitir si el evento ya pasó
+
+        $fechaHoraEvento = Carbon::parse($evento->fecha . ' ' . $evento->hora_fin, 'America/Tegucigalpa');
+
+        if (Carbon::now('America/Tegucigalpa')->greaterThan($fechaHoraEvento)) {
+            return back()->with('error', 'No puedes participar en un evento que ya finalizó.');
+        }
+
         $fechaHoraEvento = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin);
         if (now()->greaterThan($fechaHoraEvento)) {
             return back()->with('error', 'No puedes participar en un evento que ya finalizó.');
@@ -418,5 +425,4 @@ class EventoController
 
         return back()->with('exito', 'Evento rechazado correctamente.');
     }
-
 }

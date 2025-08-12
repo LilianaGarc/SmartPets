@@ -266,8 +266,48 @@
             @endif
         </div>
 
-        <div id="veterinarias" class="grid"></div>
-        <div id="eventos" class="grid"></div>
+        <div id="veterinarias" class="grid">
+            @if($veterinarias->isEmpty())
+                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado veterinarias!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay veterinarias" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                </div>
+            @else
+                @foreach($veterinarias as $veterinaria)
+                    <div class="card">
+                        <a href="{{ route('veterinarias.show', $veterinaria->id) }}">
+                            <img src="{{ asset('storage/' . $veterinaria->imagen) }}" alt="Veterinaria" class="img-card">
+                        </a>
+                        <div class="overlay-info">
+                            <p><strong>{{ $veterinaria->nombre }}</strong></p>
+                            <p>Teléfono: {{ $veterinaria->telefono }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+        
+        <div id="eventos" class="grid">
+            @if($eventos->isEmpty())
+                <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado eventos!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay eventos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                </div>
+            @else
+                @foreach($eventos as $evento)
+                    <div class="card">
+                        <a href="{{ route('eventos.show', $evento->id) }}">
+                            <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Evento" class="img-card">
+                        </a>
+                        <div class="overlay-info">
+                            <p><strong>{{ $evento->nombre }}</strong></p>
+                            <p>Fecha: {{ $evento->fecha }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+
         <div id="petshop" class="grid">
             @if($productosUsuario->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">

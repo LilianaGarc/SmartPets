@@ -1,16 +1,6 @@
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <form method="POST"
           enctype="multipart/form-data"
           @if (isset($evento))
@@ -29,6 +19,15 @@
                 <h4><a href="{{ url()->previous() }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Crear un nuevo evento</strong></h4>
             @endif
             <hr>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">

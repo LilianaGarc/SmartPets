@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Adopcion;
 use App\Models\Publicacion;
 use App\Models\Solicitud;
+use App\Models\Veterinaria;
+use App\Models\Evento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +20,9 @@ class PerfilController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $adopciones = \App\Models\Adopcion::where('id_usuario', $user->id)->get();
+        $adopciones = \App\Models\Adopcion::where('id_usuario', operator: $user->id)->get();
+        $veterinarias = \App\Models\Veterinaria::where('id_user', operator: $user->id)->get();
+
         $productosUsuario = $user->productos()->with('categoria')->get();
 
         $publicaciones = Publicacion::with('user')
@@ -38,8 +42,10 @@ class PerfilController extends Controller
         })->filter(function ($item) {
             return $item['adopcion'] !== null;
         });
+        $eventos = $user->eventos()->with('id_usuario')->get();
+        $veterinarias = $user->veterinarias()->with('id_usuario')->get();
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones'));
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones', 'eventos', 'veterinarias'));
     }
 
     public function showPerfil($id)

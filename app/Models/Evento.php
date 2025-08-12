@@ -33,7 +33,6 @@ class Evento extends Model
     }
     public function participaciones()
     {
-        // Un evento puede tener muchas participaciones (N)
         return $this->hasMany(Participacion::class, 'evento_id');
     }
 
