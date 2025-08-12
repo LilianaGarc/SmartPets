@@ -44,24 +44,30 @@
     <div class="container d-flex justify-content-center mt-4">
         <div class="card shadow-sm" style="max-width: 700px; width: 100%; ">
             <div class="card-body">
-                <form class ="row g-2 align-items-center" action="{{route('productos.index')}}" method="GET">
-                    <div class="input-group">
+                <form action="{{ route('productos.index') }}" method="GET"
+                      class="d-flex flex-column flex-md-row align-items-center gap-2 flex-md-nowrap">
+
+                    <div class="input-group flex-grow-1" style="min-width: 250px;">
                         <input type="text" class="form-control" name="search" placeholder="Buscar productos..." value="{{ request('search') }}">
                         <button class="btn btn-naranja" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
-
-                        @foreach($categorias as $categoria)
-                            <button type="submit" name="categoria" value="{{ $categoria->id }}" class="btn btn-outline-secondary @if(request('categoria')==$categoria->id) active @endif"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}">
-                            <img src="{{ asset('images/icono' . $categoria->nombre . '.png') }}"
-                            alt="{{ $categoria->nombre }}" style="width: 30px; height: 30px; object-fit: contain;">
-                            </button>
-
-                        @endforeach
-
                     </div>
+
+                    <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-end gap-1 mt-2 mt-md-0" style="min-width: 200px;">
+                        @foreach($categorias as $categoria)
+                            <button type="submit" name="categoria" value="{{ $categoria->id }}"
+                                    class="btn btn-outline-secondary @if(request('categoria')==$categoria->id) active @endif"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}"
+                                    style="width: 38px; height: 38px; padding: 0;">
+                                <img src="{{ asset('images/icono' . $categoria->nombre . '.png') }}"
+                                     alt="{{ $categoria->nombre }}" style="width: 100%; height: 100%; object-fit: contain;">
+                            </button>
+                        @endforeach
+                    </div>
+
                 </form>
+
             </div>
         </div>
     </div>

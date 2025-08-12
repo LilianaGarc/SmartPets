@@ -80,11 +80,7 @@
             </div>
 
 
-            <div class="productos-guardados" style="margin-top: 10px;">
-                <a href="{{ route('productos.guardados') }}">
-                    <img class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
-                </a>
-            </div>
+
 
         </div>
         <div class="mascota-virtual" style="width: 100%; text-align: center;">
@@ -286,7 +282,7 @@
                 @endforeach
             @endif
         </div>
-        
+
         <div id="eventos" class="grid">
             @if($eventos->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
@@ -311,9 +307,10 @@
         <div id="petshop" class="grid">
             @if($productosUsuario->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has publicado productos!</p>
+                    <p class="no-hay-message" style="font-size: 18px;">No tienes productos en tu tienda.</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay productos" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
+
             @else
                 @foreach($productosUsuario as $producto)
                     <div class="card">
