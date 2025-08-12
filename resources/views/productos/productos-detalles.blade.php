@@ -16,6 +16,7 @@
 
     body {
         background-color: var(--cream);
+        overflow-x: hidden;
     }
 
     .product-container {
@@ -416,12 +417,18 @@
         gap: 10px; /* Espaciado entre las miniaturas */
         margin-top: 10px; /* Espaciado superior */
         margin-left: 2em;
+        flex-wrap: wrap;
     }
     .accordion-button:not(.collapsed) .user-info small {
         color: #4a4a4a;
     }
     .accordion-button.collapsed .user-info small {
         color: #d3d3d3;
+    }
+    .textoAjustado {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
     }
 </style>
 @section('contenido')
@@ -485,10 +492,21 @@
                             @endif
                         </ol>
                     </nav>
-                    <h1 class="mb-3">{{$producto->nombre}}</h1>
+                    <h1 class="mb-3 textoAjustado">{{$producto->nombre}}</h1>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="price">L.{{$producto->precio}}</span>
-                        <span class="stock-badge">En Stock</span>
+                        <span class="badge
+                        @if($producto->activo)
+                        stock-badge
+                        @else
+                        bg-danger
+                        @endif " style="font-size: 1rem; padding: 0.5em 1em;">
+                            @if($producto->activo)
+                                En Stock
+                            @else
+                                No Disponible
+                            @endif
+                        </span>
                         @auth
                             @php
                                 $favorito = \App\Models\ProdFavorito::where('user_id', auth()->id())
@@ -520,6 +538,27 @@
                                 @endif
                             </form>
                         @endauth
+                        @auth
+                            @if(auth()->id() === $producto->user_id || auth()->user()->is_admin)
+                                <form action="{{ route('productos.toggleActivo', $producto->id) }}" method="POST" style="display: inline-block; margin-left: 10px;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <div class="form-check form-switch" style="display: inline-flex; align-items: center;">
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="switchActivo{{$producto->id}}"
+                                            name="activo"
+                                            onchange="this.form.submit()"
+                                            {{ $producto->activo ? 'checked' : '' }}
+                                        >
+                                        <label class="form-check-label ms-1" for="switchActivo{{$producto->id}}" title="Cambiar estado de disponibilidad">
+                                            {{ $producto->activo ? 'Disponible' : 'No disponible' }}
+                                        </label>
+                                    </div>
+                                </form>
+                            @endif
+                        @endauth
                     </div>
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2">
@@ -530,42 +569,48 @@
                             <i class="bi bi-star-half" style="color: var(--orange)"></i>
                         </div>
                     </div>
-                    <p class="mb-4">{{$producto->descripcion}}</p>
+                    <p class="mb-4 textoAjustado">{{$producto->descripcion}}</p>
                     <!-- Botones de Acción -->
                     @auth
-                    <div class="d-flex align-items-center gap-3 mt-3">
-                        <a href="{{route('chats.iniciar', $producto->user_id)}} ?
-                        mensaje = {{urlencode('Hola, estoy interesado en el producto: "' .
-                        $producto->nombre . '", este es el enlace: ' . route('productos.show', $producto->id))}}"
-                           class="btn btn-primary text-white">
-                            <i class="fas fa-comment-dots"></i> Enviar Mensaje
-                        </a>
+                        <div class="d-flex align-items-center gap-3 mt-3">
+                            @php
+                                $mensaje = 'Estoy interesado en el producto "' . $producto->nombre . '". <a href="' . route('productos.show', $producto->id) . '">Más info</a>';
+                            @endphp
 
-                        @if( auth()->check() && auth()->id()===$producto->user_id)
-                            <div class="d-grid gap-2">
-                                <div class="row d-flex justify-content-center mt-3">
-                                    <div class="col-auto">
-                                        <button class="btn btn-warning text-white"
-                                                onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
-                                               <i class="fas fa-edit"></i> Editar
-                                        </button>
-                                    </div>
-                                    <div class="col-auto">
-                                        <form id="delete-form-{{$producto->id}}"
-                                              action="{{ route('productos.destroy', $producto->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
-                                                    data-bs-target="#ModalProducto">
-                                                <i class="fas fa-trash-alt"></i> Eliminar
+                            <a href="{{ route('chats.iniciar', $producto->user_id) }}?mensaje={{ rawurlencode($mensaje) }}"
+                               class="btn btn-primary text-white">
+                                <i class="fas fa-comment-dots"></i> Enviar Mensaje
+                            </a>
+
+                            @if(auth()->check() && auth()->id() === $producto->user_id)
+                                <div class="d-grid gap-2">
+                                    <div class="row d-flex justify-content-center mt-3">
+                                        <div class="col-auto">
+                                            <button class="btn btn-warning text-white"
+                                                    onclick="window.location.href='{{ route('productos.edit', $producto->id) }}'">
+                                                <i class="fas fa-edit"></i> Editar
                                             </button>
-                                        </form>
+                                        </div>
+                                        <div class="col-auto">
+                                            <form id="delete-form-{{$producto->id}}"
+                                                  action="{{ route('productos.destroy', $producto->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                                                        data-bs-target="#ModalProducto">
+                                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                        @endif
-                            </div>
+                            @endif
+                        </div>
                     @endauth
-                    </div>
+
+
+
+                </div>
                 </div>
                 @if($errors->any())
                     <div class="alert alert-danger">
@@ -605,7 +650,7 @@
                                         </div>
                                         <div class="review-form-group">
                                             <label for="review-content" class="review-label">Contenido</label>
-                                            <textarea class="review-textarea" id="review-content" rows="4"
+                                            <textarea class="review-textarea" id="review-content" maxlength="255"
                                                       name="contenido"
                                                       placeholder="Escribe tu reseña aquí...">{{ old('contenido', $resenia->contenido ?? '') }}</textarea>
                                         </div>
@@ -625,10 +670,10 @@
                             @foreach($resenias as $index => $resenia)
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading{{ $index }}">
-                                        <button class="accordion-button {{ $index == 0 ? '' : 'collapsed' }}"
+                                        <button class="accordion-button collapsed"
                                                 type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}"
-                                                aria-expanded="{{ $index == 0 ? 'true' : 'false' }}"
+                                                data-bs-target="#collapse{{$index}}" data-bs-toggle="collapse"
+                                                aria-expanded="false"
                                                 aria-controls="collapse{{ $index }}">
                                             <div class="user-info">
                                                 @php
@@ -640,18 +685,18 @@
 
                                                 <div>
                                                     <span class="username">{{ $resenia->user->name }}</span>
-                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
+                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i') }}</small>
                                                 </div>
                                             </div>
                                         </button>
 
                                     </h2>
                                     <div id="collapse{{ $index }}"
+                                         class="accordion-collapse collapse"
                                          aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <strong>{{ $resenia->titulo }}</strong>
-                                            <p>{{ $resenia->contenido }}</p>
-
+                                            <p class="textoAjustado">{{ $resenia->contenido }}</p>
                                             <!-- Button trigger modal -->
                                             <!-- Eliminar Reseña -->
                                             @auth

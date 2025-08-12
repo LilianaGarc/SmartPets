@@ -6,11 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SmartPets</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ia.css') }}">
+    <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
+
 </head>
 <body>
 
@@ -299,6 +299,8 @@
 
 @include('chats.chat-float')
 
-
+<script src="{{ asset(path: 'js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset(path: 'js/jquery.min.js') }}"></script>
+<script src="{{ asset(path: 'js/popper.min.js') }}"></script>
 </body>
 </html>

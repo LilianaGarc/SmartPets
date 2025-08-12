@@ -172,7 +172,7 @@
                                 @endif
 
                                 @if (esSoloEmojiNoNumeros($mensaje->texto))
-                                    <span class="emoji-large">{{ $mensaje->texto }}</span>
+                                    <span class="emoji-large">{!! $mensaje->texto !!}</span>
                                 @else
                                         <span class="message-text">{!! $mensaje->texto !!}</span>
                                 @endif

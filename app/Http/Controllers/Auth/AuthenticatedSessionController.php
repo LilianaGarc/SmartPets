@@ -29,9 +29,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $request->user()->update(['last_login_at' => now()]);
-        
+
         if ($request->user()->usertype === 'admin') {
-            return redirect('/panel/publicaciones');
+            return redirect('/panel/dashboard');
         } else {
             return redirect('/index');
         }

@@ -17,6 +17,28 @@
             object-fit: cover !important; /* Ajusta la imagen para que se recorte y se ajuste al contenedor */
             border-radius: 8px !important;
         }
+
+        .textoAjustado {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+        .btn-naranja {
+            background-color: #ed8119; /* Color naranja */
+            color: white; /* Texto blanco */
+            border: none; /* Sin borde */
+        }
+        .btn-naranja:hover {
+            background-color: #18478b;
+            color: white;
+        }
+        .out-of-stock {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold;
+        }
     </style>
 
     <div class="container d-flex justify-content-center mt-4">
@@ -25,7 +47,7 @@
                 <form class ="row g-2 align-items-center" action="{{route('productos.index')}}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Buscar productos..." value="{{ request('search') }}">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-naranja" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
 
@@ -70,8 +92,11 @@
     @endif
     @auth
         <div class="container d-flex justify-content-center mt-4">
-            <a href="{{ route('productos.create') }}" class="btn btn-primary">
+            <a href="{{ route('productos.create') }}" class="btn btn-naranja me-2">
                 <i class="fas fa-plus"></i> Crear Producto
+            </a>
+            <a href="{{ route('productos.guardados') }}" class="btn btn-link p-0" title="Ver productos guardados" style="width: 32px; height: 32px;">
+                <img src="{{ asset('images/marcadorAzul.png') }}" alt="Productos Guardados" class="img-fluid" style="width: 32px; height: 32px;">
             </a>
         </div>
     @endauth
@@ -98,9 +123,9 @@
                          style="background-image: url('{{ $foto }}'); background-size: cover; width: 70px; height: 70px; border-radius: 50%; margin-right: 10px;"></div>
 
                     <div class="informacion-perfil" style="flex: 1;">
-                        <p class="fecha-publicacion" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
+                        <p class="fecha-publicacion textoAjustado" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
                         <p class="usuario-nombre" style="margin: 0; font-weight:  bold; font-size: 0.9rem; color: #555;">{{ $producto->user->name }}</p>
-                        <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->setTimezone('America/Tegucigalpa')->format('d/m/Y , H:i A') }}</p>
+                        <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->setTimezone('America/Tegucigalpa')->format('d/m/Y , H:i') }}</p>
                     </div>
 
                     @if(Auth::check() && Auth::id() === $producto->user_id)
@@ -122,13 +147,18 @@
                     @endif
                 </div>
 
-                <div class="producto-imagen" style="margin-top: 10px;">
+                <div class="producto-imagen" style="margin-top: 10px; position: relative;">
                     <a href="{{ route('productos.show', $producto->id) }}">
                         <img src="{{ $producto->imagen ? asset('storage/' . $producto->imagen) : asset('images/img_PorDefecto.jpg') }}"
                              alt="Imagen del producto"
                              class="producto-img"
                              style="width: 100%; height: auto; border-radius: 8px;">
                     </a>
+                    @if(!$producto->activo)
+                        <div class="out-of-stock">
+                            No disponible
+                        </div>
+                    @endif
                 </div>
             </div>
         @endforeach

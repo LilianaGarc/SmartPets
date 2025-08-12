@@ -6,9 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Panel Administrativo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset(path: 'css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
     <style>
         :root{
             --background-color: #f7f7f7;
@@ -34,6 +33,7 @@
             height: 100%;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
         }
         header{
             z-index: 200;
@@ -529,10 +529,6 @@
             transition: none !important;
         }
 
-
-
-
-
         .card-link {
             text-decoration: none;
             color: inherit;
@@ -569,13 +565,11 @@
             font-size: 0.95rem;
         }
 
-        /* Estilo base para el enlace */
         .card-link {
             text-decoration: none;
             color: inherit;
         }
 
-        /* Tarjeta personalizada */
         .custom-card {
             background: white;
             border: 1px solid #ddd;
@@ -587,7 +581,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Imagen dentro de la tarjeta */
         .custom-card img {
             max-height: 150px;
             width: auto;
@@ -596,7 +589,6 @@
             border-radius: 8px;
         }
 
-        /* Título y texto */
         .custom-card h5 {
             font-weight: bold;
             color: #18478b;
@@ -618,8 +610,6 @@
             transform: scale(1.05);
             z-index: 1;
         }
-
-
 
     </style>
 </head>
@@ -730,6 +720,8 @@
 </main>
 
 <script>
+    const currentUrl = "{{ url()->current() }}";
+
     const menu = document.getElementById('menu');
     const sidebar = document.getElementById('sidebar');
     const main = document.getElementById('main');
@@ -758,7 +750,6 @@
         }
     }
 
-
     menu.addEventListener('click', () => {
         sidebar.classList.toggle('menu-toggle');
         menu.classList.toggle('menu-toggle');
@@ -783,32 +774,22 @@
     const sidebarLinks = document.querySelectorAll('.sidebar a');
 
     function cargarEstadoEnlace() {
-        const selectedLink = localStorage.getItem('selectedLink');
-        if (selectedLink) {
-            sidebarLinks.forEach(link => {
-                if (link.getAttribute('href') === selectedLink) {
-                    link.classList.add('selected');
-                } else {
-                    link.classList.remove('selected');
-                }
-            });
-        }
-    }
-
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            sidebarLinks.forEach(l => l.classList.remove('selected'));
-            this.classList.add('selected');
-            localStorage.setItem('selectedLink', this.getAttribute('href'));
+        sidebarLinks.forEach(link => {
+            link.classList.remove('selected');
+            if (link.getAttribute('href') === currentUrl) {
+                link.classList.add('selected');
+            }
         });
-    });
+    }
 
     window.addEventListener('load', () => {
         cargarEstadoSidebar();
         cargarEstadoEnlace();
     });
+
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
+<script src="{{ asset(path: 'js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset(path: 'js/jquery.min.js') }}"></script>
+<script src="{{ asset(path: 'js/popper.min.js') }}"></script></body>
 </html>

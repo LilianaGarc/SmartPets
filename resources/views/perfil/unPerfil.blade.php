@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Perfil de {{ $user->name }}</title>
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 </head>
 <body>
 @include('MenuPrincipal.Navbar')
@@ -103,21 +103,26 @@
         </div>
 
         <div id="publicaciones" class="grid">
-            @if(isset($publicaciones) && $publicaciones->isEmpty())
+            @if($publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado publicaciones aún! 😿</p>
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado aún!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @elseif(isset($publicaciones))
+            @else
                 @foreach($publicaciones as $publicacion)
-                    <div class="card">
-                        <a href="{{ route('publicaciones.show', $publicacion->id) }}">
-                            <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
-                        </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $publicacion->titulo }}</strong></p>
+                    @if($publicacion->imagen)
+                        <div class="card">
+                            <a href="{{ route('publicaciones.show', $publicacion->id) }}">
+                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Adopción" class="img-card">
+                            </a>
+                            <div class="overlay-info">
+                                <strong>{{ $publicacion->contenido }}</strong></p>
+                            </div>
+                            <p class="contador-visitas">
+                                <i class="fa-solid fa-heart" style="color: darkred;"></i> {{ $publicacion->likes_count }}
+                            </p>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             @endif
         </div>

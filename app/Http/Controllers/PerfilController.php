@@ -56,6 +56,14 @@ class PerfilController extends Controller
         $eventos = $user->eventos()->with('id_usuario')->get();
         $veterinarios = $user->veterinarios()->with('id_usuario')->get();
 
+        $publicaciones = Publicacion::with('user')
+            ->withCount('likes')
+            ->with(['likes' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
 
         $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
@@ -67,7 +75,7 @@ class PerfilController extends Controller
             return $item['adopcion'] !== null;
         });
 
-        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario'));
+        return view('perfil.index', compact('user', 'adopciones', 'adopcionesSolicitadas', 'productosUsuario', 'publicaciones'));
     }
 
 

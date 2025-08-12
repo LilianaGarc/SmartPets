@@ -30,11 +30,32 @@
             color: white; font-weight: bold;
         }
 
+        .textoAjustado {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+        }
+
+        .btn-naranja {
+            background-color: #18478b;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-naranja:hover {
+            background-color: #ed8119;
+            color: white;
+        }
+
     </style>
 
 
 <div class="container py-5">
-    <h1 class="mb-3 fw-bold">PRODUCTOS GUARDADOS</h1>
+    <h1 class="mb-3 fw-bold d-flex align-items-center">
+        <a href="{{ url()->previous() }}" class="btn btn-naranja" style="font-size: 45%; margin-right: 15px" role="button">
+            <i class="fa-solid fa-circle-arrow-left"></i>
+        </a>
+        PRODUCTOS GUARDADOS</h1>
     <p class="text-secondary">
         Tienes {{ $prod_favoritos->count() }} productos guardados
         <span class="ms-2 small">• Mostrando 1-{{ min($prod_favoritos->count(), 10) }}</span>
@@ -47,18 +68,22 @@
                 <div class="col-md-6 mb-4">
                     <div class="card shadow-sm h-100 d-flex flex-row">
                         <!-- Imagen fija, sin recorte -->
-                        <div class="p-2 d-flex align-items-center">
+
+                        <div class="p-2 d-flex align-items-center" style="position: relative; z-index: 1;">
                             <img src="{{ isset($favorito->producto->imagen) ? url('storage/' . $favorito->producto->imagen): asset('images/img_PorDefecto.jpg') }}"
                                  alt="Producto"
                                  class="img-fluid"
                                  style="width: 160px; height: auto; max-height: 160px; object-fit: contain;">
+                            @if(!$favorito->producto->activo)
+                                <div class="out-of-stock" style="z-index:2;">No disponible</div>
+                            @endif
                         </div>
 
                         <!-- Contenido textual a la derecha de la imagen -->
                         <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
                             <div>
                                 <!-- Título más grande -->
-                                <h4 class="mb-1">{{ $favorito->producto->nombre }}</h4>
+                                <h4 class="mb-1 textoAjustado">{{ $favorito->producto->nombre }}</h4>
 
                                 <!-- Categoría -->
                                 <small class="text-muted d-block">{{ $favorito->producto->categoria->nombre }}</small>
@@ -80,7 +105,7 @@
                                             ->first();
                                     @endphp
 
-                                    <form id="favorito-form-{{ $favorito->producto->id }}" method="POST" style="display: inline-block;">
+                                    <form id="favorito-form-{{ $favorito->producto->id }}" method="POST" style="display: inline-block; position: relative; z-index: 3;">
                                         @csrf
                                         <input type="hidden" name="producto_id" value="{{ $favorito->producto->id }}">
                                         @if($guardado)

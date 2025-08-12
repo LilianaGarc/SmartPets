@@ -56,7 +56,7 @@
                 <td style="text-align: center;">
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            Acciones
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('solicitudes.show', [$solicitud->adopcion->id, $solicitud->id]) }}">Detalles</a></li>

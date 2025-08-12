@@ -125,13 +125,21 @@ class PublicacionController extends Controller
      */
     public function index()
     {
+        $authUserId = Auth::id();
         $publicaciones = Publicacion::with('user')
             ->withCount('likes')
-            ->with(['likes' => function ($query) {
-                $query->where('user_id', Auth::id());
+            ->with(['likes' => function ($query) use ($authUserId) {
+                if ($authUserId) {
+                    $query->where('user_id', $authUserId);
+                }
             }])
-            ->orderBy('created_at', 'desc')
-            ->get();
+            ->orderBy('created_at', 'desc');
+
+        if ($authUserId) {
+            $publicaciones->where('id_user', '!=', $authUserId);
+        }
+
+        $publicaciones = $publicaciones->get();
 
         $publicaciones->each(function ($publicacion) {
             $publicacion->user_has_liked = $publicacion->likes->isNotEmpty();
@@ -233,8 +241,8 @@ class PublicacionController extends Controller
     {
         $request->validate([
             'visibilidad' => 'required',
-            'contenido' => 'required|string|max:255|regex:/[a-zA-Z0-9 ]+/',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PHG,JPG,GIF,WEBP|max:2048',
+            'contenido' => 'required|max:250',
+            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PNG,JPG,GIF,WEBP|max:2048',
         ]);
 
         $rutaImagen = null;
@@ -247,7 +255,6 @@ class PublicacionController extends Controller
             'visibilidad' => $request->visibilidad,
             'contenido' => $request->contenido,
             'imagen' => $rutaImagen,
-
         ]);
 
         return redirect()->route('publicaciones.index')->with('success', 'Publicación de adopción creada con éxito.');

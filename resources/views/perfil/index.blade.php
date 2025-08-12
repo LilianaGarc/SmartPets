@@ -6,7 +6,7 @@
     <title>Perfil de Usuario</title>
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
 </head>
 <body>
 @if(session('success'))
@@ -54,7 +54,7 @@
             @if($user->descripción)
                 <p>📝 {{ $user->descripción }}</p>
             @endif
-           
+
             <p>
                 <strong>Estado:</strong>
                 @if($user->en_linea)
@@ -80,7 +80,7 @@
             </div>
 
 
-            <div class="productos-guardados">
+            <div class="productos-guardados" style="margin-top: 10px;">
                 <a href="{{ route('productos.guardados') }}">
                     <img class="marcador" id="icono-marcador" src="{{ asset('images/marcadorAzul.png') }}" alt="Guardados" title="Productos Guardados" style="width: 20px; height: 20px;">
                 </a>
