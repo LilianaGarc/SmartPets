@@ -577,10 +577,12 @@
                                 $mensaje = 'Estoy interesado en el producto "' . $producto->nombre . '". <a href="' . route('productos.show', $producto->id) . '">Más info</a>';
                             @endphp
 
-                            <a href="{{ route('chats.iniciar', $producto->user_id) }}?mensaje={{ rawurlencode($mensaje) }}"
-                               class="btn btn-primary text-white">
-                                <i class="fas fa-comment-dots"></i> Enviar Mensaje
-                            </a>
+                            @if(auth()->id() !== $producto->user_id)
+                                <a href="{{ route('chats.iniciar', $producto->user_id) }}?mensaje={{ rawurlencode($mensaje) }}"
+                                   class="btn btn-primary text-white">
+                                    <i class="fas fa-comment-dots"></i> Enviar Mensaje
+                                </a>
+                            @endif
 
                             @if(auth()->check() && auth()->id() === $producto->user_id)
                                 <div class="d-grid gap-2">
