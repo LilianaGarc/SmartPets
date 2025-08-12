@@ -240,24 +240,30 @@
         <div id="publicaciones" class="grid">
             @if($publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No has publicado publicaciones aún 😿!</p>
-                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay adopciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has creado publicaciones!</p>
+                    <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
             @else
                 @foreach($publicaciones as $publicacion)
-                    @if($publicacion->imagen)
-                        <div class="card">
-                            <a href="{{ route('publicaciones.show', $publicacion->id) }}">
-                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Adopción" class="img-card">
-                            </a>
-                            <div class="overlay-info">
-                                <strong>{{ $publicacion->contenido }}</strong></p>
-                            </div>
-                            <p class="contador-visitas">
-                                <i class="fa-solid fa-heart" style="color: darkred;"></i> {{ $publicacion->likes_count }}
-                            </p>
+                    <div class="card">
+
+                        <a href="{{ route('publicaciones.show', $publicacion->id) }}">
+                            @if($publicacion->imagen)
+                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
+                            @else
+                                <img src="{{ asset('images/sin_imagen.png') }}" alt="Sin imagen" class="img-card">
+                            @endif
+                        </a>
+                        <div class="overlay-info">
+                            <p><strong>{{ $publicacion->titulo }}</strong></p>
+                            <p>{{ \Illuminate\Support\Str::limit($publicacion->contenido, 60) }}</p>
+                            <p><i class="fas fa-heart"></i> {{ $publicacion->likes_count }} Me gusta</p>
                         </div>
-                    @endif
+                        <p class="contador-visitas">
+                            <i class="fas fa-heart"></i> {{ $publicacion->likes_count }}
+                        </p>
+
+                    </div>
                 @endforeach
             @endif
         </div>
@@ -331,7 +337,6 @@
                             <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Producto" class="img-card">
                         </a>
                         <div class="overlay-info">
-                            <p><strong>{{ $producto->nombre }}</strong></p>
                             <p>Precio: ${{ number_format($producto->precio, 2) }}</p>
                         </div>
                     </div>
