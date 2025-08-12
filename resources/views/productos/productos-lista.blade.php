@@ -23,6 +23,15 @@
             word-break: break-word;
             white-space: normal;
         }
+        .btn-naranja {
+            background-color: #ed8119; /* Color naranja */
+            color: white; /* Texto blanco */
+            border: none; /* Sin borde */
+        }
+        .btn-naranja:hover {
+            background-color: #18478b;
+            color: white;
+        }
     </style>
 
     <div class="container d-flex justify-content-center mt-4">
@@ -31,7 +40,7 @@
                 <form class ="row g-2 align-items-center" action="{{route('productos.index')}}" method="GET">
                     <div class="input-group">
                         <input type="text" class="form-control" name="search" placeholder="Buscar productos..." value="{{ request('search') }}">
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-naranja" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
 
@@ -76,8 +85,11 @@
     @endif
     @auth
         <div class="container d-flex justify-content-center mt-4">
-            <a href="{{ route('productos.create') }}" class="btn btn-primary">
+            <a href="{{ route('productos.create') }}" class="btn btn-naranja me-2">
                 <i class="fas fa-plus"></i> Crear Producto
+            </a>
+            <a href="{{ route('productos.guardados') }}" class="btn btn-link p-0" title="Ver productos guardados" style="width: 32px; height: 32px;">
+                <img src="{{ asset('images/marcadorAzul.png') }}" alt="Productos Guardados" class="img-fluid" style="width: 32px; height: 32px;">
             </a>
         </div>
     @endauth
@@ -106,7 +118,7 @@
                     <div class="informacion-perfil" style="flex: 1;">
                         <p class="fecha-publicacion textoAjustado" style="font-weight: bold; font-size: 1rem; margin: 0;">{{ $producto->nombre }}</p>
                         <p class="usuario-nombre" style="margin: 0; font-weight:  bold; font-size: 0.9rem; color: #555;">{{ $producto->user->name }}</p>
-                        <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->setTimezone('America/Tegucigalpa')->format('d/m/Y , H:i A') }}</p>
+                        <p class="fecha-publicacion" style="margin: 5px 0; font-size: 0.8rem; color: #555;">Publicado el {{ $producto->created_at->setTimezone('America/Tegucigalpa')->format('d/m/Y , H:i') }}</p>
                     </div>
 
                     @if(Auth::check() && Auth::id() === $producto->user_id)

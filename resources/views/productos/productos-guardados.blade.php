@@ -40,7 +40,11 @@
 
 
 <div class="container py-5">
-    <h1 class="mb-3 fw-bold">PRODUCTOS GUARDADOS</h1>
+    <h1 class="mb-3 fw-bold d-flex align-items-center">
+        <a href="{{ url()->previous() }}" class="text-decoration-none" style="color: #18478B; font-size: 1.5rem; margin-right: 15px;">
+            <i class="fas fa-arrow-left mr-6"></i>
+        </a>
+        PRODUCTOS GUARDADOS</h1>
     <p class="text-secondary">
         Tienes {{ $prod_favoritos->count() }} productos guardados
         <span class="ms-2 small">• Mostrando 1-{{ min($prod_favoritos->count(), 10) }}</span>

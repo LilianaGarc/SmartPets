@@ -685,7 +685,7 @@
 
                                                 <div>
                                                     <span class="username">{{ $resenia->user->name }}</span>
-                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i A') }}</small>
+                                                    <small class="d-block" >Publicado el {{ $resenia->created_at->format('d/m/Y H:i') }}</small>
                                                 </div>
                                             </div>
                                         </button>
