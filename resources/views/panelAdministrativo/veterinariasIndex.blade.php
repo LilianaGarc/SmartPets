@@ -52,7 +52,7 @@
 
                     <div class="dropdown">
                         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Actions
+                            Acciones
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('veterinarias.panelshow', ['id' => $veterinaria->id]) }}">Detalles</a></li>
