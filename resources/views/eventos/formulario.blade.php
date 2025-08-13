@@ -171,7 +171,7 @@
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/jpeg,image/png,image/jpg,image/gif" aria-label="Imagen del evento">
+                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" {{ isset($evento) ? '' : '' }}  aria-label="Imagen del evento">
                             @if(isset($evento) && $evento->imagen)
                                 <span class="input-group-text bg-white">
                                     <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Imagen actual" style="max-width: 60px; max-height: 60px; object-fit: cover;">

@@ -24,11 +24,11 @@
                 <span>Use su correo y contraseña</span>
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico">
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="200">
                 </div>
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Contraseña">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="150">
                 </div>
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
                 <button>INICIAR SESIÓN</button>
@@ -41,19 +41,19 @@
                 <span>Use su correo electrónico para registrarse</span>
                 <div class="container-input">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="name" name="name" placeholder="Nombre">
+                    <input type="text" id="name" name="name" maxlength="100" placeholder="Nombre">
                 </div>
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico">
+                    <input type="email" id="email" name="email" maxlength="200" placeholder="Correo electrónico">
                 </div>
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Contraseña">
+                    <input type="password" id="password" name="password" maxlength="150" placeholder="Contraseña">
                 </div>
                 <div class="container-input">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirmar contraseña">
+                    <input type="password" id="password_confirmation" name="password_confirmation" maxlength="150" placeholder="Confirmar contraseña">
                 </div>
                 <button class="button">REGISTRARSE</button>
             </form>

@@ -64,10 +64,10 @@ class UserController
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:300',
-            'email' => 'required|email|max:300|unique:users,email',
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:200|unique:users,email',
             'usertype' => 'required',
-            'password' => 'required|string|min:8|max:300',
+            'password' => 'required|string|min:8|max:150',
         ]);
 
         $type = $request->input('usertype');
@@ -120,10 +120,10 @@ class UserController
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|max:300|regex:/[a-zA-Z0-9 ]+/',
-            'email' => 'required|email|max:300|unique:users,email,' . $id,
+            'name' => 'required|max:100|regex:/[a-zA-Z0-9 ]+/',
+            'email' => 'required|email|max:200|unique:users,email,' . $id,
             'usertype' => 'required|in:admin,user',
-            'password' => 'nullable|min:8|max:300|regex:/[a-zA-Z0-9 ]+/',
+            'password' => 'nullable|min:8|max:150|regex:/[a-zA-Z0-9 ]+/',
         ]);
 
         $user = User::findOrFail($id);
