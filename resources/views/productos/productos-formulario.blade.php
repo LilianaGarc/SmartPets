@@ -43,7 +43,7 @@
         }
     </style>
 
-    <div class="breadcrumb-container">
+    <div class="breadcrumb-container" style="margin-bottom: 4em;">
         <ul class="breadcrumb">
             <li class="breadcrumb__item">
                 <a href="{{ route('index') }}" class="breadcrumb__inner">

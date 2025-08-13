@@ -574,7 +574,7 @@
                     @auth
                         <div class="d-flex align-items-center gap-3 mt-3">
                             @php
-                                $mensaje = 'Estoy interesado en el producto "' . $producto->nombre . '". <a href="' . route('productos.show', $producto->id) . '">Más info</a>';
+                                $mensaje = 'Estoy interesado en el producto "' . $producto->nombre . " "  . route('productos.show', $producto->id);
                             @endphp
 
                             @if(auth()->id() !== $producto->user_id)
