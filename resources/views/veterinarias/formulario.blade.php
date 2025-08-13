@@ -47,17 +47,6 @@
             </div>
             <hr>
 
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="list-unstyled mb-0">
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <!-- Formulario para crear o editar una veterinaria -->
             <form method="post" enctype="multipart/form-data" id="formularioVeterinaria"
                 @if (isset($veterinaria))
                     action="{{ route('veterinarias.update', ['id'=>$veterinaria->id]) }}"
@@ -71,61 +60,78 @@
 
                 <div class="row g-3">
 
-                    <div class="col-12">
+                    <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
+                            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"  placeholder="Nombre" maxlength="255" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
                             <label for="nombre">Nombre</label>
+                            @error('nombre')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="nombre_veterinario" placeholder="Propietario" name="nombre_veterinario" value="{{ isset($veterinaria) ? $veterinaria->nombre_veterinario : old('nombre_veterinario') }}">
+                            <input type="text" class="form-control @error('nombre_veterinario') is-invalid @enderror" id="nombre_veterinario" placeholder="Propietario" maxlength="255" name="nombre_veterinario" value="{{ isset($veterinaria) ? $veterinaria->nombre_veterinario : old('nombre_veterinario') }}">
                             <label for="nombre_veterinario">Propietario</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <div class="form-floating">
-                            <input type="text" inputmode="tel" class="form-control" id="telefono" placeholder="Número de teléfono" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
-                            <label for="telefono">Número de teléfono</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <div class="form-floating">
-                            <input type="text" inputmode="tel" class="form-control" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
-                            <label for="whatsapp">Número de WhatsApp</label>
+                            @error('nombre_veterinario')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="time" class="form-control" id="horario_apertura" placeholder="Horario" name="horario_apertura" value="{{ isset($veterinaria) ? $veterinaria->horario_apertura : old('horario_apertura') }}" step="1800">
+                            <input type="time" class="form-control @error('horario_apertura') is-invalid @enderror" id="horario_apertura" placeholder="Horario" name="horario_apertura" value="{{ isset($veterinaria) ? $veterinaria->horario_apertura : old('horario_apertura') }}" step="1800">
                             <label for="horario_apertura">Hora de Apertura</label>
+                            @error('horario_apertura')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="time" class="form-control" id="horario_cierre" placeholder="Horario" name="horario_cierre" value="{{ isset($veterinaria) ? $veterinaria->horario_cierre : old('horario_cierre') }}" step="1800">
+                            <input type="time" class="form-control @error('horario_cierre') is-invalid @enderror" id="horario_cierre" placeholder="Horario" name="horario_cierre" value="{{ isset($veterinaria) ? $veterinaria->horario_cierre : old('horario_cierre') }}" step="1800">
                             <label for="horario_cierre">Hora de Cierre</label>
+                            @error('horario_cierre')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <div class="form-floating">
+                            <input type="text" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" placeholder="Número de teléfono" maxlength="8" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
+                            <label for="telefono">Número de teléfono</label>
+                            @error('telefono')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <div class="form-floating">
+                            <input type="text" inputmode="tel" class="form-control @error('whatsapp') is-invalid @enderror" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" maxlength="8" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
+                            <label for="whatsapp">Número de WhatsApp</label>
+                            @error('whatsapp')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     @php
                     $departamentos = [
-                    'Atlántida', 'Choluteca', 'Colón', 'Comayagua', 'Copán', 'Cortés',
-                    'El Paraíso', 'Francisco Morazán', 'Gracias a Dios', 'Intibucá',
-                    'Islas de la Bahía', 'La Paz', 'Lempira', 'Ocotepeque', 'Olancho',
-                    'Santa Bárbara', 'Valle', 'Yoro'
-                    ];
+                        'Atlántida', 'Choluteca', 'Colón', 'Comayagua', 'Copán', 'Cortés',
+                        'El Paraíso', 'Francisco Morazán', 'Gracias a Dios', 'Intibucá',
+                        'Islas de la Bahía', 'La Paz', 'Lempira', 'Ocotepeque', 'Olancho',
+                        'Santa Bárbara', 'Valle', 'Yoro'
+                        ];
                     @endphp
 
-                    <!-- Ubicacion -->
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="form-floating">
-                            <select class="form-select" id="departamento" name="departamento">
+                            <select class="form-select @error('departamento') is-invalid @enderror" id="departamento" name="departamento">
                                 <option value="">Seleccione un departamento</option>
                                 @foreach ($departamentos as $dep)
                                 <option value="{{ $dep }}"
@@ -139,47 +145,64 @@
                                 @endforeach
                             </select>
                             <label for="departamento">Departamento</label>
+                            @error('departamento')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-3">
                         <div class="form-floating">
-                            <input type="text" inputmode="text" class="form-control" id="ciudad" placeholder="Ciudad" name="ciudad" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->ciudad : old('ciudad') }}">
+                            <input type="text" inputmode="text" class="form-control @error('ciudad') is-invalid @enderror" id="ciudad" placeholder="Ciudad" name="ciudad" maxlength="100" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->ciudad : old('ciudad') }}">
                             <label for="ciudad">Ciudad</label>
+                            @error('ciudad')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" inputmode="text" class="form-control" id="municipio" placeholder="Municipio" name="municipio" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->municipio : old('municipio') }}">
+                            <input type="text" inputmode="text" class="form-control @error('municipio') is-invalid @enderror" id="municipio" placeholder="Municipio" name="municipio" maxlength="100" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->municipio : old('municipio') }}">
                             <label for="municipio">Municipio</label>
+                            @error('municipio')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" inputmode="text" class="form-control" id="direccion" placeholder="Dirección" name="direccion" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
+                            <input type="text" inputmode="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" placeholder="Dirección" name="direccion" maxlength="255" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
                             <label for="direccion">Dirección</label>
+                            @error('direccion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="text" inputmode="decimal" class="form-control" id="latitud" placeholder="Latitud" name="latitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control @error('latitud') is-invalid @enderror" id="latitud" placeholder="Latitud" name="latitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}">
                             <label for="latitud">Latitud</label>
+                            @error('latitud')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="text" inputmode="decimal" class="form-control" id="longitud" placeholder="Longitud" name="longitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->longitud : old('longitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control @error('longitud') is-invalid @enderror" id="longitud" placeholder="Longitud" name="longitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->longitud : old('longitud') }}">
                             <label for="longitud">Longitud</label>
+                            @error('longitud')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
                 <br>
 
-                <!-- Sección de imágenes y redes sociales -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <h5 class="form-label">Imágenes de la Veterinaria</h5>
@@ -189,16 +212,18 @@
                                 <i class="fa-solid fa-plus me-2"></i> Agregar Imagen
                             </button>
                             <div class="dropdown-menu p-3 w-100" aria-labelledby="addImageButton">
-                                <input type="file" class="form-control mb-2" id="imagenes" name="imagenes[]" accept="image/png,image/jpeg,image/jpeg" onchange="previewImage(this)" value="{{ isset($veterinaria) ? $veterinaria->imagenes : old('imagenes') }}" multiple>
+                                <input type="file" class="form-control @error('imagenes') is-invalid @enderror mb-2" id="imagenes" name="imagenes[]" accept="image/png,image/jpeg,image/jpeg" maxlength="5120" onchange="previewImage(this)" value="{{ isset($veterinaria) ? $veterinaria->imagenes : old('imagenes') }}" multiple>
+                                @error('imagenes')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 
-                        <!-- Vista previa de las imágenes -->
-                        <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-3" style="min-height: 250px; display: none;">
+                        <div id="imagePreview" class="mt-2 d-flex flex-wrap gap-2" style="min-height: 200px; max-width: 700px; display: none;">
                             @if(isset($veterinaria) && !$veterinaria->imagenes->isEmpty())
                             @foreach ($veterinaria->imagenes as $imagen)
                             <div class="image-preview-item" data-image-id="{{ $imagen->id }}">
-                                <img src="{{ asset('storage/' . $imagen->path) }}" alt="Imagen de la veterinaria" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
+                                <img src="{{ asset('storage/' . $imagen->path) }}" alt="Imagen de la veterinaria" style="width: 200px; height: 200px; object-fit: cover; border-radius: 8px;">
                                 <button type="button" class="remove-btn btn btn-danger btn-sm" onclick="removeImage(this)" data-id="{{ $imagen->id }}">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -216,17 +241,19 @@
                             <button class="btn btn-primary btn-sm dropdown-toggle w-100" type="button" id="addSocialButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-plus me-2"></i> Agregar Red Social
                             </button>
-                            <div class="dropdown-menu p-3 w-100" aria-labelledby="addSocialButton">
+                            <div class="dropdown-menu dropdown-menu-light p-3 w-100" aria-labelledby="addSocialButton">
                                 <div class="mb-3">
-                                    <select class="form-select" id="socialNetwork" name="social_network">
+                                    <select class="form-select @error('social_network') is-invalid @enderror" id="socialNetwork" name="social_network">
                                         <option value="">Seleccione una red</option>
                                         <option value="Facebook">Facebook</option>
                                         <option value="Instagram">Instagram</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control" id="socialUsername" placeholder="Nombre de usuario" name="social_username">
+                                    <input type="text" class="form-control @error('social_username') is-invalid @enderror" id="socialUsername" placeholder="Nombre de usuario" maxlength="100" name="social_username">
+
                                 </div>
+                                
                                 <button type="button" class="btn btn-primary w-100" onclick="addSocialLink()">Agregar</button>
                             </div>
                         </div>
@@ -237,7 +264,7 @@
                             <div class="social-link-item" data-red-id="{{ $red->id }}">
                                 <span>{{ $red->tipo_red_social ?? 'Sin tipo de red' }}: {{ $red->nombre_usuario ?? 'Sin usuario' }}</span>
                                 <input type="hidden" name="redes[{{ $loop->index }}][tipo_red_social]" value="{{ $red->tipo_red_social }}">
-                                <input class="mt-1" type="hidden" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
+                                <input class="mt-1" type="hidden" maxlength="100" name="redes[{{ $loop->index }}][nombre_usuario]" value="{{ $red->nombre_usuario }}">
                                 <button type="button" class="btn btn-outline-danger btn-sm ms-auto" onclick="removeRed(this)">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -247,11 +274,11 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end gap-2 mt-3">
-                        <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }} btn-sm">
+                        <button type="submit" class="btn btn-{{ isset($veterinaria) ? 'warning' : 'success' }}">
                             <i class="fa-solid fa-save"></i>
                             {{ isset($veterinaria) ? 'Actualizar' : 'Crear' }}
                         </button>
-                        <button type="reset" class="btn btn-danger btn-sm" title="Borrar todos los campos">
+                        <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
                             <i class="fa-solid fa-broom"></i> Limpiar
                         </button>
             </form>
@@ -277,6 +304,17 @@
     @section('footer')
     @endsection
     <style>
+        .dropdown-menu {
+            background-color: #fff !important;
+            color: #212529 !important;
+        }
+        .dropdown-menu .form-select,
+        .dropdown-menu .form-control {
+            background-color: #fff !important;
+            color: #212529 !important;
+        }
+
+
         .breadcrumb-container {
             display: flex;
             align-items: start;
@@ -584,7 +622,6 @@
     </style>
 
     <script>
-        // Limpieza de campos al resetear el formulario
         document.querySelector('form#formularioVeterinaria').addEventListener('reset', function() {
             document.getElementById('socialLinks').innerHTML = '';
             const imagePreview = document.getElementById('imagePreview');
@@ -626,17 +663,16 @@
         });
     </script>
 
-    <!-- Vista previa de imágenes -->
     <script>
-        let imageFiles = []; // Array para almacenar los archivos de imagen
-        let socialCount = 0; // Contador para las redes sociales
+        let imageFiles = []; 
+        let socialCount = 0;
 
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
             const files = Array.from(input.files);
 
-            imageFiles = imageFiles.concat(files); // Agregar nuevos archivos al array
-            preview.innerHTML = ''; // Limpiar el contenedor de vista previa
+            imageFiles = imageFiles.concat(files);
+            preview.innerHTML = '';
 
             files.forEach((file, index) => {
                 if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg') {
@@ -654,7 +690,6 @@
                 }
             });
 
-            // Actualizar el input de archivos con los archivos actuales
             updateFileInput();
         }
 
@@ -666,7 +701,7 @@
             const imageId = imageContainer.getAttribute('data-image-id');
 
             if (imageId) {
-                deletedImages.push(imageId); // Agregar el ID de la imagen eliminada al array
+                deletedImages.push(imageId);
 
                 let deletedImagesInput = document.getElementById('deleted_images');
                 if (!deletedImagesInput) {
@@ -681,10 +716,8 @@
                 deletedImagesInput.value = deletedImages.join(',');
             }
 
-            // Eliminar la vista previa
             imageContainer.remove();
 
-            // Actualizar el input de archivos si es necesario
             if (!imageId) {
                 updateFileInput();
             }
@@ -720,11 +753,9 @@
             socialLinks.appendChild(div);
             socialCount++;
 
-            // Resetear los campos
             document.getElementById('socialNetwork').value = '';
             document.getElementById('socialUsername').value = '';
 
-            // Cerrar el dropdown
             document.getElementById('addSocialButton').click();
         }
 

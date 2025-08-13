@@ -205,12 +205,19 @@ class VeterinariaController extends Controller
     public function store(Request $request)
     {
         $idUsuario = auth()->id();
+        $departamentos = [
+                    'Atlántida', 'Choluteca', 'Colón', 'Comayagua', 'Copán', 'Cortés',
+                    'El Paraíso', 'Francisco Morazán', 'Gracias a Dios', 'Intibucá',
+                    'Islas de la Bahía', 'La Paz', 'Lempira', 'Ocotepeque', 'Olancho',
+                    'Santa Bárbara', 'Valle', 'Yoro'
+                    ];
+    
         $request->validate([
             'nombre' => 'required|string|max:255',
             'nombre_veterinario' => 'required|string|max:255',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
-            'departamento' => 'required',
+            'departamento' => 'required|in:'.implode(',', $departamentos),
             'ciudad' => 'required|string|max:100',
             'municipio' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
@@ -219,8 +226,8 @@ class VeterinariaController extends Controller
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
             'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
-            'redes.*.tipo_red_social' => 'nullable|string|max:255',
-            'redes.*.nombre_usuario' => 'nullable|string|max:255',
+            'redes.*.tipo_red_social' => 'nullable|string|max:100|in:Facebook,Instagram',
+            'redes.*.nombre_usuario' => 'nullable|string|max:100',
         ]);
 
         $ubicacion = Ubicacion::create([
@@ -278,12 +285,19 @@ class VeterinariaController extends Controller
     public function update(Request $request, string $id)
     {
         $idUsuario = auth()->id();
+        $departamentos = [
+                    'Atlántida', 'Choluteca', 'Colón', 'Comayagua', 'Copán', 'Cortés',
+                    'El Paraíso', 'Francisco Morazán', 'Gracias a Dios', 'Intibucá',
+                    'Islas de la Bahía', 'La Paz', 'Lempira', 'Ocotepeque', 'Olancho',
+                    'Santa Bárbara', 'Valle', 'Yoro'
+                    ];
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'nombre_veterinario' => 'required|string|max:255',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
-            'departamento' => 'required',
+            'departamento' => 'required|in:'.implode(',', $departamentos),
             'municipio' => 'required|string|max:100',
             'ciudad' => 'required|string|max:100',
             'direccion' => 'required|string|max:255',
@@ -292,8 +306,8 @@ class VeterinariaController extends Controller
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
             'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
-            'redes.*.tipo_red_social' => 'nullable|string|max:255',
-            'redes.*.nombre_usuario' => 'nullable|string|max:255',
+            'redes.*.tipo_red_social' => 'nullable|string|max:100|in:Facebook,Instagram',
+            'redes.*.nombre_usuario' => 'nullable|string|max:100',
         ]);
 
         $veterinaria = Veterinaria::with('imagenes', 'redes')->findOrFail($id);
@@ -354,7 +368,6 @@ class VeterinariaController extends Controller
         }
 
         // Guardar la veterinaria
-
         if (auth()->user()->es_admin) {
             return redirect()->route('veterinarias.panel')->with('exito', 'Veterinaria actualizada exitosamente');
         } else {
