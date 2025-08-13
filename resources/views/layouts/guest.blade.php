@@ -27,6 +27,7 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
+
         * {
             margin: 0;
             padding: 0;
@@ -34,19 +35,28 @@
             font-family: "Montserrat", sans-serif;
         }
 
+        html, body {
+            width: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
         body {
             width: 100%;
-            height: 100vh;
+            min-height: 100dvh;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-y: auto !important;
             font-family: "Montserrat", sans-serif;
             background: url('{{ asset('images/fondohuellas.png') }}') no-repeat center center fixed;
             background-size: cover;
         }
+
 
         .container {
             width: 800px;
@@ -240,15 +250,22 @@
         /* Cambio, reduccion de pantalla */
         @media (max-width: 768px) {
             .container {
-                width: 100%;
-                height: 100%;
+                width: 100vw;
+                height: 100dvh;
+                min-height: 100dvh;
+                max-height: 100dvh;
+                overflow: hidden !important;
                 flex-direction: column;
+                border-radius: 0;
             }
+
+
 
             .container-form {
                 width: 100%;
                 height: 50%;
                 transform: translateY(0);
+
             }
 
             .sign-up {
@@ -459,6 +476,8 @@
 
 
 {{ $slot }}
+
+
 
 </body>
 </html>

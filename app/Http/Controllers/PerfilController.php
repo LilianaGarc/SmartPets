@@ -27,12 +27,13 @@ class PerfilController extends Controller
         $productosUsuario = $user->productos()->with('categoria')->get();
 
         $publicaciones = Publicacion::where('id_user', $user->id)
-        ->withCount('likes')
-        ->with(['likes' => function ($query) use ($user) {
-            $query->where('id_user', $user->id);
-        }])
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->withCount('likes')
+            ->with(['likes' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
 
 
         $solicitudes = \App\Models\Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
@@ -59,7 +60,7 @@ class PerfilController extends Controller
         $publicaciones = Publicacion::where('id_user', $user->id)
         ->withCount('likes')
         ->with(['likes' => function ($query) use ($user) {
-            $query->where('id_user', $user->id);
+            $query->where('user_id', $user->id);
         }])
         ->orderBy('created_at', 'desc')
         ->get();

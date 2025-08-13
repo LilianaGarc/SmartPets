@@ -63,13 +63,12 @@
                             <h5 class="mb-0">{{ auth()->user()->name }}</h5>
                         </div>
 
-
-                        <div class="col">
-                            <select class="form-select" name="visibilidad" style="width: 20%; margin: 1.5%;">
-                                <option value="publico" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'publico' ? 'selected' : '' }}>Público</option>
-                                <option value="privado" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'privado' ? 'selected' : '' }}>Privado</option>
+                        <div class="col" style="display: none;">
+                            <select class="form-select" name="visibilidad">
+                                <option value="publico" selected>Público</option>
                             </select>
                         </div>
+
 
                         <div class="col">
                             <textarea class="form-control" name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
