@@ -45,20 +45,23 @@ class ProductoController extends Controller
         $query = $request->input('search');
         $categoriaId = $request->input('categoria');
         $subcategoriaId = $request->input('subcategoria');
-        $productos = Producto::query()->where('activo', true);
-        if ($query){
+        $productos = Producto::query()
+            ->where('activo', true)
+            ->where('user_id', '!=', auth()->id());
+        if ($query) {
             $productos->where('nombre', 'LIKE', '%'.$query.'%');
         }
-        if ($categoriaId){
+        if ($categoriaId) {
             $productos->where('categoria_id', $categoriaId);
         }
-        if ($subcategoriaId){
+        if ($subcategoriaId) {
             $productos->where('subcategoria_id', $subcategoriaId);
         }
         $productos = $productos->paginate(12);
         $categorias = Categoria::limit(6)->get();
-        return view('productos.productos-lista', compact('productos', 'categorias','query', 'categoriaId', 'subcategoriaId'));
+        return view('productos.productos-lista', compact('productos', 'categorias', 'query', 'categoriaId', 'subcategoriaId'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
