@@ -60,7 +60,7 @@
                         <div class="form-floating">
                             <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
                                    placeholder="Título" inputmode="text" autocomplete="off"
-                                   value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título">
+                                   value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título" maxlength="100">
                             <label for="titulo">Título <span style="color:red">*</span></label>
                             @error('titulo')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -82,9 +82,9 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
+                            <input type="number" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
                                    placeholder="Teléfono" inputmode="tel" autocomplete="tel"
-                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono">
+                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono" maxlength="15">
                             <label for="telefono">Teléfono <span style="color:red">*</span></label>
                             @error('telefono')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -125,7 +125,7 @@
                     </div>
                     <div class="col-md-3" id="campo_precio" style="display: none;">
                         <div class="form-floating">
-                            <input type="number" min="0" step="0.01" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio"
+                            <input type="number" min="0" step="0.01" max="9999999999" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio"
                                    placeholder="Precio del evento" value="{{ old('precio', $evento->precio ?? '') }}" aria-label="Precio del evento">
                             <label for="precio">Precio</label>
                             @error('precio')
@@ -139,7 +139,7 @@
                     <div class="col-12">
                         <div class="form-floating">
                             <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion"
-                                   placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" aria-label="Ubicación">
+                                   placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" aria-label="Ubicación" maxlength="255">
                             <label for="ubicacion">Ubicación <span style="color:red">*</span></label>
                             @error('ubicacion')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -171,7 +171,7 @@
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ isset($evento) ? '' : '' }}>
+                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/jpeg,image/png,image/jpg,image/gif" aria-label="Imagen del evento">
                             @if(isset($evento) && $evento->imagen)
                                 <span class="input-group-text bg-white">
                                     <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Imagen actual" style="max-width: 60px; max-height: 60px; object-fit: cover;">
@@ -190,9 +190,11 @@
                 <br>
                 <div class="text-end">
                     <button type="submit" class="btn btn-{{ isset($evento) ? 'warning' : 'success' }}">
-                        {{ isset($evento) ? 'Actualizar Evento' : 'Crear Evento' }}
+                        <i class="fa-solid fa-{{ isset($evento) ? 'pen-to-square' : 'save' }}"></i>
+                        {{ isset($evento) ? 'Actualizar' : 'Crear' }}
                     </button>
                     <button type="reset" class="btn btn-danger" title="Borrar todos los campos">
+                        <i class="fa-solid fa-broom"></i>
                         Limpiar
                     </button>
                 </div>

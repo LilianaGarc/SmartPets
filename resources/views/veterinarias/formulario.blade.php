@@ -102,7 +102,7 @@
 
                     <div class="col-12 col-md-3">
                         <div class="form-floating">
-                            <input type="text" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" placeholder="Número de teléfono" maxlength="8" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
+                            <input type="number" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" placeholder="Número de teléfono" maxlength="8" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
                             <label for="telefono">Número de teléfono</label>
                             @error('telefono')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -112,7 +112,7 @@
 
                     <div class="col-12 col-md-3">
                         <div class="form-floating">
-                            <input type="text" inputmode="tel" class="form-control @error('whatsapp') is-invalid @enderror" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" maxlength="8" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
+                            <input type="number" inputmode="tel" class="form-control @error('whatsapp') is-invalid @enderror" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" maxlength="8" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
                             <label for="whatsapp">Número de WhatsApp</label>
                             @error('whatsapp')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -228,6 +228,7 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
+                            
                             @endforeach
                             @endif
                         </div>
