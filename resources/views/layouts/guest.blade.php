@@ -476,14 +476,6 @@
 
 
 {{ $slot }}
-<script>
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            window.scrollTo(0, 1);
-            window.scrollTo(0, 0);
-        }, 100);
-    });
-</script>
 
 
 
