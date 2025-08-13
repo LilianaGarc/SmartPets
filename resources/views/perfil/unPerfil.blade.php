@@ -36,7 +36,6 @@
             </div>
 
         </div>
-        {{-- Mascota virtual igual que en tu perfil --}}
         <div class="mascota-virtual" style="width: 100%; text-align: center;">
             @if(!$user->fotoperfil)
                 <h3 class="titulo-mascota">Mascota Virtual</h3>
@@ -94,9 +93,7 @@
                             <a href="{{ route('adopciones.show', $adopcion->id) }}">
                                 <img src="{{ asset('storage/' . $adopcion->imagen) }}" alt="Adopción" class="img-card">
                             </a>
-                            <p class="contador-visitas">
-                                <i class="fas fa-eye"></i> {{ $adopcion->visibilidad }}
-                            </p>
+
                         </div>
                     @endif
                 @endforeach
@@ -115,9 +112,7 @@
                         <a href="{{ route('publicaciones.show', $publicacion->id) }}">
                             <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
                         </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $publicacion->titulo }}</strong></p>
-                        </div>
+
                     </div>
                 @endforeach
             @endif
@@ -147,16 +142,13 @@
                     @endif
                 </a>
 
-                <div class="overlay-info" style="padding: 10px;">
-                    <p><strong>{{ $veterinaria->nombre }}</strong></p>
-                    <p>Teléfono: {{ $veterinaria->telefono }}</p>
-                </div>
+
             </div>
         @endforeach
     @endif
 </div>
 
-        
+
         <div id="eventos" class="grid">
             @if($eventos->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
@@ -169,9 +161,6 @@
                         <a href="{{ route('eventos.show', $evento->id) }}">
                             <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Evento" class="img-card">
                         </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $evento->titulo }}</strong></p>
-                        </div>
                     </div>
                 @endforeach
             @endif
@@ -188,10 +177,7 @@
                         <a href="{{ route('productos.show', $producto->id) }}">
                             <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Producto" class="img-card">
                         </a>
-                        <div class="overlay-info">
-                            <p><strong>{{ $producto->nombre }}</strong></p>
-                            <p>Precio: ${{ number_format($producto->precio, 2) }}</p>
-                        </div>
+
                     </div>
                 @endforeach
             @endif

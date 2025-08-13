@@ -105,7 +105,7 @@
 <body>
 @include('MenuPrincipal.Navbar')
 
-<div class="container mx-auto mt-3">
+<div class="container mx-auto mt-2">
     @yield("contenido")
 </div>
 

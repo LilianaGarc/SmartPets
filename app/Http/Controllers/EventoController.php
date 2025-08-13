@@ -210,13 +210,13 @@ class EventoController
         $idUsuario = auth()->id();
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
+            'titulo' => 'required|string|max:100',
             'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|numeric|max:15',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'precio' => 'nullable|required_if:modalidad_evento,pago|max:10|numeric|min:0',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
@@ -276,13 +276,13 @@ class EventoController
 
     {
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string',
+            'titulo' => 'required|string|max:100',
+            'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:12',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'precio' => 'nullable|required_if:modalidad_evento,pago|max:10|numeric|min:0',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
