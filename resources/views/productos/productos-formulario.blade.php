@@ -40,6 +40,10 @@
             color: #dc3545;
             font-size: 0.875em;
             margin-top: 0.25rem;
+            visibility: hidden;
+        }
+        .error-visible {
+            visibility: visible !important;
         }
     </style>
 
@@ -110,7 +114,7 @@
                                        name="nombre" value="{{ isset($producto) ? $producto->nombre : old('nombre') }}"
                                        maxlength="50" required>
                                 <label for="nombre">Nombre del Producto</label>
-                                <div class="error-message" id="error-nombre" style="display:none;">Nombre del Producto (obligatorio)</div>
+                                <div class="error-message" id="error-nombre">Nombre obligatorio</div>
                             </div>
                         </div>
 
@@ -120,7 +124,7 @@
                                        name="precio" value="{{ isset($producto) ? $producto->precio : old('precio') }}"
                                        step="0.01" required>
                                 <label for="precio">Precio</label>
-                                <div class="error-message" id="error-precio" style="display:none;">Precio (obligatorio)</div>
+                                <div class="error-message" id="error-precio">Precio obligatorio y mayor a 0</div>
                             </div>
                         </div>
 
@@ -130,7 +134,7 @@
                                        name="stock" value="{{ isset($producto) ? $producto->stock : old('stock') }}"
                                        required>
                                 <label for="stock">Cantidad disponible</label>
-                                <div class="error-message" id="error-stock" style="display:none;">Cantidad disponible (obligatorio, mínimo 1)</div>
+                                <div class="error-message" id="error-stock">Cantidad disponible obligatoria, mínimo 1</div>
                             </div>
                         </div>
 
@@ -145,7 +149,7 @@
                                     @endforeach
                                 </select>
                                 <label for="categoria">Categoría</label>
-                                <div class="error-message" id="error-categoria" style="display:none;">Categoría (obligatorio)</div>
+                                <div class="error-message" id="error-categoria">Categoría obligatoria</div>
                             </div>
                         </div>
 
@@ -157,13 +161,14 @@
                                         <optgroup label="{{ $categoria->nombre }}" label-id="{{ $categoria->id }}">
                                             @foreach ($categoria->subcategorias as $subcategoria)
                                                 <option value="{{ $subcategoria->id }}" {{ isset($producto) && $producto->subcategoria_id == $subcategoria->id ? 'selected' : '' }}>
-                                                {{ $subcategoria->nombre }}
+                                                    {{ $subcategoria->nombre }}
+                                                </option>
                                             @endforeach
                                         </optgroup>
                                     @endforeach
                                 </select>
                                 <label for="subcategoria">Subcategoría</label>
-                                <div class="error-message" id="error-subcategoria" style="display:none;">Subcategoría (obligatorio)</div>
+                                <div class="error-message" id="error-subcategoria">Subcategoría obligatoria</div>
                             </div>
                         </div>
 
@@ -172,7 +177,7 @@
                                 <textarea class="form-control" id="descripcion" placeholder="Descripción"
                                           name="descripcion" style="height: 100px;" maxlength="255" required>{{ isset($producto) ? $producto->descripcion : old('descripcion') }}</textarea>
                                 <label for="descripcion">Descripción</label>
-                                <div class="error-message" id="error-descripcion" style="display:none;">Descripción (obligatorio)</div>
+                                <div class="error-message" id="error-descripcion">Descripción obligatoria</div>
                             </div>
                         </div>
 
@@ -227,11 +232,11 @@
 
             function showError(element, errorId) {
                 element.classList.add('error-border');
-                document.getElementById(errorId).style.display = 'block';
+                document.getElementById(errorId).classList.add('error-visible');
             }
             function clearError(element, errorId) {
                 element.classList.remove('error-border');
-                document.getElementById(errorId).style.display = 'none';
+                document.getElementById(errorId).classList.remove('error-visible');
             }
 
             inputImagenes.addEventListener('change', function () {
@@ -349,6 +354,53 @@
                 el.addEventListener('blur', () => {
                     if (el.value.trim()) {
                         clearError(el, 'error-' + id);
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formulario = document.getElementById('formularioProducto');
+            const camposRequeridos = ['nombre', 'precio', 'stock', 'categoria', 'subcategoria', 'descripcion'];
+
+            function showError(element, errorId) {
+                element.classList.add('error-border');
+                const errorElement = document.getElementById(errorId);
+                errorElement.classList.add('error-visible');
+                errorElement.style.color = '#dc3545'; // Color rojo
+            }
+
+            function clearError(element, errorId) {
+                element.classList.remove('error-border');
+                const errorElement = document.getElementById(errorId);
+                errorElement.classList.remove('error-visible');
+            }
+
+            formulario.addEventListener('submit', function (e) {
+                e.preventDefault();
+                let valid = true;
+
+                camposRequeridos.forEach(id => {
+                    const campo = document.getElementById(id);
+                    if (!campo.value.trim() || (campo.type === 'number' && Number(campo.value) <= 0)) {
+                        showError(campo, 'error-' + id);
+                        valid = false;
+                    } else {
+                        clearError(campo, 'error-' + id);
+                    }
+                });
+
+                if (valid) {
+                    formulario.submit();
+                }
+            });
+
+            camposRequeridos.forEach(id => {
+                const campo = document.getElementById(id);
+                campo.addEventListener('input', () => clearError(campo, 'error-' + id));
+                campo.addEventListener('blur', () => {
+                    if (campo.value.trim()) {
+                        clearError(campo, 'error-' + id);
                     }
                 });
             });
