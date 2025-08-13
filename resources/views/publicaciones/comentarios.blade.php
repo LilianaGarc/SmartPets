@@ -97,7 +97,6 @@
                     </h6>
                 </div>
 
-                <hr>
                 <div class="interacciones" style="margin-top: 1vh;">
                     <div class="reactions" id="reactions-{{ $publicacion->id }}">
 
@@ -127,7 +126,7 @@
                         </div>
                     </div>
                 @endif
-                <hr>
+
                 <div>
                     <div class="col">
                         @foreach($comentarios as $comentario)
