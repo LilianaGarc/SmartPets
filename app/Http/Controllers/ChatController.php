@@ -30,7 +30,9 @@ class ChatController
     public function index(Request $request)
     {
         $usuarioActual = Auth::user();
-        $usuarios = User::where('id', '!=', $usuarioActual->id)->get();
+        $usuarios = User::where('id', '!=', $usuarioActual->id)
+            ->where('usertype', 'user')
+            ->get();
 
         $usuariosConMensajes = $usuarios->map(function ($usuario) use ($usuarioActual) {
             $chat = Chat::where(function ($query) use ($usuario, $usuarioActual) {
@@ -105,7 +107,9 @@ class ChatController
     public function usuariosConMensajes()
     {
         $usuarioActual = Auth::user();
-        $usuarios = User::where('id', '!=', $usuarioActual->id)->get();
+        $usuarios = User::where('id', '!=', $usuarioActual->id)
+            ->where('usertype', 'user')
+            ->get();
 
         $usuariosConMensajes = $usuarios->map(function ($usuario) use ($usuarioActual) {
             $chat = Chat::where(function ($query) use ($usuario, $usuarioActual) {
