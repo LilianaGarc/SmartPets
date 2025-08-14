@@ -382,13 +382,23 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         const items = document.querySelectorAll('.carousel-item input[type="radio"]');
+
+        let anyChecked = false;
+
         items.forEach((input, index) => {
             if (input.checked) {
                 currentIndex = index;
                 moverCarrusel(0);
+                anyChecked = true;
             }
         });
+
+        if (!anyChecked && items.length > 0) {
+            items[0].checked = true;
+            moverCarrusel(0);
+        }
     });
+
 </script>
 
 <script>

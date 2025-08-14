@@ -53,7 +53,7 @@ class MensajeController
         }
 
         $request->validate([
-            'texto' => 'nullable|string',
+            'texto' => 'nullable|string|max:1000',
             'imagen' => 'nullable|image|max:5120',
         ]);
 

@@ -95,8 +95,8 @@
                 @if ($evento->imagen)
                     <div class="card-img-top bg-light d-flex align-items-center
                     justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
-                        <img src="{{ asset('storage/' . $evento->imagen) }}" 
-                             class="img-fluid rounded mb-4 shadow evento-img-fija" 
+                        <img src="{{ asset('storage/' . $evento->imagen) }}"
+                             class="img-fluid rounded mb-4 shadow evento-img-fija"
                              alt="Imagen del evento">
                     </div>
                 @else
@@ -168,11 +168,11 @@
                                 </li>
                                 <li>
                                     <button type="button"
-                                        class="dropdown-item text-danger"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEliminarEvento"
-                                        data-evento-id="{{ $evento->id }}"
-                                        data-evento-nombre="{{ $evento->titulo }}">
+                                            class="dropdown-item text-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEliminarEvento"
+                                            data-evento-id="{{ $evento->id }}"
+                                            data-evento-nombre="{{ $evento->titulo }}">
                                         <i class="fas fa-trash"></i> Borrar
                                     </button>
                                 </li>
@@ -215,16 +215,17 @@
     <div class="d-flex justify-content-center">
         {{ $eventos->links('pagination::bootstrap-5') }}
     </div>
-    
+
     @endif
 </div>
 
+<!-- Modal fuera del foreach -->
 <div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEliminarEventoLabel">Confirmar Eliminación </h5> 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <span>¿Desea eliminar este evento?</span>
@@ -232,7 +233,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form id="formEliminarEvento" method="POST" action="{{ route('eventos.destroy', '$evento->id') }}">
+                <form id="formEliminarEvento" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -242,8 +243,9 @@
     </div>
 </div>
 
+
 <style>
-    
+
     .breadcrumb-container {
         display: flex;
         align-items: start;
@@ -469,5 +471,18 @@
         }
     }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalEliminar = document.getElementById('modalEliminarEvento');
+        modalEliminar.addEventListener('show.bs.modal', function (event) {
+            let button = event.relatedTarget;
+            let eventoId = button.getAttribute('data-evento-id');
+
+            let form = document.getElementById('formEliminarEvento');
+            form.action = `/eventos/${eventoId}/eliminar`;
+        });
+    });
+</script>
+
 @include('chats.chat-float')
 @endsection

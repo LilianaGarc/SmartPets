@@ -112,6 +112,8 @@ class PerfilController extends Controller
 
         $user->fotoperfil = $path;
         $user->save();
+        $user->refresh();
+
 
         return redirect()->back()->with('success', 'Foto de perfil actualizada correctamente.');
     }

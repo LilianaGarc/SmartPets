@@ -35,7 +35,8 @@
 <div class="chat-container">
     <div class="chat-list">
         <div class="search-box">
-            <input type="text" class="form-control" placeholder="Buscar usuario..." id="buscador" />
+            <input type="text" class="form-control" placeholder="Buscar usuario..." id="buscador"     maxlength="50"
+            />
         </div>
         <div id="usuarios-lista">
             @forelse($usuariosConMensajes as $item)
@@ -85,8 +86,16 @@
                     @endif
                 </a>
             @empty
-                <p class="p-3 text-muted">No hay otros usuarios.</p>
+                <div style="text-align: center; padding: 40px 20px; color: #666;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#bbb" viewBox="0 0 24 24" style="margin-bottom: 16px;">
+                        <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <h3 style="margin: 10px 0; font-weight: 500; font-size: 20px;">No hay otros usuarios disponibles</h3>
+
+                </div>
             @endforelse
+
+
         </div>
     </div>
 
@@ -200,6 +209,7 @@
                             placeholder="Escribe tu mensaje..."
                             value="{{ old('texto', $mensajePredefinido ?? '') }}"
                             autocomplete="off"
+                            maxlength="1000"
                         />
 
                         <label for="imagen" class="btn" title="Adjuntar imagen">
