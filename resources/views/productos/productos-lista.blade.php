@@ -56,14 +56,18 @@
     </div>
     <div class="d-flex flex-wrap justify-content-center mx-auto mt-4 align-items-center" style="min-width: 200px; max-width: fit-content;">
         @foreach($categorias as $categoria)
-            <button type="submit" name="categoria" value="{{ $categoria->id }}"
-                    class="btn btn-outline-secondary @if(request('categoria') == $categoria->id) active @endif"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}"
-                    style="width: 84px; height: 84px; padding: 0; border-radius: 0;">
+            @php
+                $queryParams = request()->query();
+                $queryParams['categoria'] = $categoria->id;
+            @endphp
+            <a href="{{ route('productos.index', $queryParams) }}"
+               class="btn btn-outline-secondary @if(request('categoria') == $categoria->id) active @endif"
+               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}"
+               style="width: 84px; height: 84px; padding: 0;margin-top: 1em; border-radius: 0;">
                 <img src="{{ asset('images/icono' . $categoria->nombre . '.png') }}"
                      alt="{{ $categoria->nombre }}"
                      style="width: 80%; height: 80%; object-fit: contain;">
-            </button>
+            </a>
         @endforeach
     </div>
     @if(session('success'))
