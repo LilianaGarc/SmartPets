@@ -106,8 +106,6 @@
                             </div>
                         </div>
                     </h3>
-
-                    <p class="card-text">{{ $publicacion->contenido }}</p>
                     <p class="card-text"><small class="text-body-secondary">{{$publicacion->updated_at->diffForHumans()}}</small></p>
 
                 </div>

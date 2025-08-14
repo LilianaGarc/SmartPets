@@ -48,7 +48,7 @@
                         </div>
                     @else
                     @foreach($publicaciones as $publicacion)
-                        <div class="card-publicacion mb-3">
+                        <div class="card-publicacion mb-3" style="height: auto;">
                             <div class="card-body">
                                 <h3 class="card-title">
                                     @php
