@@ -41,6 +41,7 @@
             color: white; font-weight: bold;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset(path: 'css/all.min.css') }}">
     <div class="container d-flex justify-content-center mt-4">
         <div class="card shadow-sm" style="max-width: 700px; width: 100%;">
             <div class="card-body">
