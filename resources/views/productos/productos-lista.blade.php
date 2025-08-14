@@ -6,6 +6,7 @@
 @section('contenido')
 
     @include('MenuPrincipal.Navbar')
+
     <style>
         body{
             padding-top: 80px;
@@ -178,7 +179,7 @@
 
     <script src="{{ asset('js/Ascripts.js') }}"></script>
     <script src="{{ asset('js/alerts.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     @include('chats.chat-float')
 @endsection
