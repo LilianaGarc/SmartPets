@@ -89,7 +89,7 @@
 
         <div class="form-group">
             <label for="contenido">🖊️ Mensaje</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="250">{{ old('contenido', $adopcion->contenido) }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="300">{{ old('contenido', $adopcion->contenido) }}</textarea>
         </div>
 
 
