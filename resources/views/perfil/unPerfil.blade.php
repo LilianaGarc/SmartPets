@@ -101,16 +101,28 @@
         </div>
 
         <div id="publicaciones" class="grid">
-           @if(isset($publicaciones) && $publicaciones->isEmpty())
+            @if($publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
-                    <p class="no-hay-message" style="font-size: 18px;">¡No ha publicado publicaciones aún! 😿</p>
+                    <p class="no-hay-message" style="font-size: 18px;">¡Aún no has creado publicaciones!</p>
                     <img src="{{ asset('images/vacio.svg') }}" alt="No hay publicaciones" style="width: 150px; opacity: 0.7; margin-top: 10px;">
                 </div>
-            @elseif(isset($publicaciones))
+            @else
                 @foreach($publicaciones as $publicacion)
                     <div class="card">
+
                         <a href="{{ route('publicaciones.show', $publicacion->id) }}">
-                            <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
+                            @php
+                                $imagen = null;
+
+                                if ($publicacion->publicacionOriginal && $publicacion->publicacionOriginal->imagen) {
+                                    $imagen = asset('storage/' . $publicacion->publicacionOriginal->imagen);
+                                } elseif ($publicacion->imagen) {
+                                    $imagen = asset('storage/' . $publicacion->imagen);
+                                } else {
+                                    $imagen = asset('images/sin_imagen.png');
+                                }
+                            @endphp
+                            <img src="{{ $imagen }}" alt="Publicación" class="img-card">
                         </a>
 
                     </div>

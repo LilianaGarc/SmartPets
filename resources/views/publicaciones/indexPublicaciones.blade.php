@@ -38,47 +38,6 @@
             </div>
         </div>
 
-        <!--<div class="stories-container">
-            <h2 style="text-align: center;">Historias</h2>
-
-            <div class="swiper-container">
-                <div class="swiper-wrapper" id="stories-carousel-wrapper">
-                    @auth
-            <div class="swiper-slide create-story-card" id="create-story-btn">
-                <span class="icon">+</span>
-                <span>Crear Historia</span>
-            </div>
-@endauth
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-</div>
-
-@auth
-            <div id="createStoryModal" class="modal">
-                <div class="modal-content">
-                    <span class="close-button">&times;</span>
-                    <h2>Crear Nueva Historia</h2>
-                    <form id="createStoryForm" enctype="multipart/form-data">
-                        @csrf
-            <div class="form-group">
-                <label for="files">Seleccionar Fotos/Videos:</label>
-                <input type="file" id="files" name="files[]" multiple accept="image/*,video/*" class="form-control">
-                        </div>
-                        <div class="file-preview" id="file-preview-container">
-                        </div>
-                        <button type="submit" class="upload-button" id="upload-story-btn" disabled>
-                            Subir Historia
-                            <span class="loading-spinner" id="upload-loading-spinner"></span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endauth-->
-
-
             <div class="col">
                 <hr>
                 <div class="row row-container">
@@ -168,9 +127,12 @@
                                                 <i class="fa-regular fa-comment"></i> <span class="btn-text">Comentar</span>
                                             </a>
 
-                                            <a href="{{ route('publicaciones.compartir', $publicacion->id) }}" class="btn" role="button" style="margin: 1px;">
-                                                <i class="fa-regular fa-share-from-square"></i> <span class="btn-text">Compartir</span>
-                                            </a>
+                                            @if(!$publicacion->publicacionOriginal)
+                                                <a href="{{ route('publicaciones.compartir', $publicacion->id) }}" class="btn" role="button" style="margin: 1px;">
+                                                    <i class="fa-regular fa-share-from-square"></i> <span class="btn-text">Compartir</span>
+                                                </a>
+                                            @endif
+
 
                                         @else
                                             <a href="{{ route('login') }}" class="btn" role="button" style="margin: 1px;">
@@ -223,94 +185,74 @@
 
     @push('scripts')
         <script>
+            document.querySelectorAll('.like-button').forEach(button => {
+                if (button.dataset.isLiked === 'true') {
+                    button.classList.add('liked');
+                }
 
+                button.addEventListener('click', async function(event) {
+                    event.preventDefault();
 
-                document.querySelectorAll('.like-button').forEach(button => {
-                    if (button.dataset.isLiked === 'true') {
+                    const publicacionId = this.dataset.publicacionId;
+                    let isLiked = this.dataset.isLiked === 'true';
+
+                    const likeIcon = this.querySelector('i');
+                    const likesCountElement = this.closest('.card-publicacion').querySelector('.likes-count');
+                    let currentLikes = parseInt(likesCountElement.textContent);
+
+                    const method = isLiked ? 'DELETE' : 'POST';
+                    const url = `/publicaciones/${publicacionId}/${isLiked ? 'unlike' : 'like'}`;
+
+                    if (isLiked) {
+                        likeIcon.classList.remove('fa-solid', 'text-red-500');
+                        likeIcon.classList.add('fa-regular', 'text-gray-400');
+                        button.classList.remove('liked');
+                        currentLikes--;
+                    } else {
+                        likeIcon.classList.remove('fa-regular', 'text-gray-400');
+                        likeIcon.classList.add('fa-solid', 'text-red-500');
                         button.classList.add('liked');
+                        currentLikes++;
                     }
+                    likesCountElement.textContent = currentLikes;
+                    this.dataset.isLiked = (!isLiked).toString();
 
-                    button.addEventListener('click', async function(event) {
-                        event.preventDefault();
+                    try {
+                        const response = await fetch(url, {
+                            method: method,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                        });
 
-                        const publicacionId = this.dataset.publicacionId;
-                        let isLiked = this.dataset.isLiked === 'true';
+                        if (!response.ok) {
+                            throw new Error('Respuesta no OK');
+                        }
 
-                        const likeIcon = this.querySelector('i');
-                        const likesCountElement = this.closest('.card-publicacion').querySelector('.likes-count');
-                        let currentLikes = parseInt(likesCountElement.textContent);
+                        const responseData = await response.json();
+                        if (responseData.likes_count !== undefined) {
+                            likesCountElement.textContent = responseData.likes_count;
+                        }
 
-                        const method = isLiked ? 'DELETE' : 'POST';
-                        const url = `/publicaciones/${publicacionId}/${isLiked ? 'unlike' : 'like'}`;
+                    } catch (error) {
+                        alert('Ocurrió un error al procesar tu acción.');
 
                         if (isLiked) {
-                            likeIcon.classList.remove('fa-solid', 'text-red-500');
-                            likeIcon.classList.add('fa-regular', 'text-gray-400');
-                            button.classList.remove('liked');
-                            currentLikes--;
-                        } else {
                             likeIcon.classList.remove('fa-regular', 'text-gray-400');
                             likeIcon.classList.add('fa-solid', 'text-red-500');
                             button.classList.add('liked');
                             currentLikes++;
+                        } else {
+                            likeIcon.classList.remove('fa-solid', 'text-red-500');
+                            likeIcon.classList.add('fa-regular', 'text-gray-400');
+                            button.classList.remove('liked');
+                            currentLikes--;
                         }
                         likesCountElement.textContent = currentLikes;
-                        this.dataset.isLiked = !isLiked;
-
-                        try {
-                            const response = await fetch(url, {
-                                method: method,
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                },
-                            });
-
-                            if (!response.ok) {
-                                const errorData = await response.json();
-                                alert(`Error: ${errorData.message || 'No se pudo realizar la acción.'}`);
-
-                                if (isLiked) {
-                                    likeIcon.classList.remove('fa-regular', 'text-gray-400');
-                                    likeIcon.classList.add('fa-solid', 'text-red-500');
-                                    button.classList.add('liked');
-                                    currentLikes++;
-                                } else {
-                                    likeIcon.classList.remove('fa-solid', 'text-red-500');
-                                    likeIcon.classList.add('fa-regular', 'text-gray-400');
-                                    button.classList.remove('liked');
-                                    currentLikes--;
-                                }
-                                likesCountElement.textContent = currentLikes;
-                                this.dataset.isLiked = isLiked;
-                            } else {
-                                const responseData = await response.json();
-                                if (responseData.likes_count !== undefined) {
-                                    likesCountElement.textContent = responseData.likes_count;
-                                }
-                            }
-
-                        } catch (error) {
-                            console.error('Error al comunicarse con la API:', error);
-                            alert('Hubo un problema de conexión. Inténtalo de nuevo.');
-
-                            if (isLiked) {
-                                likeIcon.classList.remove('fa-regular', 'text-gray-400');
-                                likeIcon.classList.add('fa-solid', 'text-red-500');
-                                button.classList.add('liked');
-                                currentLikes++;
-                            } else {
-                                likeIcon.classList.remove('fa-solid', 'text-red-500');
-                                likeIcon.classList.add('fa-regular', 'text-gray-400');
-                                button.classList.remove('liked');
-                                currentLikes--;
-                            }
-                            likesCountElement.textContent = currentLikes;
-                            this.dataset.isLiked = isLiked;
-                        }
-                    });
+                        this.dataset.isLiked = isLiked.toString();
+                    }
                 });
-
             });
         </script>
     @endpush

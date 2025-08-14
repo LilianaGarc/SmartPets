@@ -27,6 +27,7 @@ class PerfilController extends Controller
         $productosUsuario = $user->productos()->with('categoria')->get();
 
         $publicaciones = Publicacion::where('id_user', $user->id)
+            ->with('publicacionOriginal.user')
             ->withCount('likes')
             ->with(['likes' => function ($query) use ($user) {
                 $query->where('user_id', $user->id);
@@ -34,7 +35,10 @@ class PerfilController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-
+        $publicaciones->each(function ($publicacion) use ($user) {
+            $publicacion->user_has_liked = $publicacion->likes->isNotEmpty();
+            unset($publicacion->likes);
+        });
 
         $solicitudes = \App\Models\Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
         $adopcionesSolicitadas = $solicitudes->map(function ($solicitud) {
@@ -58,13 +62,18 @@ class PerfilController extends Controller
         $veterinarias = Veterinaria::where('id_user', $user->id)->get();
 
         $publicaciones = Publicacion::where('id_user', $user->id)
-        ->withCount('likes')
-        ->with(['likes' => function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        }])
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->with('publicacionOriginal.user')
+            ->withCount('likes')
+            ->with(['likes' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
+        $publicaciones->each(function ($publicacion) use ($user) {
+            $publicacion->user_has_liked = $publicacion->likes->isNotEmpty();
+            unset($publicacion->likes);
+        });
 
         $solicitudes = Solicitud::where('id_usuario', $user->id)->with('adopcion')->get();
 

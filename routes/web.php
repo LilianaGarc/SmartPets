@@ -179,10 +179,9 @@ Route::middleware('auth')->group(function () {
     Route::post('eventos/{id}/dejar-participar', [EventoController::class, 'dejarParticipar'])->name('eventos.dejarParticipar');
 
     // Comentarios
-    Route::post('/comentarios/{id}', [ComentarioController::class, 'store'])->name('comentarios.store');
-    Route::get('/comentarios/{id}/editar', [ComentarioController::class, 'edit'])->name('comentarios.edit')->whereNumber('id');
-    Route::put('/comentarios/{id}/editar', [ComentarioController::class, 'update'])->name('comentarios.update')->whereNumber('id');
-    Route::delete('/comentarios/{id}/eliminar', [ComentarioController::class, 'destroy'])->name('comentarios.destroy')->whereNumber('id');
+    Route::post('/comentarios/{id_publicacion}', [ComentarioController::class, 'store'])->name('comentarios.store');
+    Route::put('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
+    Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
 
     // Chats y mensajes
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');

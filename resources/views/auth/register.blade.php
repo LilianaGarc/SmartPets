@@ -1,52 +1,164 @@
+@section('title', 'Registrarse')
+
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    @if ($errors->any())
+        <div class="alert-error">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+    <div class="container toggle">
+        <div class="container-form">
+            <a href="{{ route('index') }}" class="home-button">
+                <i class="fa-solid fa-house"></i><h3>Inicio</h3>
             </a>
+            <form class="sign-in" action="{{ route('login') }}" method="POST">
+                @csrf
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+                <h2><strong>Iniciar Sesión</strong></h2>
+                <span>Use su correo y contraseña</span>
+                <div class="container-input">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100">
+                </div>
+                <div class="container-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25">
+                </div>
+                <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
+                <button>INICIAR SESIÓN</button>
+            </form>
         </div>
-    </form>
+        <div class="container-form">
+            <form class="sign-up" method="POST" action="{{ route('register') }}">
+                @csrf
+                <h2><strong>Registrarse</strong></h2>
+                <span>Use su correo electrónico para registrarse</span>
+                <div class="container-input">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="name" name="name" maxlength="20" placeholder="Nombre">
+                </div>
+                <div class="container-input">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" name="email" maxlength="100" placeholder="Correo electrónico">
+                </div>
+                <div class="container-input">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" maxlength="25" placeholder="Contraseña">
+                </div>
+                <div class="container-input">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
+                </div>
+                <button class="button">REGISTRARSE</button>
+            </form>
+        </div>
+        <div class="container-welcome">
+            <div class="welcome-sign-up welcome">
+                <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
+                <h3><strong>¡Bienvenido!</strong></h3>
+                <p>Ingrese sus datos personales para usar todas las funciones del sitio</p>
+                <button class="button" id="btn-sign-up">Registrarse</button>
+            </div>
+            <div class="welcome-sign-in welcome">
+                <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
+                <h3><strong>¡Hola!</strong></h3>
+                <p>Regístrese con sus datos personales para usar todas las funciones del sitio</p>
+                <button class="button" id="btn-sign-in">Iniciar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="animated-gif" class="floating-gif"></div>
+
+    <script>
+        const container = document.querySelector(".container");
+        const btnSignIn = document.getElementById("btn-sign-in");
+        const btnSignUp = document.getElementById("btn-sign-up");
+
+        btnSignIn.addEventListener("click", () => {
+            container.classList.remove("toggle");
+        });
+        btnSignUp.addEventListener("click", () => {
+            container.classList.add("toggle");
+        });
+
+        setTimeout(() => {
+            const alert = document.querySelector('.alert-error');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 5000);
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const gifElement = document.getElementById('animated-gif');
+
+            const gifPaths = [
+                '{{ asset('images/gato1.gif') }}',
+                '{{ asset('images/gato2.gif') }}',
+                '{{ asset('images/gato3.gif') }}'
+            ];
+
+            let currentIndex = 0;
+            gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
+
+            function getRandomHorizontalPosition() {
+                const winWidth = window.innerWidth;
+                const gifWidth = 120;
+                const left = Math.floor(Math.random() * (winWidth - gifWidth));
+                return left;
+            }
+
+            function moveGifHorizontally() {
+                const left = getRandomHorizontalPosition();
+                gifElement.style.left = `${left}px`;
+                gifElement.style.top = `${top}px`;
+            }
+
+            gifElement.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % gifPaths.length;
+                gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
+            });
+
+            setInterval(moveGifHorizontally, 10000);
+
+            moveGifHorizontally();
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const btnSignIn = document.getElementById("btn-sign-in");
+            const btnSignUp = document.getElementById("btn-sign-up");
+
+            if (btnSignIn) {
+                btnSignIn.addEventListener("click", () => {
+                    document.title = "Iniciar Sesión";
+                });
+            }
+            if (btnSignUp) {
+                btnSignUp.addEventListener("click", () => {
+                    document.title = "Registrarse";
+                });
+            }
+        });
+    </script>
+    <style>
+        .link-recuperar {
+            color: #ff7f50; /* Color naranja */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-recuperar:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </x-guest-layout>
