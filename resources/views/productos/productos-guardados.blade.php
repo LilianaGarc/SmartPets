@@ -47,6 +47,10 @@
             color: white;
         }
 
+        .pagination .showing {
+            display: none !important;
+        }
+
     </style>
 
 
