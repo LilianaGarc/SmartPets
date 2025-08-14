@@ -124,12 +124,12 @@
             </div>
 
             <div class="form-group">
-                <input type="password" id="password" name="password" class="form-input" placeholder=" " required autocomplete="new-password">
+                <input type="password" id="password" name="password" class="form-input" placeholder="Nueva contraseña" maxlength="25" required autocomplete="new-password">
                 <label for="password" class="form-label">Nueva contraseña</label>
             </div>
 
             <div class="form-group">
-                <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" placeholder=" " required autocomplete="new-password">
+                <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" maxlength="25" placeholder="confirmar contraseña" required autocomplete="new-password">
                 <label for="password_confirmation" class="form-label">Confirmar contraseña</label>
             </div>
 

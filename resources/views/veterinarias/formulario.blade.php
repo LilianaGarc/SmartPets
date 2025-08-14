@@ -183,7 +183,7 @@
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="text" inputmode="decimal" class="form-control @error('latitud') is-invalid @enderror" id="latitud" placeholder="Latitud" name="latitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control @error('latitud') is-invalid @enderror" id="latitud" placeholder="Latitud" name="latitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? rtrim(rtrim(number_format($veterinaria->ubicacion->latitud, 6, '.', ''), '0'), '.') : old('latitud') }}">
                             <label for="latitud">Latitud</label>
                             @error('latitud')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -193,7 +193,7 @@
 
                     <div class="col-12 col-md-2">
                         <div class="form-floating">
-                            <input type="text" inputmode="decimal" class="form-control @error('longitud') is-invalid @enderror" id="longitud" placeholder="Longitud" name="longitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->longitud : old('longitud') }}">
+                            <input type="text" inputmode="decimal" class="form-control @error('longitud') is-invalid @enderror" id="longitud" placeholder="Longitud" name="longitud" maxlength="10" value="{{ isset($veterinaria->ubicacion) ? rtrim(rtrim(number_format($veterinaria->ubicacion->longitud, 6, '.', ''), '0'), '.') : old('longitud') }}">
                             <label for="longitud">Longitud</label>
                             @error('longitud')
                                 <div class="invalid-feedback">{{ $message }}</div>

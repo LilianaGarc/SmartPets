@@ -46,6 +46,10 @@ class ComentarioController
      */
     public function store(Request $request, $id)
     {
+        $request->validate([
+            'comentario' => 'required|string|max:100',
+        ]);
+
         $publicacion = Publicacion::findOrFail($id);
         $comentario = new Comentario();
         $comentario->contenido = $request->input('comentario');
@@ -125,6 +129,5 @@ class ComentarioController
 
         return view('publicaciones.comentarios', compact('publicacion', 'comentarios'));
     }
-
 
 }

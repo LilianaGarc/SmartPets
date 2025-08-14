@@ -8,53 +8,60 @@
         </p>
     </header>
 
-    <form method="POST" action="{{ route('password.update') }}" autocomplete="off">
+    <form id="formUpdatePassword" method="POST" action="{{ route('password.update') }}" autocomplete="off">
         @csrf
         @method('PUT')
+
+        @if(session('exito'))
+        <div class="alert alert-success mt-2" role="alert">
+            <div class="d-flex gap-4">
+                <span><i class="fa-solid fa-circle-check icon-success"></i></span>
+                <div>{{ session('exito') }}</div>
+            </div>
+        </div>
+        @endif
+
+        @if(session('fracaso'))
+        <div class="alert alert-danger mt-1" role="alert">
+            <div class="d-flex gap-4">
+                <span><i class="fa-solid fa-circle-xmark icon-danger"></i></span>
+                <div>{{ session('fracaso') }}</div>
+            </div>
+        </div>
+        @endif
 
         <div class="row g-3 mb-3">
             <div class="col-md-12">
                 <div class="form-floating mb-3">
-                    <input id="current_password" name="current_password" type="password" class="form-control @error('current_password', 'updatePassword') is-invalid @enderror" placeholder="Contraseña Actual" required autocomplete="current-password">
+                    <input id="current_password" name="current_password" type="password" class="form-control @error('current_password', 'updatePassword') is-invalid @enderror" placeholder="Contraseña Actual" required autocomplete="current-password" maxlength="25">
                     <label for="current_password">Contraseña Actual <span style="color:red">*</span></label>
-                    @error('current_password', 'updatePassword')
+                    @error('current_password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating mb-3">
-                    <input id="password" name="password" type="password" class="form-control @error('password', 'updatePassword') is-invalid @enderror" placeholder="Nueva Contraseña" required autocomplete="new-password">
+                    <input id="password" name="password" type="password" class="form-control @error('password', 'updatePassword') is-invalid @enderror" placeholder="Nueva Contraseña" required autocomplete="new-password" maxlength="25">
                     <label for="password">Nueva Contraseña <span style="color:red">*</span></label>
-                    @error('password', 'updatePassword')
+                    @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-floating mb-3">
-                    <input id="password_confirmation" name="password_confirmation" type="password" class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror" placeholder="Confirmar Contraseña" required autocomplete="new-password">
+                    <input id="password_confirmation" name="password_confirmation" type="password" class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror" maxlength="25" placeholder="Confirmar Contraseña" required autocomplete="new-password">
                     <label for="password_confirmation">Confirmar Contraseña <span style="color:red">*</span></label>
-                    @error('password_confirmation', 'updatePassword')
+                    @error('password_confirmation')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-            </div>
-            <!-- Agrega esto antes del botón Guardar -->
-            <div class="col-md-12">
-                <div class="form-floating mb-3">
-                    <input id="verification_code" name="verification_code" type="text" class="form-control @error('verification_code', 'updatePassword') is-invalid @enderror" placeholder="Código de verificación" required>
-                    <label for="verification_code">Código de verificación <span style="color:red">*</span></label>
-                    @error('verification_code', 'updatePassword')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <button type="button" class="btn btn-outline-secondary mb-2" onclick="enviarCodigo()">Enviar código al correo</button>
             </div>
         </div>
 
         <div class="text-end">
-            <button type="submit" class="btn btn-primary">{{ __('Guardar') }}</button>
+            <button type="button" class="btn btn-primary" onclick="mostrarModalConfirmacion()">Guardar</button>
             @if (session('status') === 'password-updated')
                 <span class="text-success ms-3">{{ __('Guardado.') }}</span>
             @endif
@@ -62,50 +69,27 @@
     </form>
 </section>
 
-<!-- Modal Bootstrap para mostrar mensaje -->
-<div class="modal fade" id="codigoModal" tabindex="-1" aria-labelledby="codigoModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmacionModal" tabindex="-1" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="codigoModalLabel">Verificación</h5>
+        <h5 class="modal-title" id="confirmacionModalLabel">Confirmar cambio de contraseña</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body" id="codigoModalBody">
-        <!-- Aquí va el mensaje -->
+      <div class="modal-body">
+        ¿Estás seguro que deseas cambiar tu contraseña?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('formUpdatePassword').submit()">Sí, cambiar</button>
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function enviarCodigo() {
-    fetch("{{ route('enviar.codigo.verificacion') }}", {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-            "Accept": "application/json"
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        let modalBody = document.getElementById('codigoModalBody');
-        if(data.success){
-            modalBody.textContent = 'Código enviado al correo.';
-        } else {
-            modalBody.textContent = 'No se pudo enviar el código.';
-        }
-        let codigoModal = new bootstrap.Modal(document.getElementById('codigoModal'));
-        codigoModal.show();
-    })
-    .catch(() => {
-        let modalBody = document.getElementById('codigoModalBody');
-        modalBody.textContent = 'Error al enviar el código.';
-        let codigoModal = new bootstrap.Modal(document.getElementById('codigoModal'));
-        codigoModal.show();
-    });
+function mostrarModalConfirmacion() {
+    let modal = new bootstrap.Modal(document.getElementById('confirmacionModal'));
+    modal.show();
 }
 </script>

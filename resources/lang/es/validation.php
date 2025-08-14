@@ -140,6 +140,26 @@ return [
         'fecha' => [
             'after_or_equal' => 'La fecha del evento no puede ser menor que hoy.',
         ],
+        'current_password' => [
+            'required' => 'La contraseña actual es obligatoria.',
+            'incorrect' => 'La contraseña actual es incorrecta.',
+            'min' => 'La contraseña actual debe tener al menos :min caracteres.',
+        ],
+        'updated_password' => [
+            'required' => 'La nueva contraseña es obligatoria.',
+            'confirmed' => 'La confirmación de la nueva contraseña no coincide.',
+            'min' => 'La nueva contraseña debe tener al menos :min caracteres.',
+        ],
+        'verification_code' => [
+            'required' => 'El código de verificación es obligatorio.',
+            'incorrect' => 'El código de verificación es incorrecto o expirado.',
+            'numeric' => 'El código de verificación debe ser un número.',
+            'digits' => 'El código de verificación debe tener :digits dígitos.',
+        ],
+        'password_confirmation' => [
+            'required' => 'La confirmación de la contraseña es obligatoria.',
+            'same' => 'La confirmación de la contraseña no coincide.',
+        ],
     ],
 
     /*
@@ -158,6 +178,9 @@ return [
         'email' => 'correo electrónico',
         'password' => 'contraseña',
         'password_confirmation' => 'confirmación de contraseña',
+        'current_password' => 'contraseña actual',
+        'updated_password' => 'nueva contraseña',
+        'verification_code' => 'código de verificación',
     ],
 
 ];

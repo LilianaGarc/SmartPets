@@ -141,7 +141,7 @@
             
 
             <div class="form-group">
-                <input type="email" id="email" name="email" class="form-input" placeholder=" " value="{{ old('email') }}" autofocus>
+                <input type="email" id="email" name="email" class="form-input @error('email') is-invalid @enderror" placeholder="Correo electrónico" maxlength="100" value="{{ old('email') }}" autofocus>
                 <label for="email" class="form-label">Correo electrónico</label>
             </div>
 

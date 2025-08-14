@@ -35,10 +35,9 @@
         </div>
         <hr>
         <div class="row g-4">
-            {{-- Información a la izquierda --}}
+
             <div class="col-12 col-lg-7 d-flex flex-column justify-content-center">
                 <div class="card-text w-100" style="font-size: 1.15rem;">
-                    <div class="mb-2"><span style="font-size:1.3em;">📝</span> <b>Descripción:</b> <span class="text-secondary">{{ $evento->descripcion }}</span></div>
                     <div class="mb-2"><span style="font-size:1.3em;">📅</span> <b>Fecha:</b> <span class="text-secondary">{{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}</span></div>
                     <div class="mb-2"><span style="font-size:1.3em;">⏰</span> <b>Hora:</b> <span class="text-secondary">{{ $evento->hora_inicio }} - {{ $evento->hora_fin }}</span></div>
                     <div class="mb-2"><span style="font-size:1.3em;">📍</span> <b>Ubicación:</b> <span class="text-secondary">{{ $evento->ubicacion }}</span></div>
@@ -48,6 +47,7 @@
                             | <b>Precio:</b> ${{ number_format($evento->precio, 2) }}
                         @endif
                     </span></div>
+                    <div class="mb-2"><span style="font-size:1.3em;">📝</span> <b>Descripción:</b> <span class="text-secondary">{{ $evento->descripcion }}</span></div>
                     <div class="mb-2"><span style="font-size:1.3em;">👥</span> <b>Participantes:</b> <span class="badge bg-primary" style="font-size: 1rem;">{{ $evento->participaciones->count() }}</span></div>
                 </div>
                 @php
@@ -75,7 +75,6 @@
                     @endif
                 @endauth
                 
-                {{-- Participantes en escritorio --}}
                 <div class="d-none d-lg-block mt-4">
                     <div class="card shadow h-100">
                         <div class="card-header bg-primary text-white">
@@ -90,7 +89,7 @@
                                         <li class="list-group-item d-flex align-items-center">
                                             <i class="fas fa-user-circle fa-lg me-2 text-secondary"></i>
                                             <span>
-                                                <strong>{{ $participacion->usuario->name ?? 'Usuario eliminado' }}</strong>
+                                                <strong>{{ $participacion->usuario->name ?? 'Cuenta desactivada' }}</strong>
                                                 <br>
                                                 <small class="text-muted">{{ $participacion->usuario->email ?? '' }}</small>
                                             </span>

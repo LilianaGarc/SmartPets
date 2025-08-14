@@ -7,12 +7,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Mostrar formulario de edición de perfil.
      */
     public function edit(Request $request): View
     {
@@ -22,27 +23,54 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Actualizar información del perfil.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
-        $request->user()->fill($request->validated());
+        // Validación de datos
+        $request->validate([
+            'name' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email,' . $request->user()->id],
+            'telefono' => ['nullable', 'string', 'max:12'],
+            'direccion' => ['nullable', 'string', 'max:100'],
+            'descripcion' => ['nullable', 'string', 'max:250'],
+            
+            'current_password' => ['nullable', 'string', 'min:8'], 
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
 
+        $user = $request->user();
+        $user->fill($request->validated());
+
+        // Actualiza los campos opcionales
         $user->telefono = $request->telefono;
         $user->direccion = $request->direccion;
-        $user->descripción = $request->descripción;
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->descripcion = $request->descripcion;
+
+        
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        
+        if ($request->filled('current_password') && $request->filled('password')) {
+            // Verificar que la contraseña actual sea la del usuario
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'La contraseña actual es incorrecta.'])->withInput();
+            }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            // Actualizar contraseña
+            $user->password = bcrypt($request->password);
+        }
+
+        // Guardar cambios
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('exito', 'Perfil actualizado con éxito.');
     }
 
     /**
-     * Delete the user's account.
+     * Eliminar cuenta de usuario.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -53,29 +81,11 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
-
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
-
-    public function enviarCodigoVerificacion(Request $request)
-    {
-        $user = auth()->user();
-        $codigo = rand(100000, 999999);
-
-        // Guarda el código en caché por 10 minutos
-        cache()->put('codigo_verificacion_' . $user->id, $codigo, now()->addMinutes(10));
-
-        // Envía el código por correo
-        \Mail::raw("Tu código de verificación es: $codigo", function($message) use ($user) {
-            $message->to($user->email)
-                    ->subject('Código de verificación para cambio de contraseña');
-        });
-
-        return response()->json(['success' => true]);
     }
 }

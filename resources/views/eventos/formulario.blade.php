@@ -125,7 +125,7 @@
                     </div>
                     <div class="col-md-3" id="campo_precio" style="display: none;">
                         <div class="form-floating">
-                            <input type="number" min="0" step="0.01" max="9999999999" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio"
+                            <input type="number" min="0" step="0.01" max="9999999999" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio" maxlength="10"
                                    placeholder="Precio del evento" value="{{ old('precio', $evento->precio ?? '') }}" aria-label="Precio del evento">
                             <label for="precio">Precio</label>
                             @error('precio')
