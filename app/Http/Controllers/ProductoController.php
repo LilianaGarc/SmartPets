@@ -66,6 +66,9 @@ class ProductoController extends Controller
      */
     public function create()
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder a esta página.');
+        }
         $categorias = Categoria::with('subcategorias')->get();
         return view('productos.productos-formulario', ['categorias' => $categorias]);
 
@@ -171,6 +174,9 @@ class ProductoController extends Controller
      */
     public function edit(string $id)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder a esta página.');
+        }
         $producto = Producto::findOrFail($id);
         $categorias = Categoria::all();
         return view('productos.productos-formulario',['producto' => $producto, 'categorias' => $categorias]);
