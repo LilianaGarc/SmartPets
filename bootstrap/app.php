@@ -19,6 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
     })
+    ->withMiddleware(function ($middleware) {
+        $middleware->alias( [
+         'redirect.to.home' => \App\Http\Middleware\RedirectToHome::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
