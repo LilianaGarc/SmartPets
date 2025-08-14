@@ -100,7 +100,7 @@ class EventoController
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string',
+            'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:15',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -110,7 +110,7 @@ class EventoController
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
             'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
-            'motivo_rechazo' => 'nullable|string|max:255',
+            'motivo' => 'nullable|string|max:100',
         ]);
 
         $evento = Evento::findOrFail($id);
@@ -133,7 +133,7 @@ class EventoController
             'hora_fin' => $request->hora_fin,
             'ubicacion' => $request->ubicacion,
             'estado' => $request->estado_evento,
-            'motivo_rechazo' => $request->motivo_rechazo,
+            'motivo' => $request->motivo_rechazo,
         ]);
 
         return redirect()->route('eventos.panel')->with('exito', 'Evento actualizado correctamente.');
@@ -145,7 +145,6 @@ class EventoController
         $eventos = Evento::orderby('created_at', 'desc')
             ->where('nombre', 'LIKE', "%$nombre%")
             ->where('descripcion', 'LIKE', "%$nombre%")
-            ->where('participantes', 'LIKE', "%$nombre%")
             ->orWhere('telefono', 'LIKE', "%$nombre%")->get();
         return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
     }
@@ -404,6 +403,10 @@ class EventoController
 
     public function rechazar(Request $request, $id)
     {
+        $request->validate([
+            'motivo' => 'required|string|max:100',
+        ]);
+
         $evento = Evento::findOrFail($id);
         $evento->estado = 'rechazado';
         $evento->motivo = $request->motivo;

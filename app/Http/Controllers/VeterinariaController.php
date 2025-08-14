@@ -213,8 +213,8 @@ class VeterinariaController extends Controller
                     ];
     
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'nombre_veterinario' => 'required|string|max:255',
+            'nombre' => 'required|string|max:150',
+            'nombre_veterinario' => 'required|string|max:150',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
             'departamento' => 'required|in:'.implode(',', $departamentos),
@@ -293,8 +293,8 @@ class VeterinariaController extends Controller
                     ];
 
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'nombre_veterinario' => 'required|string|max:255',
+            'nombre' => 'required|string|max:150',
+            'nombre_veterinario' => 'required|string|max:150',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
             'departamento' => 'required|in:'.implode(',', $departamentos),

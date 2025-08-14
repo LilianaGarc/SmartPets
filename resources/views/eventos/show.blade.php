@@ -74,62 +74,28 @@
                         @endif
                     @endif
                 @endauth
+
+                
                 
                 <div class="d-none d-lg-block mt-4">
                     <div class="card shadow h-100">
                         <div class="card-header bg-primary text-white">
                             <i class="fas fa-users"></i> Participantes ({{ $evento->participaciones->count() }})
                         </div>
-                        <div class="card-body" style="max-height: 420px; overflow-y: auto;">
-                            @if($evento->participaciones->isEmpty())
-                                <p class="text-muted">Aún no hay participantes.</p>
-                            @else
-                                <ul class="list-group list-group-flush">
-                                    @foreach($evento->participaciones as $participacion)
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <i class="fas fa-user-circle fa-lg me-2 text-secondary"></i>
-                                            <span>
-                                                <strong>{{ $participacion->usuario->name ?? 'Cuenta desactivada' }}</strong>
-                                                <br>
-                                                <small class="text-muted">{{ $participacion->usuario->email ?? '' }}</small>
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </div>
                     </div>
                 </div>
             </div>
-            {{-- Imagen a la derecha --}}
+
             <div class="col-12 col-lg-5 d-flex flex-column align-items-center">
                 @if ($evento->imagen)
                     <img src="{{ asset('storage/' . $evento->imagen) }}" class="img-fluid rounded mb-4 shadow evento-img-responsive" alt="Imagen del evento"
                         style="max-width: 100%; max-height: 480px; min-height: 220px; object-fit: cover; border: 3px solid #1e4183;">
                 @endif
-                {{-- Participantes en móvil --}}
+
                 <div class="d-block d-lg-none w-100 mt-3">
                     <div class="card shadow h-100">
                         <div class="card-header bg-primary text-white">
                             <i class="fas fa-users"></i> Participantes ({{ $evento->participaciones->count() }})
-                        </div>
-                        <div class="card-body" style="max-height: 420px; overflow-y: auto;">
-                            @if($evento->participaciones->isEmpty())
-                                <p class="text-muted">Aún no hay participantes.</p>
-                            @else
-                                <ul class="list-group list-group-flush">
-                                    @foreach($evento->participaciones as $participacion)
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <i class="fas fa-user-circle fa-lg me-2 text-secondary"></i>
-                                            <span>
-                                                <strong>{{ $participacion->usuario->name ?? 'Usuario eliminado' }}</strong>
-                                                <br>
-                                                <small class="text-muted">{{ $participacion->usuario->email ?? '' }}</small>
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
                         </div>
                     </div>
                 </div>

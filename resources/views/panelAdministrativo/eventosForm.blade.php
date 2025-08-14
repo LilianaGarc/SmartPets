@@ -127,7 +127,7 @@
                         <div class="form-floating">
                             <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
                                       placeholder="Descripción" style="height: 100px" required aria-label="Descripción"
-                                      maxlength="250"
+                                      maxlength="150"
                                       oninput="actualizarContadorDescripcion()"
                             >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
                             <label for="descripcion">Descripción <span style="color:red">*</span></label>
@@ -136,7 +136,7 @@
                             @enderror
                         </div>
                         <div id="contadorDescripcion" class="form-text text-end" style="margin-top: 2px; margin-bottom: 10px;">
-                            0/250
+                            0/150
                         </div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                     </div>
                     <div class="col-md-9" id="motivoRechazoContainer" style="display: none;">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('motivo') is-invalid @enderror" id="motivo" name="motivo"
+                            <input type="text" class="form-control @error('motivo') is-invalid @enderror" id="motivo" name="motivo" maxlength="100"
                                    placeholder="Motivo del rechazo" value="{{ old('motivo', $evento->motivo ?? '') }}" aria-label="Motivo del rechazo">
                             <label for="motivo">Motivo del rechazo</label>
                             @error('motivo')

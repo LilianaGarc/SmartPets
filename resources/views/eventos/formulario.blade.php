@@ -59,7 +59,7 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
-                                   placeholder="Título" inputmode="text" autocomplete="off"
+                                   placeholder="Título" inputmode="text" autocomplete="off" maxlength="100"
                                    value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título" maxlength="100">
                             <label for="titulo">Título <span style="color:red">*</span></label>
                             @error('titulo')
@@ -84,7 +84,7 @@
                         <div class="form-floating">
                             <input type="number" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
                                    placeholder="Teléfono" inputmode="tel" autocomplete="tel"
-                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono" maxlength="15">
+                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono" maxlength="12">
                             <label for="telefono">Teléfono <span style="color:red">*</span></label>
                             @error('telefono')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -153,7 +153,7 @@
                         <div class="form-floating">
                             <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
                                 placeholder="Descripción" style="height: 100px" aria-label="Descripción"
-                                maxlength="250"
+                                maxlength="200"
                                 oninput="actualizarContadorDescripcion()"
                             >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
                             <label for="descripcion">Descripción <span style="color:red">*</span></label>
@@ -162,7 +162,7 @@
                             @enderror
                         </div>
                         <div id="contadorDescripcion" class="form-text text-end" style="margin-top: 2px; margin-bottom: 10px;">
-                            0/250
+                            0/200
                         </div>
                     </div>
                 </div>

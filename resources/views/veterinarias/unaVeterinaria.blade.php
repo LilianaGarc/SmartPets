@@ -23,7 +23,6 @@
 </div>
 
     <div class="card shadow-sm p-4 mb-4 mt-4">
-        <!-- Datos de la Veterinaria -->
         <div class="card-body">
             <div class="d-flex align-items-center mb-3 flex-nowrap gap-2" style="min-height: 56px;">
                 <h2 class="card-title fw-bold flex-grow-1 mb-0 .titulo-nombre-veterinaria-responsive"
@@ -37,7 +36,6 @@
             <hr>
 
             <div class="row">
-                <!-- INFORMACIÓN DE LA VETERINARIA -->
                 <div class="col-12 col-md-6 mb-3 mb-md-0">
                     <h5 class="card-subtitle mb-3 text-muted"><b>Propietario:</b> {{ $veterinaria->nombre_veterinario }}</h5>
                     <div class="card-text">
@@ -121,7 +119,6 @@
         </div>
     </div>
 
-    <!-- Imágenes de la Veterinaria -->
     <div class="card shadow-sm p-4 mb-4">
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Imágenes de la Veterinaria</h3>
@@ -178,7 +175,6 @@
         </div>
     </div>
 
-    <!-- Formulario para calificar y opinar -->
     <div class="card shadow-sm p-4 mb-4">
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -191,7 +187,7 @@
         @endif
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Calificar y Opinar</h3>
-            @auth
+    
             <form action="{{ route('calificaciones.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="id_veterinaria" value="{{ $veterinaria->id }}">
@@ -209,27 +205,18 @@
                 <div class="mb-3">
                     <label for="opinion" class="form-label fw-bold">Opinión</label>
                     <textarea class="form-control" id="opinion" name="opinion" rows="3"
-                        maxlength="255" placeholder="Escribe tu opinión aquí..."></textarea>
+                        maxlength="200" placeholder="Escribe tu opinión aquí..."></textarea>
                     <div class="text-end">
-                        <small id="caracteresRestantes" class="text-muted">0/255</small>
+                        <small id="caracteresRestantes" class="text-muted">0/200</small>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Enviar</button>
                 <input class="btn btn-danger" type="reset" value="Limpiar">
             </form>
-            @else
-            <div class="alert alert-info text-center mt-3">
-                <b>¿Quieres calificar y opinar?</b><br>
-                <a href="{{ route('login') }}" class="btn btn-primary mt-2">Inicia sesión</a>
-                <span class="mx-2">o</span>
-                <a href="{{ route('register') }}" class="btn btn-success mt-2">Regístrate</a>
-            </div>
-            @endauth
         </div>
     </div>
 
-    <!-- Calificaciones -->
     <div class="card shadow-sm p-4 mb-4">
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Calificaciones</h3>
@@ -300,7 +287,6 @@
         </div>
     </div>
 
-    <!-- Modales para editar y eliminar calificaciones -->
     @foreach ($veterinaria->calificaciones as $calificacion)
     <div class="modal fade" id="modalEditar{{ $calificacion->id }}" tabindex="-1">
         <div class="modal-dialog">
@@ -370,7 +356,6 @@
             </div>
         </div>
     </div>
-
     @endforeach
 
 </div>
