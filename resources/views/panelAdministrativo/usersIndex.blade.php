@@ -23,7 +23,7 @@
 <form action="{{ route('users.search') }}" class="" role="search" style="align-content: flex-end;">
     <div class="row">
         <div class="col">
-            <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+            <input class="form-control me-2" maxlength="50" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
         </div>
         <div class="col">
             <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>

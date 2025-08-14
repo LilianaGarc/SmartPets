@@ -31,7 +31,7 @@
                     <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25">
                 </div>
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
-                <button>INICIAR SESIÓN</button>
+                <button class="button-login">INICIAR SESIÓN</button>
             </form>
         </div>
         <div class="container-form">
@@ -55,7 +55,7 @@
                     <i class="fa-solid fa-key"></i>
                     <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
                 </div>
-                <button class="button">REGISTRARSE</button>
+                <button class="button-register" style="width: 10vw!important;">REGISTRARSE</button>
             </form>
         </div>
         <div class="container-welcome">
@@ -69,7 +69,7 @@
                 <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
                 <h3><strong>¡Hola!</strong></h3>
                 <p>Regístrese con sus datos personales para usar todas las funciones del sitio</p>
-                <button class="button" id="btn-sign-in">Iniciar Sesión</button>
+                <button class="btn" id="btn-sign-in">Iniciar Sesión</button>
             </div>
         </div>
     </div>

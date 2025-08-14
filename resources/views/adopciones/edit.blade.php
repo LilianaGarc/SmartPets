@@ -84,12 +84,12 @@
 
         <div class="form-group">
             <label for="ubicacion_mascota">📍 Ubicación de la Mascota</label>
-            <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control" required value="{{ old('ubicacion_mascota', $adopcion->ubicacion_mascota) }}">
+            <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="60" class="form-control" required value="{{ old('ubicacion_mascota', $adopcion->ubicacion_mascota) }}">
         </div>
 
         <div class="form-group">
             <label for="contenido">🖊️ Mensaje</label>
-            <textarea name="contenido" id="contenido" class="form-control" required maxlength="120">{{ old('contenido', $adopcion->contenido) }}</textarea>
+            <textarea name="contenido" id="contenido" class="form-control" required maxlength="250">{{ old('contenido', $adopcion->contenido) }}</textarea>
         </div>
 
 

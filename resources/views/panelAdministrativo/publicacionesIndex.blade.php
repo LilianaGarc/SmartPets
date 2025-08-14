@@ -24,7 +24,7 @@
 <form action="{{ route('publicaciones.search') }}" class="" role="search" style="width: 100%; align-content: flex-end;">
     <div class="row" style="justify-content: space-between;">
         <div class="col">
-            <input class="form-control flex-grow-1" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+            <input class="form-control flex-grow-1" maxlength="50" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
         </div>
         <div class="col">
             <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>

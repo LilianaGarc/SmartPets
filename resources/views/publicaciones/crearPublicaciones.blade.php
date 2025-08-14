@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
+                            <input type="file" class="form-control" id="imagen" name="imagen" required accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
                         </div>
 
                         @if (isset($publicacion))

@@ -237,6 +237,7 @@
             @endif
         </div>
 
+
         <div id="publicaciones" class="grid">
             @if($publicaciones->isEmpty())
                 <div class="no-hay" style="grid-column: 1 / -1; text-align: center; padding: 40px 10px;">
@@ -248,12 +249,20 @@
                     <div class="card">
 
                         <a href="{{ route('publicaciones.show', $publicacion->id) }}">
-                            @if($publicacion->imagen)
-                                <img src="{{ asset('storage/' . $publicacion->imagen) }}" alt="Publicación" class="img-card">
-                            @else
-                                <img src="{{ asset('images/sin_imagen.png') }}" alt="Sin imagen" class="img-card">
-                            @endif
+                            @php
+                                $imagen = null;
+
+                                if ($publicacion->publicacionOriginal && $publicacion->publicacionOriginal->imagen) {
+                                    $imagen = asset('storage/' . $publicacion->publicacionOriginal->imagen);
+                                } elseif ($publicacion->imagen) {
+                                    $imagen = asset('storage/' . $publicacion->imagen);
+                                } else {
+                                    $imagen = asset('images/sin_imagen.png');
+                                }
+                            @endphp
+                            <img src="{{ $imagen }}" alt="Publicación" class="img-card">
                         </a>
+
                         <div class="overlay-info">
                             <p><strong>{{ $publicacion->titulo }}</strong></p>
                             <p>{{ \Illuminate\Support\Str::limit($publicacion->contenido, 60) }}</p>
@@ -267,6 +276,12 @@
                 @endforeach
             @endif
         </div>
+
+
+
+
+
+
 
         <div id="veterinarias" class="grid">
     @if($veterinarias->isEmpty())
@@ -367,13 +382,23 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         const items = document.querySelectorAll('.carousel-item input[type="radio"]');
+
+        let anyChecked = false;
+
         items.forEach((input, index) => {
             if (input.checked) {
                 currentIndex = index;
                 moverCarrusel(0);
+                anyChecked = true;
             }
         });
+
+        if (!anyChecked && items.length > 0) {
+            items[0].checked = true;
+            moverCarrusel(0);
+        }
     });
+
 </script>
 
 <script>

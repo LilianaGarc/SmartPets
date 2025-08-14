@@ -47,7 +47,10 @@ class ComentarioController
     public function store(Request $request, $id)
     {
         $request->validate([
-            'comentario' => 'required|string|max:100',
+            'comentario' => 'required|string|max:280',
+        ], [
+            'comentario.required' => 'El comentario no puede estar vacío.',
+            'comentario.max' => 'El comentario no puede tener más de 100 caracteres.',
         ]);
 
         $publicacion = Publicacion::findOrFail($id);
@@ -57,11 +60,14 @@ class ComentarioController
         $comentario->id_publicacion = $publicacion->id;
 
         if ($comentario->save()) {
-            return redirect()->route('publicaciones.show', ['id' => $id])->with('exito', 'El comentario se envió correctamente.');
+            return redirect()->route('publicaciones.show', ['id' => $id])
+                ->with('exito', 'El comentario se envió correctamente.');
         } else {
-            return redirect()->route('publicaciones.show', ['id' => $id])->with('fracaso', 'El comentario no se pudo enviar.');
+            return redirect()->route('publicaciones.show', ['id' => $id])
+                ->with('fracaso', 'El comentario no se pudo enviar.');
         }
     }
+
 
     public function panelstore(Request $request, $id)
     {
@@ -97,29 +103,54 @@ class ComentarioController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'comentario' => 'required|string|max:100',
+        ], [
+            'comentario.required' => 'El comentario no puede estar vacío.',
+            'comentario.max' => 'El comentario no puede tener más de 100 caracteres.',
+        ]);
+
+        $comentario = Comentario::findOrFail($id);
+
+        // Verificar que el usuario sea dueño del comentario
+        if ($comentario->id_user !== auth()->id()) {
+            abort(403);
+        }
+
+        $comentario->contenido = $request->input('comentario');
+
+        if ($comentario->save()) {
+            return redirect()->route('publicaciones.show', ['id' => $comentario->id_publicacion])
+                ->with('exito', 'El comentario se actualizó correctamente.');
+        } else {
+            return redirect()->route('publicaciones.show', ['id' => $comentario->id_publicacion])
+                ->with('fracaso', 'No se pudo actualizar el comentario.');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-       //
+        $publicacion_id = $request->input('publicacion_id');
+        $eliminados = Comentario::destroy($id);
+
+        if ($eliminados > 0){
+            return redirect()->route('publicaciones.show', ['id' => $publicacion_id])->with('exito', 'El comentario se elimino correctamente.');
+        } else {
+            return redirect()->route('publicaciones.show', ['id' => $publicacion_id])->with('fracaso', 'El comentario no se pudo eliminar.');
+        }
 
     }
 
     public function paneldestroy(string $id)
     {
-        $eliminados = Comentario::destroy($id);
+    //
 
-        if ($eliminados < 0){
-            return redirect()->route('comentarios.panel')->with('fracaso', 'El comentario no se pudo borrar.');
-        }else {
-            return redirect()->route('comentarios.panel')->with('exito', 'El comentario se elimino correctamente.');
-        }
 
     }
     public function comentarios($id)

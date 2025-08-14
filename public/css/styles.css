@@ -926,7 +926,7 @@ input[type="date"] {
 }
 
 .adopcion-card {
-    max-width: 400px;
+    max-width: 350px;
     height: auto;
     border-radius: 20px;
     padding: 10px 10px 10px 10px;
@@ -955,7 +955,7 @@ input[type="date"] {
 }
 
 .adopcion-card img {
-    width: 400px;
+    width: 350px;
     height: 350px;
     object-fit: cover;
     border-radius: 15px;

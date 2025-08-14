@@ -89,7 +89,8 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string|max:255',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:1',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
+            'imagenes' => 'required|array|min:1|max:5',
+            'imagenes.*' => 'image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
             'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
@@ -104,15 +105,18 @@ class ProductoController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'stock.integer' => 'La cantidad debe ser un número entero.',
             'stock.min' => 'La cantidad no puede ser negativa y no menor a 1.',
+            'imagenes.required' => 'La imagen principal es obligatoria.',
+            'imagenes.array' => 'Debe enviar las imágenes en formato de lista.',
+            'imagenes.min' => 'Debes subir al menos una imagen.',
+            'imagenes.max' => 'No puedes subir más de 5 imágenes.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
-            'imagenes.*.mimes' => 'Las imágenes deben estar en formato jpg,jpeg,png,gif,bmp,svg,webp,tiff',
+            'imagenes.*.mimes' => 'Las imágenes deben estar en formato jpg,jpeg,png,gif,bmp,svg,webp,tiff.',
             'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
             'subcategoria_id.required' => 'La subcategoría es obligatoria.',
             'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
             'subcategoria_id.integer' => 'La subcategoría debe ser un número entero.'
-
-
         ]);
+
 
 
         // Validar la cantidad de imágenes
@@ -195,7 +199,8 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string|max:255',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:1',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
+            'imagenes' => 'required|array|min:1|max:5',
+            'imagenes.*' => 'image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
             'subcategoria_id' => 'required|integer|exists:subcategorias,id'
         ], [
             'nombre.required' => 'El nombre del producto es obligatorio.',
@@ -210,15 +215,18 @@ class ProductoController extends Controller
             'stock.required' => 'La cantidad disponible es obligatoria.',
             'stock.integer' => 'La cantidad debe ser un número entero.',
             'stock.min' => 'La cantidad no puede ser negativa y no menor a 1.',
+            'imagenes.required' => 'La imagen principal es obligatoria.',
+            'imagenes.array' => 'Debe enviar las imágenes en formato de lista.',
+            'imagenes.min' => 'Debes subir al menos una imagen.',
+            'imagenes.max' => 'No puedes subir más de 5 imágenes.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
-            'imagenes.*.mimes' => 'Las imágenes deben estar en formato jpg,jpeg,png,gif,bmp,svg,webp,tiff',
+            'imagenes.*.mimes' => 'Las imágenes deben estar en formato jpg,jpeg,png,gif,bmp,svg,webp,tiff.',
             'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
             'subcategoria_id.required' => 'La subcategoría es obligatoria.',
             'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
             'subcategoria_id.integer' => 'La subcategoría debe ser un número entero.'
-
-
         ]);
+
 
         // Validar la cantidad de imágenes
         if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {

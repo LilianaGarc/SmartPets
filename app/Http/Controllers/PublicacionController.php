@@ -152,78 +152,6 @@ class PublicacionController extends Controller
         ]);
     }
 
-    public function getGroupedStories(Request $request)
-    {
-        $groupedStories = $this->getGroupedStoriesData();
-        return response()->json($groupedStories);
-    }
-
-    private function getGroupedStoriesData()
-    {
-        $user = Auth::user();
-        $now = Carbon::now();
-
-        if (!$user) {
-            $allStories = Historia::where('expires_at', '>', $now)
-                ->with(['user:id,name,email', 'media'])
-                ->orderBy('created_at', 'desc')
-                ->limit(50)
-                ->get();
-        } else {
-            $ownStories = Historia::where('user_id', $user->id)
-                ->where('expires_at', '>', $now)
-                ->with('media')
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            $otherUsersStories = Historia::where('user_id', '!=', $user->id)
-                ->where('expires_at', '>', $now)
-                ->with(['user:id,name,email', 'media'])
-                ->orderBy('created_at', 'desc')
-                ->limit(50)
-                ->get();
-            $allStories = $ownStories->concat($otherUsersStories)->unique('id')->sortByDesc('created_at');
-        }
-
-
-        $groupedStories = $allStories->groupBy('user_id')->map(function ($items, $userId) use ($user) {
-            $firstStory = $items->first();
-            $userName = $firstStory->user->name ?? 'Usuario Desconocido';
-            $userAvatar = $firstStory->user->profile_photo_path ?? null;
-
-            return [
-                'user_id' => $userId,
-                'user_name' => $userName,
-                'user_avatar' => $userAvatar,
-                'stories_count' => $items->count(),
-                'stories' => $items->values()->map(function($story) {
-                    return [
-                        'id' => $story->id,
-                        'created_at' => $story->created_at->diffForHumans(),
-                        'expires_at_timestamp' => $story->expires_at->timestamp,
-                        'media' => $story->media->map(function($media) {
-                            return [
-                                'id' => $media->id,
-                                'file_url' => Storage::url($media->file_path),
-                                'file_type' => $media->file_type,
-                                'caption' => $media->caption,
-                                'order' => $media->order,
-                            ];
-                        })->sortBy('order')->values()->all(),
-                    ];
-                })->all(),
-                'is_current_user' => ($user && $userId == $user->id),
-            ];
-        })->values()->all();
-
-        if (empty($groupedStories)) {
-            return [];
-        }
-
-        return $groupedStories;
-    }
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -240,7 +168,7 @@ class PublicacionController extends Controller
         $request->validate([
             'visibilidad' => 'required',
             'contenido' => 'required|max:250',
-            'imagen' => 'nullable|mimes:jpeg,png,jpg,gif,webp,JPEG,PNG,JPG,GIF,WEBP|max:2048',
+            'imagen' => 'required|mimes:jpeg,png,jpg,gif,webp,JPEG,PNG,JPG,GIF,WEBP|max:5012',
         ]);
 
         $rutaImagen = null;
@@ -263,12 +191,13 @@ class PublicacionController extends Controller
      */
     public function show(string $id)
     {
-        $publicacion = Publicacion::with('user')
+        $publicacion = Publicacion::with(['user', 'publicacionOriginal.user'])
             ->withCount('likes')
             ->with(['likes' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])
             ->findOrFail($id);
+
         $comentarios = Comentario::with('user')
             ->where('id_publicacion', $id)
             ->orderBy('created_at', 'desc')
