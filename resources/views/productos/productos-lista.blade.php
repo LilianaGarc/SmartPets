@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="d-flex flex-wrap justify-content-center mx-auto mt-4"
-         style="min-width: 200px; max-width: fit-content; align-items: center;">
+         style="min-width: 220px; max-width: fit-content; align-items: center;">
         @foreach($categorias as $categoria)
             @php
                 $queryParams = request()->query();
@@ -64,10 +64,12 @@
             <a href="{{ route('productos.index', $queryParams) }}"
                class="btn btn-outline-secondary @if(request('categoria') == $categoria->id) active @endif"
                data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $categoria->nombre }}"
-               style="width: 84px; height: 84px; padding: 0; margin: 0.5em; border-radius: 0; display: flex; align-items: center; justify-content: center;">
+               style="width: 110px; height: 110px; padding: 0; margin: 0.5em; border-radius: 0; display: flex; align-items: center; justify-content: center; flex-direction: column">
                 <img src="{{ asset('images/icono' . $categoria->nombre . '.png') }}"
                      alt="{{ $categoria->nombre }}"
-                     style="width: 80%; height: 80%; object-fit: contain;">
+                     style="width: 65%; height: 65%; object-fit: contain;">
+                <span style="font-size: 0.75rem; margin-top: 0.5em; ">
+                    {{ $categoria->nombre }} </span>
             </a>
         @endforeach
     </div>
