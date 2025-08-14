@@ -74,7 +74,7 @@
                         @endif
                     @endif
                 @endauth
-                
+
                 <div class="d-none d-lg-block mt-4">
                     <div class="card shadow h-100">
                         <div class="card-header bg-primary text-white">
