@@ -646,7 +646,7 @@
                                         @endif
                                         <div class="review-form-group">
                                             <label for="review-title" class="review-label">Título</label>
-                                            <input type="text" class="review-input" id="review-title" name="titulo"
+                                            <input type="text" class="review-input" id="review-title" name="titulo" maxlength="50"
                                                    value="{{ old('titulo', $resenia->titulo ?? '') }}"
                                                    placeholder="Escribe un título para tu reseña">
                                         </div>
@@ -758,7 +758,25 @@
                         <!-- FIN ACORDEON -->
                     </div>
             </div>
-        </div>
+            <div class="modal fade" id="ModalProducto" tabindex="-1" aria-labelledby="ModalProductoLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalProductoLabel">Confirmar eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" form="delete-form-{{$producto->id}}" class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // Botones y contenedor del formulario de reseña
