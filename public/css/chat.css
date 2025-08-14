@@ -39,9 +39,9 @@ body {
 
 .chat-container {
     display: flex;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 10vh);
     width: 100%;
-    margin-top: 100px;
+    margin-top: 10vh;
 }
 
 .chat-list {
