@@ -102,7 +102,7 @@
 
                 <div class="form-group">
                     <label for="ubicacion_mascota">📍 Ubicación de la Mascota</label>
-                    <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="40" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota" required>
+                    <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="60" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota" required>
                 </div>
 
                 <div class="form-group">
