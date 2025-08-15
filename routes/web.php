@@ -1,5 +1,11 @@
 <?php
 
+use App\Models\Adopcion;
+use App\Models\Evento;
+use App\Models\Producto;
+use App\Models\Publicacion;
+use App\Models\User;
+use App\Models\Veterinaria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{AdopcionController,
@@ -326,3 +332,17 @@ require __DIR__.'/auth.php';
 Route::post('/enviar-codigo-verificacion', [ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
+
+Route::get('/panel/dashboard', function () {
+    $conteos = [
+        'usuarios' => User::count(),
+        'publicaciones' => Publicacion::count(),
+        'veterinarias' => Veterinaria::count(),
+        'adopciones' => Adopcion::count(),
+        'eventos' => Evento::count(),
+        'productos' => Producto::count(),
+    ];
+
+    return view('panelAdministrativo.principalPanel', compact('conteos'));
+})->name('panel.dashboard');
+
