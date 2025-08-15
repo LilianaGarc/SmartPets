@@ -69,7 +69,7 @@
                 <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
                 <h3><strong>¡Hola!</strong></h3>
                 <p>Regístrese con sus datos personales para usar todas las funciones del sitio</p>
-                <button class="btn" id="btn-sign-in">Iniciar Sesión</button>
+                <button class="button" id="btn-sign-in">Iniciar Sesión</button>
             </div>
         </div>
     </div>

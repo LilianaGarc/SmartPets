@@ -79,9 +79,12 @@
                             <textarea class="form-control" name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 100px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         </div>
 
-                        <div class="mb-3">
-                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
-                        </div>
+                        @if(isset($publicacion) && $publicacion->publicacionOriginal)
+                        @else
+                            <div class="mb-3">
+                                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
+                            </div>
+                        @endif
 
                         @if (isset($publicacion))
                             @if($publicacion->imagen)
