@@ -47,9 +47,9 @@
                 </a>
             </div>
             <hr>
-
+            
             <form action="{{ isset($evento) ? route('eventos.update', $evento->id) : route('eventos.store') }}"
-                  method="POST" enctype="multipart/form-data">
+                  method="POST" enctype="multipart/form-data" id="eventoForm">
                 @csrf
                 @if(isset($evento))
                     @method('PUT')
@@ -149,7 +149,7 @@
                  <div class="row g-3 mb-3">
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion" requerid
+                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion" required
                                    placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" aria-label="Ubicación" maxlength="150">
                             <label for="ubicacion">Ubicación <span style="color:red">*</span></label>
                             @error('ubicacion')
@@ -164,7 +164,7 @@
                         <div class="form-floating">
                             <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
                                 placeholder="Descripción" style="height: 100px" aria-label="Descripción"
-                                maxlength="200" 
+                                maxlength="200" required
                                 oninput="actualizarContadorDescripcion()" title="Descripción del evento"
                             >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
                             <label for="descripcion">Descripción <span style="color:red">*</span></label>
@@ -178,15 +178,16 @@
                     </div>
                 </div>
 
-                <div class="row g-3 mb-3">
+               <div class="row g-3 mb-3">
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ !isset($evento) ? 'required' : '' }}>
+                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento">
                         </div>
                         @if(isset($evento) && $evento->imagen)
                             <div class="form-text">Si no seleccionas una nueva imagen, se mantendrá la actual.</div>
                         @endif
+                        <input type="hidden" name="eliminar_imagen" id="eliminar_imagen" value="0">
                         <div id="preview-container" class="preview-container" style="margin-top: 10px;"></div>
                         @error('imagen')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -408,49 +409,103 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('modalidad_evento').addEventListener('change', mostrarCampoPrecio);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    const imagenInput = document.getElementById('imagen');
-    const previewContainer = document.getElementById('preview-container');
-
-    // Función para mostrar la vista previa de la imagen
-    function mostrarPreview(src) {
-        previewContainer.innerHTML = ''; // Limpiar la vista previa anterior
+document.getElementById('imagen').addEventListener('change', function(e) {
+    const preview = document.getElementById('preview-container');
+    preview.innerHTML = '';
+    if (this.files && this.files[0]) {
         const wrapper = document.createElement('div');
         wrapper.style.position = 'relative';
         wrapper.style.display = 'inline-block';
 
         const img = document.createElement('img');
-        img.src = src;
+        img.src = URL.createObjectURL(this.files[0]);
         img.className = 'preview-img';
+        img.alt = 'Vista previa de la imagen seleccionada';
 
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen seleccionada');
         btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
         btn.onclick = () => {
-            imagenInput.value = ''; // Resetea el input de archivo
-            previewContainer.innerHTML = ''; 
+            document.getElementById('imagen').value = '';
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '0';
+            document.getElementById('imagen').focus();
         };
 
         wrapper.appendChild(img);
         wrapper.appendChild(btn);
-        previewContainer.appendChild(wrapper);
+        preview.appendChild(wrapper);
     }
+});
 
+// Mostrar preview de imagen actual al editar
+document.addEventListener('DOMContentLoaded', function() {
     @if(isset($evento) && $evento->imagen)
-        mostrarPreview("{{ asset('storage/' . $evento->imagen) }}");
-    @endif
+        const preview = document.getElementById('preview-container');
+        preview.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
 
-    imagenInput.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                mostrarPreview(event.target.result);
-            }
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
+        const img = document.createElement('img');
+        img.src = "{{ asset('storage/' . $evento->imagen) }}";
+        img.className = 'preview-img';
+        img.alt = 'Imagen actual del evento';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen actual');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '1';
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+    @endif
+});
+
+// Cuando seleccionas una nueva imagen, se limpia el campo de eliminar imagen
+document.getElementById('imagen').addEventListener('change', function(e) {
+    const preview = document.getElementById('preview-container');
+    preview.innerHTML = '';
+    if (this.files && this.files[0]) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(this.files[0]);
+        img.className = 'preview-img';
+        img.alt = 'Vista previa de la imagen seleccionada';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen seleccionada');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            document.getElementById('imagen').value = '';
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '0';
+            document.getElementById('imagen').focus();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+
+        // Si selecciona una nueva imagen, no eliminar la anterior automáticamente
+        document.getElementById('eliminar_imagen').value = '0';
+    }
 });
 
 function actualizarContadorDescripcion() {
@@ -487,48 +542,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const eventoForm = document.getElementById('eventoForm');
-
-    if (eventoForm) {
-        // Escuchamos el evento 'reset' del formulario, que es activado por tu botón
-        eventoForm.addEventListener('reset', function() {
-            
-            // PEQUEÑO TRUCO: Usamos un delay de 0 milisegundos.
-            // Esto asegura que el navegador termine de resetear los campos
-            // ANTES de que ejecutemos nuestro código personalizado.
-            setTimeout(function() {
-                
-                // 1. Limpiamos la vista previa de la imagen
-                const previewContainer = document.getElementById('preview-container');
-                if (previewContainer) {
-                    previewContainer.innerHTML = '';
-                }
-                
-                // 2. Si estás editando, volvemos a mostrar la imagen original
-                @if(isset($evento) && $evento->imagen)
-                    if (typeof mostrarPreview === 'function') {
-                        mostrarPreview("{{ asset('storage/' . $evento->imagen) }}");
-                    }
-                @endif
-
-                // 3. Actualizamos el contador de la descripción
-                if (typeof actualizarContadorDescripcion === 'function') {
-                    actualizarContadorDescripcion();
-                }
-
-                // 4. Actualizamos el campo de precio (por si cambió el select)
-                if (typeof mostrarCampoPrecio === 'function') {
-                    mostrarCampoPrecio();
-                }
-
-            }, 0);
-        });
-    }
-});
-</script>
 
 <script>
 document.getElementById('telefono').addEventListener('input', function() {

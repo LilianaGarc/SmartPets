@@ -23,7 +23,8 @@ class Evento extends Model
         'hora_fin',
         'ubicacion',
         'estado',
-        'id_user'
+        'motivo',
+        'id_user',
     ];
 
 

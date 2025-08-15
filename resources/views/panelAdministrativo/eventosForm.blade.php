@@ -212,6 +212,115 @@
         document.getElementById('estado_evento').addEventListener('change', mostrarMotivoRechazo);
     </script>
 
+<script>
+
+
+document.getElementById('imagen').addEventListener('change', function(e) {
+    const preview = document.getElementById('preview-container');
+    preview.innerHTML = '';
+    if (this.files && this.files[0]) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(this.files[0]);
+        img.className = 'preview-img';
+        img.alt = 'Vista previa de la imagen seleccionada';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen seleccionada');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            document.getElementById('imagen').value = '';
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '0';
+            document.getElementById('imagen').focus();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+    }
+});
+
+// Mostrar preview de imagen actual al editar
+document.addEventListener('DOMContentLoaded', function() {
+    @if(isset($evento) && $evento->imagen)
+        const preview = document.getElementById('preview-container');
+        preview.innerHTML = '';
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+
+        const img = document.createElement('img');
+        img.src = "{{ asset('storage/' . $evento->imagen) }}";
+        img.className = 'preview-img';
+        img.alt = 'Imagen actual del evento';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen actual');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '1';
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+    @endif
+});
+
+// Cuando seleccionas una nueva imagen, se limpia el campo de eliminar imagen
+document.getElementById('imagen').addEventListener('change', function(e) {
+    const preview = document.getElementById('preview-container');
+    preview.innerHTML = '';
+    if (this.files && this.files[0]) {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(this.files[0]);
+        img.className = 'preview-img';
+        img.alt = 'Vista previa de la imagen seleccionada';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen seleccionada');
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.onclick = () => {
+            document.getElementById('imagen').value = '';
+            preview.innerHTML = '';
+            document.getElementById('eliminar_imagen').value = '0';
+            document.getElementById('imagen').focus();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+
+        // Si selecciona una nueva imagen, no eliminar la anterior automáticamente
+        document.getElementById('eliminar_imagen').value = '0';
+    }
+});
+
+
+
+
+</script>
+
+
+
 
     <script>
 document.getElementById('telefono').addEventListener('input', function() {

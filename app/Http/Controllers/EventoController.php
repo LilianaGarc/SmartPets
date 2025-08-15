@@ -40,7 +40,7 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
+            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
@@ -107,7 +107,7 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
+            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
@@ -219,13 +219,14 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
+            'precio' => 'nullable|numeric|min:0|max:10000|decimal:0,2',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
+
         $evento = Evento::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
@@ -285,7 +286,7 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
+            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
