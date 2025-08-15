@@ -147,6 +147,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.title = "Registrarse";
         });
     }
+
+    const container = document.querySelector(".container");
+    if (window.location.pathname === '/register') {
+        container.classList.add("toggle");
+        document.title = "Registrarse";
+    }
 });
 </script>
 <style>

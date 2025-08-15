@@ -114,6 +114,9 @@ Route::middleware(['auth', 'prevenir-retorno'])->group(function() {
 
 // Rutas autenticadas
 Route::middleware('auth')->group(function () {
+    Route::get('/register', function () {
+        return redirect()->route('login');
+    })->name('register');
     // Perfil y usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -332,6 +335,7 @@ require __DIR__.'/auth.php';
 Route::post('/enviar-codigo-verificacion', [ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
+
 
 Route::get('/panel/dashboard', function () {
     $conteos = [
