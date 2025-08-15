@@ -94,6 +94,21 @@
 
                         <button type="submit" class="btn btn-light">Publicar</button>
                         <button type="reset" class="btn btn-light">Cancelar</button>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const resetBtn = document.querySelector('button[type="reset"]');
+
+                                resetBtn.addEventListener('click', function (e) {
+                                    e.preventDefault();
+
+                                    const form = resetBtn.closest('form');
+                                    form.reset();
+
+                                    form.querySelectorAll('input[type="text"], input[type="file"], textarea').forEach(el => el.value = '');
+                                    form.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+                                });
+                            });
+                        </script>
                     </div>
                 </form>
             </div>

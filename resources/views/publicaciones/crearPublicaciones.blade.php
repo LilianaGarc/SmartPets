@@ -76,16 +76,12 @@
                         </div>
 
                         <div class="col">
-                            <textarea class="form-control" required name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                            <textarea class="form-control" name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         </div>
 
-
-                        @if(isset($publicacion) && $publicacion->publicacionOriginal)
-                        @else
-                            <div class="mb-3">
-                                <input type="file" required class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
-                            </div>
-                        @endif
+                        <div class="mb-3">
+                            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/png, image/jpeg, image/jpg, image/gif, image/webp" style="margin: 1.5%; width: 95%;">
+                        </div>
 
                         @if (isset($publicacion))
                             @if($publicacion->imagen)
@@ -104,7 +100,6 @@
 
                         <button type="submit" class="btn btn-light">Publicar</button>
                         <button type="reset" class="btn btn-light">Cancelar</button>
-
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
                                 const resetBtn = document.querySelector('button[type="reset"]');
@@ -126,7 +121,6 @@
                         </script>
 
                     </div>
-
                 </form>
             </div>
         </div>

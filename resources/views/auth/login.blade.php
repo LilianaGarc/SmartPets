@@ -55,7 +55,7 @@
                     <i class="fa-solid fa-key"></i>
                     <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
                 </div>
-                <button class="button-register" style="width: 10vw!important;">REGISTRARSE</button>
+                <button class="button-register">REGISTRARSE</button>
             </form>
         </div>
         <div class="container-welcome">
