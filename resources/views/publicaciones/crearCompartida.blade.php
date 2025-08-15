@@ -64,33 +64,30 @@
                         </div>
 
                         <div class="col">
-                            <textarea class="form-control" required name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                            <textarea class="form-control" required name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 100px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         </div>
 
                         <input type="hidden" name="publicacion_original_id" value="{{ $publicacionOriginal->id }}">
 
-                        <div class=" card shared-post-card" style="margin: 1.5%; width: 95%; height: 200px;">
-                            <div class="row">
+                        <div class="card shared-post-card" style="margin: 1.5%; width: 95%; padding: 15px; overflow: hidden;">
+                            <div class="row g-3 align-items-center">
                                 @if($publicacionOriginal->imagen)
-                                    <div class="col">
-                                        <div class="form-group image-preview-container"
-                                             style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                                            <img id="image-preview" src="{{ asset('storage/'.$publicacionOriginal->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 5vw; height: auto;">
-                                            <div class="image-caption" style="width: 200px; margin-top: 1vw; text-align: center;">
+                                    <div class="col-auto">
+                                        <div class="image-preview-container d-flex flex-column align-items-center justify-content-center" style="border-radius: 10px; overflow: hidden;">
+                                            <img id="image-preview" src="{{ asset('storage/'.$publicacionOriginal->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 120px; height: auto; object-fit: cover;">
+                                            <div class="image-caption text-center mt-2">
                                                 <strong>Vista Previa</strong>
                                             </div>
                                         </div>
                                     </div>
                                 @endif
-                                <div class="col" style="margin: 5px">
-                                    <strong>
-                                        <h6 class="bold-text">Original de: {{ $publicacionOriginal->user->name }}</h6>
-                                        <h6>{{ $publicacionOriginal->contenido }}</h6>
-                                    </strong>
-
+                                <div class="col" style="overflow-wrap: break-word;">
+                                    <h6 class="mb-1 fw-bold">Original de: {{ $publicacionOriginal->user->name }}</h6>
+                                    <p class="mb-0" style="max-height: 6em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">{{ $publicacionOriginal->contenido }}</p>
                                 </div>
                             </div>
                         </div>
+
 
                         <button type="submit" class="btn btn-light">Publicar</button>
                         <button type="reset" class="btn btn-light">Cancelar</button>

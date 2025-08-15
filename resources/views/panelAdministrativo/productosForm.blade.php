@@ -80,8 +80,9 @@
                     <br>
 
                     <div class="mb-3">
-                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple title="Seleccione una o más imágenes del producto">
+                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple accept="image/*" {{ !isset($producto) ? 'required' : '' }}title="Seleccione una o más imágenes del producto">
                     </div>
+
                 </div>
 
                 @if (isset($producto) && $producto->imagen)
