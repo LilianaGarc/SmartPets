@@ -49,7 +49,7 @@
             </div>
 
             <div class="col">
-                <a href="{{ route('solicitudes.panel') }}" class="card-link">
+                <a href="{{ route('eventos.panel') }}" class="card-link">
                     <div class="custom-card">
                         <img src="{{ asset('images/cardeventopanel.png') }}" alt="Card Evento">
                         <h5>Evento</h5>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="col">
-                <a href="{{ route('solicitudes.panel') }}" class="card-link">
+                <a href="{{ route('productos.panel') }}" class="card-link">
                     <div class="custom-card">
                         <img src="{{ asset('images/cardproductospanel.png') }}" alt="Card Producto">
                         <h5>Producto</h5>
