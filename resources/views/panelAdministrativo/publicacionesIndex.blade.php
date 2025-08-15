@@ -60,11 +60,17 @@
                         </div>
                     </td>
 
-                    <td style="max-width: 300px; word-break: break-word;">
-                        <div style="max-height: 150px; overflow-y: auto; padding: 0.5rem;">
+                    <td style="max-width: 300px;">
+                        <div style="
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0.5rem;
+    ">
                             {{ $publicacion->contenido }}
                         </div>
                     </td>
+
                     <td>{{ $publicacion->likes->count() }}</td>
                     <td>
                         @if ($publicacion->publicacion_original_id)
