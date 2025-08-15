@@ -378,8 +378,16 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagenes' => 'required|array|min:1|max:5',
+            'imagenes.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ], [
+            'imagenes.required' => 'Debes subir al menos una imagen del producto.',
+            'imagenes.*.required' => 'Todas las imágenes seleccionadas son obligatorias.',
+            'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
+            'imagenes.*.mimes' => 'Solo se permiten imágenes en formato JPG, JPEG, PNG o GIF.',
+            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
         ]);
+
 
         if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
             return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
