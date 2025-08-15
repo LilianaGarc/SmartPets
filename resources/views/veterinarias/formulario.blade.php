@@ -102,22 +102,43 @@
 
                     <div class="col-12 col-md-3">
                         <div class="form-floating">
-                            <input type="number" inputmode="tel" class="form-control @error('telefono') is-invalid @enderror" id="telefono" placeholder="Número de teléfono" maxlength="8" name="telefono" value="{{ isset($veterinaria) ? $veterinaria->telefono : old('telefono') }}">
-                            <label for="telefono">Número de teléfono</label>
-                            @error('telefono')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                              <input type="text" 
+                            class="form-control @error('telefono') is-invalid @enderror" 
+                            inputmode="numeric"
+                            id="telefono" 
+                            name="telefono"
+                            placeholder="Ej: 98765432"
+                            value="{{ old('telefono', $veterinaria->telefono ?? '') }}" 
+                            aria-label="Teléfono" 
+                            maxlength="8"
+                            pattern="^[2389]\d{7}$"
+                            title="Debe ser un número de 8 dígitos que comience con 2, 3, 8 o 9"
+                            required>
+                        <label for="telefono">Teléfono <span style="color:red">*</span></label>
+                        @error('telefono')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
                         </div>
                     </div>
 
                     <div class="col-12 col-md-3">
-                        <div class="form-floating">
-                            <input type="number" inputmode="tel" class="form-control @error('whatsapp') is-invalid @enderror" id="whatsapp" placeholder="Número de WhatsApp" name="whatsapp" maxlength="8" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}">
-                            <label for="whatsapp">Número de WhatsApp</label>
-                            @error('whatsapp')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                          <input type="text" 
+                            class="form-control @error('whatsapp') is-invalid @enderror" 
+                            inputmode="numeric"
+                            id="whatsapp" 
+                            name="whatsapp"
+                            placeholder="Ej: 98765432"
+                            value="{{ old('whatsapp', $veterinaria->whatsapp ?? '') }}" 
+                            aria-label="WhatsApp" 
+                            maxlength="8"
+                            pattern="^[2389]\d{7}$"
+                            title="Debe ser un número de 8 dígitos que comience con  3, 8 o 9">
+                        <label for="whatsapp">WhatsApp </label>
+                        @error('whatsapp')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
                     </div>
 
                     @php
@@ -780,6 +801,28 @@
 
             redContainer.remove();
         }
+
+
     </script>
+
+        <script>
+                document.getElementById('telefono').addEventListener('input', function() {
+                    this.value = this.value.replace(/\D/g, '');
+
+                    if (this.value.length > 8) {
+                        this.value = this.value.slice(0, 8);
+                    }
+                });
+        </script>
+
+        <script>
+            document.getElementById('whatsapp').addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '');
+
+                if (this.value.length > 8) {
+                    this.value = this.value.slice(0, 8);
+                }
+            });
+        </script>
 
     @endsection

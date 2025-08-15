@@ -40,6 +40,18 @@
                 </select>
                 <label for="usertype">Tipo de usuario</label>
             </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="telefono" name="telefono" value="{{ isset($user) ? $user->telefono : old('telefono') }}" disabled>
+                <label for="telefono">Teléfono</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="direccion" name="direccion" value="{{ isset($user) ? $user->direccion : old('direccion') }}" disabled>
+                <label for="direccion">Dirección</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="descripción" name="descripción" value="{{ isset($user) ? $user->descripción : old('descripción') }}" disabled>
+                <label for="descripción">Descripción</label>
+            </div>
         </div>
     </form>
     <a href="{{ route('users.paneledit', ['id'=> $user->id]) }}" class="btn" role="button" style="margin-left: 2vw;"><i class="fa-solid fa-pen-to-square"></i> Editar</a>

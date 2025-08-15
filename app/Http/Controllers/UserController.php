@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Publicacion;
 use App\Http\Controllers\Controller;
 
@@ -66,7 +67,10 @@ class UserController
         $request->validate([
             'name' => 'required|string|max:20',
             'email' => 'required|email|max:100|unique:users,email',
-            'usertype' => 'required',
+            'telefono' => 'nullable|string|max:8|regex:/^[2389]\d{7}$/',
+            'direccion' => 'nullable|string|max:150',
+            'descripción' => 'nullable|string|max:200',
+            'usertype' => 'required|in:admin,user',
             'password' => 'required|string|min:8|max:25',
         ]);
 
@@ -79,6 +83,9 @@ class UserController
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->password);
+        $user->telefono = $request->input('telefono');
+        $user->direccion = $request->input('direccion');
+        $user->descripción = $request->input('descripción');
         $user->usertype = $type;
 
         if ($user->save()) {
@@ -123,23 +130,30 @@ class UserController
             'name' => 'required|string|max:20',
             'email' => 'required|email|max:100|unique:users,email,' . $id,
             'usertype' => 'required|in:admin,user',
-            'password' => 'nullable|min:8|max:25|regex:/[a-zA-Z0-9 ]+/',
-            'telefono' => 'nullable|string|',
+            'telefono' => 'nullable|string|max:8|regex:/^[2389]\d{7}$/',
             'direccion' => 'nullable|string|max:100',
-            'descripcion' => 'nullable|string|max:250',
+            'descripción' => 'nullable|string|max:200', 
+
+            'password' => 'nullable|min:8|max:25',
         ]);
 
+    
         $user = User::findOrFail($id);
+        
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
+        $user->telefono = $request->input('telefono');
+        $user->direccion = $request->input('direccion');
+        $user->descripción = $request->input('descripción');
         $user->usertype = $request->input('usertype');
 
-        if ($user->save()) {
+        if ($request->filled('password')) {
+            // ...entonces se hashea y se añade a los datos que se van a guardar.
+            $data['password'] = Hash::make($request->password);
+        }
+        
+       
+        if ($user->update()) {
             return redirect()->route('users.panel')->with('exito', 'El usuario se editó correctamente.');
         } else {
             return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo editar.');
@@ -156,12 +170,18 @@ class UserController
 
     public function paneldestroy(string $id)
     {
-        $eliminados = User::destroy($id);
+        $user = User::findOrFail($id);
 
-        if ($eliminados < 0){
-            return redirect()->route('users.panel')->with('fracaso', 'El usuario no se pudo borrar.');
-        }else {
-            return redirect()->route('users.panel')->with('exito', 'El usuario se elimino correctamente.');
+            if ($user->rol == 'admin') {
+                return redirect()->route('users.panel')->with('fracaso', 'No se puede eliminar a un usuario administrador.');
+            }
+
+            if (Auth::user()->id == $id) {
+                return redirect()->route('users.panel')->with('fracaso', 'No puedes eliminar tu propia cuenta.');
+            }
+
+            $user->delete();
+
+            return redirect()->route('users.panel')->with('exito', 'Usuario eliminado correctamente.');
         }
     }
-}

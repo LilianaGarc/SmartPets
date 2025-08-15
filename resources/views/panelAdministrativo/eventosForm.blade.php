@@ -33,7 +33,7 @@
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input type="text" class="form-control @error('titulo') is-invalid @enderror" id="titulo" name="titulo"
-                                   placeholder="Título" inputmode="text" autocomplete="off"
+                                   placeholder="Título" inputmode="text" autocomplete="off" maxlength="30"
                                    value="{{ old('titulo', $evento->titulo ?? '') }}" aria-label="Título">
                             <label for="titulo">Título</label>
                             @error('titulo')
@@ -56,13 +56,23 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono"
-                                   placeholder="Teléfono" inputmode="tel" autocomplete="tel"
-                                   value="{{ old('telefono', $evento->telefono ?? '') }}" aria-label="Teléfono">
-                            <label for="telefono">Teléfono</label>
-                            @error('telefono')
+                              <input type="text" 
+                            class="form-control @error('telefono') is-invalid @enderror" 
+                            inputmode="numeric"
+                            id="telefono" 
+                            name="telefono"
+                            placeholder="Ej: 98765432"
+                            value="{{ old('telefono', $evento->telefono ?? '') }}" 
+                            aria-label="Teléfono" 
+                            maxlength="8"
+                            pattern="^[2389]\d{7}$"
+                            title="Debe ser un número de 8 dígitos que comience con 2, 3, 8 o 9"
+                            required>
+                        <label for="telefono">Teléfono <span style="color:red">*</span></label>
+                        @error('telefono')
                             <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                        @enderror
+
                         </div>
                     </div>
                 </div>
@@ -70,7 +80,7 @@
                 <div class="row g-3 mb-3">
                     <div class="col-md-3">
                         <div class="form-floating">
-                            <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" id="hora_inicio" name="hora_inicio"
+                            <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror" id="hora_inicio" name="hora_inicio" required
                                    placeholder="Hora de inicio" value="{{ old('hora_inicio', isset($evento) ? \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i') : '') }}" required aria-label="Hora de inicio">
                             <label for="hora_inicio">Hora inicio <span style="color:red">*</span></label>
                             @error('hora_inicio')
@@ -112,7 +122,7 @@
                 <div class="row g-3 mb-3">
                     <div class="col-12">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion"
+                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion" rquerid maxlength="150"
                                    placeholder="Ubicación" value="{{ old('ubicacion', $evento->ubicacion ?? '') }}" required aria-label="Ubicación">
                             <label for="ubicacion">Ubicación <span style="color:red">*</span></label>
                             @error('ubicacion')
@@ -125,9 +135,9 @@
                 <div class="row g-3 mb-3">
                     <div class="col-12">
                         <div class="form-floating">
-                            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion"
+                            <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" required
                                       placeholder="Descripción" style="height: 100px" required aria-label="Descripción"
-                                      maxlength="150"
+                                      maxlength="200"
                                       oninput="actualizarContadorDescripcion()"
                             >{{ old('descripcion', $evento->descripcion ?? '') }}</textarea>
                             <label for="descripcion">Descripción <span style="color:red">*</span></label>
@@ -136,7 +146,7 @@
                             @enderror
                         </div>
                         <div id="contadorDescripcion" class="form-text text-end" style="margin-top: 2px; margin-bottom: 10px;">
-                            0/150
+                            0/200
                         </div>
                     </div>
                 </div>
@@ -202,4 +212,14 @@
         document.getElementById('estado_evento').addEventListener('change', mostrarMotivoRechazo);
     </script>
 
+
+    <script>
+document.getElementById('telefono').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+
+    if (this.value.length > 8) {
+        this.value = this.value.slice(0, 8);
+    }
+});
+</script>
 @endsection

@@ -65,10 +65,14 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('users.show' , ['id'=>$user->id]) }}">Detalles</a></li>
                             <li><a class="dropdown-item" href="{{ route('users.paneledit' , ['id'=>$user->id]) }}">Editar</a></li>
+
+                            @if($user->usertype != 'admin')
                             <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$user->id}}">Eliminar</a></li>
+                            @endif
                         </ul>
                     </div>
 
+                    @if($user->usertype != 'admin')
                     <div class="modal fade" id="modalEliminar{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -90,6 +94,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </td>
             </tr>
         @endforeach
