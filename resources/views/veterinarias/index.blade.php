@@ -173,7 +173,7 @@
         @endif
     </div>
 
-    <style>
+    <style> 
         .breadcrumb-container {
             display: flex;
             align-items: start;
@@ -356,4 +356,3 @@
 
     @include('chats.chat-float')
 @endsection
-

@@ -72,20 +72,33 @@
             background-color: white;
         }
 
+        .card-text {
+            margin-top: 1.5vh;
+            word-wrap: break-word;      /* Rompe palabras largas */
+            overflow-wrap: break-word;  /* Compatibilidad moderna */
+            white-space: normal;        /* Permite que el texto envuelva */
+        }
+
+
         .card-footer {
+            width: 100%;
             max-width: 50vw;
-            height: 50vh;
+            height: auto;
             overflow: hidden;
             border-radius: 5px;
             margin-top: 10px;
         }
 
         .footer-img {
+            width: 50vw;
             max-width: 50vw;
             height: auto;
             border-radius: 5px;
             margin-top: 10px;
         }
+
+
+
 
         .imagen-publicacion-reaccion{
             width: 4vw;
@@ -334,34 +347,29 @@
             .btn {
                 text-size: small;
             }
-            .card-publicacion{
-                width: 95%;
-                height: auto;
-                padding: 2vw;
-                margin: 1px;
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-                box-sizing: border-box ;
-                transition: all .5s ease ;
+
+            .card-publicacion {
+                width: 95vw;
+                padding: 4vw;
+                border-radius: 15px;
                 overflow-x: auto;
-                border: 1px solid #c0c0c0;
-                border-radius: 20px;
-                z-index: 5;
-                background-color: white;
             }
 
             .card-footer {
-                max-width: 50vw;
-                height: 80vh;
-                overflow: hidden;
-                border-radius: 5px;
+                width: 100%;
+                max-width: 100%;
                 margin-top: 10px;
             }
 
             .footer-img {
-                max-width: 95vw;
+                width: 100%;
+                max-width: 100%;
                 height: auto;
-                margin-top: 8px;
+                margin-top: 10px;
             }
+
+
+
 
             .imagen-publicacion-reaccion{
                 width: 6vw;

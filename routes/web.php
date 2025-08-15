@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{AdopcionController,
     CategoriaController,
@@ -27,10 +28,16 @@ use App\Http\Controllers\{AdopcionController,
     HistoriaController,
     LikeController};
 
-// Rutas públicas generales
-Route::get('/', fn() => redirect()->route('animacion'));
+Route::get('/', function () {
+    if (Auth::check() && Auth::user()->isAdmin()) {
+        return redirect()->route('panel.dashboard');
+    }
+    return redirect()->route('animacion');
+});
+
+
 Route::get('/index', fn() => view('MenuPrincipal.MenuPrincipal'))->name('index');
-Route::get('animacion', fn() => view('MenuPrincipal.Animacion'))->name('animacion');
+Route::get('/animacion', fn() => view('MenuPrincipal.Animacion'))->name('animacion');
 
 // Rutas públicas de recursos principales
 Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index');

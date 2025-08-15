@@ -38,7 +38,7 @@ class VeterinariaController extends Controller
             'longitud' => 'nullable|numeric',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
-            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,webp|max:5120',
             'redes.*.tipo_red_social' => 'nullable|string|max:255',
             'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
@@ -108,7 +108,7 @@ class VeterinariaController extends Controller
             'longitud' => 'nullable|numeric',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
-            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,webp|max:5120',
             'redes.*.tipo_red_social' => 'nullable|string|max:255',
             'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
@@ -213,8 +213,8 @@ class VeterinariaController extends Controller
                     ];
     
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'nombre_veterinario' => 'required|string|max:255',
+            'nombre' => 'required|string|max:150',
+            'nombre_veterinario' => 'required|string|max:150',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
             'departamento' => 'required|in:'.implode(',', $departamentos),
@@ -225,7 +225,7 @@ class VeterinariaController extends Controller
             'longitud' => 'nullable|numeric|regex:/^-?\d{1,10}(\.\d+)?$/',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
-            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'imagenes.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'redes.*.tipo_red_social' => 'nullable|string|max:100|in:Facebook,Instagram',
             'redes.*.nombre_usuario' => 'nullable|string|max:100',
         ]);
@@ -293,8 +293,8 @@ class VeterinariaController extends Controller
                     ];
 
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'nombre_veterinario' => 'required|string|max:255',
+            'nombre' => 'required|string|max:150',
+            'nombre_veterinario' => 'required|string|max:150',
             'horario_apertura' => 'required',
             'horario_cierre' => 'required|after:horario_apertura',
             'departamento' => 'required|in:'.implode(',', $departamentos),
@@ -305,7 +305,7 @@ class VeterinariaController extends Controller
             'longitud' => 'nullable|numeric|regex:/^-?\d{1,10}(\.\d+)?$/',
             'telefono' => 'required|regex:/^[2389]\d{7}$/',
             'whatsapp' => 'nullable|regex:/^[389]\d{7}$/',
-            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg|max:5120',
+            'imagenes.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,webp|max:5120',
             'redes.*.tipo_red_social' => 'nullable|string|max:100|in:Facebook,Instagram',
             'redes.*.nombre_usuario' => 'nullable|string|max:100',
         ]);

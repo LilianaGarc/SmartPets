@@ -62,7 +62,7 @@
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"  placeholder="Nombre" maxlength="255" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
+                            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre"  placeholder="Nombre" maxlength="100" name="nombre" value="{{ isset($veterinaria) ? $veterinaria->nombre : old('nombre') }}">
                             <label for="nombre">Nombre</label>
                             @error('nombre')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -72,7 +72,7 @@
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" class="form-control @error('nombre_veterinario') is-invalid @enderror" id="nombre_veterinario" placeholder="Propietario" maxlength="255" name="nombre_veterinario" value="{{ isset($veterinaria) ? $veterinaria->nombre_veterinario : old('nombre_veterinario') }}">
+                            <input type="text" class="form-control @error('nombre_veterinario') is-invalid @enderror" id="nombre_veterinario" placeholder="Propietario" maxlength="100" name="nombre_veterinario" value="{{ isset($veterinaria) ? $veterinaria->nombre_veterinario : old('nombre_veterinario') }}">
                             <label for="nombre_veterinario">Propietario</label>
                             @error('nombre_veterinario')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -173,7 +173,7 @@
 
                     <div class="col-12 col-md-4">
                         <div class="form-floating">
-                            <input type="text" inputmode="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" placeholder="Dirección" name="direccion" maxlength="255" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
+                            <input type="text" inputmode="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" placeholder="Dirección" name="direccion" maxlength="200" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->direccion : old('direccion') }}">
                             <label for="direccion">Dirección</label>
                             @error('direccion')
                                 <div class="invalid-feedback">{{ $message }}</div>

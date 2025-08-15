@@ -20,6 +20,28 @@
             </h4>
             <hr>
 
+            @php
+                $usuarioAdopcion = $adopcion->usuario;
+                $fotoPerfil = $usuarioAdopcion && $usuarioAdopcion->fotoperfil
+                    ? asset('storage/' . $usuarioAdopcion->fotoperfil)
+                    : asset('images/fotodeperfil.webp');
+            @endphp
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="foto-perfil" style="
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-image: url('{{ $fotoPerfil }}');
+        margin-right: 10px;">
+                </div>
+                <h5 class="mb-0">{{ $usuarioAdopcion->name }}</h5>
+            </div>
+
+
+
             <div class="row">
                 <div class="col-8">
                     <div class="form-floating mb-3">
@@ -69,18 +91,9 @@
                         <label for="ubicacion_mascota">Ubicación de la Mascota</label>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="form-floating mb-3">
+                        <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" disabled style="height: 150px;">{{ old('contenido', isset($adopcion) ? $adopcion->contenido : '') }}</textarea>
                         <label for="contenido">Contenido</label>
-                        <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" disabled>{{ old('contenido', isset($adopcion) ? $adopcion->contenido : '') }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="input-file-wrapper">
-                            <input type="file" class="form-control" name="imagen" id="imagen" accept="image/*" onchange="previewImage()" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <span style="color: #18478b;">Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
-                        </div>
                     </div>
 
                     <div class="form-group image-preview-container" id="image-preview-container" style="display: none;">

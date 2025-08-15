@@ -34,7 +34,7 @@ class CalificacionController extends Controller
         $id_user = Auth::id(); // Usa el ID autenticado
         $request->validate([
             'calificacion' => 'required|integer|min:1|max:5',
-            'opinion' => 'nullable|string|max:255',
+            'opinion' => 'nullable|string|max:200',
         ]);
 
         $calificacion = Calificacion::create([
@@ -78,7 +78,7 @@ class CalificacionController extends Controller
     {
         $request->validate([
             'calificacion' => 'required|integer|min:1|max:5',
-            'opinion' => 'nullable|string|max:255',
+            'opinion' => 'nullable|string|max:200',
         ]);
     
         $calificacion = Calificacion::findOrFail($id);
