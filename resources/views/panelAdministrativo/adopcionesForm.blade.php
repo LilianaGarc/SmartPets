@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-8">
                     <div class="form-floating mb-3">
-                        <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control"
+                        <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="100" class="form-control"
                                value="{{ old('nombre_mascota', isset($adopcion) ? $adopcion->nombre_mascota : '') }}">
                         <label for="nombre_mascota">Nombre de la Mascota</label>
                     </div>
@@ -117,7 +117,7 @@
 
             <br>
             <button type="submit" class="btn">Guardar</button>
-            <button type="reset" class="btn">Cancelar</button>
+            <button type="reset" class="btn" onclick="window.location= '{{route('adopciones.panel')}}'">Cancelar</button>
         </div>
     </form>
 
