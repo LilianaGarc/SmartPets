@@ -24,38 +24,74 @@
 
 <div class="card shadow-sm p-4 mb-4 mt-4">
     <div class="card-body">
-        <div class="d-flex align-items-center mb-3 flex-nowrap gap-2" style="min-height: 56px;">
+        <div class="d-flex align-items-center mb-3 gap-2" style="min-height: 56px;">
             <h2 class="card-title fw-bold flex-grow-1 mb-0 titulo-evento-responsive"
-                style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size:clamp(1.3rem, 3vw, 2.2rem); min-width:0;">
+                style="overflow: hidden; font-size:clamp(1.3rem, 3vw, 2.2rem); min-width:0;">
                 {{ $evento->titulo }}
             </h2>
+
+            @if (auth()->id() === $evento->id_user)
+            <div class="position-relative">
+            <div class="dropdown">
+                <button class="btn btn-light btn-sm shadow-sm btn-action-anim" style="font-size: 150;" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item text-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEliminarEvento"
+                                data-evento-id="{{ $evento->id }}"
+                                data-evento-nombre="{{ $evento->titulo }}">
+                            <i class="fas fa-trash"></i> Borrar
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        @endif
+
             <a href="{{ route('eventos.index') }}" class="btn btn-success btn-volver-evento ms-2" role="button" style="font-size: 150%;">
                 <i class="fa-solid fa-circle-arrow-left"></i>
             </a>
         </div>
+
         <hr>
         <div class="row g-4">
 
             <div class="col-12 col-lg-7 d-flex flex-column justify-content-center">
                 <div class="card-text w-100" style="font-size: 1.15rem;">
                     <div class="mb-2"><span style="font-size:1.3em;">📅</span> <b>Fecha:</b> <span class="text-secondary">{{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}</span></div>
+
                     <div class="mb-2"><span style="font-size:1.3em;">⏰</span> <b>Hora:</b> <span class="text-secondary">{{ $evento->hora_inicio }} - {{ $evento->hora_fin }}</span></div>
-                    <div class="mb-2"><span style="font-size:1.3em;">📍</span> <b>Ubicación:</b> <span class="text-secondary">{{ $evento->ubicacion }}</span></div>
+
                     <div class="mb-2"><span style="font-size:1.3em;">📞</span> <b>Teléfono:</b> <span class="text-secondary">{{ $evento->telefono }}</span></div>
+
                     <div class="mb-2"><span style="font-size:1.3em;">💳</span> <b>Modalidad:</b> <span class="text-secondary">{{ ucfirst($evento->modalidad_evento) }}
                         @if($evento->modalidad_evento == 'pago')
                             | <b>Precio:</b> ${{ number_format($evento->precio, 2) }}
                         @endif
                     </span></div>
+
                     <div class="mb-2"><span style="font-size:1.3em;">📝</span> <b>Descripción:</b> <span class="text-secondary">{{ $evento->descripcion }}</span></div>
-                    <div class="mb-2"><span style="font-size:1.3em;">👥</span> <b>Participantes:</b> <span class="badge bg-primary" style="font-size: 1rem;">{{ $evento->participaciones->count() }}</span></div>
+
+                    <div class="mb-2"><span style="font-size:1.3em;">📍</span> <b>Ubicación:</b> <span class="text-secondary">{{ $evento->ubicacion }}</span></div>
+                    
+                    <div class="mb-2"><span style="font-size:1.3em;">👥</span> <b>Participantes:</b> <span class="text-secondary;">{{ $evento->participaciones->count() }}</span></div>
+
                 </div>
+
                 @php
                     $esCreador = auth()->check() && auth()->id() == $evento->id_user;
                     $yaParticipa = auth()->check() ? $evento->participaciones->contains('id_user', auth()->id()) : false;
                     $eventoFinalizado = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin)->isPast();
                 @endphp
-                @auth
+
                     @if(!$esCreador && !$eventoFinalizado)
                         @if($yaParticipa)
                             <form action="{{ route('eventos.dejarParticipar', $evento->id) }}" method="POST" class="d-inline mt-3">
@@ -73,15 +109,7 @@
                             </form>
                         @endif
                     @endif
-                @endauth
-                
-                <div class="d-none d-lg-block mt-4">
-                    <div class="card shadow h-100">
-                        <div class="card-header bg-primary text-white">
-                            <i class="fas fa-users"></i> Participantes ({{ $evento->participaciones->count() }})
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <div class="col-12 col-lg-5 d-flex flex-column align-items-center">
@@ -89,20 +117,52 @@
                     <img src="{{ asset('storage/' . $evento->imagen) }}" class="img-fluid rounded mb-4 shadow evento-img-responsive" alt="Imagen del evento"
                         style="max-width: 100%; max-height: 480px; min-height: 220px; object-fit: cover; border: 3px solid #1e4183;">
                 @endif
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="d-block d-lg-none w-100 mt-3">
-                    <div class="card shadow h-100">
-                        <div class="card-header bg-primary text-white">
-                            <i class="fas fa-users"></i> Participantes ({{ $evento->participaciones->count() }})
-                        </div>
-                    </div>
-                </div>
+<div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span>¿Desea eliminar este evento?</span>
+                <p class="text-secondary mt-1">Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formEliminarEvento" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+
+    .titulo-evento-responsive {
+        font-size: clamp(1.3rem, 3vw, 2.2rem);
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; 
+
+    @media (max-width: 576px) {
+        .d-flex.flex-nowrap {
+            flex-wrap: wrap; 
+        }
+        .btn-volver-evento {
+            margin-top: 8px;
+        }
+    }
+
     .breadcrumb-container {
         display: flex;
         align-items: start;
@@ -246,15 +306,21 @@
         }
     }
 
-    .titulo-evento-responsive {
-        min-width: 0;
-        max-width: 100%;
-    }
-    @media (max-width: 767.98px) {
-        .titulo-evento-responsive {
-            font-size: 1.1rem !important;
-            padding-right: 60px;
-        }
-    }
+
+    
 </style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalEliminar = document.getElementById('modalEliminarEvento');
+        modalEliminar.addEventListener('show.bs.modal', function (event) {
+            let button = event.relatedTarget;
+            let eventoId = button.getAttribute('data-evento-id');
+
+            let form = document.getElementById('formEliminarEvento');
+            form.action = `/eventos/${eventoId}/eliminar`;
+        });
+    });
+</script>
+
 @endsection

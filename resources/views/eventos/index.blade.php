@@ -48,66 +48,84 @@
     </div>
     @endif
 
-    <form method="GET" action="{{ route('eventos.index') }}" class="row g-2 mb-4{{ session('exito') || session('fracaso') ? '' : ' mt-4' }}">
-        <div class="col-md-4 d-flex">
-            <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar eventos..." value="{{ request('q') }}">
-            <button type="submit" class="btn btn-outline-primary btn-sm ms-2">
-                <i class="fas fa-search"></i> Buscar
-            </button>
-        </div>
-        @if(auth()->check())
-        <div class="col-md-3 d-flex">
-            <select name="tipo" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="">Todos los eventos</option>
-                <option value="mios" {{ request('tipo') == 'mios' ? 'selected' : '' }}>Mis eventos</option>
-                <option value="participando" {{ request('tipo') == 'participando' ? 'selected' : '' }}>Eventos en los que participo</option>
-            </select>
-        </div>
-        @if(request('tipo') == 'mios' || request('tipo') == 'participando')
-        <div class="col-md-3 d-flex">
-            <select name="estado" class="form-select form-select-sm">
-                <option value="">Todos los estados</option>
-                <option value="aceptado" {{ request('estado') == 'aceptado' ? 'selected' : '' }}>Aceptados</option>
-                <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendientes</option>
-                <option value="rechazado" {{ request('estado') == 'rechazado' ? 'selected' : '' }}>Rechazados</option>
-            </select>
-            <button type="submit" class="btn btn-outline-secondary btn-sm ms-2">
-                <i class="fas fa-filter"></i> Filtrar
-            </button>
-        </div>
-        @endif
-        @endif
+    <form method="GET" action="{{ route('eventos.index') }}" class="row g-2 mb-4
+    {{ session('exito') || session('fracaso') ? '' : ' mt-4' }}">
+
+            <div class="col-md-4 d-flex">
+                <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar eventos..." maxlength="150" value="{{ request('q') }}">
+                <button type="submit" class="btn btn-outline-primary btn-sm ms-2">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+
+            @if(auth()->check())
+                <div class="col-md-3 d-flex">
+                    <select name="tipo" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los eventos</option>
+                        <option value="mios" {{ request('tipo') == 'mios' ? 'selected' : '' }}>Mis eventos</option>
+                        <option value="participando" {{ request('tipo') == 'participando' ? 'selected' : '' }}>Eventos en los que participo</option>
+                    </select>
+                </div>
+            @endif
+
+            @if(request('tipo') == 'mios')
+            <div class="col-md-3 d-flex">
+                <select name="estado" class="form-select form-select-sm">
+                    <option value="">Todos los estados</option>
+                    <option value="aceptado" {{ request('estado') == 'aceptado' ? 'selected' : '' }}>Aceptados</option>
+                    <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendientes</option>
+                    <option value="rechazado" {{ request('estado') == 'rechazado' ? 'selected' : '' }}>Rechazados</option>
+                </select>
+                <button type="submit" class="btn btn-outline-secondary btn-sm ms-2">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </div>
+            @endif
     </form>
 
     @if($eventos->isEmpty())
-    <div class="card h-100 shadow-sm border p-5">
-        <div class="text-center p-4 p-md-5">
-            <p class="text-muted mb-3 fs-5">No hay eventos registrados</p>
-            <img src="{{ asset('images/vacio.svg') }}" alt="No hay eventos" class="mx-auto d-block img-fluid" style="width: 150px; max-width: 200px; opacity: 0.7;">
+        <div class="card h-100 shadow-sm border p-5">
+            <div class="text-center p-4 p-md-5">
+                @php
+                    $mensaje = "Aún no hay eventos registrados 😿";
+
+                    if(request('tipo') == 'mios') {
+
+                        $mensaje = "Aún no has creado ningún evento 😿";
+                        
+                    } elseif(request('tipo') == 'participando') {
+
+                        $mensaje = "No estás participando en ningún evento 😿";
+                    }
+
+                    if(request('estado') && (request('tipo') == 'mios' || request('tipo') == 'participando')) {
+                        $estadoText = ucfirst(request('estado'));
+                        $mensaje = "Aún no tienes ningún evento \"$estadoText\" 😿";
+                    }
+                @endphp
+
+                <p class="text-muted mb-3 fs-5">{{ $mensaje }}</p>
+                <img src="{{ asset('images/vacio.svg') }}" alt="No hay eventos" class="mx-auto d-block img-fluid" style="width: 150px; max-width: 200px; opacity: 0.7;">
+            </div>
         </div>
-    </div>
     @else
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach ($eventos as $evento)
         <div class="col mb-4">
             <div class="card h-100 shadow-sm border vet-anim position-relative">
-                @if ($evento->imagen)
+            
                     <div class="card-img-top bg-light d-flex align-items-center
                     justify-content-center p-0" style="height: 220px; overflow: hidden; border-radius: 0.5rem 0.5rem 0 0;">
-                        <img src="{{ asset('storage/' . $evento->imagen) }}"
+                    <a href="{{ route('eventos.show', $evento->id) }}">
+                    <img src="{{ asset('storage/' . $evento->imagen) }}"
                              class="img-fluid rounded mb-4 shadow evento-img-fija"
                              alt="Imagen del evento">
+                    </a>
                     </div>
-                @else
-                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px; border-radius: 0.5rem 0.5rem 0 0;">
-                        <p class="text-muted m-0">No hay imágenes disponibles</p>
-                    </div>
-                @endif
 
                 <div class="card-body">
                     @php
-
                         $yaParticipa = auth()->check() ? $evento->participaciones->contains('id_user', auth()->id()) : false;
                         $esCreador = auth()->check() && auth()->id() == $evento->id_user;
                         $eventoFinalizado = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin, 'America/Tegucigalpa')->isPast();
@@ -149,45 +167,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="position-absolute top-0 end-0 m-2" style="z-index: 2;">
-                    @if($esCreador)
-                        <div class="dropdown">
-                            <button class="btn btn-light btn-sm shadow-sm btn-action-anim" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Acciones">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('eventos.show', $evento->id) }}">
-                                        <i class="fas fa-eye"></i> Detalles
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('eventos.edit', $evento->id) }}">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </a>
-                                </li>
-                                <li>
-                                    <button type="button"
-                                            class="dropdown-item text-danger"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#modalEliminarEvento"
-                                            data-evento-id="{{ $evento->id }}"
-                                            data-evento-nombre="{{ $evento->titulo }}">
-                                        <i class="fas fa-trash"></i> Borrar
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    @else
-                        <a href="{{ route('eventos.show', $evento->id) }}"
-
-                            class="btn btn-outline-primary btn-sm shadow-sm btn-action-anim"
-                            aria-label="Ver detalles del evento {{ $evento->titulo }}"
-                            title="Ver detalles">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                    @endif
-                </div>
+                
 
                 <div class="card-footer bg-white border-0 d-flex justify-content-end">
                     @auth
@@ -212,35 +192,14 @@
         </div>
         @endforeach
     </div>
-    <div class="d-flex justify-content-center">
-        {{ $eventos->links('pagination::bootstrap-5') }}
-    </div>
+
 
     @endif
-</div>
 
-<!-- Modal fuera del foreach -->
-<div class="modal fade" id="modalEliminarEvento" tabindex="-1" aria-labelledby="modalEliminarEventoLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar Eliminación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <span>¿Desea eliminar este evento?</span>
-                <p class="text-secondary mt-1">Esta acción no se puede deshacer.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form id="formEliminarEvento" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-            </div>
-        </div>
+    <div class="paginacion-mascotas">
+        {{ $eventos->links('vendor.pagination.mascotas') }}
     </div>
+    
 </div>
 
 
@@ -471,18 +430,7 @@
         }
     }
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalEliminar = document.getElementById('modalEliminarEvento');
-        modalEliminar.addEventListener('show.bs.modal', function (event) {
-            let button = event.relatedTarget;
-            let eventoId = button.getAttribute('data-evento-id');
 
-            let form = document.getElementById('formEliminarEvento');
-            form.action = `/eventos/${eventoId}/eliminar`;
-        });
-    });
-</script>
 
 @include('chats.chat-float')
 @endsection

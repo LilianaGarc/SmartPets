@@ -38,7 +38,7 @@
         <thead>
             <tr>
                 <th scope="col">Usuario</th>
-                <th scope="col"># Adopcion</th>
+                <th scope="col">#Adopcion</th>
                 <th scope="col">Contenido</th>
             </tr>
         </thead>
@@ -47,9 +47,7 @@
             <tr>
                 <td>{{ $solicitud->usuario->name ?? 'Sin usuario' }}</td>
                 <td>
-                    <a href="{{ route('adopciones.show', $solicitud->adopcion->id) }}">
-                        {{ $solicitud->adopcion->titulo ?? $solicitud->id_adopcion }}
-                    </a>
+                    {{ $solicitud->adopcion->titulo ?? $solicitud->id_adopcion }}
                 </td>
 
                 <td>{{ $solicitud->contenido}}</td>
@@ -66,7 +64,6 @@
                     </div>
 
 
-                    <!-- Modal -->
                     <div class="modal fade" id="modalEliminar{{$solicitud->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

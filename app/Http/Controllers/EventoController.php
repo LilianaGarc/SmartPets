@@ -34,16 +34,18 @@ class EventoController
         $idUsuario = auth()->id();
 
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:250',
+            'titulo' => 'required|string|max:30',
+            'descripcion' => 'required|string|max:200',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|string|max:15',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
-            'ubicacion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:150',
+            'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
+            'motivo' => 'required_if:estado_evento,rechazado',
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
@@ -99,18 +101,18 @@ class EventoController
 
     {
         $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:250',
+            'titulo' => 'required|string|max:30',
+            'descripcion' => 'required|string|max:200',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|string|max:15',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|numeric|min:0',
+            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:255',
             'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
-            'motivo' => 'nullable|string|max:100',
+            'motivo' => 'required_if:estado_evento,rechazado',
         ]);
 
         $evento = Evento::findOrFail($id);
@@ -143,7 +145,7 @@ class EventoController
     {
         $nombre = $request->get('nombre');
         $eventos = Evento::orderby('created_at', 'desc')
-            ->where('nombre', 'LIKE', "%$nombre%")
+            ->where('titulo', 'LIKE', "%$nombre%")
             ->where('descripcion', 'LIKE', "%$nombre%")
             ->orWhere('telefono', 'LIKE', "%$nombre%")->get();
         return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
@@ -153,25 +155,25 @@ class EventoController
      */
     public function index(Request $request)
     {
-        $busqueda = $request->input('q');
-        $query = Evento::query();
+       $busqueda = $request->input('q');
+    $query = Evento::query();
 
         // Si NO está autenticado, solo mostrar eventos aceptados
         if (!auth()->check()) {
             $query->where('estado', 'aceptado');
         } else {
-            // Si filtra por "mios" (mis eventos)
+            // Filtrar por tipo
             if ($request->filled('tipo') && $request->tipo == 'mios') {
+                // Mis eventos: solo los creados por mí
                 $query->where('id_user', auth()->id());
-            }
-            // Si filtra por "participando"
-            elseif ($request->filled('tipo') && $request->tipo == 'participando') {
+            } elseif ($request->filled('tipo') && $request->tipo == 'participando') {
+                // Eventos en los que participo
                 $eventosIds = \App\Models\Participacion::where('id_user', auth()->id())->pluck('evento_id');
-                $query->whereIn('id', $eventosIds);
-            }
-            // Si no filtra por tipo, mostrar solo aceptados
-            else {
-                $query->where('estado', 'aceptado');
+                $query->whereIn('id', $eventosIds)->where('estado', 'aceptado');
+            } else {
+                // Todos los eventos -> excluir los míos
+                $query->where('estado', 'aceptado')
+                    ->where('id_user', '!=', auth()->id());
             }
         }
 
@@ -179,23 +181,25 @@ class EventoController
         if ($busqueda) {
             $query->where(function($q) use ($busqueda) {
                 $q->where('titulo', 'LIKE', "%$busqueda%")
-                  ->orWhere('descripcion', 'LIKE', "%$busqueda%")
-                  ->orWhere('fecha', 'LIKE', "%$busqueda%")
-                  ->orWhere('telefono', 'LIKE', "%$busqueda%");
+                ->orWhere('descripcion', 'LIKE', "%$busqueda%")
+                ->orWhere('fecha', 'LIKE', "%$busqueda%")
+                ->orWhere('telefono', 'LIKE', "%$busqueda%");
             });
         }
 
         // Filtro por estado (solo tiene sentido si es "mios" o "participando")
-        if ($request->filled('estado')) {
+        if ($request->filled('estado') && $request->tipo === 'mios') {
             $query->where('estado', $request->estado);
         }
 
         // Ordenar: aceptados, luego pendientes, luego rechazados
         $query->orderByRaw("FIELD(estado, 'aceptado', 'pendiente', 'rechazado')");
 
-        $eventos = $query->latest()->paginate(3); // o el número que prefieras por página
+        // Paginación
+        $eventos = $query->orderBy('fecha', 'asc')->paginate(9);
 
         return view('eventos.index', compact('eventos'));
+
     }
 
 
@@ -209,16 +213,16 @@ class EventoController
         $idUsuario = auth()->id();
 
         $request->validate([
-            'titulo' => 'required|string|max:100',
-            'descripcion' => 'required|string|max:250',
+            'titulo' => 'required|string|max:30',
+            'descripcion' => 'required|string|max:200',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|numeric|digits_between:8,12|regex:/^[0-9]+$/',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|max:10|numeric|min:0',
+            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
-            'ubicacion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:150',
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
@@ -275,16 +279,16 @@ class EventoController
 
     {
         $request->validate([
-            'titulo' => 'required|string|max:100',
+            'titulo' => 'required|string|max:30',
             'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
-            'telefono' => 'required|numeric|digits_between:8,12|regex:/^[0-9]+$/',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|required_if:modalidad_evento,pago|max:10|numeric|min:0',
+            'precio' => 'required_if:modalidad_evento,pago|numeric|min:0|max:10000|decimal:0,2',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
-            'ubicacion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:150',
         ]);
 
         $evento = Evento::findOrFail($id);

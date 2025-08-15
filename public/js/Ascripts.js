@@ -35,6 +35,7 @@ function toggleOrden() {
     ordenForm.style.display = isHidden ? 'block' : 'none';
     icon.classList.toggle('rotated', isHidden);
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     const isAndroid = /Android/i.test(navigator.userAgent);
     const ordenForm = document.getElementById('orden-form');
