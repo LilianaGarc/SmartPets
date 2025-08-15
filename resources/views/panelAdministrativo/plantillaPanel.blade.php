@@ -613,6 +613,12 @@
             transform: scale(1.05);
             z-index: 1;
         }
+        .truncate-cell {
+            max-width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
 
     </style>
 </head>
@@ -690,12 +696,6 @@
                 <a href="{{ route('adopciones.panel') }}">
                     <img src="{{ asset('images/adopciones.svg') }}" alt="Smart Pets">
                     <span>Adopciones</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('solicitudes.panel') }}">
-                    <img src="{{ asset('images/solicitudes.svg') }}" alt="Smart Pets">
-                    <span>Solicitudes</span>
                 </a>
             </li>
             <li>

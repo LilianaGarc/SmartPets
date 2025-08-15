@@ -249,6 +249,10 @@
 
         /* Cambio, reduccion de pantalla */
         @media (max-width: 768px) {
+            #animated-gif {
+                display: none;
+            }
+
             .container {
                 width: 100vw;
                 height: 100dvh;

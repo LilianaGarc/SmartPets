@@ -1,6 +1,16 @@
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="post"
           enctype="multipart/form-data"
           action="{{ isset($producto) ? route('productos.panelupdate', $producto->id) : route('productos.panelstore') }}">
@@ -16,52 +26,77 @@
             @endif
             <hr>
             <div class="row">
-                <div class="col-8">
+                <div class="col">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="{{ old('nombre', $producto->nombre ?? '') }}" required>
+                        <input type="text" maxlength="50" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="{{ old('nombre', $producto->nombre ?? '') }}" required title="Ingrese el nombre del producto (máx. 50 caracteres)">
                         <label for="nombre">Nombre del producto</label>
                     </div>
 
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ old('descripcion', $producto->descripcion ?? '') }}</textarea>
+                        <textarea class="form-control" id="descripcion" required name="descripcion" maxlength="255" rows="3" title="Describa brevemente el producto (máx. 255 caracteres)">{{ isset($producto) ? $producto->descripcion : old('descripcion') }}</textarea>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" value="{{ old('precio', $producto->precio ?? '') }}" required>
+                        <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" value="{{ isset($producto) ? number_format($producto->precio, 2, '.', '') : old('precio', '0.00') }}" required title="Ingrese el precio del producto (ej. 19.99)">
                         <label for="precio">Precio</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="{{ old('stock', $producto->stock ?? '') }}" required>
+                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="{{ isset($producto) ? $producto->stock : old('stock', 1) }}" required title="Ingrese la cantidad disponible en stock">
                         <label for="stock">Stock</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="categoria_id" name="categoria_id" required>
-                            @foreach($categorias as $categoria)
-                                <option value="{{ $categoria->id }}" {{ old('categoria_id', $producto->categoria_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                        <select class="form-select @error('categoria_id') error-border @enderror" id="categoria" required name="categoria_id" title="Seleccione la categoría del producto">
+                            <option value="">Seleccione una categoría</option>
+                            @foreach ($categorias as $categoria)
+                                <option value="{{ $categoria->id }}" {{ (isset($producto) && $producto->categoria_id == $categoria->id) || old('categoria_id') == $categoria->id ? 'selected' : '' }}>
                                     {{ $categoria->nombre }}
                                 </option>
                             @endforeach
                         </select>
-                        <label for="categoria_id">Categoría</label>
+                        <div class="error-message" id="error-categoria">
+                            @error('categoria_id') {{ $message }} @enderror
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="imagenes" class="form-label">Imágenes</label>
-                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple>
+                    <select class="form-select @error('subcategoria_id') error-border @enderror" id="subcategoria" required name="subcategoria_id" title="Seleccione una subcategoría del producto">
+                        <option value="">Seleccione una subcategoría</option>
+                        @foreach ($categorias as $categoria)
+                            <optgroup label="{{ $categoria->nombre }}" label-id="{{ $categoria->id }}">
+                                @foreach ($categoria->subcategorias as $subcategoria)
+                                    <option value="{{ $subcategoria->id }}" {{ (isset($producto) && $producto->subcategoria_id == $subcategoria->id) || old('subcategoria_id') == $subcategoria->id ? 'selected' : '' }}>
+                                        {{ $subcategoria->nombre }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
+
+                    <div class="error-message" id="error-subcategoria">
+                        @error('subcategoria_id') {{ $message }} @enderror
                     </div>
+                    <br>
+
+                    <div class="mb-3">
+                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple accept="image/*" {{ !isset($producto) ? 'required' : '' }}title="Seleccione una o más imágenes del producto">
+                    </div>
+
                 </div>
 
                 @if (isset($producto) && $producto->imagen)
                     <div class="col">
                         <div class="form-group image-preview-container"
                              style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                            <img id="image-preview" src="{{ asset('storage/' . $producto->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; width: 15vw; height: auto;">
-                            <div class="image-caption" style="width: 200px; margin-top: 1vw; text-align: center;">
-                                <strong>Vista Previa</strong>
+                            <hr>
+                            <input type="file" required class="form-control @error('imagenes.*') error-border @enderror" id="imagenes" name="imagenes[]" accept="image/*" multiple title="Seleccione nuevas imágenes para reemplazar las actuales">
+                            <small class="text-muted">Máximo 5 imágenes. Formato: JPG/JPEG, PNG, GIF, BMP, SVG, WEBP, TIFF. Tamaño máximo: 2MB</small>
+                            <div class="error-message" id="error-imagenes">
+                                @error('imagenes.*') {{ $message }} @enderror
                             </div>
+                            <div id="previewImagenes"></div>
+                            <input type="hidden" id="imagenes-eliminadas" name="imagenes_eliminadas" value="">
                         </div>
                     </div>
                 @endif

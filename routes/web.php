@@ -1,5 +1,11 @@
 <?php
 
+use App\Models\Adopcion;
+use App\Models\Evento;
+use App\Models\Producto;
+use App\Models\Publicacion;
+use App\Models\User;
+use App\Models\Veterinaria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{AdopcionController,
@@ -108,6 +114,9 @@ Route::middleware(['auth', 'prevenir-retorno'])->group(function() {
 
 // Rutas autenticadas
 Route::middleware('auth')->group(function () {
+    Route::get('/register', function () {
+        return redirect()->route('login');
+    })->name('register');
     // Perfil y usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -281,6 +290,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Panel de solicitudes
     Route::get('/panel/solicitudes', [SolicitudController::class, 'panel'])->name('solicitudes.panel');
     Route::get('/panel/buscar/solicitudes', [SolicitudController::class, 'search'])->name('solicitudes.search');
+    Route::get('/panel/solicitudes/crear', [SolicitudController::class, 'panelcreate'])->name('solicitudes.panelcreate');
+    Route::post('/panel/solicitudes/crear', [SolicitudController::class, 'store'])->name('solicitudes.store');
+    Route::get('/panel/solicitudes/{id}/editar', [SolicitudController::class, 'paneledit'])->name('solicitudes.paneledit')->whereNumber('id');
+    Route::put('/panel/solicitudes/{id}/editar', [SolicitudController::class, 'update'])->name('solicitudes.update')->whereNumber('id');
     Route::delete('/panel/solicitudes/{id}', [SolicitudController::class, 'paneldestroy'])->name('solicitudes.paneldestroy');
 
     // Panel de ubicaciones
@@ -322,3 +335,18 @@ require __DIR__.'/auth.php';
 Route::post('/enviar-codigo-verificacion', [ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
+
+
+Route::get('/panel/dashboard', function () {
+    $conteos = [
+        'usuarios' => User::count(),
+        'publicaciones' => Publicacion::count(),
+        'veterinarias' => Veterinaria::count(),
+        'adopciones' => Adopcion::count(),
+        'eventos' => Evento::count(),
+        'productos' => Producto::count(),
+    ];
+
+    return view('panelAdministrativo.principalPanel', compact('conteos'));
+})->name('panel.dashboard');
+

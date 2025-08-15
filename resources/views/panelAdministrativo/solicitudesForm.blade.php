@@ -1,6 +1,16 @@
 @extends('panelAdministrativo.plantillaPanel')
 @section('contenido')
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="post" action="{{ route('solicitudes.panelstore') }}">
         @csrf
 
@@ -12,16 +22,6 @@
                 <strong>Crear nueva solicitud</strong>
             </h4>
             <hr>
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="list-unstyled mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título de la solicitud" value="{{ old('titulo') }}" required>

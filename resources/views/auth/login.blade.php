@@ -55,7 +55,7 @@
                     <i class="fa-solid fa-key"></i>
                     <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
                 </div>
-                <button class="button-register" style="width: 10vw!important;">REGISTRARSE</button>
+                <button class="button-register">REGISTRARSE</button>
             </form>
         </div>
         <div class="container-welcome">
@@ -69,7 +69,7 @@
                 <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
                 <h3><strong>¡Hola!</strong></h3>
                 <p>Regístrese con sus datos personales para usar todas las funciones del sitio</p>
-                <button class="btn" id="btn-sign-in">Iniciar Sesión</button>
+                <button class="button" id="btn-sign-in">Iniciar Sesión</button>
             </div>
         </div>
     </div>
@@ -146,6 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
         btnSignUp.addEventListener("click", () => {
             document.title = "Registrarse";
         });
+    }
+
+    const container = document.querySelector(".container");
+    if (window.location.pathname === '/register') {
+        container.classList.add("toggle");
+        document.title = "Registrarse";
     }
 });
 </script>
