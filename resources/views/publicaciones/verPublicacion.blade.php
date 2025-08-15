@@ -19,18 +19,20 @@
             <hr>
 
             @php
-                $fotoPerfil = auth()->user()->fotoperfil
-                    ? asset('storage/' . auth()->user()->fotoperfil)
+                $usuarioPublicacion = $publicacion->user;
+                $fotoPerfil = $usuarioPublicacion && $usuarioPublicacion->fotoperfil
+                    ? asset('storage/' . $usuarioPublicacion->fotoperfil)
                     : asset('images/fotodeperfil.webp');
+                $esCompartida = $publicacion->publicacion_original_id !== null;
             @endphp
 
             <div class="d-flex align-items-center mb-3">
                 <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoPerfil }}'); margin-right: 10px;"></div>
-                <h5 class="mb-0">{{ auth()->user()->name }}</h5>
+                <h5 class="mb-0">{{ $usuarioPublicacion->name }}</h5>
             </div>
 
             <div class="row">
-                <div class="col-8">
+                <div class="{{ (isset($publicacion) && $publicacion->imagen && !$esCompartida) ? 'col-8' : 'col-12' }}">
                     <div class="form-floating mb-3">
                         <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="height: 200px;" disabled>{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         <label for="contenido">Contenido</label>
@@ -42,12 +44,12 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" style="height: 3.5rem; resize: none; overflow: hidden;" disabled>{{ $publicacion->publicacion_original_id ? 'Compartida' : 'Original' }}</textarea>
+                        <textarea class="form-control" style="height: 3.5rem; resize: none; overflow: hidden;" disabled>{{ $esCompartida ? 'Compartida' : 'Original' }}</textarea>
                         <label>Estado</label>
                     </div>
                 </div>
 
-                @if (isset($publicacion) && $publicacion->imagen)
+                @if (isset($publicacion) && $publicacion->imagen && !$esCompartida)
                     <div class="col-4 d-flex flex-column align-items-center justify-content-center">
                         <img id="image-preview" src="{{ asset('storage/'.$publicacion->imagen) }}" alt="Vista previa de la imagen" style="border-radius: 10px; max-width: 15vw; width: 100%; height: auto;">
                         <p class="mt-2"><strong>Vista Previa</strong></p>

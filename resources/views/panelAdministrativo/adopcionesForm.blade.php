@@ -43,7 +43,36 @@
             @endif
             <hr>
 
-            <div class="form-floating mb-3">
+                @php
+                    if (isset($adopcion)) {
+                        $usuarioAdopcion = $adopcion->usuario ?? null;
+                    } else {
+                        $usuarioAdopcion = auth()->user();
+                    }
+
+                    $fotoPerfil = $usuarioAdopcion && $usuarioAdopcion->fotoperfil
+                        ? asset('storage/' . $usuarioAdopcion->fotoperfil)
+                        : asset('images/fotodeperfil.webp');
+                @endphp
+
+                <div class="d-flex align-items-center mb-3">
+                    <div class="foto-perfil" style="
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+        background-image: url('{{ $fotoPerfil }}');
+        margin-right: 10px;">
+                    </div>
+                    <h5 class="mb-0">{{ $usuarioAdopcion ? $usuarioAdopcion->name : 'Usuario no asignado' }}</h5>
+                </div>
+
+
+
+
+
+                <div class="form-floating mb-3">
                 <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control"
                        value="{{ old('nombre_mascota', isset($adopcion) ? $adopcion->nombre_mascota : '') }}">
                 <label for="nombre_mascota">Nombre de la Mascota</label>

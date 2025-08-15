@@ -41,7 +41,7 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Nacimiento</th>
-                <th scope="col" style="width: 50%;">Mensaje</th>
+                <th scope="col" style="width: 52%;">Mensaje</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
             </thead>

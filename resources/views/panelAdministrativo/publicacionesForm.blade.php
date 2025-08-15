@@ -38,15 +38,17 @@
 
             <hr>
 
-            @php
-                $fotoPerfil = auth()->user()->fotoperfil
-                    ? asset('storage/' . auth()->user()->fotoperfil)
-                    : asset('images/fotodeperfil.webp');
-            @endphp
+                @php
+                    $usuarioPublicacion = $publicacion->user ?? auth()->user();
+                    $fotoPerfil = $usuarioPublicacion->fotoperfil
+                        ? asset('storage/' . $usuarioPublicacion->fotoperfil)
+                        : asset('images/fotodeperfil.webp');
+                @endphp
 
-            <div class="d-flex align-items-center mb-3">
+
+                <div class="d-flex align-items-center mb-3">
                 <div class="foto-perfil" style="width: 50px; height: 50px; border-radius: 50%; background-size: cover; background-position: center; background-image: url('{{ $fotoPerfil }}'); margin-right: 10px;"></div>
-                <h5 class="mb-0">{{ auth()->user()->name }}</h5>
+                    <h5 class="mb-0">{{ $usuarioPublicacion->name }}</h5>
             </div>
 
             <input type="hidden" name="visibilidad" value="publico">
@@ -75,13 +77,15 @@
                 </div>
             @endif
 
-                <div class="form-group text-center mb-3" style="text-align: center;">
-                    <img id="vista-previa-imagen"
-                         src="{{ isset($publicacion) && $publicacion->imagen ? asset('storage/' . $publicacion->imagen) : '' }}"
-                         alt="Vista previa de la imagen"
-                         style="border-radius: 10px; max-width: 200px; height: auto; display: {{ (isset($publicacion) && $publicacion->imagen) ? 'block' : 'none' }}; margin-left: auto; margin-right: auto;">
-                    <p class="mt-2"><strong>Vista Previa</strong></p>
-                </div>
+                @if (!isset($publicacion) || !$publicacion->publicacion_original_id)
+                    <div class="form-group text-center mb-3" style="text-align: center;">
+                        <img id="vista-previa-imagen"
+                             src="{{ isset($publicacion) && $publicacion->imagen ? asset('storage/' . $publicacion->imagen) : '' }}"
+                             alt="Vista previa de la imagen"
+                             style="border-radius: 10px; max-width: 200px; height: auto; display: {{ (isset($publicacion) && $publicacion->imagen) ? 'block' : 'none' }}; margin-left: auto; margin-right: auto;">
+                        <p class="mt-2"><strong>Vista Previa</strong></p>
+                    </div>
+                @endif
 
 
                 <br>
