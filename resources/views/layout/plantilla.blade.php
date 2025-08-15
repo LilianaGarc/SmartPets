@@ -72,6 +72,12 @@
             background-color: white;
         }
 
+        .card-text {
+            margin-top: 1.5vh;
+            word-wrap: break-word;      /* Rompe palabras largas */
+            overflow-wrap: break-word;  /* Compatibilidad moderna */
+            white-space: normal;        /* Permite que el texto envuelva */
+        }
 
 
         .card-footer {
@@ -84,7 +90,7 @@
         }
 
         .footer-img {
-            width: auto;
+            width: 50vw;
             max-width: 50vw;
             height: auto;
             border-radius: 5px;

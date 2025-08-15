@@ -3890,3 +3890,10 @@ button, .btn-view, .btn-editar {
 .checkbox-label span {
     pointer-events: none;
 }
+
+.imagen-marcada-para-eliminar {
+    opacity: 0.4;
+    position: relative;
+}
+
+

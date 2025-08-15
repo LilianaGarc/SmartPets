@@ -265,7 +265,6 @@
 
                         <div class="overlay-info">
                             <p><strong>{{ $publicacion->titulo }}</strong></p>
-                            <p>{{ \Illuminate\Support\Str::limit($publicacion->contenido, 60) }}</p>
                             <p><i class="fas fa-heart"></i> {{ $publicacion->likes_count }} Me gusta</p>
                         </div>
                         <p class="contador-visitas">

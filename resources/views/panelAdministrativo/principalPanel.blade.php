@@ -34,7 +34,7 @@
             </div>
 
             <div class="col">
-                <a href="#" class="card-link">
+                <a href="{{ route('adopciones.panelcreate') }}" class="card-link">
                     <div class="custom-card">
                         <img src="{{ asset('images/cardadopcionpanel.png') }}" alt="Card 4">
                         <h5>Adopcion</h5>

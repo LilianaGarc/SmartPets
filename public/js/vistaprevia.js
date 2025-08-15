@@ -17,11 +17,26 @@ function previewImage() {
     }
 }
 
-
 document.getElementById('imagenes_secundarias').addEventListener('change', function () {
+    const maxFiles = 4;
     const previewContainer = document.getElementById('secondary-preview-container');
     const imagesPreview = document.getElementById('secondary-images-preview');
     const files = this.files;
+
+    // Validar la cantidad de archivos
+    if (files.length > maxFiles) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Límite excedido',
+            text: 'Solo puedes subir un máximo de 4 imágenes adicionales.',
+            confirmButtonColor: '#ff7f50',
+        });
+
+        this.value = '';
+        previewContainer.style.display = 'none';
+        imagesPreview.innerHTML = '';
+        return;
+    }
 
     imagesPreview.innerHTML = '';
 
@@ -45,5 +60,6 @@ document.getElementById('imagenes_secundarias').addEventListener('change', funct
         previewContainer.style.display = 'none';
     }
 });
+
 
 

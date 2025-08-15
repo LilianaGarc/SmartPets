@@ -157,9 +157,12 @@
         .sidebar a:hover{
             background-color: #a5b5e7;
         }
-        .sidebar a.selected{
+        .sidebar a.selected,
+        .sidebar li.selected > a {
             background-color: #a5b5e7;
+            color: #fff;
         }
+
         .sidebar img{
             width: 1.6rem;
         }
@@ -718,77 +721,100 @@
         </div>
     </div>
 </main>
-
 <script>
-    const currentUrl = "{{ url()->current() }}";
+    (function () {
+        const menu = document.getElementById('menu');
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
 
-    const menu = document.getElementById('menu');
-    const sidebar = document.getElementById('sidebar');
-    const main = document.getElementById('main');
-
-    function cargarEstadoSidebar() {
-        const sidebarActivo = localStorage.getItem('sidebarActivo');
-
-        if (sidebarActivo === 'true') {
-            sidebar.classList.add('no-transition');
-            menu.classList.add('no-transition');
-            main.classList.add('no-transition');
-
-            sidebar.classList.add('menu-toggle');
-            menu.classList.add('menu-toggle');
-            main.classList.add('menu-toggle');
-
-            setTimeout(() => {
-                sidebar.classList.remove('no-transition');
-                menu.classList.remove('no-transition');
-                main.classList.remove('no-transition');
-            }, 100);
-        } else {
-            sidebar.classList.remove('menu-toggle');
-            menu.classList.remove('menu-toggle');
-            main.classList.remove('menu-toggle');
-        }
-    }
-
-    menu.addEventListener('click', () => {
-        sidebar.classList.toggle('menu-toggle');
-        menu.classList.toggle('menu-toggle');
-        main.classList.toggle('menu-toggle');
-
-        const activo = sidebar.classList.contains('menu-toggle');
-        localStorage.setItem('sidebarActivo', activo);
-    });
-
-    const userDropdown = document.getElementById('userDropdown');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-
-    userDropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('show');
-    });
-
-    document.addEventListener('click', () => {
-        dropdownMenu.classList.remove('show');
-    });
-
-    const sidebarLinks = document.querySelectorAll('.sidebar a');
-
-    function cargarEstadoEnlace() {
-        sidebarLinks.forEach(link => {
-            link.classList.remove('selected');
-            if (link.getAttribute('href') === currentUrl) {
-                link.classList.add('selected');
+        // ---- Guardar y cargar estado del sidebar ----
+        function cargarEstadoSidebar() {
+            const sidebarActivo = localStorage.getItem('sidebarActivo');
+            if (sidebarActivo === 'true') {
+                sidebar.classList.add('no-transition');
+                menu.classList.add('no-transition');
+                main.classList.add('no-transition');
+                sidebar.classList.add('menu-toggle');
+                menu.classList.add('menu-toggle');
+                main.classList.add('menu-toggle');
+                setTimeout(() => {
+                    sidebar.classList.remove('no-transition');
+                    menu.classList.remove('no-transition');
+                    main.classList.remove('no-transition');
+                }, 100);
+            } else {
+                sidebar.classList.remove('menu-toggle');
+                menu.classList.remove('menu-toggle');
+                main.classList.remove('menu-toggle');
             }
+        }
+
+        menu.addEventListener('click', () => {
+            sidebar.classList.toggle('menu-toggle');
+            menu.classList.toggle('menu-toggle');
+            main.classList.toggle('menu-toggle');
+            const activo = sidebar.classList.contains('menu-toggle');
+            localStorage.setItem('sidebarActivo', activo);
         });
-    }
 
-    window.addEventListener('load', () => {
-        cargarEstadoSidebar();
-        cargarEstadoEnlace();
-    });
+        // ---- Dropdown usuario ----
+        const userDropdown = document.getElementById('userDropdown');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        if (userDropdown && dropdownMenu) {
+            userDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+        }
 
+        // ---- Lógica para marcar el enlace activo ----
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+        function getModuleFromPath(pathname) {
+            const parts = String(pathname).replace(/\/+$/, '').split('/').filter(Boolean);
+
+            if (!parts.length) return null;
+
+            // Si empieza con "panel"
+            if (parts[0] === 'panel') {
+                if (parts[1] === 'buscar') return parts[2] || null;
+                return parts[1] || null;
+            }
+
+            // Si es ruta pública
+            return parts[0];
+        }
+
+        function marcarEnlaceActivo() {
+            const currentModule = getModuleFromPath(window.location.pathname);
+            sidebarLinks.forEach(link => {
+                link.classList.remove('selected');
+                if (link.parentElement.tagName === 'LI') {
+                    link.parentElement.classList.remove('selected');
+                }
+                const linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
+                const linkModule = getModuleFromPath(linkPath);
+                if (currentModule && linkModule && currentModule === linkModule) {
+                    link.classList.add('selected');
+                    if (link.parentElement.tagName === 'LI') {
+                        link.parentElement.classList.add('selected');
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('load', () => {
+            cargarEstadoSidebar();
+            marcarEnlaceActivo();
+        });
+    })();
 </script>
 
+
+<script>
+
+</script>
 <script src="{{ asset(path: 'js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset(path: 'js/jquery.min.js') }}"></script>
 <script src="{{ asset(path: 'js/popper.min.js') }}"></script></body>
