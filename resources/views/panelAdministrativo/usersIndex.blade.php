@@ -86,7 +86,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('users.show', ['id'=>$user->id]) }}">Detalles</a></li>
                                 <li><a class="dropdown-item" href="{{ route('users.paneledit', ['id'=>$user->id]) }}">Editar</a></li>
-                                @if($user->email != 'smartpets@gmail.com')
+                                @if($user->email != 'smartpetsunah@gmail.com')
                                     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalEliminar{{$user->id}}">Eliminar</a></li>
                                 @endif
                             </ul>

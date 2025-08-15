@@ -45,7 +45,7 @@
                 @endif
             </div>
 
-                @if($user->email != 'smartpets@gmail.com')
+                @if(isset($user) && $user->email != 'smartpets@gmail.com')
                     <div class="form-floating mb-3">
                         <select class="form-select" name="usertype" id="usertype" aria-label="Tipo de usuario" required>
                             <option value="" disabled {{ old('usertype') ? '' : (!isset($user) ? 'selected' : '') }}>Selecciona el tipo de usuario</option>
