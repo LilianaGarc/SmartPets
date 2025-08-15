@@ -81,22 +81,35 @@
                             </div>
 
                             @if ($publicacion->publicacionOriginal)
-                                <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
+                                <h6>
+                                    <p class="card-text" style="margin-top: 1.5vh; word-wrap: break-word; white-space: normal;">
+                                        {{ $publicacion->contenido }}
+                                    </p>
+                                </h6>
                                 <div class="shared-original-card" style="margin-top: 1rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; background-color: #f9fafb;">
-                                    <p style="font-weight: bold;">Original de: {{ $publicacion->publicacionOriginal->user->name }}</p>
-                                    <p>{{ $publicacion->publicacionOriginal->contenido }}</p>
+                                    <p style="font-weight: bold; word-wrap: break-word; white-space: normal;">
+                                        Original de: {{ $publicacion->publicacionOriginal->user->name }}
+                                    </p>
+                                    <p style="word-wrap: break-word; white-space: normal;">
+                                        {{ $publicacion->publicacionOriginal->contenido }}
+                                    </p>
                                     @if($publicacion->publicacionOriginal->imagen)
-                                        <img src="{{ asset('storage/' . $publicacion->publicacionOriginal->imagen) }}" class="img-fluid mt-2" alt="Imagen de la publicación original">
+                                        <img src="{{ asset('storage/' . $publicacion->publicacionOriginal->imagen) }}" class="img-fluid mt-2" alt="Imagen de la publicación original" style="max-width: 100%; height: auto;">
                                     @endif
                                 </div>
                             @else
-                                <h6><p class="card-text" style="margin-top: 1.5vh;">{{ $publicacion->contenido }}</p></h6>
+                                <h6>
+                                    <p class="card-text" style="margin-top: 1.5vh; word-wrap: break-word; white-space: normal;">
+                                        {{ $publicacion->contenido }}
+                                    </p>
+                                </h6>
                                 <div class="card-footer text-body-secondary">
                                     @if($publicacion->imagen)
-                                        <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion">
+                                        <img src="{{ asset('storage/' . $publicacion->imagen) }}" class="card-img-top footer-img" alt="Img publicacion" style="max-width: 100%; height: auto;">
                                     @endif
                                 </div>
                             @endif
+
 
 
                             <div class="col align-items-center">
