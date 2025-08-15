@@ -33,9 +33,9 @@
                 <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" value="{{ isset($user) ? $user->email : old('email') }}" required maxlength="100">
                 <label for="email">Correo electrónico</label>
             </div>
-            
+
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" name="password" 
+                <input type="password" class="form-control" id="password" name="password"
                        placeholder="Contraseña"
                        maxlength="25"
                        @if(!isset($user)) required @endif>
@@ -45,23 +45,35 @@
                 @endif
             </div>
 
+                @if($user->email != 'smartpetsunah@gmail.com')
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="usertype" id="usertype" aria-label="Tipo de usuario" required>
+                            <option value="" disabled {{ old('usertype') ? '' : (!isset($user) ? 'selected' : '') }}>Selecciona el tipo de usuario</option>
+                            <option value="admin" {{ (isset($user) && $user->usertype == 'admin') || old('usertype') == 'admin' ? 'selected' : '' }}>Administrador</option>
+                            <option value="user" {{ (isset($user) && $user->usertype == 'user') || old('usertype') == 'user' ? 'selected' : '' }}>Usuario</option>
+                        </select>
+                        <label for="usertype">Tipo de usuario</label>
+                    </div>
+                @else
+                    <div class="form-floating mb-3">
+                        <select class="form-select" name="usertype" id="usertype" disabled>
+                            <option disabled {{ !isset($user) ? 'selected' : '' }}>Selecciona el tipo de usuario</option>
+                            <option value="admin" {{ (isset($user) && $user->usertype == 'admin') ? 'selected' : '' }}>Administrador</option>
+                            <option value="user" {{ (isset($user) && $user->usertype == 'user') ? 'selected' : '' }}>Usuario</option>
+                        </select>
+                        <label for="usertype">Tipo de usuario</label>
+                    </div>
+                @endif
+
             <div class="form-floating mb-3">
-                <select class="form-select" name="usertype" id="usertype" aria-label="Tipo de usuario" required>
-                    <option value="" disabled {{ old('usertype') ? '' : (!isset($user) ? 'selected' : '') }}>Selecciona el tipo de usuario</option>
-                    <option value="admin" {{ (isset($user) && $user->usertype == 'admin') || old('usertype') == 'admin' ? 'selected' : '' }}>Administrador</option>
-                    <option value="user" {{ (isset($user) && $user->usertype == 'user') || old('usertype') == 'user' ? 'selected' : '' }}>Usuario</option>
-                </select>
-                <label for="usertype">Tipo de usuario</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" 
-                            class="form-control @error('telefono') is-invalid @enderror" 
+                <input type="text"
+                            class="form-control @error('telefono') is-invalid @enderror"
                             inputmode="numeric"
-                            id="telefono" 
+                            id="telefono"
                             name="telefono"
                             placeholder="Ej: 98765432"
-                            value="{{ old('telefono', $user->telefono ?? '') }}" 
-                            aria-label="Teléfono" 
+                            value="{{ old('telefono', $user->telefono ?? '') }}"
+                            aria-label="Teléfono"
                             maxlength="8"
                             pattern="^[2389]\d{7}$"
                             title="Debe ser un número de 8 dígitos que comience con 2, 3, 8 o 9">
@@ -85,8 +97,8 @@
                 <label for="descripción">Descripción</label>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Guardar</button> 
-            <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancelar</a> 
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancelar</a>
         </div>
     </form>
   <script>
