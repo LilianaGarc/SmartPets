@@ -14,9 +14,7 @@
             --dark: #1F1F1F;
         }
 
-        body {
-            background-color: var(--cream);
-        }
+
         .text-orange { color: #fd7e14; }
         .bg-orange { background-color: #fd7e14; }
         .bg-orange:hover { background-color: #e46b10; }
@@ -56,7 +54,7 @@
 
 <div class="container py-5">
     <h1 class="mb-3 fw-bold d-flex align-items-center">
-        <a href="{{ url()->previous() }}" class="btn btn-naranja" style="font-size: 45%; margin-right: 15px" role="button">
+        <a href="{{ route('productos.index') }}" class="btn btn-naranja" style="font-size: 45%; margin-right: 15px" role="button">
             <i class="fa-solid fa-circle-arrow-left"></i>
         </a>
         PRODUCTOS GUARDADOS</h1>
@@ -137,13 +135,13 @@
         @endforelse
     </div>
 
-    <div class="d-flex justify-content-center mt-4">
-        {{ $prod_favoritos->links('pagination::bootstrap-5') }}
+    <div class="paginacion-mascotas">
+        {{ $prod_favoritos->links('vendor.pagination.mascotas') }}
     </div>
 
     <!-- Continuar comprando -->
     <div class="text-center mt-5">
-        <a href="/productos" class="btn btn-outline-primary">Continuar comprando</a>
+        <a href="/productos" class="btn btn-naranja">Continuar comprando</a>
     </div>
 </div>
 
