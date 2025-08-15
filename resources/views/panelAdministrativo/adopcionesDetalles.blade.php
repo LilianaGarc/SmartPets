@@ -74,14 +74,7 @@
                         <textarea name="contenido" id="contenido" class="form-control" required maxlength="120" disabled>{{ old('contenido', isset($adopcion) ? $adopcion->contenido : '') }}</textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <div class="input-file-wrapper">
-                            <input type="file" class="form-control" name="imagen" id="imagen" accept="image/*" onchange="previewImage()" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <span style="color: #18478b;">Máximo tamaño: 2MB. Archivos permitidos: .jpeg, .png, .pdf</span>
-                        </div>
-                    </div>
+
 
                     <div class="form-group image-preview-container" id="image-preview-container" style="display: none;">
                         <img id="image-preview" src="" alt="Vista previa de la imagen">

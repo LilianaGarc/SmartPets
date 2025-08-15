@@ -21,6 +21,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Veterinaria::class, 'id_user');
     }
 
+    public function isAdmin()
+    {
+        return $this->usertype === 'admin';
+    }
+
+
     // Modelo Publicaciones
     public function publicaciones()
     {

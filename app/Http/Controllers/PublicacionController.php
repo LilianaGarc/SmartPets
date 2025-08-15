@@ -88,10 +88,11 @@ class PublicacionController extends Controller
             abort(403, 'No tienes permiso para modificar esta publicación.');
         }
 
-        if ($request->hasFile('imagen')) {
+        if (!$publicacion->publicacion_original_id && $request->hasFile('imagen')) {
             $rutaImagen = $request->file('imagen')->store('publicaciones', 'public');
             $publicacion->imagen = $rutaImagen;
         }
+
 
         $publicacion->visibilidad = $request->visibilidad;
         $publicacion->contenido = $request->contenido;
