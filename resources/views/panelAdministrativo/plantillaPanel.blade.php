@@ -690,12 +690,6 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('solicitudes.panel') }}">
-                    <img src="{{ asset('images/solicitudes.svg') }}" alt="Smart Pets">
-                    <span>Solicitudes</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('productos.panel') }}">
                     <img src="{{ asset('images/productos.svg') }}" alt="Smart Pets">
                     <span>Productos</span>

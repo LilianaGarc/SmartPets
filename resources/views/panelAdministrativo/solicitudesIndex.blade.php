@@ -13,9 +13,6 @@
 @endif
 <div class="d-flex align-items-center mb-2">
     <h3 class="mb-0">| Solicitudes</h3>
-    <a href="#" class="btn ms-auto" role="button">
-        <h8>Nueva solicitud <i class="fas fa-plus"></i></h8>
-    </a>
 </div>
 
     <hr>
@@ -59,8 +56,8 @@
                             Acciones
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('solicitudes.show', [$solicitud->adopcion->id, $solicitud->id]) }}">Detalles</a></li>
-                            <li><a class="dropdown-item" href="{{ route('solicitudes.edit', [$solicitud->id_adopcion, $solicitud->id]) }}">Editar</a></li>
+                            <li><a class="dropdown-item" href="{{ route('solicitudes.panelshow', [$solicitud->adopcion->id, $solicitud->id]) }}">Detalles</a></li>
+                            <li><a class="dropdown-item" href="{{ route('solicitudes.paneledit', [$solicitud->id_adopcion, $solicitud->id]) }}">Editar</a></li>
                             <li><a class="dropdown-item" href="# " data-bs-toggle="modal" data-bs-target="#modalEliminar{{$solicitud->id}}">Eliminar</a></li>
                         </ul>
                     </div>
