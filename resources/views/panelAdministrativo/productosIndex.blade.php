@@ -46,10 +46,10 @@
             <tbody>
             @foreach($productos as $producto)
                 <tr>
-                    <td>{{  $producto->nombre}}</td>
-                    <td>{{  $producto->descripcion}}</td>
-                    <td>{{  $producto->precio}}</td>
-                    <td>{{  $producto->stock}}</td>
+                    <td class="truncate-cell">{{  $producto->nombre}}</td>
+                    <td class="truncate-cell">{{  $producto->descripcion}}</td>
+                    <td class="truncate-cell">{{  $producto->precio}}</td>
+                    <td class="truncate-cell">{{  $producto->stock}}</td>
                     <td style="text-align: center;">
                         <div class="dropdown">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

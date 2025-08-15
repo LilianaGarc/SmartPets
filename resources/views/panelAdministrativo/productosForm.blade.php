@@ -28,27 +28,27 @@
             <div class="row">
                 <div class="col">
                     <div class="form-floating mb-3">
-                        <input type="text" maxlength="50" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="{{ old('nombre', $producto->nombre ?? '') }}" required>
+                        <input type="text" maxlength="50" class="form-control" id="nombre" name="nombre" placeholder="Nombre del producto" value="{{ old('nombre', $producto->nombre ?? '') }}" required title="Ingrese el nombre del producto (máx. 50 caracteres)">
                         <label for="nombre">Nombre del producto</label>
                     </div>
 
                     <div class="mb-3">
                         <label for="descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" maxlength="255" rows="3">{{ isset($producto) ? $producto->descripcion : old('descripcion') }}</textarea>
+                        <textarea class="form-control" id="descripcion" required name="descripcion" maxlength="255" rows="3" title="Describa brevemente el producto (máx. 255 caracteres)">{{ isset($producto) ? $producto->descripcion : old('descripcion') }}</textarea>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" value="{{ isset($producto) ? number_format($producto->precio, 2, '.', '') : old('precio', '0.00') }}" required>
+                        <input type="number" class="form-control" id="precio" name="precio" placeholder="Precio" value="{{ isset($producto) ? number_format($producto->precio, 2, '.', '') : old('precio', '0.00') }}" required title="Ingrese el precio del producto (ej. 19.99)">
                         <label for="precio">Precio</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="{{ isset($producto) ? $producto->stock : old('stock', 1) }}" required>
+                        <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock" value="{{ isset($producto) ? $producto->stock : old('stock', 1) }}" required title="Ingrese la cantidad disponible en stock">
                         <label for="stock">Stock</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select class="form-select @error('categoria_id') error-border @enderror" id="categoria" name="categoria_id">
+                        <select class="form-select @error('categoria_id') error-border @enderror" id="categoria" required name="categoria_id" title="Seleccione la categoría del producto">
                             <option value="">Seleccione una categoría</option>
                             @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria->id }}" {{ (isset($producto) && $producto->categoria_id == $categoria->id) || old('categoria_id') == $categoria->id ? 'selected' : '' }}>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <select class="form-select @error('subcategoria_id') error-border @enderror" id="subcategoria" name="subcategoria_id">
+                    <select class="form-select @error('subcategoria_id') error-border @enderror" id="subcategoria" required name="subcategoria_id" title="Seleccione una subcategoría del producto">
                         <option value="">Seleccione una subcategoría</option>
                         @foreach ($categorias as $categoria)
                             <optgroup label="{{ $categoria->nombre }}" label-id="{{ $categoria->id }}">
@@ -80,7 +80,7 @@
                     <br>
 
                     <div class="mb-3">
-                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple>
+                        <input type="file" class="form-control" id="imagenes" name="imagenes[]" multiple title="Seleccione una o más imágenes del producto">
                     </div>
                 </div>
 
@@ -89,7 +89,7 @@
                         <div class="form-group image-preview-container"
                              style="margin: 2vw; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
                             <hr>
-                            <input type="file" class="form-control @error('imagenes.*') error-border @enderror" id="imagenes" name="imagenes[]" accept="image/*" multiple>
+                            <input type="file" required class="form-control @error('imagenes.*') error-border @enderror" id="imagenes" name="imagenes[]" accept="image/*" multiple title="Seleccione nuevas imágenes para reemplazar las actuales">
                             <small class="text-muted">Máximo 5 imágenes. Formato: JPG/JPEG, PNG, GIF, BMP, SVG, WEBP, TIFF. Tamaño máximo: 2MB</small>
                             <div class="error-message" id="error-imagenes">
                                 @error('imagenes.*') {{ $message }} @enderror

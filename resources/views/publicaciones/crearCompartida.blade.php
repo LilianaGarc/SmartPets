@@ -41,7 +41,7 @@
                 <form method="post" enctype="multipart/form-data" action="{{ route('publicaciones.guardar.compartida') }}" >
                     @csrf
 
-                    <div class="card-body">
+                    <div class="card-body" style="align-items: center;">
                         <h5><strong>{{ isset($publicacion) ? 'Editar publicación' : 'Crear publicación' }}</strong></h5>
                         <hr>
                         @php
@@ -56,7 +56,7 @@
                         </div>
 
 
-                        <div class="col">
+                        <div class="col" style="display: none;">
                             <select class="form-select" name="visibilidad" style="width: 20%; margin: 1.5%;">
                                 <option value="publico" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'publico' ? 'selected' : '' }}>Público</option>
                                 <option value="privado" {{ old('visibilidad', $publicacion->visibilidad ?? '') == 'privado' ? 'selected' : '' }}>Privado</option>
@@ -64,12 +64,12 @@
                         </div>
 
                         <div class="col">
-                            <textarea class="form-control" name="contenido" id="contenido" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 100px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
+                            <textarea class="form-control" required name="contenido" id="contenido" maxlength="250" placeholder="¿Qué quieres compartir?" style="margin: 1.5%; width: 95%; height: 200px;">{{ old('contenido', $publicacion->contenido ?? '') }}</textarea>
                         </div>
 
                         <input type="hidden" name="publicacion_original_id" value="{{ $publicacionOriginal->id }}">
 
-                        <div class=" card shared-post-card">
+                        <div class=" card shared-post-card" style="margin: 1.5%; width: 95%; height: 200px;">
                             <div class="row">
                                 @if($publicacionOriginal->imagen)
                                     <div class="col">
@@ -82,7 +82,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                <div class="col">
+                                <div class="col" style="margin: 5px">
                                     <strong>
                                         <h6 class="bold-text">Original de: {{ $publicacionOriginal->user->name }}</h6>
                                         <h6>{{ $publicacionOriginal->contenido }}</h6>
