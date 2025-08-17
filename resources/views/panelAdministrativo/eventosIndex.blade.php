@@ -11,50 +11,31 @@
             {{ session('fracaso') }}
         </div>
     @endif
-    {{-- Campanita de notificaciones --}}
+
+
+
     <div class="d-flex align-items-center mb-3">
-        <h3 class="mb-0 flex-grow-1">| Eventos</h3>
-        <a href="#" class="position-relative me-3" id="notificacionesDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-            <i class="fas fa-bell" style="font-size: 1.7rem; color: #1e4183;"></i>
-            @if($notificacionesAdmin->count() > 0)
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.8rem;">
-                    {{ $notificacionesAdmin->count() }}
-                </span>
-            @endif
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown" style="min-width: 320px;">
-            @forelse($notificacionesAdmin as $notificacion)
-                <li class="px-3 py-2 border-bottom">
-                    <div style="font-size: 0.95rem;">
-                        <i class="fas fa-calendar-alt text-primary me-1"></i>
-                        {{ $notificacion->data['mensaje'] ?? 'Nueva notificación' }}
-                    </div>
-                    <small class="text-muted">{{ $notificacion->created_at->diffForHumans() }}</small>
-                </li>
-            @empty
-                <li class="px-3 py-2 text-center text-muted">Sin notificaciones</li>
-            @endforelse
-        </ul>
+        <h3 class="mb-0">| Eventos</h3>
         <a href="{{ route('eventos.panelcreate') }}" class="btn ms-auto" role="button">
             <h8>Nuevo evento <i class="fas fa-plus"></i></h8>
         </a>
     </div>
     <hr>
-    <form action="{{ route('eventos.search') }}"  class="" role="search" style="width: 160%; align-content: flex-end;">
+    <form action="{{ route('eventos.search') }}"  class="mb-3">
         <div class="row">
             <div class="col">
                 <input class="form-control me-2" maxlength="50" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
             </div>
             <div class="col">
                 <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
-                <span class="glyphicon glyphicon-search"></span>
             </div>
         </div>
-        </div>
     </form>
+
     <hr>
 
-    <div style="overflow-x: visible; margin-left: 1rem; margin-right: 1rem;">
+
+    <div style="overflow-x: visible !important;">
         <table class="table table-striped table-bordered" >
             <thead>
             <tr>

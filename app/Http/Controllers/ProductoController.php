@@ -29,16 +29,26 @@ class ProductoController extends Controller
     }
 
 
-    public function search( Request $request)
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
-        $productos = Producto::orderby('created_at', 'desc')
-            ->where('nombre', 'LIKE', "%$nombre%")
-            ->where('descripcion', 'LIKE', "%$nombre%")
-            ->where('precio', 'LIKE', "%$nombre%")
-            ->orWhere('stock', 'LIKE', "%$nombre%")->get();
-        return view('panelAdministrativo.productosIndex')->with('productos', $productos);
+
+        $productos = Producto::where(function($query) use ($nombre) {
+            $query->where('nombre', 'LIKE', "%$nombre%")
+                ->orWhere('descripcion', 'LIKE', "%$nombre%");
+
+            if (is_numeric($nombre)) {
+                $query->orWhere('precio', $nombre)
+                    ->orWhere('stock', $nombre);
+            }
+        })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('panelAdministrativo.productosIndex', compact('productos'));
     }
+
+
     /**
      * Display a listing of the resource.
      */

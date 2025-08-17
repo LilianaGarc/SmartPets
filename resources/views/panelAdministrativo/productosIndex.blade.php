@@ -18,22 +18,21 @@
         </a>
     </div>
     <hr>
-    <form action="{{ route('productos.search') }}"  class="" role="search" style="width: 100%; align-content: flex-end;">
+    <form action="{{ route('productos.search') }}" method="GET" role="search" style="width: 100%; align-content: flex-end;">
         <div class="row">
             <div class="col">
-                <input class="form-control me-2" maxlength="50" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre">
+                <input class="form-control me-2" maxlength="50" type="search" placeholder="Buscar" aria-label="Search" id="nombre" name="nombre" value="{{ request('nombre') }}">
             </div>
             <div class="col">
-                <button class="btn btn-outline-light " type="submit"><i class="fas fa-search"></i></button>
-                <span class="glyphicon glyphicon-search"></span>
+                <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </div>
-        </div>
     </form>
+
     <hr>
 
 
-    <div style="overflow-x: visible !important; margin-left: 1rem; margin-right: 1rem;">
+    <div style="overflow-x: visible !important;">
         <table class="table table-striped table-bordered">
             <thead>
             <tr>

@@ -13,9 +13,10 @@
         @csrf
         <div class="card-body">
             <h4>
-                <a href="{{ route('users.panel') }}" class="btn" role="button" >
+                <a href="javascript:history.back()" class="btn" role="button">
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
+
                 <strong>Detalles del evento</strong>
             </h4>
             <hr>

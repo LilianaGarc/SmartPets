@@ -287,15 +287,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/panel/buscar/chats', [ChatController::class, 'search'])->name('chats.search');
     Route::delete('/panel/chats/{id}', [ChatController::class, 'paneldestroy'])->name('chats.paneldestroy');
 
-    // Panel de solicitudes
-    Route::get('/panel/solicitudes', [SolicitudController::class, 'panel'])->name('solicitudes.panel');
-    Route::get('/panel/buscar/solicitudes', [SolicitudController::class, 'search'])->name('solicitudes.search');
-    Route::get('/panel/solicitudes/crear', [SolicitudController::class, 'panelcreate'])->name('solicitudes.panelcreate');
-    Route::post('/panel/solicitudes/crear', [SolicitudController::class, 'store'])->name('solicitudes.store');
-    Route::get('/panel/solicitudes/{id}/editar', [SolicitudController::class, 'paneledit'])->name('solicitudes.paneledit')->whereNumber('id');
-    Route::put('/panel/solicitudes/{id}/editar', [SolicitudController::class, 'update'])->name('solicitudes.update')->whereNumber('id');
-    Route::delete('/panel/solicitudes/{id}', [SolicitudController::class, 'paneldestroy'])->name('solicitudes.paneldestroy');
-
     // Panel de ubicaciones
     Route::get('/panel/ubicaciones', [UbicacionController::class, 'panel'])->name('ubicaciones.panel');
     Route::get('/panel/buscar/ubicaciones', [UbicacionController::class, 'search'])->name('ubicaciones.search');

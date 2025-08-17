@@ -33,7 +33,7 @@
     </form>
     <hr>
 
-    <div style="overflow-x: visible !important; margin-left: 1rem; margin-right: 1rem;">
+    <div style="overflow-x: visible !important;">
         <table class="table table-striped table-bordered align-middle">
             <thead>
             <tr>

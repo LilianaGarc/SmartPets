@@ -22,6 +22,20 @@ class VeterinariaController extends Controller
         return view('panelAdministrativo.veterinariasForm')->with('usuarios', $usuarios);
     }
 
+    public function search(Request $request)
+    {
+        $nombre = $request->get('nombre');
+
+        $veterinarias = Veterinaria::where(function($q) use ($nombre) {
+            $q->where('nombre', 'like', "%{$nombre}%")
+                ->orWhere('nombre_veterinario', 'like', "%{$nombre}%")
+                ->orWhere('telefono', 'like', "%{$nombre}%");
+        })->get();
+
+        return view('panelAdministrativo.veterinariasIndex', compact('veterinarias'));
+    }
+
+
     public function panelstore(Request $request)
     {
         $request->validate([
@@ -211,7 +225,7 @@ class VeterinariaController extends Controller
                     'Islas de la Bahía', 'La Paz', 'Lempira', 'Ocotepeque', 'Olancho',
                     'Santa Bárbara', 'Valle', 'Yoro'
                     ];
-    
+
         $request->validate([
             'nombre' => 'required|string|max:150',
             'nombre_veterinario' => 'required|string|max:150',

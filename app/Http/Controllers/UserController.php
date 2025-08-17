@@ -34,14 +34,20 @@ class UserController
         return view('panelAdministrativo.usersForm')->with('user', $user);
     }
 
-    public function search( Request $request)
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
-        $users = User::orderby('created_at', 'desc')
-            ->where('name', 'LIKE', "%$nombre%")
-            ->orWhere('email', 'LIKE', "%$nombre%")->get();
+
+        $users = User::orderBy('created_at', 'desc')
+            ->where(function ($query) use ($nombre) {
+                $query->where('name', 'LIKE', "%$nombre%")
+                    ->orWhere('email', 'LIKE', "%$nombre%");
+            })
+            ->get();
+
         return view('panelAdministrativo.usersIndex')->with('users', $users);
     }
+
 
     /**
      * Display a listing of the resource.
@@ -107,7 +113,7 @@ class UserController
 
     public function perfil(string $id)
     {
-       
+
 
     }
 
@@ -132,14 +138,14 @@ class UserController
             'usertype' => 'required|in:admin,user',
             'telefono' => 'nullable|string|max:8|regex:/^[2389]\d{7}$/',
             'direccion' => 'nullable|string|max:100',
-            'descripción' => 'nullable|string|max:200', 
+            'descripción' => 'nullable|string|max:200',
 
             'password' => 'nullable|min:8|max:25',
         ]);
 
-    
+
         $user = User::findOrFail($id);
-        
+
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->telefono = $request->input('telefono');
@@ -151,8 +157,8 @@ class UserController
             // ...entonces se hashea y se añade a los datos que se van a guardar.
             $data['password'] = Hash::make($request->password);
         }
-        
-       
+
+
         if ($user->update()) {
             return redirect()->route('users.panel')->with('exito', 'El usuario se editó correctamente.');
         } else {

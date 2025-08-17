@@ -110,8 +110,7 @@ class PublicacionController extends Controller
         $publicaciones = Publicacion::with('user')
             ->where(function ($query) use ($nombre) {
                 $query->whereHas('user', function ($q) use ($nombre) {
-                    $q->where('name', 'LIKE', "%$nombre%")
-                        ->orWhere('email', 'LIKE', "%$nombre%");
+                    $q->where('name', 'LIKE', "%$nombre%");
                 })
                     ->orWhere('contenido', 'LIKE', "%$nombre%")
                     ->orWhere('visibilidad', 'LIKE', "%$nombre%");

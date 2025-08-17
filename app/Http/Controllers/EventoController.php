@@ -141,15 +141,20 @@ class EventoController
         return redirect()->route('eventos.panel')->with('exito', 'Evento actualizado correctamente.');
     }
 
-    public function search( Request $request)
+    public function search(Request $request)
     {
         $nombre = $request->get('nombre');
-        $eventos = Evento::orderby('created_at', 'desc')
-            ->where('titulo', 'LIKE', "%$nombre%")
-            ->where('descripcion', 'LIKE', "%$nombre%")
-            ->orWhere('telefono', 'LIKE', "%$nombre%")->get();
-        return view('panelAdministrativo.eventosIndex')->with('eventos', $eventos);
+
+        $eventos = Evento::where(function ($query) use ($nombre) {
+            $query->where('titulo', 'LIKE', "%$nombre%")
+                ->orWhere('descripcion', 'LIKE', "%$nombre%")
+                ->orWhere('telefono', 'LIKE', "%$nombre%");
+        })->orderBy('created_at', 'desc')->get();
+
+        // Ya no necesitamos pasar notificaciones
+        return view('panelAdministrativo.eventosIndex', compact('eventos'));
     }
+
     /**
      * Display a listing of the resource.
      */
