@@ -24,7 +24,11 @@
                 <span>Use su correo y contraseña</span>
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100">
+                    <input type="text"
+                           id="email"
+                           name="email"
+                           placeholder="Correo electrónico"
+                           maxlength="100">
                 </div>
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
@@ -154,8 +158,27 @@ document.addEventListener("DOMContentLoaded", function () {
         document.title = "Registrarse";
     }
 });
+
 </script>
-<style>
+        <script>
+            document.getElementById('email').addEventListener('input', function () {
+
+                // Eliminar caracteres no permitidos
+                this.value = this.value.replace(/[^A-Za-z0-9@._-]/g, '');
+
+                // Evitar más de un @
+                let firstAt = this.value.indexOf('@');
+                if (firstAt !== -1) {
+                    // quitar todos los @ adicionales
+                    let cleaned = this.value.slice(0, firstAt + 1) +
+                        this.value.slice(firstAt + 1).replace(/@/g, '');
+                    this.value = cleaned;
+                }
+            });
+        </script>
+
+
+        <style>
     .link-recuperar {
         color: #ff7f50; /* Color naranja */
         text-decoration: none;

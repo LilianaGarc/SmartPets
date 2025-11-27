@@ -27,8 +27,30 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:100',
+                'regex:/^[A-Za-z0-9._-]+@[A-Za-z0-9._-]+$/'
+            ],
+
+
             'password' => ['required', 'string'],
+        ];
+    }
+
+    /**
+     * Custom validation messages.
+     */
+    public function messages(): array
+    {
+        return [
+            'email.regex' => 'El correo electrónico no puede contener más de un símbolo "@". Solo se permite un formato estándar.',
+            'email.required' => 'El campo correo electrónico es obligatorio.',
+            'email.email' => 'Debe ingresar un correo electrónico válido.',
+            'password.required' => 'El campo contraseña es obligatorio.',
+
         ];
     }
 
@@ -38,30 +60,29 @@ class LoginRequest extends FormRequest
      * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-{
-    \Illuminate\Support\Facades\App::setLocale('es');
+    {
+        \Illuminate\Support\Facades\App::setLocale('es');
 
-    $this->ensureIsNotRateLimited();
+        $this->ensureIsNotRateLimited();
 
-    $user = \App\Models\User::where('email', $this->input('email'))->first();
+        $user = \App\Models\User::where('email', $this->input('email'))->first();
 
-    if (! $user) {
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
+        if (! $user) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+            ]);
+        }
+
+        if (! \Illuminate\Support\Facades\Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            \Illuminate\Support\Facades\RateLimiter::hit($this->throttleKey());
+
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'password' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+            ]);
+        }
+
+        \Illuminate\Support\Facades\RateLimiter::clear($this->throttleKey());
     }
-
-    if (! \Illuminate\Support\Facades\Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-        \Illuminate\Support\Facades\RateLimiter::hit($this->throttleKey());
-
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'password' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
-    }
-
-    \Illuminate\Support\Facades\RateLimiter::clear($this->throttleKey());
-}
-
 
     /**
      * Ensure the login request is not rate limited.
