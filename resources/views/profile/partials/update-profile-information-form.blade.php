@@ -1,119 +1,178 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Información del Perfil') }}
+            Información del Perfil
         </h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Actualiza la información de tu cuenta y tu dirección de correo electrónico.") }}
+            Actualiza la información de tu cuenta.
         </p>
     </header>
 
-    <!-- Mensajes de éxito/error -->
+    <!-- Mensaje de éxito (Bootstrap) -->
     @if(session('exito'))
-        <div class="alert alert-success mt-3">
-            <i class="fa-solid fa-circle-check"></i> {{ session('exito') }}
+        <div class="mt-4 alert alert-success d-flex align-items-center gap-2" role="alert">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>{{ session('exito') }}</span>
         </div>
     @endif
 
-    @if(session('fracaso'))
-        <div class="alert alert-danger mt-3">
-            <i class="fa-solid fa-circle-xmark"></i> {{ session('fracaso') }}
+    <!-- Errores de validación (Bootstrap) -->
+    @if($errors->any())
+        <div class="mt-4 alert alert-danger" role="alert">
+            <strong>Por favor corrige los siguientes errores:</strong>
+            <ul class="mt-2 mb-0 ps-3">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
-    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+    <!-- ========================= -->
+    <!-- FORMULARIO PRINCIPAL     -->
+    <!-- ========================= -->
+    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" autocomplete="off" id="profileForm">
         @csrf
         @method('patch')
 
         <!-- FOTO DE PERFIL -->
-        <div class="text-center my-4">
+        <div class="text-center my-5">
+
             <img src="{{ Auth::user()->fotoperfil
-                ? asset('storage/' . Auth::user()->fotoperfil)
+                ? asset('storage/' . Auth::user()->fotoperfil) . '?t=' . time()
                 : asset('images/default-avatar.png') }}"
                  alt="Foto de perfil"
-                 class="rounded-circle"
-                 style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                 class="rounded-circle img-thumbnail"
+                 style="width: 140px; height: 140px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
 
-            <div class="mt-3">
-                <input type="file" name="profile_photo" id="profile_photo" class="form-control" accept="image/*">
+            <div class="mt-4">
+                <input type="file" name="profile_photo" class="form-control" accept="image/*">
                 @error('profile_photo')
-                <div class="text-danger small mt-1">{{ $message }}</div>
+                <span class="badge bg-danger mt-2">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Botón eliminar solo si tiene foto -->
-            @if(Auth::user()->fotoperfil)
-                <div class="mt-3">
-                    <form action="{{ route('profile.photo.delete') }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger btn-sm"
-                                onclick="return confirm('¿Seguro que quieres eliminar tu foto de perfil?')">
-                            <i class="fa-solid fa-trash"></i> Eliminar foto
-                        </button>
-                    </form>
-                </div>
-            @endif
         </div>
 
-        <div class="row g-3">
+        <div class="row g-4">
+            <!-- NOMBRE -->
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="text" class="form-control @error('name') is-invalid @enderror"
-                           id="name" name="name" maxlength="20" placeholder="Nombre"
-                           value="{{ old('name', Auth::user()->name) }}" required>
-                    <label for="name">Nombre <span class="text-danger">*</span></label>
-                    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="text"
+                           class="form-control @error('name') is-invalid @enderror"
+                           id="name"
+                           name="name"
+                           value="{{ old('name', Auth::user()->name) }}"
+                           maxlength="20"
+                           required
+                           oninput="validarNombre(this)">
+                    <label>Nombre <span class="text-danger">*</span></label>
+                    @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div id="nombreError" class="mt-1"></div>
                 </div>
             </div>
 
+            <!-- EMAIL -->
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                           id="email" name="email" maxlength="100" placeholder="Correo"
-                           value="{{ old('email', Auth::user()->email) }}" required>
-                    <label for="email">Correo electrónico <span class="text-danger">*</span></label>
-                    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="email"
+                           class="form-control @error('email') is-invalid @enderror"
+                           id="email"
+                           name="email"
+                           value="{{ old('email', Auth::user()->email) }}"
+                           maxlength="100"
+                           required>
+                    <label>Correo electrónico <span class="text-danger">*</span></label>
+                    @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="form-floating mb-3">
-                    <input type="text" inputmode="numeric" pattern="[0-9]*"
-                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                           class="form-control @error('telefono') is-invalid @enderror"
-                           id="telefono" name="telefono" maxlength="11"
-                           placeholder="Teléfono" value="{{ old('telefono', Auth::user()->telefono) }}">
-                    <label for="telefono">Teléfono</label>
-                    @error('telefono') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <!-- TELÉFONO -->
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text"
+                           class="form-control"
+                           id="telefono"
+                           name="telefono"
+                           value="{{ old('telefono', Auth::user()->telefono) }}"
+                           maxlength="11"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <label>Teléfono</label>
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control @error('direccion') is-invalid @enderror"
-                           id="direccion" name="direccion" maxlength="100"
-                           placeholder="Dirección" value="{{ old('direccion', Auth::user()->direccion) }}">
-                    <label for="direccion">Dirección</label>
-                    @error('direccion') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <!-- DIRECCIÓN -->
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input type="text"
+                           class="form-control"
+                           id="direccion"
+                           name="direccion"
+                           value="{{ old('direccion', Auth::user()->direccion) }}"
+                           maxlength="100">
+                    <label>Dirección</label>
                 </div>
             </div>
 
+            <!-- DESCRIPCIÓN -->
             <div class="col-12">
-                <div class="form-floating mb-3">
-                    <textarea class="form-control @error('descripción') is-invalid @enderror"
-                              id="descripción" name="descripción" maxlength="250"
+                <div class="form-floating">
+                    <textarea class="form-control"
+                              id="descripción"
+                              name="descripción"
+                              maxlength="250"
                               style="height: 100px">{{ old('descripción', Auth::user()->descripción) }}</textarea>
-                    <label for="descripción">Descripción</label>
-                    @error('descripción') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <label>Descripción</label>
                 </div>
             </div>
         </div>
 
-        <div class="text-end mt-4">
-            <button type="submit" class="btn btn-primary px-5">
-                Actualizar perfil
+        <div class="text-end mt-5">
+            <button type="submit" class="btn btn-primary px-5 py-2">
+                Guardar cambios
             </button>
         </div>
+
     </form>
+
+    <!-- ========================= -->
+    <!-- FORMULARIO ELIMINAR FOTO -->
+    <!-- ========================= -->
+    @if(Auth::user()->fotoperfil)
+        <div class="mt-3 text-center">
+
+            {{-- ⭐ Este formulario queda independiente del principal --}}
+            <form action="{{ route('profile.photo.delete') }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('¿Eliminar foto?')">
+                    Eliminar foto
+                </button>
+            </form>
+
+        </div>
+    @endif
+
 </section>
+
+<script>
+    function validarNombre(input) {
+        const valor = input.value.trim();
+        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/;
+        const errorDiv = document.getElementById('nombreError');
+
+        if (valor && !regex.test(valor)) {
+            errorDiv.innerHTML = '<span class="badge bg-danger mt-1">Solo letras, espacios, - y \'</span>';
+            input.setCustomValidity('Nombre inválido');
+        } else {
+            errorDiv.innerHTML = '';
+            input.setCustomValidity('');
+        }
+    }
+</script>

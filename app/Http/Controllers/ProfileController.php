@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -25,52 +26,50 @@ class ProfileController extends Controller
     /**
      * Actualizar información del perfil.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
 
-        // Validación extra para la foto
         $request->validate([
-            'name' => ['required', 'string', 'max:20'],
-            'email' => ['required', 'email', 'max:100', 'unique:users,email,' . $user->id],
-            'telefono' => ['nullable', 'string', 'max:12'],
-            'direccion' => ['nullable', 'string', 'max:100'],
-            'descripción' => ['nullable', 'string', 'max:250'],
-            'profile_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'], // 2MB máx
-            'current_password' => ['nullable', 'string', 'min:8'],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'name' => 'required|string|max:20',
+            'email' => 'required|email|max:100',
+            'telefono' => 'nullable|string|max:11',
+            'direccion' => 'nullable|string|max:100',
+            'descripción' => 'nullable|string|max:250',
+
+            /* ⭐ Debe validar la imagen correctamente */
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        // === SUBIR FOTO DE PERFIL ===
+        // DATOS NORMALES
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->telefono = $request->telefono;
+        $user->direccion = $request->direccion;
+        $user->descripción = $request->descripción;
+
+        // ===============================
+        // ⭐ PROCESAR Y GUARDAR LA FOTO
+        // ===============================
         if ($request->hasFile('profile_photo')) {
-            // Borrar la anterior si existe
-            if ($user->fotoperfil) {
+
+            /* 💬 Solución: borrar la anterior solo si existe */
+            if ($user->fotoperfil && Storage::disk('public')->exists($user->fotoperfil)) {
                 Storage::disk('public')->delete($user->fotoperfil);
             }
 
-            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            /* 💬 Solución: guardar en storage/app/public/perfiles */
+            $path = $request->file('profile_photo')->store('perfiles', 'public');
+
+            /* 💬 Solución: guardar ruta en la BD */
             $user->fotoperfil = $path;
-        }
-
-        // Rellenar datos
-        $user->fill($request->only(['name', 'email', 'telefono', 'direccion', 'descripción']));
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        // Cambio de contraseña
-        if ($request->filled('current_password') && $request->filled('password')) {
-            if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors(['current_password' => 'La contraseña actual es incorrecta.']);
-            }
-            $user->password = Hash::make($request->password);
         }
 
         $user->save();
 
-        return redirect()->route('profile.edit')->with('exito', 'Perfil actualizado correctamente.');
+        return back()->with('exito', 'Perfil actualizado correctamente');
     }
+
 
     /**
      * Eliminar cuenta de usuario.

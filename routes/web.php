@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{AdopcionController,
     CategoriaController,
@@ -120,7 +121,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
     Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('users.perfil')->whereNumber('id');
     Route::delete('/profile/photo', [ProfileController::class, 'deleteProfilePhoto'])
-        ->name('profile.photo.delete');Route::delete('/profile/photo', [ProfileController::class, 'deleteProfilePhoto'])
         ->name('profile.photo.delete');
 
     //Compartir
