@@ -24,12 +24,12 @@
 
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100">
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100" required>
                 </div>
 
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25" required>
                 </div>
 
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
@@ -46,29 +46,30 @@
         </div>
 
         <div class="container-form">
-            <form class="sign-up" method="POST" action="{{ route('register') }}">
+            <form class="sign-up" method="POST" action="{{ route('register') }}" id="registerForm">
                 @csrf
                 <h2><strong>Registrarse</strong></h2>
                 <span>Use su correo electrónico para registrarse</span>
 
                 <div class="container-input">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="name" name="name" maxlength="20" placeholder="Nombre">
+                    <input type="text" id="name" name="name" maxlength="20" placeholder="Nombre" required>
                 </div>
 
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" maxlength="100" placeholder="Correo electrónico">
+                    <input type="email" id="email" name="email" maxlength="100" placeholder="Correo electrónico" required>
                 </div>
 
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" maxlength="25" placeholder="Contraseña">
+                    <input type="password" id="password" name="password" maxlength="25" placeholder="Contraseña" required>
+                    <small style="font-size: 12px; color: #666;">No se permiten espacios</small>
                 </div>
 
                 <div class="container-input">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
+                    <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña" required>
                 </div>
 
                 <div class="container-input">
@@ -81,7 +82,7 @@
                     </label>
                 </div>
 
-                <button class="button-register">REGISTRARSE</button>
+                <button class="button-register" type="submit">REGISTRARSE</button>
             </form>
         </div>
 
@@ -108,6 +109,7 @@
         const container = document.querySelector(".container");
         const btnSignIn = document.getElementById("btn-sign-in");
         const btnSignUp = document.getElementById("btn-sign-up");
+        const registerForm = document.getElementById('registerForm');
 
         btnSignIn.addEventListener("click", () => {
             container.classList.remove("toggle");
@@ -116,6 +118,55 @@
         btnSignUp.addEventListener("click", () => {
             container.classList.add("toggle");
         });
+
+        // Validación en tiempo real para espacios en la contraseña
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            if (password.includes(' ')) {
+                e.target.setCustomValidity('La contraseña no puede contener espacios');
+                e.target.style.borderColor = 'red';
+            } else {
+                e.target.setCustomValidity('');
+                e.target.style.borderColor = '';
+            }
+        });
+
+        // Validación para evitar que el nombre sea igual a la contraseña
+        registerForm.addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+
+            if (name === password) {
+                e.preventDefault();
+                alert('El nombre de usuario no puede ser igual a la contraseña.');
+                return false;
+            }
+
+            // Validación adicional para espacios en contraseña
+            if (password.includes(' ')) {
+                e.preventDefault();
+                alert('La contraseña no puede contener espacios.');
+                return false;
+            }
+        });
+
+        // Validación en tiempo real para nombre vs contraseña
+        document.getElementById('name').addEventListener('input', validateNamePassword);
+        document.getElementById('password').addEventListener('input', validateNamePassword);
+
+        function validateNamePassword() {
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+            const nameInput = document.getElementById('name');
+
+            if (name === password && name !== '' && password !== '') {
+                nameInput.setCustomValidity('El nombre de usuario no puede ser igual a la contraseña');
+                nameInput.style.borderColor = 'red';
+            } else {
+                nameInput.setCustomValidity('');
+                nameInput.style.borderColor = '';
+            }
+        }
 
         setTimeout(() => {
             const alert = document.querySelector('.alert-error');
@@ -221,19 +272,18 @@
 
         /* Estilo personalizado del checkbox */
         .container-input input[type="checkbox"] {
-            -webkit-appearance: none; /* quitar estilo por defecto en Chrome/Safari */
-            -moz-appearance: none;    /* quitar estilo por defecto en Firefox */
+            -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
             width: 18px;
             height: 18px;
-            border: 2px solid #ff7f50; /* borde visible */
-            border-radius: 4px;        /* bordes redondeados opcional */
+            border: 2px solid #ff7f50;
+            border-radius: 4px;
             cursor: pointer;
             position: relative;
             background-color: white;
         }
 
-        /* Cuando está marcado, agregamos el check */
         .container-input input[type="checkbox"]:checked::after {
             content: '';
             position: absolute;
@@ -246,7 +296,6 @@
             transform: rotate(45deg);
         }
 
-        /* Estilo del label y enlace */
         .container-input label {
             line-height: 1.4;
             margin: 0;
@@ -259,5 +308,14 @@
             margin-left: 4px;
         }
 
+        /* Estilo para mensajes de validación */
+        small {
+            display: block;
+            margin-top: 5px;
+        }
+
+        input:invalid {
+            border-color: red !important;
+        }
     </style>
 </x-guest-layout>
