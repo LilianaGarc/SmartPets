@@ -20,53 +20,65 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Preparar los datos antes de la validación
+     * Aquí recortamos y normalizamos el email
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email' => trim(strtolower($this->input('email'))),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'max:100'],
             'password' => ['required', 'string'],
+            'captcha' => ['sometimes', 'required', 'numeric'], // opcional, solo si aparece el captcha
+        ];
+    }
+
+    /**
+     * Mensajes personalizados de validación
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email'     => 'Ingresa un correo electrónico válido.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'captcha.required' => 'Debes responder el CAPTCHA.',
+            'captcha.numeric'  => 'La respuesta del CAPTCHA debe ser un número.',
         ];
     }
 
     /**
      * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-{
-    \Illuminate\Support\Facades\App::setLocale('es');
+    {
+        \Illuminate\Support\Facades\App::setLocale('es');
 
-    $this->ensureIsNotRateLimited();
+        $this->ensureIsNotRateLimited();
 
-    $user = \App\Models\User::where('email', $this->input('email'))->first();
+        // Ahora el email ya viene limpio (sin espacios ni mayúsculas)
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
 
-    if (! $user) {
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
+            throw ValidationException::withMessages([
+                'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
-
-    if (! \Illuminate\Support\Facades\Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-        \Illuminate\Support\Facades\RateLimiter::hit($this->throttleKey());
-
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'password' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
-    }
-
-    \Illuminate\Support\Facades\RateLimiter::clear($this->throttleKey());
-}
-
 
     /**
      * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function ensureIsNotRateLimited(): void
     {
@@ -91,6 +103,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
     }
 }
