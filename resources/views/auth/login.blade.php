@@ -16,7 +16,7 @@
             <a href="{{ route('index') }}" class="home-button">
                 <i class="fa-solid fa-house"></i><h3>Inicio</h3>
             </a>
-            <form class="sign-in" action="{{ route('login') }}" method="POST">
+            <form class="sign-in" action="{{ route('login') }}" method="POST" id="loginForm">
                 @csrf
 
                 <h2><strong>Iniciar Sesión</strong></h2>
@@ -24,12 +24,14 @@
 
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100" required>
+                    <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100" required
+                           value="{{ old('email') }}" class="@error('email') error-border @enderror">
                 </div>
 
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25" required>
+                    <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25" required
+                           class="@error('password') error-border @enderror">
                 </div>
 
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
@@ -37,11 +39,12 @@
                 @if (session('login_attempts', 0) >= 3 && isset($captcha_question))
                     <div class="container-input">
                         <label>{{ $captcha_question }}</label>
-                        <input type="text" name="captcha" placeholder="Respuesta" required>
+                        <input type="text" name="captcha" placeholder="Respuesta" required
+                               class="@error('captcha') error-border @enderror">
                     </div>
                 @endif
 
-                <button class="button-login">INICIAR SESIÓN</button>
+                <button class="button-login" type="submit">INICIAR SESIÓN</button>
             </form>
         </div>
 
@@ -72,17 +75,15 @@
                     <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña" required>
                 </div>
 
-                <div class="container-input">
+                <div class="container-input" style="margin-top: 10px;">
                     <input type="checkbox" id="terms" name="terms" required>
                     <label for="terms">
                         Acepto los
-                        <a href="{{ route('terminos') }}" target="_blank">
-                            términos y condiciones
-                        </a>
+                        <a href="{{ route('terminos') }}" target="_blank">términos y condiciones</a>
                     </label>
                 </div>
 
-                <button class="button-register" type="submit">REGISTRARSE</button>
+                <button class="button-register">REGISTRARSE</button>
             </form>
         </div>
 
@@ -119,8 +120,8 @@
             container.classList.add("toggle");
         });
 
-        // Validación en tiempo real para espacios en la contraseña
-        document.getElementById('password').addEventListener('input', function(e) {
+        // Validación en tiempo real para espacios en la contraseña (registro)
+        document.getElementById('password')?.addEventListener('input', function(e) {
             const password = e.target.value;
             if (password.includes(' ')) {
                 e.target.setCustomValidity('La contraseña no puede contener espacios');
@@ -131,41 +132,60 @@
             }
         });
 
-        // Validación para evitar que el nombre sea igual a la contraseña
-        registerForm.addEventListener('submit', function(e) {
+        // Validación para evitar que el nombre sea igual a la contraseña (registro)
+        registerForm?.addEventListener('submit', function(e) {
             const name = document.getElementById('name').value;
             const password = document.getElementById('password').value;
 
             if (name === password) {
                 e.preventDefault();
-                alert('El nombre de usuario no puede ser igual a la contraseña.');
+                // Crear mensaje de error en la parte superior
+                showErrorInAlert('El nombre de usuario no puede ser igual a la contraseña.');
                 return false;
             }
 
-            // Validación adicional para espacios en contraseña
             if (password.includes(' ')) {
                 e.preventDefault();
-                alert('La contraseña no puede contener espacios.');
+                showErrorInAlert('La contraseña no puede contener espacios.');
                 return false;
             }
         });
 
-        // Validación en tiempo real para nombre vs contraseña
-        document.getElementById('name').addEventListener('input', validateNamePassword);
-        document.getElementById('password').addEventListener('input', validateNamePassword);
+        // Validación en tiempo real para nombre vs contraseña (registro)
+        document.getElementById('name')?.addEventListener('input', validateNamePassword);
+        document.getElementById('password')?.addEventListener('input', validateNamePassword);
 
         function validateNamePassword() {
-            const name = document.getElementById('name').value;
-            const password = document.getElementById('password').value;
+            const name = document.getElementById('name')?.value;
+            const password = document.getElementById('password')?.value;
             const nameInput = document.getElementById('name');
 
-            if (name === password && name !== '' && password !== '') {
+            if (name && password && name === password) {
                 nameInput.setCustomValidity('El nombre de usuario no puede ser igual a la contraseña');
                 nameInput.style.borderColor = 'red';
             } else {
                 nameInput.setCustomValidity('');
                 nameInput.style.borderColor = '';
             }
+        }
+
+        // Función para mostrar errores en la alerta superior
+        function showErrorInAlert(message) {
+            // Crear o actualizar la alerta de error
+            let alertDiv = document.querySelector('.alert-error');
+            if (!alertDiv) {
+                alertDiv = document.createElement('div');
+                alertDiv.className = 'alert-error';
+                document.querySelector('x-guest-layout').insertBefore(alertDiv, document.querySelector('.container'));
+            }
+
+            alertDiv.innerHTML = `<ul><li>${message}</li></ul>`;
+            alertDiv.style.display = 'block';
+
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
         }
 
         setTimeout(() => {
@@ -261,7 +281,36 @@
             background-color: #e56a3a;
         }
 
-        /* Contenedor flex para checkbox y texto */
+        /* Estilos para la alerta de errores */
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+            width: 90%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .alert-error ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .alert-error li {
+            margin: 5px 0;
+        }
+
+        /* Bordes rojos para inputs con error */
+        .error-border {
+            border-color: #dc3545 !important;
+            border-width: 2px !important;
+        }
+
+        /* Estilos para el checkbox de términos (como antes) */
         .container-input {
             margin-top: 5px;
             display: flex;
@@ -270,7 +319,6 @@
             font-size: 14px;
         }
 
-        /* Estilo personalizado del checkbox */
         .container-input input[type="checkbox"] {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -308,14 +356,10 @@
             margin-left: 4px;
         }
 
-        /* Estilo para mensajes de validación */
+        /* Estilo para mensajes informativos */
         small {
             display: block;
             margin-top: 5px;
         }
-
-        input:invalid {
-            border-color: red !important;
-        }
     </style>
-</x-guest-layout>
+</x-guest-layout>triminio@ae.com

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User; // Importar el modelo User
 
 class LoginRequest extends FormRequest
 {
@@ -38,7 +39,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => ['required', 'string', 'email', 'max:100'],
             'password' => ['required', 'string'],
-            'captcha' => ['sometimes', 'required', 'numeric'], // opcional, solo si aparece el captcha
+            'captcha' => ['sometimes', 'required', 'numeric'],
         ];
     }
 
@@ -57,6 +58,21 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Validación personalizada después de las reglas
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $email = trim(strtolower($this->input('email')));
+
+            // Verificar si el correo existe en la base de datos
+            if ($email && !User::where('email', $email)->exists()) {
+                $validator->errors()->add('email', 'El correo electrónico no está registrado en nuestro sistema.');
+            }
+        });
+    }
+
+    /**
      * Attempt to authenticate the request's credentials.
      */
     public function authenticate(): void
@@ -65,8 +81,12 @@ class LoginRequest extends FormRequest
 
         $this->ensureIsNotRateLimited();
 
-        // Ahora el email ya viene limpio (sin espacios ni mayúsculas)
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = $this->only('email', 'password');
+
+        // Asegurarnos de que el email esté en minúsculas
+        $credentials['email'] = trim(strtolower($credentials['email']));
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
