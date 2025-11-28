@@ -1,6 +1,5 @@
-@section('title', 'Iniciar Sesión')
-
 <x-guest-layout>
+    @section('title', 'Iniciar Sesión')
 
     @if ($errors->any())
         <div class="alert-error">
@@ -22,14 +21,17 @@
 
                 <h2><strong>Iniciar Sesión</strong></h2>
                 <span>Use su correo y contraseña</span>
+
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
                     <input type="email" id="email" name="email" placeholder="Correo electrónico" maxlength="100">
                 </div>
+
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25">
                 </div>
+
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
 
                 @if (session('login_attempts', 0) >= 3 && isset($captcha_question))
@@ -42,30 +44,47 @@
                 <button class="button-login">INICIAR SESIÓN</button>
             </form>
         </div>
+
         <div class="container-form">
             <form class="sign-up" method="POST" action="{{ route('register') }}">
                 @csrf
                 <h2><strong>Registrarse</strong></h2>
                 <span>Use su correo electrónico para registrarse</span>
+
                 <div class="container-input">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="name" name="name" maxlength="20" placeholder="Nombre">
                 </div>
+
                 <div class="container-input">
                     <i class="fa-solid fa-envelope"></i>
                     <input type="email" id="email" name="email" maxlength="100" placeholder="Correo electrónico">
                 </div>
+
                 <div class="container-input">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password" name="password" maxlength="25" placeholder="Contraseña">
                 </div>
+
                 <div class="container-input">
                     <i class="fa-solid fa-key"></i>
                     <input type="password" id="password_confirmation" name="password_confirmation" maxlength="25" placeholder="Confirmar contraseña">
                 </div>
-                <button class="button-register" style="width: 10vw!important;">REGISTRARSE</button>
+
+                <div class="container-input">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        Acepto los
+                        <a href="{{ route('terminos') }}" target="_blank">
+                            términos y condiciones
+                        </a>
+                    </label>
+                </div>
+
+                <button class="button-register">REGISTRARSE</button>
             </form>
         </div>
+
         <div class="container-welcome">
             <div class="welcome-sign-up welcome">
                 <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
@@ -73,6 +92,7 @@
                 <p>Ingrese sus datos personales para usar todas las funciones del sitio</p>
                 <button class="button" id="btn-sign-up">Registrarse</button>
             </div>
+
             <div class="welcome-sign-in welcome">
                 <img src="{{ asset('images/perroLogin.webp') }}" alt="Bienvenido" class="welcome-image">
                 <h3><strong>¡Hola!</strong></h3>
@@ -92,6 +112,7 @@
         btnSignIn.addEventListener("click", () => {
             container.classList.remove("toggle");
         });
+
         btnSignUp.addEventListener("click", () => {
             container.classList.add("toggle");
         });
@@ -126,6 +147,7 @@
 
             function moveGifHorizontally() {
                 const left = getRandomHorizontalPosition();
+                const top = Math.floor(Math.random() * 300) + 50;
                 gifElement.style.left = `${left}px`;
                 gifElement.style.top = `${top}px`;
             }
@@ -136,10 +158,10 @@
             });
 
             setInterval(moveGifHorizontally, 10000);
-
             moveGifHorizontally();
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const btnSignIn = document.getElementById("btn-sign-in");
@@ -150,6 +172,7 @@
                     document.title = "Iniciar Sesión";
                 });
             }
+
             if (btnSignUp) {
                 btnSignUp.addEventListener("click", () => {
                     document.title = "Registrarse";
@@ -157,9 +180,10 @@
             }
         });
     </script>
+
     <style>
         .link-recuperar {
-            color: #ff7f50; /* Color naranja */
+            color: #ff7f50;
             text-decoration: none;
             font-weight: bold;
         }
@@ -168,6 +192,72 @@
             text-decoration: underline;
         }
 
-    </style>
+        /* Estilos para el botón de registro */
+        .button-register {
+            width: auto !important;
+            min-width: 150px;
+            padding: 12px 24px;
+            background-color: #ff7f50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
+        .button-register:hover {
+            background-color: #e56a3a;
+        }
+
+        /* Contenedor flex para checkbox y texto */
+        .container-input {
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        /* Estilo personalizado del checkbox */
+        .container-input input[type="checkbox"] {
+            -webkit-appearance: none; /* quitar estilo por defecto en Chrome/Safari */
+            -moz-appearance: none;    /* quitar estilo por defecto en Firefox */
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ff7f50; /* borde visible */
+            border-radius: 4px;        /* bordes redondeados opcional */
+            cursor: pointer;
+            position: relative;
+            background-color: white;
+        }
+
+        /* Cuando está marcado, agregamos el check */
+        .container-input input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            width: 4px;
+            height: 9px;
+            border: solid #ff7f50;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Estilo del label y enlace */
+        .container-input label {
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .container-input label a {
+            color: #ff7f50;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 4px;
+        }
+
+    </style>
 </x-guest-layout>

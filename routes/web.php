@@ -325,3 +325,7 @@ require __DIR__.'/auth.php';
 Route::post('/enviar-codigo-verificacion', [ProfileController::class, 'enviarCodigoVerificacion'])
     ->name('enviar.codigo.verificacion')
     ->middleware('auth');
+
+Route::get('/terminos-y-condiciones', function () {
+    return view('terminos');
+})->name('terminos');
