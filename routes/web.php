@@ -119,6 +119,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
     Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('users.perfil')->whereNumber('id');
+    Route::delete('/profile/photo', [ProfileController::class, 'deleteProfilePhoto'])
+        ->name('profile.photo.delete');Route::delete('/profile/photo', [ProfileController::class, 'deleteProfilePhoto'])
+        ->name('profile.photo.delete');
 
     //Compartir
     Route::get('/publicaciones/{publicacion}/compartir', [PublicacionController::class, 'compartir'])->name('publicaciones.compartir')->middleware(['auth']);
