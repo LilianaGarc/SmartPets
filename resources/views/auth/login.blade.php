@@ -15,8 +15,8 @@
     <div class="container">
         <div class="container-form">
             <a href="{{ route('index') }}" class="home-button">
-                    <i class="fa-solid fa-house"></i><h3>Inicio</h3>
-                </a>
+                <i class="fa-solid fa-house"></i><h3>Inicio</h3>
+            </a>
             <form class="sign-in" action="{{ route('login') }}" method="POST">
                 @csrf
 
@@ -31,6 +31,14 @@
                     <input type="password" id="password" name="password" placeholder="Contraseña" maxlength="25">
                 </div>
                 <a href="{{ route('password.request') }}" class="link-recuperar">¿Olvidaste tu contraseña?</a>
+
+                @if (session('login_attempts', 0) >= 3 && isset($captcha_question))
+                    <div class="container-input">
+                        <label>{{ $captcha_question }}</label>
+                        <input type="text" name="captcha" placeholder="Respuesta" required>
+                    </div>
+                @endif
+
                 <button class="button-login">INICIAR SESIÓN</button>
             </form>
         </div>
@@ -96,69 +104,70 @@
         }, 5000);
     </script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const gifElement = document.getElementById('animated-gif');
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const gifElement = document.getElementById('animated-gif');
 
-                const gifPaths = [
-                    '{{ asset('images/gato1.gif') }}',
-                    '{{ asset('images/gato2.gif') }}',
-                    '{{ asset('images/gato3.gif') }}'
-                ];
+            const gifPaths = [
+                '{{ asset('images/gato1.gif') }}',
+                '{{ asset('images/gato2.gif') }}',
+                '{{ asset('images/gato3.gif') }}'
+            ];
 
-                let currentIndex = 0;
+            let currentIndex = 0;
+            gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
+
+            function getRandomHorizontalPosition() {
+                const winWidth = window.innerWidth;
+                const gifWidth = 120;
+                const left = Math.floor(Math.random() * (winWidth - gifWidth));
+                return left;
+            }
+
+            function moveGifHorizontally() {
+                const left = getRandomHorizontalPosition();
+                gifElement.style.left = `${left}px`;
+                gifElement.style.top = `${top}px`;
+            }
+
+            gifElement.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % gifPaths.length;
                 gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
-
-                function getRandomHorizontalPosition() {
-                    const winWidth = window.innerWidth;
-                    const gifWidth = 120;
-                    const left = Math.floor(Math.random() * (winWidth - gifWidth));
-                    return left;
-                }
-
-                function moveGifHorizontally() {
-                    const left = getRandomHorizontalPosition();
-                    gifElement.style.left = `${left}px`;
-                    gifElement.style.top = `${top}px`;
-                }
-
-                gifElement.addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % gifPaths.length;
-                    gifElement.style.backgroundImage = `url('${gifPaths[currentIndex]}')`;
-                });
-
-                setInterval(moveGifHorizontally, 10000);
-
-                moveGifHorizontally();
             });
-        </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const btnSignIn = document.getElementById("btn-sign-in");
-    const btnSignUp = document.getElementById("btn-sign-up");
 
-    if (btnSignIn) {
-        btnSignIn.addEventListener("click", () => {
-            document.title = "Iniciar Sesión";
+            setInterval(moveGifHorizontally, 10000);
+
+            moveGifHorizontally();
         });
-    }
-    if (btnSignUp) {
-        btnSignUp.addEventListener("click", () => {
-            document.title = "Registrarse";
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const btnSignIn = document.getElementById("btn-sign-in");
+            const btnSignUp = document.getElementById("btn-sign-up");
+
+            if (btnSignIn) {
+                btnSignIn.addEventListener("click", () => {
+                    document.title = "Iniciar Sesión";
+                });
+            }
+            if (btnSignUp) {
+                btnSignUp.addEventListener("click", () => {
+                    document.title = "Registrarse";
+                });
+            }
         });
-    }
-});
-</script>
-<style>
-    .link-recuperar {
-        color: #ff7f50; /* Color naranja */
-        text-decoration: none;
-        font-weight: bold;
-    }
+    </script>
+    <style>
+        .link-recuperar {
+            color: #ff7f50; /* Color naranja */
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .link-recuperar:hover {
-        text-decoration: underline;
-    }
+        .link-recuperar:hover {
+            text-decoration: underline;
+        }
 
-</style>
+    </style>
+
 </x-guest-layout>
