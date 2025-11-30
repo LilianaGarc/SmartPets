@@ -188,10 +188,11 @@
         <div class="card-body">
             <h3 class="card-title mb-3 fw-bold">Calificar y Opinar</h3>
     
+            @auth
             <form action="{{ route('calificaciones.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="id_veterinaria" value="{{ $veterinaria->id }}">
-                <input type="hidden" name="id_usuario" value="{{ auth()->user()->id }}">
+                <input type="hidden" name="id_usuario" value="{{ auth()->id() }}">
                 <div class="mb-3">
                     <label for="calificacion" class="form-label fw-bold">Calificación:</label>
                     <div class="star-rating">
@@ -214,6 +215,16 @@
                 <button type="submit" class="btn btn-primary">Enviar</button>
                 <input class="btn btn-danger" type="reset" value="Limpiar">
             </form>
+            @else
+            <div class="card-body py-5 d-flex flex-column align-items-center justify-content-center">
+                <p class="mb-3 text-muted fw-semibold" style="font-size:1rem;">
+                    Inicia sesión para poder calificar u opinar.
+                </p>
+                <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-4 py-2 rounded-pill d-inline-flex align-items-center">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i> Iniciar sesión
+                </a>
+            </div>
+            @endauth
         </div>
     </div>
 

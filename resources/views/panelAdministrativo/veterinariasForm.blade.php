@@ -4,7 +4,7 @@
 
 @section('contenido')
 
-    <div class="container mt-4">
+    <div class="card-body">
         @if(isset($veterinaria))
             <h4><a href="{{ route('veterinarias.panel') }}" class="btn" role="button" ><i class="fa-solid fa-arrow-left"></i></a> <strong>Editar la veterinaria</strong></h4>
 

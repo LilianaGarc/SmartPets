@@ -27,11 +27,11 @@
 
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nombre de usuario" value="{{ isset($user) ? $user->name : old('name') }}" required maxlength="20">
-                <label for="name">Nombre de usuario</label>
+                <label for="name">Nombre de usuario <span style="color:red">*</span> </label>
             </div>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" value="{{ isset($user) ? $user->email : old('email') }}" required maxlength="100">
-                <label for="email">Correo electrónico</label>
+                <label for="email">Correo electrónico <span style="color:red">*</span> </label>
             </div>
 
             <div class="form-floating mb-3">
@@ -39,29 +39,33 @@
                        placeholder="Contraseña"
                        maxlength="25"
                        @if(!isset($user)) required @endif>
-                <label for="password">Contraseña</label>
+                <label for="password">Contraseña @if(!isset($user)) <span style="color:red">*</span> @endif</label>
                 @if(isset($user))
                     <small class="form-text text-muted">Deja este campo en blanco si no deseas cambiar la contraseña.</small>
                 @endif
             </div>
 
-                @if(isset($user) && $user->email != 'smartpets@gmail.com')
+                @if(isset($user) && $user->email == 'smartpetsunah@gmail.com')
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="usertype" disabled aria-disabled="true">
+                            <option value="admin" selected>Administrador</option>
+                        </select>
+                        <input type="hidden" name="usertype" value="admin">
+                        <label for="usertype">Tipo de usuario</label>
+                        <small class="form-text text-muted">El rol de este usuario está protegido y no puede cambiarse.</small>
+                    </div>
+                @else
                     <div class="form-floating mb-3">
                         <select class="form-select" name="usertype" id="usertype" aria-label="Tipo de usuario" required>
                             <option value="" disabled {{ old('usertype') ? '' : (!isset($user) ? 'selected' : '') }}>Selecciona el tipo de usuario</option>
                             <option value="admin" {{ (isset($user) && $user->usertype == 'admin') || old('usertype') == 'admin' ? 'selected' : '' }}>Administrador</option>
                             <option value="user" {{ (isset($user) && $user->usertype == 'user') || old('usertype') == 'user' ? 'selected' : '' }}>Usuario</option>
                         </select>
-                        <label for="usertype">Tipo de usuario</label>
-                    </div>
-                @else
-                    <div class="form-floating mb-3">
-                        <select class="form-select" name="usertype" id="usertype" disabled>
-                            <option disabled {{ !isset($user) ? 'selected' : '' }}>Selecciona el tipo de usuario</option>
-                            <option value="admin" {{ (isset($user) && $user->usertype == 'admin') ? 'selected' : '' }}>Administrador</option>
-                            <option value="user" {{ (isset($user) && $user->usertype == 'user') ? 'selected' : '' }}>Usuario</option>
-                        </select>
-                        <label for="usertype">Tipo de usuario</label>
+                        <label for="usertype">Tipo de usuario <span style="color:red">*</span></label>
+                        @error('usertype')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        
                     </div>
                 @endif
 
@@ -77,10 +81,7 @@
                             maxlength="8"
                             pattern="^[2389]\d{7}$"
                             title="Debe ser un número de 8 dígitos que comience con 2, 3, 8 o 9">
-                        <label for="telefono">Teléfono <span style="color:red">*</span></label>
-                        @error('telefono')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <label for="telefono">Teléfono</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" value="{{ isset($user) ? $user->direccion : old('direccion') }}" maxlength="150">
@@ -113,12 +114,11 @@
 
     <script>
         (function () {
-        const ta = document.getElementById('descripcion');
-        const counter = document.getElementById('descripcion-contador');
+        const ta = document.getElementById('descripción');
+        const counter = document.getElementById('descripción-contador');
         const max = parseInt(ta.getAttribute('maxlength')) || 200;
 
         function sliceByChars(str, n) {
-            // Evita cortar emojis / caracteres compuestos a la mitad
             const arr = Array.from(str);
             return arr.length > n ? arr.slice(0, n).join('') : str;
         }
@@ -129,7 +129,7 @@
             if (trimmed !== before) {
             const pos = ta.selectionStart;
             ta.value = trimmed;
-            // Mantiene el cursor en una posición válida
+
             const p = Math.min(pos, ta.value.length);
             ta.setSelectionRange(p, p);
             }
@@ -138,7 +138,6 @@
 
         ta.addEventListener('input', update);
         ta.addEventListener('paste', () => requestAnimationFrame(update));
-        // Inicializa contador y recorte si el valor inicial ya excede
         update();
         })();
      </script>

