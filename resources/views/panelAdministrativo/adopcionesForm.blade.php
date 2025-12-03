@@ -57,19 +57,16 @@
 
             <div class="d-flex align-items-center mb-3">
                 <div class="foto-perfil" style="
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-size: cover;
-        background-position: center;
-        background-image: url('{{ $fotoPerfil }}');
-        margin-right: 10px;">
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+                background-image: url('{{ $fotoPerfil }}');
+                margin-right: 10px;">
                 </div>
                 <h5 class="mb-0">{{ $usuarioAdopcion ? $usuarioAdopcion->name : 'Usuario no asignado' }}</h5>
             </div>
-
-
-
 
 
             <div class="form-floating mb-3">
@@ -148,7 +145,7 @@
 
             <br>
             <button type="submit" class="btn">Guardar</button>
-            <a href="{{ url()->previous() }}" class="btn" role="button">Cancelar</a>
+            <a href="{{ route('adopciones.panel') }}" class="btn" role="button">Cancelar</a>
         </div>
     </form>
 
