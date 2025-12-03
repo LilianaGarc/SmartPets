@@ -22,10 +22,26 @@ class ProductoController extends Controller
 
     public function panelshow(string $id)
     {
-        $producto = Producto::findOrFail($id);
+        $producto = Producto::with(['subcategoria', 'categoria'])->findOrFail($id);
+
         $categorias = Categoria::all();
+
+        $subcategorias = collect();
+        if ($producto->categoria_id) {
+            $subcategorias = Subcategoria::where('categoria_id', $producto->categoria_id)->get();
+        }
         $resenias = $producto->resenias()->with('user')->get();
-        return view('panelAdministrativo.productosDetalles', compact('producto','resenias','categorias'));
+
+
+        $imagenes = array_values(array_filter([
+            $producto->imagen,
+            $producto->imagen2,
+            $producto->imagen3,
+            $producto->imagen4,
+            $producto->imagen5,
+        ]));
+
+        return view('panelAdministrativo.productosDetalles', compact('producto', 'resenias', 'categorias', 'subcategorias', 'imagenes'));
     }
 
 
@@ -98,9 +114,6 @@ class ProductoController extends Controller
         }
         $categorias = Categoria::with('subcategorias')->get();
         return view('productos.productos-formulario', ['categorias' => $categorias]);
-
-
-
     }
 
     /**
@@ -351,9 +364,9 @@ class ProductoController extends Controller
         $producto->subcategoria_id = $request->input('subcategoria_id');
 
         if ($producto->save()) {
-            return redirect()->route('productos.show', $producto->id)->with('success', 'Producto actualizado correctamente.');
+            return redirect()->route('productos.panel')->with('exito', 'Producto actualizado correctamente');
         } else {
-            return redirect()->back()->with('error', 'Error al actualizar el producto.');
+            return redirect()->back()->with('fracaso', 'Error al actualizar producto');
         }
     }
 
@@ -442,53 +455,133 @@ class ProductoController extends Controller
     // Formulario de edición de producto en el panel
     public function paneledit($id)
     {
-        $producto = Producto::with('categoria')->findOrFail($id);
+        $producto = Producto::findOrFail($id);
         $categorias = Categoria::all();
-        return view('panelAdministrativo.productosForm', compact('producto', 'categorias'));
+        return view('panelAdministrativo.productosForm',['producto' => $producto, 'categorias' => $categorias]);
     }
 
     // Actualizar producto desde el panel
     public function panelupdate(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255',
-            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
-            'descripcion' => 'nullable|string',
-            'categoria_id' => 'required|integer|exists:categorias,id',
-            'stock' => 'required|integer|min:0',
-            'imagenes.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
-        ]);
+         $producto = Producto::findOrFail($id);
 
-        if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
-            return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
+        $rules = [
+            'nombre' => 'required|string|max:50',
+            'precio' => [
+                'required',
+                'numeric',
+                'gt:0',
+                'max:99999.99',
+                'regex:/^\d{1,5}(\.\d{1,2})?$/'
+            ],
+            'descripcion' => 'nullable|string|max:255',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+            'stock' => [
+                'required',
+                'integer',
+                'min:1',
+                'max:10000'
+            ],
+            'imagenes_adicionales' => 'nullable|array|max:4',
+            'imagenes_adicionales.*' => 'image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
+            'subcategoria_id' => [
+                'required',
+                'integer',
+                'exists:subcategorias,id',
+                function ($attribute, $value, $fail) use ($request) {
+                    $subcategoria = Subcategoria::where('id', $value)
+                        ->where('categoria_id', $request->input('categoria_id'))
+                        ->first();
+
+                    if (!$subcategoria) {
+                        $fail('La subcategoría seleccionada no pertenece a la categoría especificada.');
+                    }
+                },
+            ],
+        ];
+
+        if (!$producto->imagen || $request->hasFile('imagen_principal')) {
+            $rules['imagen_principal'] = 'required|image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048';
         }
+
+        $validator = Validator::make($request->all(), $rules, [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'precio.required' => 'El precio del producto es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.gt' => 'El precio debe ser mayor a 0.',
+            'precio.max' => 'El precio no puede superar los 99999.99.',
+            'precio.regex' => 'El formato del precio no es válido (ej: 99999.99).',
+            'stock.required' => 'El stock es obligatorio.',
+            'stock.integer' => 'El stock debe ser un número entero.',
+            'stock.min' => 'El stock debe ser al menos 1.',
+            'stock.max' => 'El stock no puede superar las 10000 unidades.',
+            'categoria_id.required' => 'La categoría es obligatoria.',
+            'categoria_id.exists' => 'La categoría seleccionada no es válida.',
+            'subcategoria_id.required' => 'La subcategoría es obligatoria.',
+            'subcategoria_id.exists' => 'La subcategoría seleccionada no es válida.',
+            'imagen_principal.required' => 'La imagen principal es obligatoria.',
+            'imagen_principal.image' => 'El archivo principal debe ser una imagen.',
+            'imagen_principal.mimes' => 'La imagen principal debe estar en formato jpg, jpeg, png, gif, bmp, svg, webp, tiff.',
+            'imagen_principal.max' => 'La imagen principal no debe superar los 2MB.',
+            'imagenes_adicionales.max' => 'No puedes subir más de 4 imágenes adicionales.',
+            'imagenes_adicionales.*.image' => 'Cada archivo adicional debe ser una imagen.',
+            'imagenes_adicionales.*.mimes' => 'Las imágenes adicionales deben estar en formato jpg, jpeg, png, gif, bmp, svg, webp, tiff.',
+            'imagenes_adicionales.*.max' => 'Cada imagen adicional no debe superar los 2MB.',
+        ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $categoria = Categoria::findOrFail($request->categoria_id);
-
-        $imagenesGuardadas = [];
-        if ($request->hasFile('imagenes')) {
-            $imagenes = $request->file('imagenes');
-            foreach ($imagenes as $imagen) {
-                $rutaImagen = $imagen->store('public/productos');
-                $imagenesGuardadas[] = $rutaImagen;
+        $imagenesParaEliminar = explode(',', $request->input('imagenes_eliminadas'));
+        foreach ($imagenesParaEliminar as $path) {
+            if ($path && Storage::exists($path)) {
+                Storage::delete($path);
+                if ($producto->imagen === $path) $producto->imagen = null;
+                if ($producto->imagen2 === $path) $producto->imagen2 = null;
+                if ($producto->imagen3 === $path) $producto->imagen3 = null;
+                if ($producto->imagen4 === $path) $producto->imagen4 = null;
+                if ($producto->imagen5 === $path) $producto->imagen5 = null;
             }
         }
 
-        $producto = Producto::findOrFail($id);
+        if ($request->hasFile('imagen_principal')) {
+            if ($producto->imagen && Storage::exists($producto->imagen)) {
+                Storage::delete($producto->imagen);
+            }
+            $producto->imagen = $request->file('imagen_principal')->store('public/productos');
+        }
+
+        if ($request->hasFile('imagenes_adicionales')) {
+            $imagenesAdicionalesGuardadas = [];
+            foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
+                $imagenesAdicionalesGuardadas[] = $imagenAdicional->store('public/productos');
+            }
+
+            $adicionalesActualizadas = [];
+            if ($producto->imagen2 && !in_array($producto->imagen2, $imagenesParaEliminar)) $adicionalesActualizadas[] = $producto->imagen2;
+            if ($producto->imagen3 && !in_array($producto->imagen3, $imagenesParaEliminar)) $adicionalesActualizadas[] = $producto->imagen3;
+            if ($producto->imagen4 && !in_array($producto->imagen4, $imagenesParaEliminar)) $adicionalesActualizadas[] = $producto->imagen4;
+            if ($producto->imagen5 && !in_array($producto->imagen5, $imagenesParaEliminar)) $adicionalesActualizadas[] = $producto->imagen5;
+
+            foreach ($imagenesAdicionalesGuardadas as $nuevaImagen) {
+                if (count($adicionalesActualizadas) < 4) {
+                    $adicionalesActualizadas[] = $nuevaImagen;
+                }
+            }
+
+            $producto->imagen2 = $adicionalesActualizadas[0] ?? null;
+            $producto->imagen3 = $adicionalesActualizadas[1] ?? null;
+            $producto->imagen4 = $adicionalesActualizadas[2] ?? null;
+            $producto->imagen5 = $adicionalesActualizadas[3] ?? null;
+        }
+
         $producto->nombre = $request->input('nombre');
         $producto->precio = $request->input('precio');
         $producto->descripcion = $request->input('descripcion');
-        $producto->categoria_id = $categoria->id;
+        $producto->categoria_id = $request->input('categoria_id');
         $producto->stock = $request->input('stock');
-        $producto->imagen = $imagenesGuardadas[0] ?? $producto->imagen;
-        $producto->imagen2 = $imagenesGuardadas[1] ?? $producto->imagen2;
-        $producto->imagen3 = $imagenesGuardadas[2] ?? $producto->imagen3;
-        $producto->imagen4 = $imagenesGuardadas[3] ?? $producto->imagen4;
-        $producto->imagen5 = $imagenesGuardadas[4] ?? $producto->imagen5;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
 
         if ($producto->save()) {
             return redirect()->route('productos.panel')->with('exito', 'Producto actualizado correctamente');
