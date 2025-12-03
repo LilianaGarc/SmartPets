@@ -397,13 +397,23 @@ class ProductoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
-            'precio' => ['required', 'numeric', 'regex:/^\d{1,10}(\.\d{1,2})?$/'],
+            'precio' => [
+                'required',
+                'numeric',
+                'gt:0',
+                'max:99999.99',
+                'regex:/^\d{1,10}(\.\d{1,2})?$/'
+            ],
             'descripcion' => 'nullable|string',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
             'imagenes' => 'required|array|min:1|max:5',
             'imagenes.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
         ], [
+            'precio.required' => 'El precio del producto es obligatorio.',
+            'precio.numeric' => 'El precio debe ser un número.',
+            'precio.gt' => 'El precio debe ser mayor que 0.',
+            'precio.max' => 'El precio no puede superar 99999.99.',
             'imagenes.required' => 'Debes subir al menos una imagen del producto.',
             'imagenes.*.required' => 'Todas las imágenes seleccionadas son obligatorias.',
             'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
