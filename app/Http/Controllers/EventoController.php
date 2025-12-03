@@ -40,12 +40,10 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
+            'precio' => 'required_if:modalidad_evento,pago|nullable|numeric|min:0|max:10000',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
-            'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
-            'motivo' => 'required_if:estado_evento,rechazado',
         ]);
 
         $rutaImagen = $request->file('imagen')->store('eventos', 'public');
@@ -63,7 +61,7 @@ class EventoController
             'id_user' => $idUsuario,
         ]);
 
-        // Notificar a todos los administradores
+        
         $admins = User::where('usertype', 'admin')->get();
         foreach ($admins as $admin) {
             \App\Models\Notificacion::create([
@@ -98,29 +96,43 @@ class EventoController
 
 
     public function panelupdate(Request $request, $id)
-
     {
+        $evento = Evento::findOrFail($id);
+
+        $deleteRequested = $request->input('eliminar_imagen') === '1';
+        $hasExistingImage = !empty($evento->imagen);
+
+        $imagenRule = ($hasExistingImage && !$deleteRequested)
+            ? 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+            : 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120';
+
         $request->validate([
             'titulo' => 'required|string|max:30',
-            'descripcion' => 'required|string|max:200',
+            'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'imagen' => $imagenRule,
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
+            'precio' => 'required_if:modalidad_evento,pago|nullable|numeric|min:0|max:10000',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
-            'ubicacion' => 'required|string|max:255',
-            'estado_evento' => 'required|in:pendiente,aceptado,rechazado',
-            'motivo' => 'required_if:estado_evento,rechazado',
+            'ubicacion' => 'required|string|max:150',
         ]);
 
-        $evento = Evento::findOrFail($id);
+        // procesar imagen: si suben nueva imagen, reemplaza y borra la anterior
         if ($request->hasFile('imagen')) {
-            if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
-                Storage::delete('public/' . $evento->imagen);
+            if ($evento->imagen && Storage::disk('public')->exists($evento->imagen)) {
+                Storage::disk('public')->delete($evento->imagen);
             }
             $evento->imagen = $request->file('imagen')->store('eventos', 'public');
+        } else {
+            if ($deleteRequested && $evento->imagen) {
+                if (Storage::disk('public')->exists($evento->imagen)) {
+                    Storage::disk('public')->delete($evento->imagen);
+                }
+                $evento->imagen = null;
+            }
+
         }
 
         $evento->update([
@@ -134,8 +146,8 @@ class EventoController
             'hora_inicio' => $request->hora_inicio,
             'hora_fin' => $request->hora_fin,
             'ubicacion' => $request->ubicacion,
-            'estado' => $request->estado_evento,
-            'motivo' => $request->motivo_rechazo,
+            'estado' => $request->estado_evento ?? $evento->estado,
+            'motivo' => $request->motivo_rechazo ?? $evento->motivo,
         ]);
 
         return redirect()->route('eventos.panel')->with('exito', 'Evento actualizado correctamente.');
@@ -151,7 +163,6 @@ class EventoController
                 ->orWhere('telefono', 'LIKE', "%$nombre%");
         })->orderBy('created_at', 'desc')->get();
 
-        // Ya no necesitamos pasar notificaciones
         return view('panelAdministrativo.eventosIndex', compact('eventos'));
     }
 
@@ -163,26 +174,21 @@ class EventoController
        $busqueda = $request->input('q');
     $query = Evento::query();
 
-        // Si NO está autenticado, solo mostrar eventos aceptados
         if (!auth()->check()) {
             $query->where('estado', 'aceptado');
         } else {
-            // Filtrar por tipo
             if ($request->filled('tipo') && $request->tipo == 'mios') {
-                // Mis eventos: solo los creados por mí
                 $query->where('id_user', auth()->id());
             } elseif ($request->filled('tipo') && $request->tipo == 'participando') {
-                // Eventos en los que participo
                 $eventosIds = \App\Models\Participacion::where('id_user', auth()->id())->pluck('evento_id');
                 $query->whereIn('id', $eventosIds)->where('estado', 'aceptado');
             } else {
-                // Todos los eventos -> excluir los míos
                 $query->where('estado', 'aceptado')
                     ->where('id_user', '!=', auth()->id());
             }
         }
 
-        // Búsqueda general
+        
         if ($busqueda) {
             $query->where(function($q) use ($busqueda) {
                 $q->where('titulo', 'LIKE', "%$busqueda%")
@@ -192,21 +198,18 @@ class EventoController
             });
         }
 
-        // Filtro por estado (solo tiene sentido si es "mios" o "participando")
+
         if ($request->filled('estado') && $request->tipo === 'mios') {
             $query->where('estado', $request->estado);
         }
 
-        // Ordenar: aceptados, luego pendientes, luego rechazados
-        $query->orderByRaw("FIELD(estado, 'aceptado', 'pendiente', 'rechazado')");
 
-        // Paginación
+        $query->orderByRaw("FIELD(estado, 'aceptado', 'pendiente', 'rechazado')");
         $eventos = $query->orderBy('fecha', 'asc')->paginate(9);
 
         return view('eventos.index', compact('eventos'));
 
     }
-
 
     public function create()
     {
@@ -224,7 +227,7 @@ class EventoController
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
             'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'nullable|numeric|min:0|max:10000|decimal:0,2',
+            'precio' => 'required_if:modalidad_evento,pago|nullable|numeric|min:0|max:10000',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
@@ -246,7 +249,6 @@ class EventoController
             'id_user' => $idUsuario,
         ]);
 
-        // Notificar a todos los administradores
         $admins = User::where('usertype', 'admin')->get();
         foreach ($admins as $admin) {
             \App\Models\Notificacion::create([
@@ -282,27 +284,41 @@ class EventoController
 
 
     public function update(Request $request, $id)
-
     {
+        $evento = Evento::findOrFail($id);
+
+        $deleteRequested = $request->input('eliminar_imagen') === '1';
+        $hasExistingImage = !empty($evento->imagen);
+
+        $imagenRule = ($hasExistingImage && !$deleteRequested)
+            ? 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+            : 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120';
+
         $request->validate([
             'titulo' => 'required|string|max:30',
             'descripcion' => 'required|string|max:250',
             'fecha' => 'required|date|after_or_equal:today',
             'telefono' => 'required|string|max:8|regex:/^[2389]\d{7}$/',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'imagen' => $imagenRule,
             'modalidad_evento' => 'required|in:gratis,pago',
-            'precio' => 'numeric|min:0|max:10000|decimal:0,2|nullable',
+            'precio' => 'required_if:modalidad_evento,pago|nullable|numeric|min:0|max:10000',
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
             'ubicacion' => 'required|string|max:150',
         ]);
 
-        $evento = Evento::findOrFail($id);
         if ($request->hasFile('imagen')) {
-            if ($evento->imagen && Storage::exists('public/' . $evento->imagen)) {
-                Storage::delete('public/' . $evento->imagen);
+            if ($evento->imagen && Storage::disk('public')->exists($evento->imagen)) {
+                Storage::disk('public')->delete($evento->imagen);
             }
             $evento->imagen = $request->file('imagen')->store('eventos', 'public');
+        } else {
+            if ($deleteRequested && $evento->imagen) {
+                if (Storage::disk('public')->exists($evento->imagen)) {
+                    Storage::disk('public')->delete($evento->imagen);
+                }
+                $evento->imagen = null;
+            }
         }
 
         $evento->update([
@@ -337,7 +353,6 @@ class EventoController
     public function participar($id)
     {
         $evento = Evento::findOrFail($id);
-        // No permitir si el evento ya pasó
 
         $fechaHoraEvento = Carbon::parse($evento->fecha . ' ' . $evento->hora_fin, 'America/Tegucigalpa');
 
@@ -350,12 +365,10 @@ class EventoController
             return back()->with('error', 'No puedes participar en un evento que ya finalizó.');
         }
 
-        // No permitir al creador
         if ($evento->id_user == auth()->id()) {
             return back()->with('error', 'No puedes participar en tu propio evento.');
         }
 
-        // No permitir si ya participa
         if ($evento->participaciones()->where('id_user', auth()->id())->exists()) {
             return back()->with('error', 'Ya estás participando en este evento.');
         }
@@ -379,7 +392,6 @@ class EventoController
     {
         $evento = Evento::findOrFail($id);
 
-        // No permitir si el evento ya pasó
         $fechaHoraEvento = \Carbon\Carbon::parse($evento->fecha . ' ' . $evento->hora_fin);
         if (now()->greaterThan($fechaHoraEvento)) {
             return back()->with('error', 'No puedes modificar tu participación en un evento que ya finalizó.');

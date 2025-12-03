@@ -86,7 +86,7 @@
                             <option value="gratis" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'gratis' ? 'selected' : '' }}>Gratuito</option>
                             <option value="pago" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'pago' ? 'selected' : '' }}>De pago</option>
                         </select>
-                        <label for="modalidad_evento">¿El evento es gratuito o de pago? <span style="color:red">*</span></label>
+                       <label for="modalidad_evento">Tipo de acceso <span style="color:red">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-3" id="campo_precio" style="display: none;">
@@ -127,30 +127,22 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div id="contadorDescripcion" class="form-text text-end" style="margin-top: 2px; margin-bottom: 10px;">
-                        0/250
-                    </div>
                 </div>
             </div>
 
-            <div class="row g-3 mb-3">
-                <div class="col-12">
-                    <label for="imagen" class="form-label">Imagen del Evento</label>
-                    <div class="input-group">
-                        <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento" {{ isset($evento) ? '' : 'required' }} disabled>
-                        @if(isset($evento) && $evento->imagen)
-                            <span class="input-group-text bg-white">
-                                    <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Imagen actual" style="max-width: 60px; max-height: 60px; object-fit: cover;">
-                                </span>
-                        @endif
-                    </div>
+            <div class="row g-3 mb-2">
+                <div class="col-12 d-flex justify-content-center align-items-center">
                     @if(isset($evento) && $evento->imagen)
-                        <div class="form-text">Si no seleccionas una nueva imagen, se mantendrá la actual.</div>
+                        <div class="form-group image-preview-container text-center" style="border-radius:8px; overflow:hidden; display:inline-block; padding:6px;">
+                            <img src="{{ asset('storage/' . $evento->imagen) }}" alt="Vista previa de la imagen"
+                                 style="border-radius:8px; width:200px; height:200px; object-fit:cover; display:block;">
+                            <div class="image-caption mt-2" style="width:200px; text-align:center; font-size:.95rem;">
+                                <strong>Vista Previa</strong>
+                            </div>
+                        </div>
+                    @else
+                        <div class="alert alert-secondary mb-0">Sin imagen disponible</div>
                     @endif
-                    <div id="preview-container" class="preview-container" style="margin-top: 10px;"></div>
-                    @error('imagen')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
         </div>

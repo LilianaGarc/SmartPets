@@ -31,6 +31,13 @@
     </div>
 </div>
 
+@error('general')
+    <div class="alert alert-danger alert-dismissible fade show mx-4" role="alert">
+        {{ $message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@enderror
+
 <div class="container mt-4">
     <div class="card fade-in">
         <div class="card-body">
@@ -130,12 +137,12 @@
                                 <option value="gratis" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'gratis' ? 'selected' : '' }}>Gratuito</option>
                                 <option value="pago" {{ old('modalidad_evento', $evento->modalidad_evento ?? '') == 'pago' ? 'selected' : '' }}>De pago</option>
                             </select>
-                            <label for="modalidad_evento">¿El evento es gratuito o de pago? <span style="color:red">*</span></label>
+                            <label for="modalidad_evento">Tipo de acceso <span style="color:red">*</span></label>
                         </div>
                     </div>
                     <div class="col-md-3" id="campo_precio" style="display: none;">
                         <div class="form-floating">
-                            <input type="number" min="0" step="0.01" max="10000" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio" required
+                            <input type="number" min="0" step="0.01" max="10000" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio"
                                 placeholder="Precio del evento" value="{{ old('precio', $evento->precio ?? '') }}" aria-label="Precio del evento"
                                 oninput="if(this.value.length > 7) this.value = this.value.slice(0, 7);">
                             <label for="precio">Precio</label>
@@ -182,15 +189,23 @@
                     <div class="col-12">
                         <label for="imagen" class="form-label">Imagen del Evento</label>
                         <div class="input-group">
-                            <input type="file" class="form-control @error('imagen') is-invalid @enderror" id="imagen" name="imagen" accept="image/*" aria-label="Imagen del evento">
+                            <input type="file"
+                                   class="form-control @error('imagen') is-invalid @enderror"
+                                   id="imagen"
+                                   name="imagen"
+                                   accept="image/*"
+                                   aria-label="Imagen del evento">
                         </div>
-                        @if(isset($evento) && $evento->imagen)
-                            <div class="form-text">Si no seleccionas una nueva imagen, se mantendrá la actual.</div>
-                        @endif
-                        <input type="hidden" name="eliminar_imagen" id="eliminar_imagen" value="0">
+
+                        <input type="hidden" name="imagen_actual" id="imagen_actual" value="{{ old('imagen_actual', $evento->imagen ?? '') }}">
+                        <input type="hidden" name="eliminar_imagen" id="eliminar_imagen" value="{{ old('eliminar_imagen', '0') }}">
+
                         <div id="preview-container" class="preview-container" style="margin-top: 10px;"></div>
+
+                        <div id="imagen-error" class="invalid-feedback d-block" style="display:none;"></div>
+
                         @error('imagen')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -204,6 +219,32 @@
             </form>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="confirmEliminarModal" tabindex="-1" aria-labelledby="confirmEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content modal-gucci">
+      <button type="button" class="btn-close btn-close-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      <div class="modal-body text-center p-4">
+        <div class="icon-box danger-soft mb-3">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h5 class="modal-title fw-bold mb-2" id="confirmEliminarLabel">¿Eliminar foto?</h5>
+        <p class="text-muted small mb-4">
+          Esta acción no se puede deshacer. Para guardar cambios necesitarás subir una nueva.
+        </p>
+        <div class="d-grid gap-2">
+          <button type="button" id="confirmEliminarBtn" class="btn btn-danger btn-gucci rounded-pill">
+            Sí, eliminar
+          </button>
+          <button type="button" class="btn btn-light btn-gucci text-muted rounded-pill" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <style>
@@ -441,7 +482,6 @@ document.getElementById('imagen').addEventListener('change', function(e) {
     }
 });
 
-// Mostrar preview de imagen actual al editar
 document.addEventListener('DOMContentLoaded', function() {
     @if(isset($evento) && $evento->imagen)
         const preview = document.getElementById('preview-container');
@@ -472,7 +512,7 @@ document.addEventListener('DOMContentLoaded', function() {
     @endif
 });
 
-// Cuando seleccionas una nueva imagen, se limpia el campo de eliminar imagen
+
 document.getElementById('imagen').addEventListener('change', function(e) {
     const preview = document.getElementById('preview-container');
     preview.innerHTML = '';
@@ -503,7 +543,6 @@ document.getElementById('imagen').addEventListener('change', function(e) {
         wrapper.appendChild(btn);
         preview.appendChild(wrapper);
 
-        // Si selecciona una nueva imagen, no eliminar la anterior automáticamente
         document.getElementById('eliminar_imagen').value = '0';
     }
 });
@@ -520,15 +559,10 @@ function actualizarContadorDescripcion() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // ... aquí puede estar tu otro código como el de `mostrarCampoPrecio()`
 
     const textarea = document.getElementById('descripcion');
     if (textarea) {
-        // ¡ESTA ES LA LÍNEA NUEVA!
-        // Llama a la función al cargar la página para establecer el valor inicial.
         actualizarContadorDescripcion(); 
-        
-        // Y mantenemos el listener para que actualice mientras se escribe.
         textarea.addEventListener('input', actualizarContadorDescripcion);
     }
 });
@@ -549,6 +583,176 @@ document.getElementById('telefono').addEventListener('input', function() {
 
     if (this.value.length > 8) {
         this.value = this.value.slice(0, 8);
+    }
+});
+</script>
+
+
+
+<style>
+/* Estilos del modal reemplazo (compacto y coherente con UI) */
+.modal-gucci {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    overflow: hidden;
+}
+.btn-close-absolute {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    opacity: 0.6;
+    transition: opacity .2s;
+}
+.btn-close-absolute:hover { opacity: 1; }
+
+/* Icon box y colores */
+.icon-box {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+.icon-box.danger-soft {
+    background-color: #fff5f5;
+    color: #e11d48;
+}
+
+/* Botones estilo */
+.btn-gucci {
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: transform .08s ease;
+}
+.btn-gucci:active { transform: scale(.98); }
+
+/* Ajustes responsive: menos espacio para evitar scroll innecesario */
+@media (max-width: 420px) {
+    .modal-body { padding: 1rem; }
+    .modal-gucci { margin: 0 12px; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const imagenEl = document.getElementById('imagen');
+    const preview = document.getElementById('preview-container');
+    const imagenActualInput = document.getElementById('imagen_actual');
+    const eliminarInput = document.getElementById('eliminar_imagen');
+    const form = document.getElementById('eventoForm') || document.querySelector('form');
+    const imagenError = document.getElementById('imagen-error');
+
+    function clearPreview() { if (preview) preview.innerHTML = ''; }
+
+    function createPreview(url) {
+        if (!preview) return;
+        clearPreview();
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.style.width = '180px';
+        wrapper.style.height = '180px';
+
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Imagen del evento';
+        img.className = 'preview-img';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '10px';
+        img.style.border = '2px solid #e0e0e0';
+        img.style.boxShadow = '0 2px 8px rgba(30,65,131,0.08)';
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-cancel-preview';
+        btn.setAttribute('aria-label', 'Quitar imagen');
+        btn.style.position = 'absolute';
+        btn.style.top = '6px';
+        btn.style.right = '6px';
+        btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+        btn.addEventListener('click', function () {
+            window._onConfirmEliminarImagen = function () {
+                if (imagenEl) imagenEl.value = '';
+                if (eliminarInput) eliminarInput.value = '1';
+                if (imagenActualInput) imagenActualInput.value = '';
+                clearPreview();
+            };
+            const modalEl = document.getElementById('confirmEliminarModal');
+            if (modalEl && window.bootstrap) {
+                const bsModal = new bootstrap.Modal(modalEl);
+                bsModal.show();
+            } else {
+                if (typeof window._onConfirmEliminarImagen === 'function') {
+                    window._onConfirmEliminarImagen();
+                    window._onConfirmEliminarImagen = null;
+                }
+            }
+        });
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
+        preview.appendChild(wrapper);
+    }
+
+    const imagenActual = imagenActualInput ? imagenActualInput.value : '';
+    const eliminarFlag = eliminarInput ? eliminarInput.value : '0';
+    if (imagenActual && eliminarFlag !== '1') {
+        const url = "{{ asset('storage') }}/" + imagenActual;
+        createPreview(url);
+    }
+
+    if (imagenEl) {
+        imagenEl.addEventListener('change', function () {
+            if (imagenError) imagenError.style.display = 'none';
+            if (this.files && this.files[0]) {
+                if (eliminarInput) eliminarInput.value = '0';
+                if (imagenActualInput) imagenActualInput.value = '';
+                createPreview(URL.createObjectURL(this.files[0]));
+            } else {
+                clearPreview();
+            }
+        });
+    }
+
+    const confirmarBtn = document.getElementById('confirmEliminarBtn');
+    if (confirmarBtn) {
+        confirmarBtn.addEventListener('click', function () {
+            if (typeof window._onConfirmEliminarImagen === 'function') {
+                window._onConfirmEliminarImagen();
+                window._onConfirmEliminarImagen = null;
+            }
+            const modalEl = document.getElementById('confirmEliminarModal');
+            if (modalEl && window.bootstrap) {
+                const inst = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                inst.hide();
+            }
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            const eliminar = eliminarInput ? eliminarInput.value === '1' : false;
+            const hasFile = imagenEl && imagenEl.files && imagenEl.files.length > 0;
+            if (eliminar && !hasFile) {
+                e.preventDefault();
+                if (imagenError) {
+                    imagenError.textContent = 'Debes subir una imagen.';
+                    imagenError.style.display = 'block';
+                }
+                if (imagenEl) imagenEl.focus();
+                return false;
+            }
+        });
     }
 });
 </script>
