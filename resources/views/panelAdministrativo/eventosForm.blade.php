@@ -203,7 +203,7 @@
                 <br>
 
             <button type="submit" class="btn">Guardar</button>
-            <button type="reset" class="btn">Cancelar</button>
+            <a href="{{ route('eventos.panel') }}" class="btn">Cancelar</a>
         </div>
     </form>
 
