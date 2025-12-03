@@ -105,7 +105,22 @@
     </div>
 
     <div id="animated-gif" class="floating-gif"></div>
+    <script>
+        document.getElementById('email').addEventListener('input', function () {
 
+            // Eliminar caracteres no permitidos
+            this.value = this.value.replace(/[^A-Za-z0-9@._-]/g, '');
+
+            // Evitar más de un @
+            let firstAt = this.value.indexOf('@');
+            if (firstAt !== -1) {
+                // quitar todos los @ adicionales
+                let cleaned = this.value.slice(0, firstAt + 1) +
+                    this.value.slice(firstAt + 1).replace(/@/g, '');
+                this.value = cleaned;
+            }
+        });
+    </script>
     <script>
         const container = document.querySelector(".container");
         const btnSignIn = document.getElementById("btn-sign-in");
