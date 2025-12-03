@@ -69,7 +69,7 @@
 
                 <div class="form-group">
                     <label for="nombre_mascota">🐕 Nombre de la Mascota</label>
-                    <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" value="{{ old('nombre_mascota') }}" placeholder="Ingresa el nombre de tu mascota" required>
+                    <input type="text" name="nombre_mascota" id="nombre_mascota" required maxlength="15" class="form-control" value="{{ old('nombre_mascota') }}" placeholder="Ingresa el nombre de tu mascota">
                 </div>
 
                 <div class="form-group">
@@ -97,12 +97,12 @@
 
                 <div class="form-group">
                     <label for="raza_mascota">🔎 Raza de la Mascota</label>
-                    <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" value="{{ old('raza_mascota') }}" placeholder="Ingresa la raza de tu mascota" required>
+                    <input type="text" name="raza_mascota" id="raza_mascota" required maxlength="20" class="form-control" value="{{ old('raza_mascota') }}" placeholder="Ingresa la raza de tu mascota">
                 </div>
 
                 <div class="form-group">
                     <label for="ubicacion_mascota">📍 Ubicación de la Mascota</label>
-                    <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="60" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota" required>
+                    <input type="text" name="ubicacion_mascota" id="ubicacion_mascota" required maxlength="60" class="form-control"  value="{{ old('ubicacion_mascota') }}" placeholder="Ingresa la ubicación de tu mascota">
                 </div>
 
                 <div class="form-group">
@@ -159,5 +159,43 @@
 <script src="{{ asset('js/vistaprevia.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('js/alerts.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputNombre    = document.getElementById('nombre_mascota');
+        const inputRaza      = document.getElementById('raza_mascota');
+        const inputUbicacion = document.getElementById('ubicacion_mascota');
+
+        if (inputNombre) {
+            inputNombre.addEventListener('input', function () {
+                const original = this.value;
+                const limpio = original.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+                if (limpio !== original) {
+                    this.value = limpio;
+                }
+            });
+        }
+
+        if (inputRaza) {
+            inputRaza.addEventListener('input', function () {
+                const original = this.value;
+                const limpio = original.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+                if (limpio !== original) {
+                    this.value = limpio;
+                }
+            });
+        }
+
+        if (inputUbicacion) {
+            inputUbicacion.addEventListener('input', function () {
+                const original = this.value;
+                const limpio = original.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s#.,-]/g, '');
+                if (limpio !== original) {
+                    this.value = limpio;
+                }
+            });
+        }
+    });
+</script>
+
 </body>
 </html>

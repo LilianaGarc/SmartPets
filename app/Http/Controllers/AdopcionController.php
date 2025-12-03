@@ -219,14 +219,45 @@ class AdopcionController extends Controller
     {
         $request->validate([
             'contenido' => 'required|string|max:255',
+
             'imagen_principal' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'imagenes_secundarias' => 'nullable|array|max:4',
             'imagenes_secundarias.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'tipo_mascota' => 'required|string|max:100',
-            'nombre_mascota' => 'required|string|max:100',
+
+            'tipo_mascota' => [
+                'required',
+                'string',
+                'in:Perro,Gato,Conejo,Tortuga,Peces,Otro',
+            ],
+
+            'nombre_mascota' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/',
+            ],
+
             'fecha_nacimiento' => 'required|date|before_or_equal:today',
-            'raza_mascota' => 'required|string|max:100',
-            'ubicacion_mascota' => 'required|string|max:100',
+
+            'raza_mascota' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/',
+            ],
+
+            'ubicacion_mascota' => [
+                'required',
+                'string',
+                'max:100',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s#.,-]+$/',
+            ],
+        ], [
+            'tipo_mascota.in'          => 'El tipo de mascota seleccionado no es válido.',
+            'tipo_mascota.required'    => 'El tipo de mascota es obligatorio.',
+            'nombre_mascota.regex'     => 'El nombre de la mascota solo puede contener letras y espacios.',
+            'raza_mascota.regex'       => 'La raza de la mascota solo puede contener letras y espacios.',
+            'ubicacion_mascota.regex'  => 'La ubicación contiene caracteres no permitidos.',
         ]);
 
         if ($request->hasFile('imagenes_secundarias') && count($request->file('imagenes_secundarias')) > 4) {
@@ -251,16 +282,16 @@ class AdopcionController extends Controller
         }
 
         $adopcion = Adopcion::create([
-            'contenido' => $request->contenido,
-            'imagen' => $imagenPrincipal,
+            'contenido'            => $request->contenido,
+            'imagen'               => $imagenPrincipal,
             'imagenes_secundarias' => json_encode($imagenesSecundarias),
-            'visibilidad' => 0,
-            'tipo_mascota' => $request->tipo_mascota,
-            'nombre_mascota' => $request->nombre_mascota,
-            'fecha_nacimiento' => $request->fecha_nacimiento,
-            'raza_mascota' => $request->raza_mascota,
-            'ubicacion_mascota' => $request->ubicacion_mascota,
-            'id_usuario' => Auth::id(),
+            'visibilidad'          => 0,
+            'tipo_mascota'         => $request->tipo_mascota,
+            'nombre_mascota'       => $request->nombre_mascota,
+            'fecha_nacimiento'     => $request->fecha_nacimiento,
+            'raza_mascota'         => $request->raza_mascota,
+            'ubicacion_mascota'    => $request->ubicacion_mascota,
+            'id_usuario'           => Auth::id(),
         ]);
 
         $usuarioCreador = Auth::user();
@@ -275,19 +306,19 @@ class AdopcionController extends Controller
                 'mensaje' => $usuarioCreador->name . ' creó una nueva publicación de adopción',
                 'visto' => false,
                 'data' => json_encode([
-                    'nombre' => $usuarioCreador->name,
-                    'foto_perfil' => $usuarioCreador->fotoperfil ? $usuarioCreador->fotoperfil : 'images/fotodeperfil.webp',
-                    'mensaje_detalle' => 'Creó una nueva publicación de adopción',
-                    'fecha' => Carbon::now()->toDateTimeString(),
-                    'imagen_adopcion' => $imagenPrincipal,
-                    'url_adopcion' => route('adopciones.show', ['id' => $adopcion->id]),
+                    'nombre'         => $usuarioCreador->name,
+                    'foto_perfil'    => $usuarioCreador->fotoperfil ? $usuarioCreador->fotoperfil : 'images/fotodeperfil.webp',
+                    'mensaje_detalle'=> 'Creó una nueva publicación de adopción',
+                    'fecha'          => \Carbon\Carbon::now()->toDateTimeString(),
+                    'imagen_adopcion'=> $imagenPrincipal,
+                    'url_adopcion'   => route('adopciones.show', ['id' => $adopcion->id]),
                 ]),
             ]);
         }
 
-
         return redirect()->route('adopciones.index')->with('success', 'La publicación de adopción se ha creado con éxito.');
     }
+
 
 
     public function edit($id)

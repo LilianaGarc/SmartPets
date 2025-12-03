@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User; // Importar el modelo User
 
 class LoginRequest extends FormRequest
 {
@@ -20,53 +21,84 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Preparar los datos antes de la validación
+     * Aquí recortamos y normalizamos el email
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email' => trim(strtolower($this->input('email'))),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'max:100'],
             'password' => ['required', 'string'],
+            'captcha' => ['sometimes', 'required', 'numeric'],
         ];
     }
 
     /**
+     * Mensajes personalizados de validación
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email'     => 'Ingresa un correo electrónico válido.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'captcha.required' => 'Debes responder el CAPTCHA.',
+            'captcha.numeric'  => 'La respuesta del CAPTCHA debe ser un número.',
+        ];
+    }
+
+    /**
+     * Validación personalizada después de las reglas
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $email = trim(strtolower($this->input('email')));
+
+            // Verificar si el correo existe en la base de datos
+            if ($email && !User::where('email', $email)->exists()) {
+                $validator->errors()->add('email', 'El correo electrónico no está registrado en nuestro sistema.');
+            }
+        });
+    }
+
+    /**
      * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function authenticate(): void
-{
-    \Illuminate\Support\Facades\App::setLocale('es');
+    {
+        \Illuminate\Support\Facades\App::setLocale('es');
 
-    $this->ensureIsNotRateLimited();
+        $this->ensureIsNotRateLimited();
 
-    $user = \App\Models\User::where('email', $this->input('email'))->first();
+        $credentials = $this->only('email', 'password');
 
-    if (! $user) {
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
+        // Asegurarnos de que el email esté en minúsculas
+        $credentials['email'] = trim(strtolower($credentials['email']));
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'email' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
+            ]);
+        }
+
+        RateLimiter::clear($this->throttleKey());
     }
-
-    if (! \Illuminate\Support\Facades\Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-        \Illuminate\Support\Facades\RateLimiter::hit($this->throttleKey());
-
-        throw \Illuminate\Validation\ValidationException::withMessages([
-            'password' => 'Correo o contraseña incorrectos. Por favor verifica tus datos.',
-        ]);
-    }
-
-    \Illuminate\Support\Facades\RateLimiter::clear($this->throttleKey());
-}
-
 
     /**
      * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function ensureIsNotRateLimited(): void
     {
@@ -91,6 +123,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
     }
 }

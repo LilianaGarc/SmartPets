@@ -7,6 +7,7 @@ use App\Models\Publicacion;
 use App\Models\User;
 use App\Models\Veterinaria;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{AdopcionController,
     CategoriaController,
@@ -114,9 +115,6 @@ Route::middleware(['auth', 'prevenir-retorno'])->group(function() {
 
 // Rutas autenticadas
 Route::middleware('auth')->group(function () {
-    Route::get('/register', function () {
-        return redirect()->route('login');
-    })->name('register');
     // Perfil y usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -128,6 +126,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/actualizar-mascota-virtual', [PerfilController::class, 'actualizarMascotaVirtual'])->name('perfil.actualizarMascotaVirtual');
     Route::post('/perfil/actualizar-estadisticas', [PerfilController::class, 'actualizarEstadisticas'])->name('perfil.actualizarEstadisticas');
     Route::get('/perfil/{id}', [PerfilController::class, 'showPerfil'])->name('users.perfil')->whereNumber('id');
+    Route::delete('/profile/photo', [ProfileController::class, 'deleteProfilePhoto'])
+        ->name('profile.photo.delete');
 
     //Compartir
     Route::get('/publicaciones/{publicacion}/compartir', [PublicacionController::class, 'compartir'])->name('publicaciones.compartir')->middleware(['auth']);
@@ -341,3 +341,7 @@ Route::get('/panel/dashboard', function () {
     return view('panelAdministrativo.principalPanel', compact('conteos'));
 })->name('panel.dashboard');
 
+
+Route::get('/terminos-y-condiciones', function () {
+    return view('terminos');
+})->name('terminos');

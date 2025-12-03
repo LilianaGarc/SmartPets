@@ -326,16 +326,18 @@
                         <div class="mb-3">
                             <label for="opinion{{ $calificacion->id }}" class="form-label fw-bold">Opinión:</label>
                             <textarea class="form-control"
-                                id="opinion{{ $calificacion->id }}"
-                                name="opinion"
-                                rows="3"
-                                maxlength="500"
-                                oninput="actualizarContador(this, 'contador{{ $calificacion->id }}')">{{ trim($calificacion->opinion) }}</textarea>
+                                      id="opinion{{ $calificacion->id }}"
+                                      name="opinion"
+                                      rows="3"
+                                      maxlength="500"
+                                      required
+                                      oninput="actualizarContador(this, 'contador{{ $calificacion->id }}')">{{ old('opinion', trim($calificacion->opinion)) }}</textarea>
 
                             <div class="text-end">
                                 <small id="contador{{ $calificacion->id }}" class="text-muted">0/500</small>
                             </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

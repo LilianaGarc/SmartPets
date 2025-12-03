@@ -57,6 +57,12 @@ class VeterinariaController extends Controller
             'redes.*.nombre_usuario' => 'nullable|string|max:255',
         ]);
 
+        $opinion = $request->input('opinion');
+        if (empty($opinion)) {
+            $opinion = '';  // Asignar un valor vacío si la opinión está vacía
+        }
+
+
         $ubicacion = Ubicacion::create([
             'departamento' => $request->departamento,
             'municipio' => $request->municipio,
@@ -129,6 +135,12 @@ class VeterinariaController extends Controller
 
         $veterinaria = Veterinaria::with('imagenes', 'redes')->findOrFail($id);
         $ubicacion = Ubicacion::findOrFail($veterinaria->id_ubicacion);
+
+        // Asignar la opinión vacía si está vacía
+        $opinion = $request->input('opinion');
+        if (empty($opinion)) {
+            $opinion = '';  // Asignar un valor vacío si la opinión está vacía
+        }
 
         // Actualizar ubicación
         $ubicacion->update([
