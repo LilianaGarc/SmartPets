@@ -407,24 +407,21 @@ class ProductoController extends Controller
             'descripcion' => 'nullable|string',
             'categoria_id' => 'required|integer|exists:categorias,id',
             'stock' => 'required|integer|min:0',
-            'imagenes' => 'required|array|min:1|max:5',
-            'imagenes.*' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+            'imagen_principal' => 'required|image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048',
+            'imagenes_adicionales' => 'nullable|array|max:4',
+            'imagenes_adicionales.*' => 'image|mimes:jpg,jpeg,png,gif,bmp,svg,webp,tiff|max:2048'
         ], [
             'precio.required' => 'El precio del producto es obligatorio.',
             'precio.numeric' => 'El precio debe ser un número.',
             'precio.gt' => 'El precio debe ser mayor que 0.',
             'precio.max' => 'El precio no puede superar 99999.99.',
-            'imagenes.required' => 'Debes subir al menos una imagen del producto.',
-            'imagenes.*.required' => 'Todas las imágenes seleccionadas son obligatorias.',
-            'imagenes.*.image' => 'Cada archivo debe ser una imagen.',
-            'imagenes.*.mimes' => 'Solo se permiten imágenes en formato JPG, JPEG, PNG o GIF.',
-            'imagenes.*.max' => 'Cada imagen no debe superar los 2MB.',
+            'imagen_principal.required' => 'Debes subir la imagen principal.',
+            'imagen_principal.image' => 'La imagen principal debe ser una imagen válida.',
+            'imagen_principal.max' => 'La imagen principal no debe superar los 2MB.',
+            'imagenes_adicionales.max' => 'No puedes subir más de 4 imágenes adicionales.',
+            'imagenes_adicionales.*.image' => 'Cada archivo adicional debe ser una imagen.',
+            'imagenes_adicionales.*.max' => 'Cada imagen adicional no debe superar los 2MB.',
         ]);
-
-
-        if ($request->hasFile('imagenes') && count($request->file('imagenes')) > 5) {
-            return redirect()->back()->withErrors(['imagenes' => 'No se pueden subir más de 5 imágenes.'])->withInput();
-        }
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -432,12 +429,18 @@ class ProductoController extends Controller
 
         $categoria = Categoria::findOrFail($request->categoria_id);
 
-        $imagenesGuardadas = [];
-        if ($request->hasFile('imagenes')) {
-            $imagenes = $request->file('imagenes');
-            foreach ($imagenes as $imagen) {
-                $rutaImagen = $imagen->store('public/productos');
-                $imagenesGuardadas[] = $rutaImagen;
+        // Guardar imagen principal
+        $rutaImagenPrincipal = null;
+        if ($request->hasFile('imagen_principal')) {
+            $rutaImagenPrincipal = $request->file('imagen_principal')->store('public/productos');
+        }
+
+        // Guardar adicionales (si los hay)
+        $imagenesAdicionalesGuardadas = [];
+        if ($request->hasFile('imagenes_adicionales')) {
+            foreach ($request->file('imagenes_adicionales') as $imagenAdicional) {
+                $rutaAdicional = $imagenAdicional->store('public/productos');
+                $imagenesAdicionalesGuardadas[] = $rutaAdicional;
             }
         }
 
@@ -448,11 +451,13 @@ class ProductoController extends Controller
         $producto->categoria_id = $categoria->id;
         $producto->stock = $request->input('stock');
         $producto->user_id = auth()->id();
-        $producto->imagen = $imagenesGuardadas[0] ?? null;
-        $producto->imagen2 = $imagenesGuardadas[1] ?? null;
-        $producto->imagen3 = $imagenesGuardadas[2] ?? null;
-        $producto->imagen4 = $imagenesGuardadas[3] ?? null;
-        $producto->imagen5 = $imagenesGuardadas[4] ?? null;
+        $producto->subcategoria_id = $request->input('subcategoria_id');
+
+        $producto->imagen = $rutaImagenPrincipal;
+        $producto->imagen2 = $imagenesAdicionalesGuardadas[0] ?? null;
+        $producto->imagen3 = $imagenesAdicionalesGuardadas[1] ?? null;
+        $producto->imagen4 = $imagenesAdicionalesGuardadas[2] ?? null;
+        $producto->imagen5 = $imagenesAdicionalesGuardadas[3] ?? null;
 
         if ($producto->save()) {
             return redirect()->route('productos.panel')->with('exito', 'Producto creado correctamente');
