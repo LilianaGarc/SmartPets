@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -25,49 +26,50 @@ class ProfileController extends Controller
     /**
      * Actualizar información del perfil.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        // Validación de datos
+        $user = Auth::user();
+
         $request->validate([
-            'name' => ['required', 'string', 'max:20'],
-            'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email,' . $request->user()->id],
-            'telefono' => ['nullable', 'string', 'max:12'],
-            'direccion' => ['nullable', 'string', 'max:100'],
-            'descripción' => ['nullable', 'string', 'max:250'],
-            
-            'current_password' => ['nullable', 'string', 'min:8'], 
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'name' => 'required|string|max:20',
+            'email' => 'required|email|max:100',
+            'telefono' => 'nullable|string|max:11',
+            'direccion' => 'nullable|string|max:100',
+            'descripción' => 'nullable|string|max:250',
+
+            /* ⭐ Debe validar la imagen correctamente */
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $user = $request->user();
-        $user->fill($request->validated());
-
-        // Actualiza los campos opcionales
+        // DATOS NORMALES
+        $user->name = $request->name;
+        $user->email = $request->email;
         $user->telefono = $request->telefono;
         $user->direccion = $request->direccion;
         $user->descripción = $request->descripción;
 
-        
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
+        // ===============================
+        // ⭐ PROCESAR Y GUARDAR LA FOTO
+        // ===============================
+        if ($request->hasFile('profile_photo')) {
 
-        
-        if ($request->filled('current_password') && $request->filled('password')) {
-            // Verificar que la contraseña actual sea la del usuario
-            if (!Hash::check($request->current_password, $user->password)) {
-                return back()->withErrors(['current_password' => 'La contraseña actual es incorrecta.'])->withInput();
+            /* 💬 Solución: borrar la anterior solo si existe */
+            if ($user->fotoperfil && Storage::disk('public')->exists($user->fotoperfil)) {
+                Storage::disk('public')->delete($user->fotoperfil);
             }
 
-            // Actualizar contraseña
-            $user->password = bcrypt($request->password);
+            /* 💬 Solución: guardar en storage/app/public/perfiles */
+            $path = $request->file('profile_photo')->store('perfiles', 'public');
+
+            /* 💬 Solución: guardar ruta en la BD */
+            $user->fotoperfil = $path;
         }
 
-        // Guardar cambios
         $user->save();
 
-        return Redirect::route('profile.edit')->with('exito', 'Perfil actualizado con éxito.');
+        return back()->with('exito', 'Perfil actualizado correctamente');
     }
+
 
     /**
      * Eliminar cuenta de usuario.
@@ -87,5 +89,22 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Eliminar foto de perfil
+     */
+    public function deleteProfilePhoto(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->fotoperfil) {
+            // Elimina del disco
+            Storage::disk('public')->delete($user->fotoperfil);
+            $user->fotoperfil = null;
+            $user->save();
+        }
+
+        return back()->with('exito', 'Foto de perfil eliminada correctamente.');
     }
 }

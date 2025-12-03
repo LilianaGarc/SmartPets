@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="WhatsApp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}" pattern="[2389]\d{7}" maxlength="8" required title="El número debe ser de 8 dígitos y comenzar con 2, 3, 8 o 9.">
+                                <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="WhatsApp" value="{{ isset($veterinaria) ? $veterinaria->whatsapp : old('whatsapp') }}" pattern="[389]\d{7}" maxlength="8" required title="El número debe ser de 8 dígitos y comenzar con 2, 3, 8 o 9.">
                                 <label for="whatsapp">WhatsApp</label>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <div class="form-floating">
-                                <input type="number" step="any" class="form-control" id="latitud" name="latitud" placeholder="Latitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}" min="-90" max="90">
+                                <input type="number" step="any" class="form-control" maxlength="10" id="latitud" name="latitud" placeholder="Latitud" value="{{ isset($veterinaria->ubicacion) ? $veterinaria->ubicacion->latitud : old('latitud') }}" min="-90" max="90">
                                 <label for="latitud">Latitud</label>
                             </div>
                         </div>
